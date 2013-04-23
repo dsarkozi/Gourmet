@@ -79,5 +79,10 @@ public class Dish {
 	{
 		this.allergens = allergens;
 	}
+	
+	public boolean hasAllergen(String allergen)
+	{
+		return this.allergens.contains(allergen);
+	}
 
 }
