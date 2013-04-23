@@ -16,6 +16,7 @@ public class Restaurant {
 	private short zip;
 	private short seats;
 	private short availableSeats; //en temps rèelle.
+	private int nbrPrsHasVoted;
 	private float latitude;
 	private float longitude;
 	private float priceCat; //Si un restaurant est cher -> moyenne des prix
@@ -135,5 +136,12 @@ public class Restaurant {
 	
 	public void sortDishes(String s){
 		//TODO
+	}
+	
+	public void rateRestaurant(byte vote){
+		rating *=nbrPrsHasVoted;
+		nbrPrsHasVoted++;
+		rating += vote;
+		rating /=nbrPrsHasVoted;
 	}
 }
