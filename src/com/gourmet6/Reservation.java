@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.gourmet6;
 
 import java.sql.Timestamp;

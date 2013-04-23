@@ -3,9 +3,10 @@ package com.gourmet6;
 import java.util.ArrayList;
 
 public class Dish {
+	
 	private String name;
 	private String type;
-	private float price;
+	private double price;
 	private int inventory;
 	private String description;
 	private ArrayList<String> allergens;
@@ -40,12 +41,12 @@ public class Dish {
 		this.type = type;
 	}
 	
-	public float getPrice() 
+	public double getPrice() 
 	{
 		return price;
 	}
 	
-	public void setPrice(float price) 
+	public void setPrice(double price) 
 	{
 		this.price = price;
 	}
