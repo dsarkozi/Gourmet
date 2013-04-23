@@ -48,8 +48,8 @@ public class Client {
 		
 	}
 	
-	public void rate(Restaurant res, int value)
+	public void rate(Restaurant res, byte value)
 	{
-		
+		res.rateRestaurant(value);
 	}
 }
