@@ -116,6 +116,12 @@ public class Restaurant {
 	public void setPriceCat(float priceCat) {
 		this.priceCat = priceCat;
 	}
+	public ArrayList<Dish> getListDishes() {
+		return listDishes;
+	}
+	public void setListDishes(ArrayList<Dish> listDishes) {
+		this.listDishes = listDishes;
+	}
 	
 	public String checkReservation(){
 		//TODO
