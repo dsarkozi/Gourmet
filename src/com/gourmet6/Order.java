@@ -8,28 +8,52 @@ import java.util.ArrayList;
  */
 public class Order {
 	
-	private int number;
 	private ArrayList<Dish> dishes;
+	private String name;
+	private String mail;
 	
-	/**
-	 * @return the number
-	 */
-	public int getOrderNumber() {
-		return number;
+	public Order(String name, String mail)
+	{
+		this.setOrderName(name);
+		this.setOrderMail(mail);
+		this.dishes = null;
 	}
-	/**
-	 * @param number the number to set
-	 */
-	public void setOrderNumber(int number) {
-		this.number = number;
-	}
+	
 	public ArrayList<Dish> getOrderDishes() {
 		return dishes;
 	}
 	public void setOrderDishes(ArrayList<Dish> dishes) {
 		this.dishes = dishes;
 	}
-	
+
+	/**
+	 * @return the name
+	 */
+	public String getOrderName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setOrderName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @return the mail
+	 */
+	public String getOrderMail() {
+		return mail;
+	}
+
+	/**
+	 * @param mail the mail to set
+	 */
+	public void setOrderMail(String mail) {
+		this.mail = mail;
+	}
+
 	/**
 	 * @param dish not empty
 	 */
