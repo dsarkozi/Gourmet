@@ -4,6 +4,10 @@
     <string name="app_name">Gourmet</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">David c\'est un vilain pÔ bÔ !!!</string>
-    <string name="moi">Yves est super intelligent !</string>
+    <string name="start">Voulez-vous vous connecter ?</string>
+    <string name="createAccount">Créer un compte.</string>
+    <string name="yesButton">Oui</string>
+    <string name="noButton">Non</string>
+    <string name="return_button">Retour</string>
 
 </resources>
