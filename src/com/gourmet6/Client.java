@@ -12,27 +12,33 @@ public class Client {
 		this.phone = phone;
 	}
 	
-	public String getEmail() {
+	public String getEmail() 
+	{
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public void setEmail(String email)
+	{
 		this.email = email;
 	}
 
-	public String getName() {
+	public String getName() 
+	{
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(String name) 
+	{
 		this.name = name;
 	}
 
-	public String getPhone() {
+	public String getPhone() 
+	{
 		return phone;
 	}
 
-	public void setPhone(String phone) {
+	public void setPhone(String phone) 
+	{
 		this.phone = phone;
 	}
 	
@@ -48,8 +54,8 @@ public class Client {
 		
 	}
 	
-	public void rate(Restaurant res, int value)
+	public void rate(Restaurant res, byte value)
 	{
-		
+		res.rateRestaurant(value);
 	}
 }
