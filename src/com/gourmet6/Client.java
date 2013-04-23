@@ -29,4 +29,18 @@ public class Client {
 		this.phone = phone;
 	}
 	
+	public Reservation createReservation()
+	{
+		
+	}
+	
+	public Order createOrder()
+	{
+		
+	}
+	
+	public void rate(Restaurant res, int value)
+	{
+		
+	}
 }
