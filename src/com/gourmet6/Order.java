@@ -3,7 +3,7 @@
  */
 package com.gourmet6;
 
-import java.sql.Timestamp;
+import java.util.ArrayList;
 
 /**
  * @author Lena
@@ -12,8 +12,9 @@ import java.sql.Timestamp;
 public class Order {
 	
 	private int number;
-	private Timestamp time;
 	private int people;
+	private ArrayList<Dish> dishes;
+	private float price;
 	
 	public int getOrderNumber() {
 		return number;
@@ -21,14 +22,6 @@ public class Order {
 
 	public void setOrderNumber(int number) {
 		this.number = number;
-	}
-
-	public Timestamp getOrderTime() {
-		return time;
-	}
-
-	public void setOrderTime(Timestamp time) {
-		this.time = time;
 	}
 
 	public int getOrderPeople() {
