@@ -19,7 +19,7 @@ public class Restaurant {
 	private float latitude;
 	private float longitude;
 	private float priceCat; //Si un restaurant est cher -> moyenne des prix
-	//private ArrayList<Dish> listDishes;
+	private ArrayList<Dish> listDishes;
 	
 	public Restaurant(){
 		
