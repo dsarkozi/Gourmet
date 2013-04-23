@@ -14,14 +14,20 @@ public class Order {
 	
 	public Order(String name, String mail)
 	{
+		this.dishes = null;
 		this.setOrderName(name);
 		this.setOrderMail(mail);
-		this.dishes = null;
 	}
 	
+	/**
+	 * @return the dishes
+	 */
 	public ArrayList<Dish> getOrderDishes() {
 		return dishes;
 	}
+	/**
+	 * @param dishes the dishes to set
+	 */
 	public void setOrderDishes(ArrayList<Dish> dishes) {
 		this.dishes = dishes;
 	}
@@ -32,7 +38,6 @@ public class Order {
 	public String getOrderName() {
 		return name;
 	}
-
 	/**
 	 * @param name the name to set
 	 */
@@ -55,19 +60,19 @@ public class Order {
 	}
 
 	/**
-	 * @param dish not empty
+	 * @param dish the dish to add to the arraylist of dishes
 	 */
 	public void addDish(Dish dish) {
 		dishes.add(dish);
 	}
 
 	/**
-	 * @return the total price
+	 * @return the total price of the order
 	 */
 	public double getOrderPrice() {
 		double totalPrice = 0;
 		for (Dish d : dishes)
-			totalPrice += d.getPrice();
+			totalPrice += (d.getPrice()*d.getInventory());
 		return totalPrice;
 	}
 

@@ -20,27 +20,39 @@ public class Reservation {
 		this.people = people;
 		this.name = name;
 		this.mail = mail;	
-		this.setOrder(null);
+		this.order = null;
 	}
-	
 	public Reservation(Timestamp time, int people, String name, String mail, Order order)
 	{
 		this.time = time;
 		this.people = people;
 		this.name = name;
 		this.mail = mail;
-		this.setOrder(order);
+		this.order = order;
 	}
 	
+	/**
+	 * @return the time
+	 */
 	public Timestamp getReservationTime() {
 		return time;
 	}
+	/**
+	 * @param time the time to set
+	 */
 	public void setReservationTime(Timestamp time) {
 		this.time = time;
 	}
+	
+	/**
+	 * @return the people
+	 */
 	public int getReservationPeople() {
 		return people;
 	}
+	/**
+	 * @param people the people to set
+	 */
 	public void setReservationPeople(int people) {
 		this.people = people;
 	}
@@ -76,7 +88,6 @@ public class Reservation {
 	public Order getOrder() {
 		return order;
 	}
-
 	/**
 	 * @param order the order to set
 	 */
@@ -84,6 +95,10 @@ public class Reservation {
 		this.order = order;
 	}
 
+	/**
+	 * @param order the order to add to the reservation
+	 * BE CAREFULL NOT TO ADD AN ORDER IF THERE ALREADY IS ONE!!
+	 */
 	void addOrder(Order order) {
 		this.setOrder(order);	
 	}
