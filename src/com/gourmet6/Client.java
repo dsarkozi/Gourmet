@@ -38,11 +38,13 @@ public class Client {
 	
 	public Reservation createReservation()
 	{
+		return null;
 		
 	}
 	
 	public Order createOrder()
 	{
+		return null;
 		
 	}
 	
