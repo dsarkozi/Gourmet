@@ -12,28 +12,27 @@ import java.util.ArrayList;
 public class Order {
 	
 	private int number;
-	private int people;
 	private ArrayList<Dish> dishes;
-	private float price;
 	
 	public int getOrderNumber() {
 		return number;
 	}
-
 	public void setOrderNumber(int number) {
 		this.number = number;
 	}
-
-	public int getOrderPeople() {
-		return people;
+	public ArrayList<Dish> getOrderDishes() {
+		return dishes;
+	}
+	public void setOrderDishes(ArrayList<Dish> dishes) {
+		this.dishes = dishes;
+	}
+	public void addDish(Dish dish) {
+		
 	}
 
-	public void setOrderPeople(int people) {
-		this.people = people;
-	}
-
-	public void addOrder() {
-
+	public double getOrderPrice() {
+		return 0.0;
+		
 	}
 
 }
