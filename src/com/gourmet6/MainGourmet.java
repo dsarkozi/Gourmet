@@ -2,6 +2,7 @@ package com.gourmet6;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -48,21 +49,14 @@ public class MainGourmet extends Activity
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 		//locationManager.removeUpdates(locationListener);
 		setContentView(R.layout.activity_main);
-		
-		findViewById(R.id.yes_button_connection).setOnClickListener(
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						login();
-					}
-				});
-		findViewById(R.id.no_button_connection).setOnClickListener(
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						//TODO
-					}
-				});
+
+//		findViewById(R.id.no_button_connection).setOnClickListener(
+//				new View.OnClickListener() {
+//					@Override
+//					public void onClick(View view) {
+//						//TODO
+//					}
+//				});
 	}
 
 	@Override
@@ -73,8 +67,9 @@ public class MainGourmet extends Activity
 		return true;
 	}
 	
-	public void login(){
-		setContentView(R.layout.activity_login);
+	public void login(View view){
+		Intent intent = new Intent(this, LoginActivity.class);
+		startActivity(intent);
 	}
 
 }

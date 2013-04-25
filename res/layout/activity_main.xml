@@ -28,7 +28,8 @@
             style="@style/AppBaseTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/yesButton" />
+            android:text="@string/yesButton"
+            android:onClick="login" />
 
         <Button
             android:id="@+id/no_button_connection"
