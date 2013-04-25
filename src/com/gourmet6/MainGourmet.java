@@ -44,7 +44,7 @@ public class MainGourmet extends Activity
 		    {
 		    	
 		    }
-		}
+		};
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 		//locationManager.removeUpdates(locationListener);
 		setContentView(R.layout.activity_main);
