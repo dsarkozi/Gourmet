@@ -9,6 +9,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
 
 public class MainGourmet extends Activity
 {
@@ -50,13 +51,13 @@ public class MainGourmet extends Activity
 		//locationManager.removeUpdates(locationListener);
 		setContentView(R.layout.activity_main);
 
-//		findViewById(R.id.no_button_connection).setOnClickListener(
-//				new View.OnClickListener() {
-//					@Override
-//					public void onClick(View view) {
-//						//TODO
-//					}
-//				});
+		findViewById(R.id.no_button_connection).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						showTowns();
+					}
+				});
 	}
 
 	@Override
@@ -67,9 +68,27 @@ public class MainGourmet extends Activity
 		return true;
 	}
 	
-	public void login(View view){
+	public void login(View view)
+	{
 		Intent intent = new Intent(this, LoginActivity.class);
 		startActivity(intent);
 	}
+	
+	public void showTowns()
+	{
+		ArrayAdapter townAdapter = new ArrayAdapter<String>(this,android.R.layout.) 
+	}
 
+
+
+	private class ButtonArrayAdapter extends ArrayAdapter<String>
+	{
+
+		public ButtonArrayAdapter(Context context, int textViewResourceId,
+				String[] objects)
+		{
+			super(context, textViewResourceId, objects);
+		}
+	
+	}
 }
