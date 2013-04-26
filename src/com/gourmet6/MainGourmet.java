@@ -7,9 +7,14 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 
 public class MainGourmet extends Activity
 {
@@ -76,12 +81,25 @@ public class MainGourmet extends Activity
 	
 	public void showTowns()
 	{
-		ArrayAdapter townAdapter = new ArrayAdapter<String>(this,android.R.layout.) 
+		ListView townList = (ListView)findViewById(R.id.list);
+		ArrayAdapter<String> townAdapter = new ArrayAdapter<String>(
+				this,android.R.layout.simple_list_item_1,towns);
+		townList.setAdapter(townAdapter);
+		townList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+			{
+				Button currentButton = (Button) parent.getItemAtPosition(position);
+				currentTown = currentButton.getText().toString();
+			}
+		});
+		
 	}
 
 
 
-	private class ButtonArrayAdapter extends ArrayAdapter<String>
+	public class ButtonArrayAdapter extends ArrayAdapter<String>
 	{
 
 		public ButtonArrayAdapter(Context context, int textViewResourceId,
@@ -89,6 +107,17 @@ public class MainGourmet extends Activity
 		{
 			super(context, textViewResourceId, objects);
 		}
-	
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent)
+		{
+			if(convertView == null)
+			{
+				LayoutInflater inflater = getLayoutInflater();
+				convertView = inflater.inflate(R.layout.lists, parent, false);
+			}
+			Button button = (Button)convertView.findViewById(R.id.button_list);
+			button.setText(this.getItem(position));
+			return button;
+		}
 	}
 }
