@@ -87,6 +87,14 @@ public class LoginActivity extends Activity {
 						attemptLogin();
 					}
 				});
+		
+		findViewById(R.id.retour_choix_login).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						setContentView(R.layout.activity_main);
+					}
+				});
 	}
 
 	/**

@@ -63,6 +63,14 @@ public class MainGourmet extends Activity
 						showTowns();
 					}
 				});
+		
+		findViewById(R.id.yes_button_connection).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						setContentView(R.layout.activity_login);
+					}
+				});
 	}
 
 	@Override

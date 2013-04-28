@@ -64,17 +64,9 @@
                 android:singleLine="true" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" >
-
-                <Button
-                    android:id="@+id/button1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/return_button" />
-
+                style="@style/LoginFormContainer"
+                android:orientation="horizontal" >
+                
                 <Button
                     android:id="@+id/sign_in_button"
                     android:layout_width="0dp"
@@ -83,6 +75,14 @@
                     android:paddingLeft="32dp"
                     android:paddingRight="32dp"
                     android:text="@string/action_sign_in_register" />
+
+                <Button
+                    android:id="@+id/retour_choix_login"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/return_button" />
+
 
             </LinearLayout>
 
