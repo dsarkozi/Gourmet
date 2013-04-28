@@ -89,8 +89,9 @@ public class MainGourmet extends Activity
 		startActivity(intent);
 	}
 	
-	public void showTowns()
+	public void showTowns() //TODO SimpleAdapter -- junk
 	{
+		setContentView(R.layout.lists);
 		ListView townList = (ListView)findViewById(R.id.list);
 		ArrayAdapter<String> townAdapter = new ArrayAdapter<String>(
 				this,android.R.layout.simple_list_item_1,towns);
@@ -106,8 +107,9 @@ public class MainGourmet extends Activity
 		});
 	}
 	
-	public void showRestaurants()
+	public void showRestaurants() //TODO SimpleAdapter -- junk
 	{
+		setContentView(R.layout.lists);
 		ListView restoList = (ListView)findViewById(R.id.list);
 		ArrayAdapter<String> restoAdapter = new ArrayAdapter<String>(
 				this,android.R.layout.simple_list_item_1,restaurants);
