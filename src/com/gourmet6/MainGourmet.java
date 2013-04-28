@@ -57,9 +57,11 @@ public class MainGourmet extends Activity
 		setContentView(R.layout.activity_main);
 
 		findViewById(R.id.no_button_connection).setOnClickListener(
-				new View.OnClickListener() {
+				new View.OnClickListener()
+				{
 					@Override
-					public void onClick(View view) {
+					public void onClick(View view)
+					{
 						showTowns();
 					}
 				});
@@ -102,10 +104,29 @@ public class MainGourmet extends Activity
 				currentTown = currentButton.getText().toString();
 			}
 		});
-		
+	}
+	
+	public void showRestaurants()
+	{
+		ListView restoList = (ListView)findViewById(R.id.list);
+		ArrayAdapter<String> restoAdapter = new ArrayAdapter<String>(
+				this,android.R.layout.simple_list_item_1,restaurants);
+		restoList.setAdapter(restoAdapter);
+		restoList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+			{
+				Button buttonClicked = (Button) parent.getItemAtPosition(position);
+				makeRestaurant(buttonClicked.getText().toString());
+			}
+		});
 	}
 
-
+	public Restaurant makeRestaurant(String restaurant)
+	{
+		return new Restaurant(restaurant);
+	}
 
 	public class ButtonArrayAdapter extends ArrayAdapter<String>
 	{

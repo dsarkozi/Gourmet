@@ -15,15 +15,16 @@ public class Restaurant {
 	private byte rating;
 	private short zip;
 	private short seats;
-	private short availableSeats; //en temps rèelle.
+	private short availableSeats; // en temps reel
 	private int nbrPrsHasVoted;
 	private float latitude;
 	private float longitude;
-	private float priceCat; //Si un restaurant est cher -> moyenne des prix
+	private float priceCat; // Si un restaurant est cher -> moyenne des prix
 	private ArrayList<Dish> listDishes;
 	
-	public Restaurant(){
-		
+	public Restaurant(String restaurant)
+	{
+		//TODO DB query based on the restaurant's name
 	}
 	
 	
