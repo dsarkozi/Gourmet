@@ -15,15 +15,21 @@ public class DataBaseContract {
     private DataBaseContract() {}
     
     private static final String CREATE_TABLE = "CREATE TABLE ";
+    
     private static final String TEXT_TYPE = " TEXT";
     private static final String INTEGER_TYPE = " INTEGER";
     private static final String REAL_TYPE = " REAL";
+    
     private static final String NOT_NULL = " NOT NULL";
+    private static final String UNIQUE = " UNIQUE";
     private static final String PRIMARY_KEY = " PRIMARY KEY";
     private static final String FOREIGN_KEY = " FOREIGN KEY";
-    private static final String REFERENCES = " REFERENCES";
+    
+    private static final String REFERENCES = " REFERENCES ";
     private static final String ON_UPDATE_CASCADE = " ON UPDATE CASCADE";
     private static final String ON_DELETE_CASCADE = " ON DELETE CASCADE";
+    private static final String ON_DELETE_SET_NULL = " ON DELETE SET NULL";
+    
     private static final String CHECK = " CHECK";
     private static final String IN = " IN";
     
@@ -47,7 +53,7 @@ public class DataBaseContract {
 	    COLUMN_NAME_resName + TEXT_TYPE + NOT_NULL + ", " +
 	    COLUMN_NAME_alleName + TEXT_TYPE + NOT_NULL + CHECK + " (" + COLUMN_NAME_alleName + IN + " ("+ ALLERGEN_COMPLETE_LIST + ")), " +
 	    PRIMARY_KEY + " (" + COLUMN_NAME_dishName + "," + COLUMN_NAME_resName + "," + COLUMN_NAME_alleName + ")," +
-	    FOREIGN_KEY + " (" + COLUMN_NAME_dishName + "," + COLUMN_NAME_resName + ")" + REFERENCES + " dish" + ON_UPDATE_CASCADE + ON_DELETE_CASCADE + ")";
+	    FOREIGN_KEY + " (" + COLUMN_NAME_dishName + "," + COLUMN_NAME_resName + ")" + REFERENCES + DishDB.TABLE_NAME + ON_UPDATE_CASCADE + ON_DELETE_CASCADE + ")";
 	}
 	
 	/* Client database table */
@@ -72,8 +78,8 @@ public class DataBaseContract {
 	    
 	    public static final String SQL_CREATE_ENTRIES = CREATE_TABLE + TABLE_NAME + " (" +
 	    _ID + INTEGER_TYPE + ", " +
-	    COLUMN_NAME_resName + TEXT_TYPE + NOT_NULL + REFERENCES + " restaurant" + ON_UPDATE_CASCADE + ON_DELETE_CASCADE + ", " +
-	    COLUMN_NAME_type + TEXT_TYPE +NOT_NULL + ", " +
+	    COLUMN_NAME_resName + TEXT_TYPE + NOT_NULL + REFERENCES + RestaurantDB.TABLE_NAME + ON_UPDATE_CASCADE + ON_DELETE_CASCADE + ", " +
+	    COLUMN_NAME_type + TEXT_TYPE + NOT_NULL + ", " +
 	    PRIMARY_KEY + " (" + COLUMN_NAME_resName + "," + COLUMN_NAME_type + ")" + ")";    		
 	}
 	
@@ -92,7 +98,7 @@ public class DataBaseContract {
 	    public static final String SQL_CREATE_ENTRIES = CREATE_TABLE + TABLE_NAME + " (" +
 	    _ID + INTEGER_TYPE + ", " +
 	    COLUMN_NAME_dishName + TEXT_TYPE + NOT_NULL + ", " +
-	    COLUMN_NAME_resName + TEXT_TYPE + NOT_NULL + REFERENCES + " restaurant" + ON_UPDATE_CASCADE + ON_DELETE_CASCADE + ", " +
+	    COLUMN_NAME_resName + TEXT_TYPE + NOT_NULL + REFERENCES + RestaurantDB.TABLE_NAME + ON_UPDATE_CASCADE + ON_DELETE_CASCADE + ", " +
 	    COLUMN_NAME_type + TEXT_TYPE + NOT_NULL + CHECK + " (" + COLUMN_NAME_type + IN + " (" + DISH_TYPE_COMPLETE_LIST + ")), " +
 	    COLUMN_NAME_description + TEXT_TYPE + ", " +
 	    COLUMN_NAME_stock + INTEGER_TYPE + ", " +
@@ -110,8 +116,8 @@ public class DataBaseContract {
 	    public static final String SQL_CREATE_ENTRIES = CREATE_TABLE + TABLE_NAME + " (" +
 	    _ID + INTEGER_TYPE + ", " +
 	    COLUMN_NAME_orderNr + TEXT_TYPE + NOT_NULL + ", " +
-	    COLUMN_NAME_resName + TEXT_TYPE + NOT_NULL + REFERENCES + " restaurant" + ON_UPDATE_CASCADE + ON_DELETE_CASCADE + ", " +
-	    COLUMN_NAME_mail + TEXT_TYPE + NOT_NULL + REFERENCES + " client" + ON_UPDATE_CASCADE + ON_DELETE_CASCADE + ", " +
+	    COLUMN_NAME_resName + TEXT_TYPE + NOT_NULL + REFERENCES + RestaurantDB.TABLE_NAME + ON_UPDATE_CASCADE + ON_DELETE_CASCADE + ", " +
+	    COLUMN_NAME_mail + TEXT_TYPE + NOT_NULL + REFERENCES + ClientDB.TABLE_NAME + ON_UPDATE_CASCADE + ON_DELETE_CASCADE + ", " +
 	    PRIMARY_KEY + " (" + COLUMN_NAME_orderNr + "," + COLUMN_NAME_resName + ")" + ")";
 	}
 	
@@ -130,8 +136,8 @@ public class DataBaseContract {
 	    COLUMN_NAME_orderNr + TEXT_TYPE + NOT_NULL + ", " +
 	    COLUMN_NAME_quantity + INTEGER_TYPE + NOT_NULL + ", " +
 	    PRIMARY_KEY + " (" + COLUMN_NAME_dishName + "," + COLUMN_NAME_resName + "," + COLUMN_NAME_orderNr + ")" +
-	    FOREIGN_KEY + " (" + COLUMN_NAME_dishName + "," + COLUMN_NAME_resName + ")" + REFERENCES + " dish" + ON_UPDATE_CASCADE + ON_DELETE_CASCADE + ", " +
-	    FOREIGN_KEY + " (" + COLUMN_NAME_orderNr + ")" + REFERENCES + " order(orderNr)" + ON_UPDATE_CASCADE + ON_DELETE_CASCADE + ")";
+	    FOREIGN_KEY + " (" + COLUMN_NAME_dishName + "," + COLUMN_NAME_resName + ")" + REFERENCES + DishDB.TABLE_NAME + ON_UPDATE_CASCADE + ON_DELETE_CASCADE + ", " +
+	    FOREIGN_KEY + " (" + COLUMN_NAME_orderNr + ")" + REFERENCES + OrderDB.TABLE_NAME + "(" + OrderDB.COLUMN_NAME_orderNr + ")" + ON_UPDATE_CASCADE + ON_DELETE_CASCADE + ")";
 	}
 	
 	/* Picture database table */
@@ -148,8 +154,8 @@ public class DataBaseContract {
 	    COLUMN_NAME_picName + TEXT_TYPE + NOT_NULL + ", " +
 	    COLUMN_NAME_folder + TEXT_TYPE + NOT_NULL + ", " +
 	    COLUMN_NAME_bitmap + TEXT_TYPE + NOT_NULL + ", " +
-        COLUMN_NAME_resName + TEXT_TYPE + NOT_NULL + REFERENCES + " restaurant" + ON_UPDATE_CASCADE + ON_DELETE_CASCADE + ", " +
-        COLUMN_NAME_dishName + TEXT_TYPE + REFERENCES + " dish(dishName)" + ON_UPDATE_CASCADE + ON_DELETE_CASCADE + ", " +
+        COLUMN_NAME_resName + TEXT_TYPE + NOT_NULL + REFERENCES + RestaurantDB.TABLE_NAME + ON_UPDATE_CASCADE + ON_DELETE_CASCADE + ", " +
+        COLUMN_NAME_dishName + TEXT_TYPE + REFERENCES + DishDB.TABLE_NAME + "(" + DishDB.COLUMN_NAME_dishName + ")" + ON_UPDATE_CASCADE + ON_DELETE_CASCADE + ", " +
         PRIMARY_KEY + " (" + COLUMN_NAME_picName + "," + COLUMN_NAME_folder + ")" + ")";
 	}
 	
@@ -167,12 +173,12 @@ public class DataBaseContract {
 	    public static final String SQL_CREATE_ENTRIES = CREATE_TABLE + TABLE_NAME + " (" +
 	    _ID + INTEGER_TYPE + ", " +
 	    COLUMN_NAME_reservNr + TEXT_TYPE + NOT_NULL + ", " +
-	    COLUMN_NAME_resName + TEXT_TYPE + NOT_NULL + REFERENCES + " restaurant" + ON_UPDATE_CASCADE + ON_DELETE_CASCADE + ", " +
-	    COLUMN_NAME_orderNr + TEXT_TYPE + REFERENCES + " order(orderNr)" + ON_UPDATE_CASCADE + " ON DELETE SET NULL" + ", " +
+	    COLUMN_NAME_resName + TEXT_TYPE + NOT_NULL + REFERENCES + RestaurantDB.TABLE_NAME + ON_UPDATE_CASCADE + ON_DELETE_CASCADE + ", " +
+	    COLUMN_NAME_orderNr + TEXT_TYPE + REFERENCES + OrderDB.TABLE_NAME + "(" + OrderDB.COLUMN_NAME_orderNr + ")" + ON_UPDATE_CASCADE + ON_DELETE_SET_NULL + ", " +
 	    COLUMN_NAME_date + TEXT_TYPE + NOT_NULL + ", " +
 	    COLUMN_NAME_time + TEXT_TYPE + NOT_NULL + ", " +
 	    COLUMN_NAME_seats + INTEGER_TYPE + NOT_NULL + ", " +
-	    COLUMN_NAME_mail + TEXT_TYPE + NOT_NULL + REFERENCES + " client" + ON_UPDATE_CASCADE + ON_DELETE_CASCADE + ", " +
+	    COLUMN_NAME_mail + TEXT_TYPE + NOT_NULL + REFERENCES + ClientDB.TABLE_NAME + ON_UPDATE_CASCADE + ON_DELETE_CASCADE + ", " +
 	    PRIMARY_KEY + " (" + COLUMN_NAME_reservNr + "," + COLUMN_NAME_resName + ")" + ")";
 	}
 	
@@ -205,7 +211,7 @@ public class DataBaseContract {
 	    COLUMN_NAME_street + TEXT_TYPE + NOT_NULL + ", " + 
 	    COLUMN_NAME_zip + INTEGER_TYPE + NOT_NULL + ", " + 
 	    COLUMN_NAME_town + TEXT_TYPE + NOT_NULL + ", " + 
-	    COLUMN_NAME_tel + TEXT_TYPE + " UNIQUE" + ", " + 
+	    COLUMN_NAME_tel + TEXT_TYPE + UNIQUE + ", " + 
 	    COLUMN_NAME_rating + INTEGER_TYPE + CHECK + " (" + COLUMN_NAME_rating + IN + " (" + RES_RATING_COMPLETE_LIST + ")" + ")" + ", " + 
 	    COLUMN_NAME_priceCat + INTEGER_TYPE + CHECK + " (" + COLUMN_NAME_priceCat + IN + " (" + RES_PRICE_CAT_COMPLETE_LIST + ")" + ")" + ", " +
 	    COLUMN_NAME_avail + INTEGER_TYPE + ")";
