@@ -2,5 +2,6 @@
 <resources>
     
     <string name="menuButton">Menu</string>
+    <string name="reservButton">Reserver</string>
     
 </resources>

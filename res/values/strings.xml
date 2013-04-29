@@ -8,5 +8,7 @@
     <string name="yesButton">Oui</string>
     <string name="noButton">Non</string>
     <string name="return_button">Retour</string>
+    <string name="title_activity_restaurant">RestaurantActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
