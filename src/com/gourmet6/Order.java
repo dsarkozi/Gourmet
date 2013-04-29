@@ -62,7 +62,7 @@ public class Order {
 	/**
 	 * @param dish the dish to add to the arraylist of dishes
 	 */
-	public void addDish(Dish dish) {
+	public void addDish(Dish dish, Integer ask) {
 		dishes.add(dish);
 	}
 

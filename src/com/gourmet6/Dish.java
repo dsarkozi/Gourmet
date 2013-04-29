@@ -8,6 +8,7 @@ public class Dish {
 	private String type;
 	private double price;
 	private int inventory;
+	private int quantity;
 	private String description;
 	private ArrayList<String> allergens;
 	
@@ -17,6 +18,7 @@ public class Dish {
 		this.type = type;
 		this.price = price;
 		this.inventory = inventory;
+		this.quantity = 0;
 		this.description = description;
 		this.allergens = allergens;
 	}
@@ -84,6 +86,14 @@ public class Dish {
 	public boolean hasAllergen(String allergen)
 	{
 		return this.allergens.contains(allergen);
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
 }
