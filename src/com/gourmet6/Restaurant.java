@@ -9,7 +9,7 @@ public class Restaurant {
 	private String town;
 	private String tel;
 	private String Description;
-	private String cuisines;
+	private ArrayList<String> cuisines;
 	private ArrayList<String> chain;
 	private ArrayList<String> photos;
 	private byte rating;
@@ -21,6 +21,7 @@ public class Restaurant {
 	private float longitude;
 	private float priceCat; // Si un restaurant est cher -> moyenne des prix
 	private ArrayList<Dish> listDishes;
+	private ArrayList<TimeTable> semaine[];
 	
 	public Restaurant(String restaurant)
 	{
@@ -58,10 +59,10 @@ public class Restaurant {
 	public void setDescription(String description) {
 		Description = description;
 	}
-	public String getCuisines() {
+	public ArrayList<String> getCuisines() {
 		return cuisines;
 	}
-	public void setCuisines(String cuisines) {
+	public void setCuisines(ArrayList<String> cuisines) {
 		this.cuisines = cuisines;
 	}
 	public ArrayList<String> getChain() {
@@ -124,15 +125,34 @@ public class Restaurant {
 	public void setListDishes(ArrayList<Dish> listDishes) {
 		this.listDishes = listDishes;
 	}
-	
-	public String checkReservation(){
+	public ArrayList<TimeTable>[] getSemaine() {
+		return semaine;
+	}
+	public void setSemaine(ArrayList<TimeTable>[] semaine) {
+		this.semaine = semaine;
+	}
+
+
+	public void createListDishes(){
 		//TODO
-		return null;
 	}
 	
-	public String checkOrder(){
+	public boolean checkReservation(Reservation res){
 		//TODO
-		return null;
+		if(res.getOrder()!=null){
+			for(Dish dish : res.getOrder().getOrderDishes()){
+				if(dish.getQuantity()>dish.getInventory()) return false;
+			}
+		}
+		return (res.getReservationPeople()<=availableSeats);
+	}
+	
+	public boolean checkOrder(Order order){
+		//TODO
+		for(Dish dish : order.getOrderDishes()){
+			if(dish.getQuantity()>dish.getInventory()) return false;
+		}
+		return true;
 	}
 	
 	public void sortDishes(String s){
