@@ -1,5 +1,7 @@
 package com.gourmet6;
 
+import java.sql.Timestamp;
+
 public class Client {
 	private String email;
 	private String name;
@@ -42,15 +44,24 @@ public class Client {
 		this.phone = phone;
 	}
 	
-	public Reservation createReservation()
+	public Reservation createReservation(Timestamp time, int people)
 	{
-		return null;
+		Reservation greed = new Reservation(time,people,this.name,this.email);
+		return greed;
+		
+	}
+	
+	public Reservation createReservationWithOrder(Timestamp time, int people, Order order)
+	{
+		Reservation greed = new Reservation(time,people,this.name,this.email,order);
+		return greed;
 		
 	}
 	
 	public Order createOrder()
 	{
-		return null;
+		Order odd = new Order(this.name,this.email);
+		return odd;
 		
 	}
 	
