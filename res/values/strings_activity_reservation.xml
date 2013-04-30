@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="resorderButton">Order</string>
+    <string name="ressubmitButton">Submit</string>
+    <string name="resseats">How many people?</string>
+    <string name="reshour">Which hour?</string>
+    <string name="resday">Which day?</string>
+    
+</resources>

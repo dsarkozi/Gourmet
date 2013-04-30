@@ -8,6 +8,10 @@
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
 
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="false" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -30,6 +34,46 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gourmet6.MainGourmet" />
+        </activity>
+        <activity
+            android:name="com.gourmet6.RestaurantActivity"
+            android:label="@string/title_activity_restaurant"
+            android:parentActivityName="com.gourmet6.MainGourmet" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gourmet6.MainGourmet" />
+        </activity>
+        <activity
+            android:name="com.gourmet6.ReservationActivity"
+            android:label="@string/title_activity_reservation"
+            android:parentActivityName="com.gourmet6.RestaurantActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gourmet6.RestaurantActivity" />
+        </activity>
+        <activity
+            android:name="com.gourmet6.OrderActivity"
+            android:label="@string/title_activity_order"
+            android:parentActivityName="com.gourmet6.ReservationActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gourmet6.ReservationActivity" />
+        </activity>
+        <activity
+            android:name="com.gourmet6.DishMenuActivity"
+            android:label="@string/title_activity_dish_menu"
+            android:parentActivityName="com.gourmet6.RestaurantActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gourmet6.RestaurantActivity" />
+        </activity>
+        <activity
+            android:name="com.gourmet6.DishDisplayActivity"
+            android:label="@string/title_activity_dish_display"
+            android:parentActivityName="com.gourmet6.DishMenuActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gourmet6.DishMenuActivity" />
         </activity>
     </application>
 
