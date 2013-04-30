@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="resmenuButton">Menu</string>
+    <string name="resorderButton">Order</string>
+    <string name="ressubmitButton">Submit</string>
     
 </resources>

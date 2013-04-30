@@ -11,5 +11,6 @@
     <string name="title_activity_restaurant">RestaurantActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_reservation">ReservationActivity</string>
+    <string name="title_activity_order">OrderActivity</string>
 
 </resources>

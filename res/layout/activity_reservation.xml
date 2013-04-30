@@ -8,5 +8,24 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ReservationActivity" >
 
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="46dp"
+        android:text="@string/resorderButton" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/button1"
+        android:layout_alignBottom="@+id/button1"
+        android:layout_marginLeft="52dp"
+        android:layout_toRightOf="@+id/button1"
+        android:text="@string/ressubmitButton" />
 
 </RelativeLayout>
