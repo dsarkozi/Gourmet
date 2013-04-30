@@ -21,8 +21,8 @@ public class DBHelper extends SQLiteOpenHelper {
 	private static final String DB_FULL_PATH = DB_PATH + DB_NAME;
 	public static final int DB_VERSION = 1;
 	
-	private SQLiteDatabase ourDB;
-	private final Context ourContext;
+	public SQLiteDatabase ourDB;
+	public final Context ourContext;
 
 	/**
 	 * @param context
