@@ -7,6 +7,10 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
+    
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -34,6 +38,7 @@
         <activity
             android:name="com.gourmet6.RestaurantActivity"
             android:label="@string/title_activity_restaurant"
+
             android:parentActivityName="com.gourmet6.MainGourmet" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
