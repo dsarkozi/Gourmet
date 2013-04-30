@@ -59,6 +59,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gourmet6.ReservationActivity" />
         </activity>
+        <activity
+            android:name="com.gourmet6.DishMenuActivity"
+            android:label="@string/title_activity_dish_menu"
+            android:parentActivityName="com.gourmet6.RestaurantActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gourmet6.RestaurantActivity" />
+        </activity>
+        <activity
+            android:name="com.gourmet6.DishDisplayActivity"
+            android:label="@string/title_activity_dish_display"
+            android:parentActivityName="com.gourmet6.DishMenuActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gourmet6.DishMenuActivity" />
+        </activity>
     </application>
 
 </manifest>

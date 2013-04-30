@@ -12,5 +12,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_reservation">ReservationActivity</string>
     <string name="title_activity_order">OrderActivity</string>
+    <string name="title_activity_dish_menu">DishMenuActivity</string>
+    <string name="title_activity_dish_display">DishDisplayActivity</string>
 
 </resources>
