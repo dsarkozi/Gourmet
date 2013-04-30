@@ -5,12 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.myfirstproject.CursorFactory;
-
 import android.content.Context;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
@@ -19,16 +15,15 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DBHelper extends SQLiteOpenHelper {
 
-	private static final String DB_PATH = "/data/data/com.gourmet6/databases/";
 	private static final String DB_NAME = "gourmet3.sqlite";
-	private static final String DB_FULL_PATH = DB_PATH + DB_NAME;
+	private static String DB_DIR = "/data/data/com.gourmet6/databases/";
+	private static String DB_PATH = DB_DIR + DB_NAME;
 	public static final int DB_VERSION = 1;
 	
-	// attribut private dans SQLiteOpenHelper : private SQLiteDatabase mDatabase = null
-	private SQLiteDatabase ourDB;
-	// private SQLiteDatabase mDatabase;
-	// attribut private dans SQLiteOpenHelper : private Context mContext;
-	private final Context ourContext; // rŽfŽrence au contexte utilisŽ
+	//private SQLiteDatabase ourDB;
+	private final Context ourContext;
+	
+	private boolean createDatabase = false;
 
 	/**
 	 * @param context
@@ -37,97 +32,67 @@ public class DBHelper extends SQLiteOpenHelper {
 	{
 		super(context, DB_NAME, null, DB_VERSION);
 		this.ourContext = context;
+		DB_PATH = ourContext.getDatabasePath(DB_NAME).getAbsolutePath();
 	}
-
+	
+	
+	
+	// NOUVEL ESSAI
+	public void initializeBD()
+	{
+		getWritableDatabase();
+		if (createDatabase)
+		{
+			try
+			{
+				copyDB();
+			} catch (IOException e)
+			{
+				throw new Error("Error copying the DB on initialization");
+			}
+		}
+	}
+	
+	public void copyDB() throws IOException
+	{
+		close();
+		
+		InputStream input = ourContext.getAssets().open(DB_NAME);
+		OutputStream output = new FileOutputStream(DB_PATH);
+		byte[] buffer = new byte[1024];
+		int length;
+		while ((length = input.read(buffer)) > 0)
+		{
+			output.write(buffer, 0, length);
+		}
+		output.flush();
+		output.close();
+		input.close();
+		
+		getWritableDatabase().close();
+	}
+	
 	@Override
 	public void onCreate(SQLiteDatabase db)
 	{
-		createDB();
+		createDatabase = true;
 	}
-
+	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 	{
 		// do nothing
 	}
 	
-	/*
-	 * Creates an empty DB on the system and rewrites it with our own.
-	 * If the DB already exists, it does nothing.
-	 */
-	private void createDB()
+	@Override
+	public void onOpen(SQLiteDatabase db)
 	{
-		if (!checkDB())
-		{
-			this.getReadableDatabase();
-			try
-			{
-				copyDB();
-			}
-			catch (IOException e)
-			{
-				System.err.println("Error copying database at creation");
-			}
-		}
-		ourDB = SQLiteDatabase.openDatabase(DB_FULL_PATH, null, SQLiteDatabase.CREATE_IF_NECESSARY|SQLiteDatabase.OPEN_READWRITE);
+		super.onOpen(db);
 	}
 	
-	/*
-	 * Checks if a DB has yet been created.
-	 * @return true / false
-	 */
-	private boolean checkDB()
-    {
-		SQLiteDatabase check = null;
-        try
-        {
-            check = SQLiteDatabase.openDatabase(DB_FULL_PATH, null, SQLiteDatabase.OPEN_READONLY);
- 
-        } catch(SQLiteException e)
-        {
-            //database does't exist yet.
-        }
-        if(check != null)
-        {
-            check.close();
-        }
-        return check != null ? true : false;
-    }
-
-	/*
-	 * Copies the DB from the local assets folder to the just created empty DB in the
-	 * system folder, from where it can be accessed and handled.
-	 * This is done by transfering bytestream.
-	 */
-	private void copyDB() throws IOException
+	@Override
+	public synchronized void close() 
 	{
-		// Open the local DB as the input stream
-		InputStream myInput = ourContext.getAssets().open(DB_NAME);
-
-		// Open the empty DB as the output stream
-		OutputStream myOutput = new FileOutputStream(DB_FULL_PATH);
-
-		// Transfer bytes from the inputfile to the outputfile
-		byte[] buffer = new byte[1024];
-		int length;
-		while ((length = myInput.read(buffer)) > 0)
-		{
-			myOutput.write(buffer, 0, length);
-		}
-		
-		// Close the streams
-		myOutput.flush();
-		myOutput.close();
-		myInput.close();
+		super.close();
 	}
-	
-	/*
-	 * Opens the DB in read and write mode
-	 * @param mode must be SQLiteDatabase.OPEN_READONLY or SQLiteDatabase.OPEN_READWRITE
-	 */
-/*	public void openDB(int mode) throws SQLException, IOException
-	{
-		this.createDB();
-		ourDB = SQLiteDatabase.openDatabase(DB_FULL_PATH, null, mode);
-	}*/
 }
