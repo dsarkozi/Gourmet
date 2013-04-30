@@ -1,6 +1,6 @@
 package com.gourmet6;
 
-import java.sql.Timestamp;
+import java.util.GregorianCalendar;
 
 /**
  * @author Lena
@@ -8,40 +8,48 @@ import java.sql.Timestamp;
  */
 public class Reservation {
 	
-	private Timestamp time;
+	private Restaurant restaurant;
+	private GregorianCalendar date;
 	private int people;
 	private String name;
 	private String mail;
 	private Order order;
 	
-	public Reservation(Timestamp time, int people, String name, String mail)
+	public Reservation(Restaurant restaurant, String date, int people, String name, String mail)
 	{
-		this.time = time;
+		this.restaurant = restaurant;
+		this.date = restaurant.parseDate(date);
 		this.people = people;
 		this.name = name;
-		this.mail = mail;	
-		this.order = null;
+		this.mail = mail;
 	}
-	public Reservation(Timestamp time, int people, String name, String mail, Order order)
+	public Reservation(Restaurant restaurant, String date, int people, String name, String mail, Order order)
 	{
-		this.time = time;
+		this.restaurant = restaurant;
+		this.date = restaurant.parseDate(date);
 		this.people = people;
 		this.name = name;
 		this.mail = mail;
 		this.order = order;
 	}
 	
+	public Reservation() {
+	}
+	
 	/**
 	 * @return the time
 	 */
-	public Timestamp getReservationTime() {
-		return time;
+	public GregorianCalendar getReservationTime() {
+		return date;
 	}
 	/**
 	 * @param time the time to set
 	 */
-	public void setReservationTime(Timestamp time) {
-		this.time = time;
+	public void setReservationTime(String date) {
+		this.date = restaurant.parseDate(date);
+	}
+	public void setReservationTime(GregorianCalendar date){
+		this.date = date;
 	}
 	
 	/**

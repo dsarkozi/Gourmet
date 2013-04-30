@@ -1,6 +1,19 @@
 package com.gourmet6;
 
+import android.annotation.SuppressLint;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
+
+/**
+ * 
+ * @author Quentin
+ *
+ */
 
 public class Restaurant {
 	
@@ -21,11 +34,76 @@ public class Restaurant {
 	private float longitude;
 	private float priceCat; // Si un restaurant est cher -> moyenne des prix
 	private ArrayList<Dish> listDishes;
+	/**
+	 * Semaine contient 7 cases, une par jour de la semaine. A chaque jour correspond une list de plage horraire.
+	 * Correspondance :
+	 * 0 : Dimanche
+	 * 1 : Lundi
+	 * 2 : Mardi
+	 * 3 : Mercredi
+	 * 4 : Jeudi
+	 * 5 : Vendredi
+	 * 6 : Samedi
+	 */
 	private ArrayList<TimeTable> semaine[];
 	
 	public Restaurant(String restaurant)
 	{
 		//TODO DB query based on the restaurant's name
+		
+	}
+	
+	public Restaurant(String name, String adress, String town, String tel, short zip, short seats, 
+			short availableSeats, float latitude, float longitude, ArrayList<Dish> listDishes, 
+			ArrayList<TimeTable>[] semaine){
+		this.name = name;
+		this.adress = adress;
+		this.town = town;
+		this.tel = tel;
+		this.zip = zip;
+		this.seats = seats;
+		this.availableSeats = availableSeats;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.listDishes = listDishes;
+		this.semaine = semaine;
+	}
+	
+	/**
+	 * 
+	 * @param date
+	 * @return Cette fonction transforme un String date en une date GregorianCalendar.
+	 * Cette fonction supporte 3 formats :
+	 * dd/MM/yyyy hh:mm
+	 * dd-MM-yyyy hh:mm
+	 * hh:mm
+	 * Si ces formats ne sont pas respectes, ou qu'elle ne reussit pas la conversion, elle renvoit null.
+	 */
+	@SuppressLint("SimpleDateFormat")
+	public GregorianCalendar parseDate(String date){
+		SimpleDateFormat ourFormat;
+		TimeZone timezone = TimeZone.getDefault();
+		GregorianCalendar cal = null;
+		if(date.contains("/") && date.contains("-")){
+			ourFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+		}
+		else if(date.contains("-") && date.contains(":")){
+			ourFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+		}
+		else if(date.contains(":") && (!date.contains("/") || !date.contains("-"))){
+			ourFormat = new SimpleDateFormat("hh:mm");
+		}
+		else return cal;
+		try{
+			cal = new GregorianCalendar();
+			cal.setTime(ourFormat.parse(date));
+			cal.setTimeZone(timezone);
+		}
+		catch (ParseException e){
+			System.out.println("Error encoding the date : "+e);
+			e.printStackTrace();
+		}
+		return cal;
 	}
 	
 	
@@ -137,18 +215,37 @@ public class Restaurant {
 		//TODO
 	}
 	
+	/**
+	 * 
+	 * @param res
+	 * @return cette methode renvoit true si la reservation est correcte, c-a-d:
+	 * -Qu'elle specifie des plats qui sont encore disponibles, si une commande est joind à la reservation
+	 * -Qu'elle reserve lorsque le restaurant est ouvert.
+	 * -Qu'elle spécifie une nombre de personne <= au nombre de place encore disponible dans le restaurant.
+	 * Renvoit false sinon.
+	 */
 	public boolean checkReservation(Reservation res){
-		//TODO
 		if(res.getOrder()!=null){
 			for(Dish dish : res.getOrder().getOrderDishes()){
 				if(dish.getQuantity()>dish.getInventory()) return false;
 			}
 		}
-		return (res.getReservationPeople()<=availableSeats);
+		//Check heure.
+		boolean timeTableOk = false; 
+		int reservationHour = res.getReservationTime().get(GregorianCalendar.HOUR_OF_DAY);
+		int reservationMinute = res.getReservationTime().get(GregorianCalendar.MINUTE);
+		for(TimeTable tt : semaine[res.getReservationTime().get(GregorianCalendar.DAY_OF_WEEK)-1]){
+			if(tt.getOpenTime().get(GregorianCalendar.HOUR_OF_DAY)<=reservationHour
+			&& tt.getOpenTime().get(GregorianCalendar.MINUTE)<=reservationMinute
+			&& reservationHour <= tt.getClosingTime().get(GregorianCalendar.HOUR_OF_DAY)
+			&& reservationMinute <= tt.getClosingTime().get(GregorianCalendar.MINUTE)){
+				timeTableOk = true;
+			}
+		}
+		return (timeTableOk && res.getReservationPeople()<=availableSeats);
 	}
 	
 	public boolean checkOrder(Order order){
-		//TODO
 		for(Dish dish : order.getOrderDishes()){
 			if(dish.getQuantity()>dish.getInventory()) return false;
 		}

@@ -75,14 +75,6 @@
                     android:text="@string/action_sign_in_register"
                     android:textStyle="bold" />
 
-                <Button
-                    android:id="@+id/retour_choix_login"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/buttonPaddingLeft"
-                    android:paddingRight="@dimen/buttonPaddingRight"
-                    android:text="@string/return_button" />
-
 
             </LinearLayout>
 

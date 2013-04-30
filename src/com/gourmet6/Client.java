@@ -44,17 +44,19 @@ public class Client {
 		this.phone = phone;
 	}
 	
-	public Reservation createReservation(Timestamp time, int people)
+	public Reservation createReservation(String time, int people)
 	{
-		Reservation greed = new Reservation(time,people,this.name,this.email);
-		return greed;
+		//TODO Récupèrer l'objet Restaurant.
+		//Reservation greed = new Reservation(time,people,this.name,this.email);
+		return new Reservation();
 		
 	}
 	
 	public Reservation createReservationWithOrder(Timestamp time, int people, Order order)
 	{
-		Reservation greed = new Reservation(time,people,this.name,this.email,order);
-		return greed;
+		//TODO Récupèrer l'objet Restaurant.
+		//Reservation greed = new Reservation(time,people,this.name,this.email,order);
+		return new Reservation();
 		
 	}
 	
