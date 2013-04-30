@@ -10,5 +10,6 @@
     <string name="return_button">Retour</string>
     <string name="title_activity_restaurant">RestaurantActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_reservation">ReservationActivity</string>
 
 </resources>
