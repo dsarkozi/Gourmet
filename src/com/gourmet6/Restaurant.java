@@ -49,6 +49,7 @@ public class Restaurant {
 	public Restaurant(String restaurant)
 	{
 		//TODO DB query based on the restaurant's name
+		// problme : pas possible sans contexte -> voir dans RestaurantDBHandler
 		
 	}
 	

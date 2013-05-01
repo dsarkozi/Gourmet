@@ -12,7 +12,6 @@ import android.database.Cursor;
  */
 public class RestaurantDBHandler extends DBHandler {
 	
-	// Constantes
 	public static final String TABLE_NAME = "restaurant";
     public static final String COL_resName = "resName";
     public static final String COL_chainName = "chainName";
@@ -32,15 +31,23 @@ public class RestaurantDBHandler extends DBHandler {
 		super(context);
 	}
 	
-	// pas prévu pour l'instant
+	// pas prévu pour l'instant : 
 	// insertRestaurant
 	// updateRestaurant
 	// removeRestaurant
 	
+	/**
+	 * 
+	 * @param name
+	 * @return the Restaurant corresponding to name
+	 */
+	
 	public Restaurant getRestaurant(String name)
 	{
 		this.openRead();
-		Cursor c = db.query(TABLE_NAME, new String[]{COL_chainName,COL_description,COL_lat,COL_long,COL_street,COL_zip,COL_town,COL_tel,COL_rating,COL_priceCat,COL_avail}, COL_resName+"='"+name+"'", null, null, null, null);
+		// information held by the restaurant table
+		Cursor c = db.query(TABLE_NAME, new String[]{COL_chainName,COL_description,COL_lat,COL_long,COL_street,COL_zip,
+				COL_town,COL_tel,COL_rating,COL_priceCat,COL_avail}, COL_resName+"='"+name+"'", null, null, null, null);
 		if (c.getCount() > 1)
 		{
 			System.err.println("Error : two retaurants seem to have the same name");
@@ -63,11 +70,25 @@ public class RestaurantDBHandler extends DBHandler {
 		Restaurant retour = new Restaurant(name, chain, address, town, tel, description, rating,
 				zip, availableSeats, availableSeats, latitude, longitude, priceCat);
 		// TODO
-		// dishes ?, horaires, cuisine, seats, nrPersonHasVoted
+		// dishes?, horaires, cuisine, seats, nrPersonHasVoted
 		
+		// horaires
+		// information held by the timetable table
+		c = db.rawQuery("SELECT day,timeOpen,timeClose FROM timetable WHERE resName='Crêperie Bretonne' ORDER BY CASE day"+
+				" WHEN 'lundi' THEN 0 WHEN 'mardi' THEN 1 WHEN 'mercredi' THEN 2 WHEN 'jeudi' THEN 3 WHEN 'vendredi' THEN 4 WHEN"+
+				" 'samedi' THEN 5 WHEN 'dimanche' THEN 6 END, timeOpen DESC", null);
+		// TODO
+		// à finir, voir avec Quentin pour le format de l'heure
+		
+		this.close();
 		return retour;
 	}
 	
+	/**
+	 * 
+	 * @param town
+	 * @return a table of the names of all restaurants known by the DB
+	 */
 	public String[] getAllResNames(String town)
 	{
 		this.openRead();
@@ -87,6 +108,7 @@ public class RestaurantDBHandler extends DBHandler {
 			retour[i] = c.getString(1);
 		}
 		
+		this.close();
 		return retour;
 	}
 }
