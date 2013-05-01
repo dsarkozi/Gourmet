@@ -1,6 +1,7 @@
 package com.gourmet6;
 
 import android.annotation.SuppressLint;
+import android.text.style.LeadingMarginSpan;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -261,5 +262,16 @@ public class Restaurant {
 		nbrPrsHasVoted++;
 		rating += vote;
 		rating /=nbrPrsHasVoted;
+	}
+	
+	public String[] getDishesName()
+	{
+		int length = listDishes.size();
+		String [] names = new String[length];
+		for(int i = 0; i<length; i++)
+		{
+			names[i] = listDishes.get(i).getName();
+		}
+		return names;
 	}
 }
