@@ -35,9 +35,9 @@ public class DBHelper extends SQLiteOpenHelper {
 		DB_PATH = ourContext.getDatabasePath(DB_NAME).getAbsolutePath();
 	}
 	
-	
-	
-	// NOUVEL ESSAI
+	/**
+	 * Initializes the DB if it does not exist.
+	 */
 	public void initializeBD()
 	{
 		getWritableDatabase();
@@ -53,6 +53,9 @@ public class DBHelper extends SQLiteOpenHelper {
 		}
 	}
 	
+	/**
+	 * Loads the DB by copying it from the assets folder.
+	 */
 	public void copyDB() throws IOException
 	{
 		close();

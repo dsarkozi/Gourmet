@@ -1,11 +1,9 @@
 package com.gourmet6;
 
 import android.annotation.SuppressLint;
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
@@ -18,12 +16,12 @@ import java.util.TimeZone;
 public class Restaurant {
 	
 	private String name;
-	private String adress;
+	private String chain;
+	private String address;
 	private String town;
 	private String tel;
-	private String Description;
+	private String description;
 	private ArrayList<String> cuisines;
-	private ArrayList<String> chain;
 	private ArrayList<String> photos;
 	private byte rating;
 	private short zip;
@@ -53,20 +51,22 @@ public class Restaurant {
 		
 	}
 	
-	public Restaurant(String name, String adress, String town, String tel, short zip, short seats, 
-			short availableSeats, float latitude, float longitude, ArrayList<Dish> listDishes, 
-			ArrayList<TimeTable>[] semaine){
+	public Restaurant(String name, String chain, String address, String town, String tel, String description,
+			byte rating, short zip, short seats, short availableSeats, float latitude, float longitude, float priceCat)
+	{
 		this.name = name;
-		this.adress = adress;
+		this.chain = chain;
+		this.address = address;
 		this.town = town;
 		this.tel = tel;
+		this.description = description;
+		this.rating = rating;
 		this.zip = zip;
 		this.seats = seats;
 		this.availableSeats = availableSeats;
 		this.latitude = latitude;
 		this.longitude = longitude;
-		this.listDishes = listDishes;
-		this.semaine = semaine;
+		this.priceCat = priceCat;
 	}
 	
 	/**
@@ -114,10 +114,10 @@ public class Restaurant {
 		this.name = name;
 	}
 	public String getAdress() {
-		return adress;
+		return address;
 	}
 	public void setAdress(String adress) {
-		this.adress = adress;
+		this.address = adress;
 	}
 	public String getTown() {
 		return town;
@@ -132,10 +132,10 @@ public class Restaurant {
 		this.tel = tel;
 	}
 	public String getDescription() {
-		return Description;
+		return description;
 	}
 	public void setDescription(String description) {
-		Description = description;
+		description = description;
 	}
 	public ArrayList<String> getCuisines() {
 		return cuisines;
@@ -143,10 +143,10 @@ public class Restaurant {
 	public void setCuisines(ArrayList<String> cuisines) {
 		this.cuisines = cuisines;
 	}
-	public ArrayList<String> getChain() {
+	public String getChain() {
 		return chain;
 	}
-	public void setChain(ArrayList<String> chain) {
+	public void setChain(String chain) {
 		this.chain = chain;
 	}
 	public ArrayList<String> getPhotos() {
