@@ -34,22 +34,23 @@
         android:layout_marginTop="75dp" />
 
     <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="28dp"
+        android:layout_marginLeft="30dp"
+        android:layout_toRightOf="@+id/button2"
+        android:text="@string/menuButton" />
+
+    <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/button1"
         android:layout_alignBottom="@+id/button1"
-        android:layout_toLeftOf="@+id/textView2"
+        android:layout_alignRight="@+id/textView2"
+        android:layout_marginRight="38dp"
         android:text="@string/reservButton" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="75dp"
-        android:layout_marginRight="18dp"
-        android:text="@string/menuButton" />
 
 </RelativeLayout>

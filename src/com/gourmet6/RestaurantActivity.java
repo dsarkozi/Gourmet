@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 
 public class RestaurantActivity extends Activity {
@@ -16,6 +19,28 @@ public class RestaurantActivity extends Activity {
 		setContentView(R.layout.activity_restaurant);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		Button reserver = (Button) findViewById(R.id.button2);
+		reserver.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent reserv = new Intent(RestaurantActivity.this, ReservationActivity.class);
+				startActivity(reserv);
+			}
+		});
+		
+		Button menu = (Button) findViewById(R.id.button1);
+		menu.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent dishes = new Intent(RestaurantActivity.this, DishMenuActivity.class);
+				startActivity(dishes);
+			}
+		});
 	}
 
 	/**
