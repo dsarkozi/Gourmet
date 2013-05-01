@@ -41,6 +41,8 @@ public class RestaurantActivity extends Activity {
 				startActivity(dishes);
 			}
 		});
+		
+		//Ajouter la Gallery  d'images
 	}
 
 	/**
