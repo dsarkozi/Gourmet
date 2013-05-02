@@ -27,6 +27,7 @@ public class MainGourmet extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+<<<<<<< HEAD
 		/** LOCATION MANAGEMENT **/
 		/*
 		 * LocationManager locationManager = (LocationManager)
@@ -53,6 +54,16 @@ public class MainGourmet extends Activity
 		 * //locationManager.removeUpdates(locationListener);
 		 */
 		dbHand = new DBHandler(this);
+=======
+		LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		LocationListener locationListener = new LocationListener()
+		{
+			public void onLocationChanged(Location location)
+			{
+				// Called when a new location is found by the network location provider.
+				MainGourmet.this.location = location;
+		    }
+>>>>>>> Exception handler done
 
 	}
 
