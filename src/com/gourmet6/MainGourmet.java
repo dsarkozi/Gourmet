@@ -28,6 +28,7 @@ public class MainGourmet extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
 		LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		LocationListener locationListener = new LocationListener()
 		{

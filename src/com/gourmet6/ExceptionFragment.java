@@ -2,6 +2,8 @@ package com.gourmet6;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
@@ -12,8 +14,8 @@ import android.support.v4.app.DialogFragment;
 public class ExceptionFragment extends DialogFragment
 {
 
-	private static final String IS_CAUGHT = "isCaught";
-	private static final String STACK_TRACE = "stackTrace";
+	public static final String IS_CAUGHT = "isCaught";
+	public static final String STACK_TRACE = "stackTrace";
 	
 	public ExceptionFragment()
 	{
@@ -40,7 +42,15 @@ public class ExceptionFragment extends DialogFragment
 		if (isCaught) builder.setTitle(R.string.caught_exception);
 		else builder.setTitle(R.string.uncaught_exception);
 		builder.setMessage(stackTrace);
-		builder.setPositiveButton(android.R.string.ok, null);
+		builder.setPositiveButton(android.R.string.ok, new OnClickListener()
+		{
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which)
+			{
+				((ExceptionHandler)getActivity()).kill();
+			}
+		});
 		return builder.create();
 	}
 
