@@ -14,5 +14,6 @@
     <string name="title_activity_order">OrderActivity</string>
     <string name="title_activity_dish_menu">DishMenuActivity</string>
     <string name="title_activity_dish_display">DishDisplayActivity</string>
+    <string name="title_activity_town">TownActivity</string>
 
 </resources>

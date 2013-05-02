@@ -75,6 +75,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gourmet6.DishMenuActivity" />
         </activity>
+        <activity
+            android:name="com.gourmet6.TownActivity"
+            android:label="@string/title_activity_town"
+            android:parentActivityName="com.gourmet6.MainGourmet" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gourmet6.MainGourmet" />
+        </activity>
     </application>
 
 </manifest>

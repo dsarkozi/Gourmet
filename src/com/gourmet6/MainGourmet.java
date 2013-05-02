@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,39 +20,46 @@ public class MainGourmet extends Activity
 	private String currentTown;
 	private String[] restaurants;
 	private Location location = null;
-	
+	public DBHandler dbHand;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-		LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-		LocationListener locationListener = new LocationListener()
-		{
-			public void onLocationChanged(Location location)
-			{
-				// Called when a new location is found by the network location provider.
-				MainGourmet.this.location = location;
-		    }
+		/** LOCATION MANAGEMENT **/
+		/*
+		 * LocationManager locationManager = (LocationManager)
+		 * this.getSystemService(Context.LOCATION_SERVICE); LocationListener
+		 * locationListener = new LocationListener() { public void
+		 * onLocationChanged(Location location) { // Called when a new location
+		 * is found by the network location provider. MainGourmet.this.location
+		 * = location; }
+		 * 
+		 * public void onStatusChanged(String provider, int status, Bundle
+		 * extras) {
+		 * 
+		 * }
+		 * 
+		 * public void onProviderEnabled(String provider) {
+		 * 
+		 * }
+		 * 
+		 * public void onProviderDisabled(String provider) {
+		 * 
+		 * } };
+		 * locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER
+		 * , 0, 0, locationListener);
+		 * //locationManager.removeUpdates(locationListener);
+		 */
+		dbHand = new DBHandler(this);
 
-		    public void onStatusChanged(String provider, int status, Bundle extras)
-		    {
-		    	
-		    }
+	}
 
-		    public void onProviderEnabled(String provider)
-		    {
-		    	
-		    }
-
-		    public void onProviderDisabled(String provider)
-		    {
-		    	
-		    }
-		};
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-		//locationManager.removeUpdates(locationListener);
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
 		setContentView(R.layout.activity_main);
 
 		findViewById(R.id.no_button_connection).setOnClickListener(
@@ -66,14 +71,23 @@ public class MainGourmet extends Activity
 						showTowns();
 					}
 				});
-		
+
 		findViewById(R.id.yes_button_connection).setOnClickListener(
-				new View.OnClickListener() {
+				new View.OnClickListener()
+				{
 					@Override
-					public void onClick(View view) {
-						setContentView(R.layout.activity_login);
+					public void onClick(View view)
+					{
+						login(view);
+						//showTowns();
 					}
 				});
+	}
+
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
 	}
 
 	@Override
@@ -83,44 +97,33 @@ public class MainGourmet extends Activity
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
+
 	public void login(View view)
 	{
 		Intent intent = new Intent(this, LoginActivity.class);
 		startActivity(intent);
 	}
-	
-	public void showTowns() //TODO SimpleAdapter -- junk
+
+	public void showTowns()
 	{
-		setContentView(R.layout.lists);
-		ListView townList = (ListView)findViewById(R.id.list);
-		ArrayAdapter<String> townAdapter = new ArrayAdapter<String>(
-				this,android.R.layout.simple_list_item_1,towns);
-		townList.setAdapter(townAdapter);
-		townList.setOnItemClickListener(new AdapterView.OnItemClickListener()
-		{
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-			{
-				Button currentButton = (Button) parent.getItemAtPosition(position);
-				currentTown = currentButton.getText().toString();
-			}
-		});
+		startActivity(new Intent(this, TownActivity.class));
 	}
-	
-	public void showRestaurants() //TODO SimpleAdapter -- junk
+
+	public void showRestaurants() // TODO SimpleAdapter -- junk
 	{
 		setContentView(R.layout.lists);
-		ListView restoList = (ListView)findViewById(R.id.list);
-		ArrayAdapter<String> restoAdapter = new ArrayAdapter<String>(
-				this,android.R.layout.simple_list_item_1,restaurants);
+		ListView restoList = (ListView) findViewById(R.id.list);
+		ArrayAdapter<String> restoAdapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, restaurants);
 		restoList.setAdapter(restoAdapter);
 		restoList.setOnItemClickListener(new AdapterView.OnItemClickListener()
 		{
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id)
 			{
-				Button buttonClicked = (Button) parent.getItemAtPosition(position);
+				Button buttonClicked = (Button) parent
+						.getItemAtPosition(position);
 				makeRestaurant(buttonClicked.getText().toString());
 			}
 		});
@@ -129,27 +132,5 @@ public class MainGourmet extends Activity
 	public Restaurant makeRestaurant(String restaurant)
 	{
 		return new Restaurant(restaurant);
-	}
-
-	public class ButtonArrayAdapter extends ArrayAdapter<String>
-	{
-
-		public ButtonArrayAdapter(Context context, int textViewResourceId,
-				String[] objects)
-		{
-			super(context, textViewResourceId, objects);
-		}
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent)
-		{
-			if(convertView == null)
-			{
-				LayoutInflater inflater = getLayoutInflater();
-				convertView = inflater.inflate(R.layout.lists, parent, false);
-			}
-			Button button = (Button)convertView.findViewById(R.id.button_list);
-			button.setText(this.getItem(position));
-			return button;
-		}
 	}
 }
