@@ -6,10 +6,6 @@ import java.lang.Thread.UncaughtExceptionHandler;
 
 import android.content.Intent;
 import android.os.Bundle;
-<<<<<<< HEAD
-=======
-import android.os.Process;
->>>>>>> Exception handler done
 import android.support.v4.app.FragmentActivity;
 
 public class ExceptionHandler extends FragmentActivity implements UncaughtExceptionHandler
@@ -19,21 +15,9 @@ public class ExceptionHandler extends FragmentActivity implements UncaughtExcept
 		
 	}
 	
-<<<<<<< HEAD
-	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-	}
-	
-	@Override
-	protected void onStart()
-	{
-=======
-	protected void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
->>>>>>> Exception handler done
 		setContentView(android.R.color.background_dark);
 	}
 
