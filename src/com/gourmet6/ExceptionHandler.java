@@ -15,9 +15,15 @@ public class ExceptionHandler extends FragmentActivity implements UncaughtExcept
 		
 	}
 	
+	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+	}
+	
+	@Override
+	protected void onStart()
+	{
 		setContentView(android.R.color.background_dark);
 	}
 
