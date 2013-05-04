@@ -4,11 +4,17 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 
 public class ReservationActivity extends Activity {
+	
+	private int people = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -17,9 +23,34 @@ public class ReservationActivity extends Activity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
-		//Récupération des variables passées par l'activité parent
-		Bundle extra = getIntent().getExtras(); 
+		//récupération des valeur entrer par le client
+		EditText seats = (EditText) findViewById(R.id.editText1);
+		this.people = Integer.parseInt(seats.getText().toString());
 		
+		
+		
+		//Reaction du bouton de commande
+		Button order = (Button) findViewById(R.id.button1);
+		order.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				//TODO create the reservation object
+				Intent commande = new Intent(ReservationActivity.this, OrderActivity.class);
+				startActivity(commande);			
+			}
+		});	
+		
+		//Reaction du bouton de soumission
+		Button submit = (Button) findViewById(R.id.button2);
+		submit.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO checker la réservation
+				
+			}
+		});
 		
 	}
 
