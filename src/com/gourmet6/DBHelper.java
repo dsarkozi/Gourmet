@@ -10,12 +10,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- * @author Lena
- *
+ * A helper class to manage database creation and version management. 
+ * 
+ * @author Group 6
+ * @version 04.05.2013
  */
 public class DBHelper extends SQLiteOpenHelper {
 
-	private static final String DB_NAME = "gourmet3.sqlite";
+	private static final String DB_NAME = "gourmet4.sqlite";
 	private static String DB_DIR = "/data/data/com.gourmet6/databases/";
 	private static String DB_PATH = DB_DIR + DB_NAME;
 	public static final int DB_VERSION = 1;
@@ -26,6 +28,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	private boolean createDatabase = false;
 
 	/**
+	 * Constructor
 	 * @param context
 	 */
 	public DBHelper(Context context)
