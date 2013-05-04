@@ -3,9 +3,7 @@
  */
 package com.gourmet6;
 
-import java.util.ArrayList;
 import android.content.Context;
-import android.database.Cursor;
 
 /**
  * @author Lena
@@ -30,7 +28,7 @@ public class DishDBHandler extends DBHandler {
 	 * 
 	 * @param resName
 	 * @return the arraylist of all the dishes served in the restaurant resName
-	 */
+	 *//*
 	public ArrayList<Dish> getDishes(String resName)
 	{
 		this.openRead();
@@ -72,5 +70,5 @@ public class DishDBHandler extends DBHandler {
 		}
 		this.close();
 		return dishes;
-	}
+	}*/
 }

@@ -12,7 +12,7 @@ public class TimeTable {
 		this.closingTime = closingTime;
 	}
 	
-	public TimeTable(String opentTime, String closingTime){
+	public TimeTable(String openTime, String closingTime){
 		//TODO
 	}
 	

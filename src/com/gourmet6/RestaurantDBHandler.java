@@ -4,7 +4,6 @@
 package com.gourmet6;
 
 import android.content.Context;
-import android.database.Cursor;
 
 /**
  * @author Lena
@@ -42,7 +41,7 @@ public class RestaurantDBHandler extends DBHandler {
 	 * @return the Restaurant corresponding to name
 	 */
 	
-	public Restaurant getRestaurant(String name)
+/*	public Restaurant getRestaurant(String name)
 	{
 		this.openRead();
 		// information held by the restaurant table
@@ -69,8 +68,7 @@ public class RestaurantDBHandler extends DBHandler {
 		
 		Restaurant retour = new Restaurant(name, chain, address, town, tel, description, rating,
 				zip, availableSeats, availableSeats, latitude, longitude, priceCat);
-		// TODO
-		// dishes?, horaires, cuisine, seats, nrPersonHasVoted
+
 		
 		// horaires
 		// information held by the timetable table
@@ -82,14 +80,14 @@ public class RestaurantDBHandler extends DBHandler {
 		
 		this.close();
 		return retour;
-	}
+	}*/
 	
 	/**
 	 * 
 	 * @param town
 	 * @return a table of the names of all restaurants known by the DB
 	 */
-	public String[] getAllResNames(String town)
+/*	public String[] getAllResNames(String town)
 	{
 		this.openRead();
 		Cursor c;
@@ -110,5 +108,5 @@ public class RestaurantDBHandler extends DBHandler {
 		
 		this.close();
 		return retour;
-	}
+	}*/
 }

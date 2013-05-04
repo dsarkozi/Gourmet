@@ -155,6 +155,7 @@ public class MainGourmet extends Activity
 		});
 	}
 
+	// pas dans Restaurant, mais dans DBHandler
 	public Restaurant makeRestaurant(String restaurant)
 	{
 		return new Restaurant(restaurant);

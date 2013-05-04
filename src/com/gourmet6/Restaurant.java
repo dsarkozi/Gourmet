@@ -16,6 +16,9 @@ import java.util.TimeZone;
 
 public class Restaurant {
 	
+	// TODO
+	// ajouter mail et site web ?
+	
 	private String name;
 	private String chain;
 	private String address;
@@ -49,12 +52,13 @@ public class Restaurant {
 	public Restaurant(String restaurant)
 	{
 		//TODO DB query based on the restaurant's name
-		// probl�me : pas possible sans contexte -> voir dans RestaurantDBHandler
+		// problème : pas possible sans contexte -> voir dans RestaurantDBHandler
 		
 	}
 	
-	public Restaurant(String name, String chain, String address, String town, String tel, String description,
-			byte rating, short zip, short seats, short availableSeats, float latitude, float longitude, float priceCat)
+	public Restaurant(String name, String chain, String address, String town, String tel, 
+			String description, byte rating, int nbrPrsHasVoted, short zip, short seats, 
+			short availableSeats, float latitude, float longitude, float priceCat)
 	{
 		this.name = name;
 		this.chain = chain;
@@ -63,6 +67,7 @@ public class Restaurant {
 		this.tel = tel;
 		this.description = description;
 		this.rating = rating;
+		this.nbrPrsHasVoted = nbrPrsHasVoted;
 		this.zip = zip;
 		this.seats = seats;
 		this.availableSeats = availableSeats;

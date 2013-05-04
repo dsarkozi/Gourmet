@@ -22,7 +22,6 @@ public class DBHelper extends SQLiteOpenHelper {
 	private static String DB_PATH = DB_DIR + DB_NAME;
 	public static final int DB_VERSION = 1;
 	
-	//private SQLiteDatabase ourDB;
 	private final Context ourContext;
 	
 	private boolean createDatabase = false;
