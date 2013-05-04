@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.os.Build;
 
 public class RestaurantActivity extends Activity {
+	
+	private Restaurant current = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +22,22 @@ public class RestaurantActivity extends Activity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
+		//Récupération des variables passées par l'activité parent
+		Bundle extra = getIntent().getExtras();
+		
+		//Reaction du bouton de commande
+		Button order = (Button) findViewById(R.id.button3);
+		order.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent commande = new Intent(RestaurantActivity.this, OrderActivity.class);
+				startActivity(commande);
+			}
+		});
+		
+		//Reaction du bouton de reservation
 		Button reserver = (Button) findViewById(R.id.button2);
 		reserver.setOnClickListener(new View.OnClickListener() {
 			
@@ -31,6 +49,7 @@ public class RestaurantActivity extends Activity {
 			}
 		});
 		
+		//Reaction du bouton menu
 		Button menu = (Button) findViewById(R.id.button1);
 		menu.setOnClickListener(new View.OnClickListener() {
 			
