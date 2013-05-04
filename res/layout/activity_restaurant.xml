@@ -60,4 +60,16 @@
         android:layout_marginTop="82dp"
         android:text="@string/locstring" />
 
+    <RatingBar
+        android:id="@+id/ratingBar1"
+        style="?android:attr/ratingBarStyleIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:rating="0.0" 
+        android:isIndicator = "false"
+        android:layout_above="@+id/button3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:numStars="5" />
+
 </RelativeLayout>

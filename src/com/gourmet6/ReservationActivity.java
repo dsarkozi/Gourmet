@@ -16,6 +16,11 @@ public class ReservationActivity extends Activity {
 		setContentView(R.layout.activity_reservation);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		//Récupération des variables passées par l'activité parent
+		Bundle extra = getIntent().getExtras(); 
+		
+		
 	}
 
 	/**

@@ -10,6 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Gallery;//Il me dit que la gallery n'est peut-etre plus valable...
 import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
@@ -17,9 +19,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
-//Il me dit que la gallery n'est peut-etre plus valable...
+//Il me dit que la gallery n'est plus valable à partir de l'API 16...
 @SuppressWarnings("deprecation") 
-public class RestaurantActivity extends Activity {
+public class RestaurantActivity extends Activity implements RatingBar.OnRatingBarChangeListener {
 	
 	private Restaurant current = null;
 
@@ -35,8 +37,10 @@ public class RestaurantActivity extends Activity {
 		
 		//TextView
 		TextView description = (TextView) findViewById(R.id.textView1);
+		description.setText(current.getDescription());
 		
 		TextView localisation = (TextView) findViewById(R.id.textView2);
+		localisation.setText(current.getAdress());
 		
 		//Reaction du bouton de commande
 		Button order = (Button) findViewById(R.id.button3);
@@ -70,6 +74,12 @@ public class RestaurantActivity extends Activity {
 				startActivity(dishes);
 			}
 		});
+		
+		//Coter le restaurant
+		RatingBar imp = (RatingBar) findViewById(R.id.ratingBar1);
+		imp.setRating(current.getRating());
+		imp.setOnRatingBarChangeListener(this);
+		
 		
 		//Gallery  d'images
 		Gallery envy = (Gallery) findViewById(R.id.gallery1);
@@ -109,12 +119,19 @@ public class RestaurantActivity extends Activity {
 		
 	}
 
-	//liste des images
+	//liste des images TODO
 	private Integer[] ImageIdList = {
-            R.drawable.ic_launcher,
-            R.drawable.ic_launcher,
-            R.drawable.ic_launcher
-    };
+	        R.drawable.ic_launcher,
+	        R.drawable.ic_launcher,
+	        R.drawable.ic_launcher
+	};
+		
+	@Override
+	public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) 
+	{
+		//TODO
+		ratingBar.setIsIndicator(true);
+	}	
 	
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.

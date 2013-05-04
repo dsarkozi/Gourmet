@@ -26,16 +26,6 @@
         android:ems="10"
         android:inputType="number" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/editText1"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="59dp"
-        android:text="@string/reshour" />
-
     <EditText
         android:id="@+id/editText2"
         android:layout_width="wrap_content"
@@ -86,5 +76,13 @@
         android:layout_toRightOf="@+id/button1"
         android:text="@string/ressubmitButton" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="61dp"
+        android:text="@string/reshour" />
 
 </RelativeLayout>
