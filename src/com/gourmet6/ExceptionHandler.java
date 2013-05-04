@@ -2,53 +2,50 @@ package com.gourmet6;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.lang.Thread.UncaughtExceptionHandler;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.os.Process;
 
-public class ExceptionHandler extends FragmentActivity implements UncaughtExceptionHandler
+public class ExceptionHandler
 {
-	public ExceptionHandler()
-	{
-		
-	}
 	
-	protected void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		setContentView(android.R.color.background_dark);
-	}
-
-	@Override
-	public void uncaughtException(Thread thread, Throwable exception)
-	{
-		StringWriter stackTrace = new StringWriter();
-        exception.printStackTrace(new PrintWriter(stackTrace));
-        this.showDialog(false, stackTrace.toString());
-	}
-	
-	public void caughtException(Throwable exception)
+	public static void caughtException(Context context, Throwable exception)
 	{
 		StringWriter stackTrace = new StringWriter();
 		exception.printStackTrace(new PrintWriter(stackTrace));
-		this.showDialog(true, stackTrace.toString());
+		showDialog(context, true, stackTrace.toString());
 	}
 	
-	public void showDialog(boolean isCaught, String stackTrace)
+	public static void showDialog(Context context, boolean isCaught, String stackTrace)
 	{
-		ExceptionFragment fragment = ExceptionFragment.getInstance(isCaught, stackTrace);
-		fragment.show(getSupportFragmentManager(), "exception_dialog");
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		if (isCaught) builder.setTitle(R.string.caught_exception);
+		else builder.setTitle(R.string.uncaught_exception);
+		builder.setMessage(stackTrace);
+		builder.setPositiveButton(android.R.string.ok, new OnClickListener()
+		{
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which)
+			{
+				kill();
+			}
+		});
+		Dialog alert = builder.create();
+		alert.show();
 	}
 	
-	public void kill()
+	public static void kill()
 	{
-		Intent intent = new Intent(Intent.ACTION_MAIN);
+		/*Intent intent = new Intent(Intent.ACTION_MAIN);
 		intent.addCategory(Intent.CATEGORY_HOME);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-		startActivity(intent);
-		/*Process.killProcess(Process.myPid());
-        System.exit(10);*/
+		MainGourmet.this.startActivity(intent);*/
+		Process.killProcess(Process.myPid());
+        System.exit(10);
 	}
 }

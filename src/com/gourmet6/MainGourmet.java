@@ -1,14 +1,16 @@
 package com.gourmet6;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.lang.Thread.UncaughtExceptionHandler;
+
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -16,9 +18,12 @@ import android.widget.ListView;
 
 public class MainGourmet extends Activity
 {
+	@SuppressWarnings("unused")
 	private String[] towns;
+	@SuppressWarnings("unused")
 	private String currentTown;
 	private String[] restaurants;
+	@SuppressWarnings("unused")
 	private Location location = null;
 	public DBHandler dbHand;
 
@@ -26,7 +31,27 @@ public class MainGourmet extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler()
+		{
+			
+			@Override
+			public void uncaughtException(Thread thread, Throwable ex)
+			{
+				final StringWriter stackTrace = new StringWriter();
+				ex.printStackTrace(new PrintWriter(stackTrace));
+				Log.e("MainGourmet", stackTrace.toString(), ex);
+				ExceptionHandler.kill();
+				/*runOnUiThread(new Runnable()
+				{
+					
+					@Override
+					public void run()
+					{
+				        ExceptionHandler.showDialog(MainGourmet.this, false, stackTrace.toString());
+					}
+				});*/
+			}
+		});
 
 		/** LOCATION MANAGEMENT **/
 		/*
