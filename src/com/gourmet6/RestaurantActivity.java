@@ -5,12 +5,20 @@ import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.Gallery;//Il me dit que la gallery n'est peut-etre plus valable...
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+//Il me dit que la gallery n'est peut-etre plus valable...
+@SuppressWarnings("deprecation") 
 public class RestaurantActivity extends Activity {
 	
 	private Restaurant current = null;
@@ -23,7 +31,12 @@ public class RestaurantActivity extends Activity {
 		setupActionBar();
 		
 		//Récupération des variables passées par l'activité parent
-		Bundle extra = getIntent().getExtras();
+		Bundle extra = getIntent().getExtras(); 
+		
+		//TextView
+		TextView description = (TextView) findViewById(R.id.textView1);
+		
+		TextView localisation = (TextView) findViewById(R.id.textView2);
 		
 		//Reaction du bouton de commande
 		Button order = (Button) findViewById(R.id.button3);
@@ -31,7 +44,6 @@ public class RestaurantActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent commande = new Intent(RestaurantActivity.this, OrderActivity.class);
 				startActivity(commande);
 			}
@@ -43,7 +55,6 @@ public class RestaurantActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent reserv = new Intent(RestaurantActivity.this, ReservationActivity.class);
 				startActivity(reserv);
 			}
@@ -55,15 +66,56 @@ public class RestaurantActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent dishes = new Intent(RestaurantActivity.this, DishMenuActivity.class);
 				startActivity(dishes);
 			}
 		});
 		
-		//Ajouter la Gallery  d'images
+		//Gallery  d'images
+		Gallery envy = (Gallery) findViewById(R.id.gallery1);
+		envy.setAdapter(new ImageAdapter(this));
+	}
+	
+	public class ImageAdapter extends BaseAdapter {
+		
+		private Context mContext;
+
+		public ImageAdapter(Context c) {
+            mContext = c;
+        }
+		
+		public int getCount() {
+	        return ImageIdList.length;
+	    }
+	 
+	    public Object getItem(int position) {
+	        return position;
+	    }
+	 
+	    public long getItemId(int position) {
+	        return position;
+	    }
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ImageView i = new ImageView(mContext);
+			
+			i.setImageResource(ImageIdList[position]);
+	        i.setLayoutParams(new Gallery.LayoutParams(150, 100));
+	        i.setScaleType(ImageView.ScaleType.FIT_XY);
+			
+			return i;
+		}
+		
 	}
 
+	//liste des images
+	private Integer[] ImageIdList = {
+            R.drawable.ic_launcher,
+            R.drawable.ic_launcher,
+            R.drawable.ic_launcher
+    };
+	
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
 	 */
