@@ -2,7 +2,9 @@
 <resources>
     
     <string name="menuButton">Menu</string>
-    <string name="reservButton">Reserver</string>
-    <string name="textstring">A remplir</string>
+    <string name="reservButton">Réserver</string>
+    <string name="commandButton">Commander</string>
+    <string name="descstring">Description unknow</string>
+    <string name="locstring">Localisation unknow</string>
     
 </resources>
