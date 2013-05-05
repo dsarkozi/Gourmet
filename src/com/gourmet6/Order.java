@@ -3,24 +3,30 @@ package com.gourmet6;
 import java.util.ArrayList;
 
 /**
- * @author Lena
- *
+ * A class representing an order and its properties.
+ * 
+ * @author Group 6
+ * @version 06.05.2013
  */
 public class Order {
 	
 	private ArrayList<Dish> dishes;
 	private String name;
-	private String mail;
+	private String email;
 	
-	public Order(String name, String mail)
+	/**
+	 * @param name the name with which to address the client
+	 * @param email the email related to the account from which the booking was made
+	 */
+	public Order(String name, String email)
 	{
 		this.dishes = null;
-		this.setOrderName(name);
-		this.setOrderMail(mail);
+		this.name = name;
+		this.email = email;
 	}
 	
 	/**
-	 * @return the dishes
+	 * @return the dishes of the order
 	 */
 	public ArrayList<Dish> getOrderDishes() {
 		return dishes;
@@ -33,7 +39,7 @@ public class Order {
 	}
 
 	/**
-	 * @return the name
+	 * @return the name of the client who made the order
 	 */
 	public String getOrderName() {
 		return name;
@@ -46,21 +52,23 @@ public class Order {
 	}
 
 	/**
-	 * @return the mail
+	 * @return the email of the client who made the order
 	 */
-	public String getOrderMail() {
-		return mail;
+	public String getOrderEmail() {
+		return email;
 	}
 
 	/**
-	 * @param mail the mail to set
+	 * @param email the email to set
 	 */
-	public void setOrderMail(String mail) {
-		this.mail = mail;
+	public void setOrderEmail(String email) {
+		this.email = email;
 	}
 
 	/**
+	 * Adds a given quantity of a dish to the order.
 	 * @param dish the dish to add to the arraylist of dishes
+	 * @param quantity the amount of this dish that has to be added
 	 */
 	public void addDish(Dish dish, int quantity) {
 		dish.setQuantity(quantity);
@@ -68,6 +76,7 @@ public class Order {
 	}
 
 	/**
+	 * Computes the total price of an order.
 	 * @return the total price of the order
 	 */
 	public double getOrderPrice() {
@@ -76,5 +85,4 @@ public class Order {
 			totalPrice += (d.getPrice()*d.getInventory());
 		return totalPrice;
 	}
-
 }

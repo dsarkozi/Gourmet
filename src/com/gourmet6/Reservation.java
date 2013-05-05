@@ -3,8 +3,11 @@ package com.gourmet6;
 import java.util.GregorianCalendar;
 
 /**
- * @author Lena
- *
+ * A class representing a reservation and its properties.
+ * A reservation may hold an order object.
+ * 
+ * @author Group 6
+ * @version 06.05.2013
  */
 public class Reservation {
 	
@@ -12,32 +15,53 @@ public class Reservation {
 	private GregorianCalendar date;
 	private int people;
 	private String name;
-	private String mail;
+	private String email;
 	private Order order;
 	
-	public Reservation(Restaurant restaurant, String date, int people, String name, String mail)
+	/**
+	 * Constructor
+	 * @param restaurant the restaurant to make the booking in
+	 * @param date the date on which to book
+	 * @param people the number of people who need to be seated
+	 * @param name the name with which to address the client
+	 * @param email the email related to the account from which the booking was made
+	 */
+	public Reservation(Restaurant restaurant, String date, int people, String name, String email)
 	{
 		this.restaurant = restaurant;
 		this.date = restaurant.parseDate(date);
 		this.people = people;
 		this.name = name;
-		this.mail = mail;
+		this.email = email;
 	}
-	public Reservation(Restaurant restaurant, String date, int people, String name, String mail, Order order)
+	
+	/**
+	 * Constructor
+	 * @param restaurant the restaurant to make the booking in
+	 * @param date the date on which to book
+	 * @param people the number of people who need to be seated
+	 * @param name the name with which to address the client
+	 * @param email the email related to the account from which the booking was made
+	 * @param order the order bound to this booking
+	 */
+	public Reservation(Restaurant restaurant, String date, int people, String name, String email, Order order)
 	{
 		this.restaurant = restaurant;
 		this.date = restaurant.parseDate(date);
 		this.people = people;
 		this.name = name;
-		this.mail = mail;
+		this.email = email;
 		this.order = order;
 	}
 	
+	/**
+	 * 
+	 */
 	public Reservation() {
 	}
 	
 	/**
-	 * @return the time
+	 * @return the time of the reservation
 	 */
 	public GregorianCalendar getReservationTime() {
 		return date;
@@ -48,12 +72,15 @@ public class Reservation {
 	public void setReservationTime(String date) {
 		this.date = restaurant.parseDate(date);
 	}
+	/**
+	 * @param date the date to set
+	 */
 	public void setReservationTime(GregorianCalendar date){
 		this.date = date;
 	}
 	
 	/**
-	 * @return the people
+	 * @return the people of the reservation
 	 */
 	public int getReservationPeople() {
 		return people;
@@ -66,7 +93,7 @@ public class Reservation {
 	}
 	
 	/**
-	 * @return the name
+	 * @return the name of the client who made the reservation
 	 */
 	public String getReservationName() {
 		return name;
@@ -78,20 +105,20 @@ public class Reservation {
 		this.name = name;
 	}
 	/**
-	 * @return the mail
+	 * @return the email of the client who made the reservation
 	 */
-	public String getReservationMail() {
-		return mail;
+	public String getReservationEmail() {
+		return email;
 	}
 	/**
-	 * @param mail the mail to set
+	 * @param email the email to set
 	 */
-	public void setReservationMail(String mail) {
-		this.mail = mail;
+	public void setReservationEmail(String email) {
+		this.email = email;
 	}
 	
 	/**
-	 * @return the order
+	 * @return the order bound to the reservation
 	 */
 	public Order getOrder() {
 		return order;
@@ -105,7 +132,6 @@ public class Reservation {
 
 	/**
 	 * @param order the order to add to the reservation
-	 * BE CAREFULL NOT TO ADD AN ORDER IF THERE ALREADY IS ONE!!
 	 */
 	void addOrder(Order order) {
 		this.setOrder(order);	

@@ -1,7 +1,6 @@
 package com.gourmet6;
 
 import android.annotation.SuppressLint;
-import android.text.style.LeadingMarginSpan;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,9 +8,10 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 /**
+ * A class representing a restaurant and its properties.
  * 
- * @author Quentin
- *
+ * @author Group 6
+ * @version 06.05.2013
  */
 
 public class Restaurant {
@@ -142,7 +142,7 @@ public class Restaurant {
 		return description;
 	}
 	public void setDescription(String description) {
-		description = description;
+		this.description = description;
 	}
 	public ArrayList<String> getCuisines() {
 		return cuisines;
@@ -264,6 +264,7 @@ public class Restaurant {
 	}
 	
 	public void rateRestaurant(byte vote){
+		//TODO synchronisation avec la DB ??
 		rating *=nbrPrsHasVoted;
 		nbrPrsHasVoted++;
 		rating += vote;

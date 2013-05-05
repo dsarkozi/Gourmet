@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.gourmet6;
 
 import java.util.ArrayList;
@@ -18,7 +15,6 @@ import android.database.sqlite.SQLiteException;
  * 
  * @author Group 6
  * @version 04.05.2013
- *
  */
 public class DBHandler {
 	
@@ -244,10 +240,11 @@ public class DBHandler {
 	
 	/**
 	 * Updates the DB after a new rating.
-	 * @param resName must not be null
-	 * @param rating must be between 1 and 5
+	 * @param resName the name of the restaurant, must not be null
+	 * @param rating the new rating, must be between 1 and 5
 	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occured
 	 */
+	//TODO a revoir avec Quentin
 	long rateRestaurant (String resName, int rating) throws SQLiteException
 	{
 		// throws an exception if the rating is not valid or if resName is null
@@ -272,14 +269,15 @@ public class DBHandler {
 			System.err.println("Error : two or more retaurants seem to have the same name.");
 		}
 		c.moveToFirst();
-		float oldRating = (float) c.getInt(c.getColumnIndex(RATING));
-		float oldVotes = (float) c.getInt(c.getColumnIndex(VOTES));
-		float ratingF = (float) rating;
+		//float oldRating = (float) c.getInt(c.getColumnIndex(RATING));
+		//float oldVotes = (float) c.getInt(c.getColumnIndex(VOTES));
+		//float ratingF = (float) rating;
+		int oldVotes = c.getInt(c.getColumnIndex(VOTES));
 		
 		// new rating
-		int newRating = Math.round(((oldRating*oldVotes)+ratingF)/(oldVotes+1));
+		//int newRating = Math.round(((oldRating*oldVotes)+ratingF)/(oldVotes+1));
 		ContentValues insertValues = new ContentValues(2);
-		insertValues.put(RATING, newRating);
+		insertValues.put(RATING, rating);
 		insertValues.put(VOTES, oldVotes+1);
 		long rowId = db.update(TABLE_RESTAURANT, insertValues, RES+"='"+resName+"'", null);
 		
@@ -290,7 +288,7 @@ public class DBHandler {
 	/**
 	 * Returns an array containing all the distinct town names appearing in the DB table restaurant,
 	 * sorted in alphabetically.
-	 * @param town
+	 * @param town a town in which to search restaurants
 	 * @return a String array containing all the town names; if town is null, returns all the towns.
 	 */
 	public String[] getAllResNames(String town)
