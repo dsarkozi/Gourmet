@@ -21,6 +21,7 @@ public class ReservationActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTitle(R.string.activity_reservation_title);
 		setContentView(R.layout.activity_reservation);
 		// Show the Up button in the action bar.
 		setupActionBar();

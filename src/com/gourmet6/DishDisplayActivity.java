@@ -17,6 +17,7 @@ public class DishDisplayActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTitle(this.plat.getName());
 		setContentView(R.layout.activity_dish_display);
 		// Show the Up button in the action bar.
 		setupActionBar();

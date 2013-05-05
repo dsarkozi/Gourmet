@@ -2,6 +2,7 @@ package com.gourmet6;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 
 public class OrderActivity extends Activity {
@@ -28,6 +30,7 @@ public class OrderActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTitle(R.string.activity_order_title);
 		setContentView(R.layout.activity_order);
 		// Show the Up button in the action bar.
 		setupActionBar();
@@ -52,9 +55,31 @@ public class OrderActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO ask for resevation add
+				// TODO check order
 				if(fromRestaurant){
+					AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
+					builder.setTitle(R.string.activity_reservation_title);
+					builder.setMessage(R.string.do_you_res);
 					
+					builder.setPositiveButton(R.string.yes_button, new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO add a reservation
+							
+						}
+					});
+					builder.setNegativeButton(R.string.no_button, new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO quit
+							
+						}
+					});
+					
+					AlertDialog dialog = builder.create();
+					dialog.show();
 				}
 			}
 		});

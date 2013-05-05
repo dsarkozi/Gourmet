@@ -28,6 +28,7 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTitle(this.current.getName()); //TODO
 		setContentView(R.layout.activity_restaurant);
 		// Show the Up button in the action bar.
 		setupActionBar();

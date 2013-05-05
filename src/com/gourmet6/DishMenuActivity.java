@@ -22,6 +22,7 @@ public class DishMenuActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTitle(R.string.activity_menu_title);
 		setContentView(R.layout.activity_dish_menu);
 		// Show the Up button in the action bar.
 		setupActionBar();
