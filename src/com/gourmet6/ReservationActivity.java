@@ -41,6 +41,7 @@ public class ReservationActivity extends Activity {
 			public void onClick(View v) {
 				//TODO create the reservation object
 				Intent commande = new Intent(ReservationActivity.this, OrderActivity.class);
+				commande.putExtra("from", false);
 				startActivity(commande);			
 			}
 		});	

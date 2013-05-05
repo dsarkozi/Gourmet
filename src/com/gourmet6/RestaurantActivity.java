@@ -49,6 +49,7 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 			@Override
 			public void onClick(View v) {
 				Intent commande = new Intent(RestaurantActivity.this, OrderActivity.class);
+				commande.putExtra("from", true);
 				startActivity(commande);
 			}
 		});
