@@ -28,7 +28,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	/**
 	 * Constructor
-	 * @param context
+	 * @param context of the activity
 	 */
 	public DBHelper(Context context)
 	{

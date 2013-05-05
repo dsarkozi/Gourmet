@@ -143,6 +143,27 @@ public class DBHandler {
 	 */
 	
 	/**
+	 * Returns a list of the distinct towns known by the DB.
+	 * @return a String array containing the names of all the known towns
+	 */
+	public String[] getTowns()
+	{
+		this.openRead();
+		Cursor c;
+		
+		c = db.query(true, TABLE_RESTAURANT, new String[] {TOWN}, null, null, null, null, TOWN, null);
+		int count = c.getCount();
+		String[] towns = new String[count];
+		for (int i=0; i<count; i++)
+		{
+			towns[i] = c.getString(i);
+		}
+		
+		this.close();
+		return towns;
+	}
+	
+	/**
 	 * Returns a restaurant object based on his name in the DB.
 	 * @param name
 	 * @return the Restaurant corresponding to name, without his dishes
@@ -223,14 +244,47 @@ public class DBHandler {
 	
 	/**
 	 * Updates the DB after a new rating.
-	 * @param resName
-	 * @param rating
-	 * @return 
+	 * @param resName must not be null
+	 * @param rating must be between 1 and 5
+	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occured
 	 */
-	long rateRestaurant (String resName, int rating)
+	long rateRestaurant (String resName, int rating) throws SQLiteException
 	{
+		// throws an exception if the rating is not valid or if resName is null
+		if (rating>5 || rating<1)
+		{
+			throw new SQLiteException("Error : wrong rating : "+rating);
+		} 
+		else if (resName == null)
+		{
+			throw new SQLiteException("Error : no restaurant name given for request");
+		}
+		
 		// TODO
-		return 0;
+		// variable qui limite le nombre de fois qu'on peut voter ?
+		this.openWrite();
+		Cursor c;
+		
+		// query on the table restaurant to get the current rating
+		c = db.query(TABLE_RESTAURANT, new String[] {RATING, VOTES}, RES+"='"+resName+"'", null, null, null, null);
+		if (c.getCount() > 1)
+		{
+			System.err.println("Error : two or more retaurants seem to have the same name.");
+		}
+		c.moveToFirst();
+		float oldRating = (float) c.getInt(c.getColumnIndex(RATING));
+		float oldVotes = (float) c.getInt(c.getColumnIndex(VOTES));
+		float ratingF = (float) rating;
+		
+		// new rating
+		int newRating = Math.round(((oldRating*oldVotes)+ratingF)/(oldVotes+1));
+		ContentValues insertValues = new ContentValues(2);
+		insertValues.put(RATING, newRating);
+		insertValues.put(VOTES, oldVotes+1);
+		long rowId = db.update(TABLE_RESTAURANT, insertValues, RES+"='"+resName+"'", null);
+		
+		this.close();
+		return rowId;
 	}
 	
 	/**
@@ -375,7 +429,7 @@ public class DBHandler {
 		
 		this.openWrite();
 
-		ContentValues insertValues = new ContentValues();
+		ContentValues insertValues = new ContentValues(4);
 		insertValues.put(MAIL, mail);
 		insertValues.put(CLIENT, name);
 		insertValues.put(PASSWORD, password);
