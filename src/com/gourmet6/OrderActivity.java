@@ -4,11 +4,20 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.os.Build;
 
 public class OrderActivity extends Activity {
+	
+	private Restaurant current = null;
+	private String[] dishesname = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +25,31 @@ public class OrderActivity extends Activity {
 		setContentView(R.layout.activity_order);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		Bundle extra = getIntent().getExtras();
+		
+		ListView list = (ListView) findViewById(R.id.listView1);
+		this.dishesname = this.current.getDishesName();
+		list.setAdapter(new ArrayAdapter<String>(this,R.layout.dish_list_element,dishesname));
+		
+		list.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				//TODO make the list of the selected dishes				
+			}
+		});
+		
+		Button submit = (Button) findViewById(R.id.button1);
+		submit.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO ask for resevation add
+				
+			}
+		});
+		
 	}
 
 	/**
