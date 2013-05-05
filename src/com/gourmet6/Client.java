@@ -46,7 +46,7 @@ public class Client {
 	
 	public Reservation createReservation(String time, int people)
 	{
-		//TODO Récupèrer l'objet Restaurant.
+		//TODO RŽcupŽrer l'objet Restaurant.
 		//Reservation greed = new Reservation(time,people,this.name,this.email);
 		return new Reservation();
 		
@@ -54,7 +54,7 @@ public class Client {
 	
 	public Reservation createReservationWithOrder(Timestamp time, int people, Order order)
 	{
-		//TODO Récupèrer l'objet Restaurant.
+		//TODO RŽcupŽrer l'objet Restaurant.
 		//Reservation greed = new Reservation(time,people,this.name,this.email,order);
 		return new Reservation();
 		

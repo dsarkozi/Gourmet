@@ -6,9 +6,11 @@ package com.gourmet6;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 
 /**
  * A class which handles the database, i.e. gives methods to 
@@ -155,7 +157,7 @@ public class DBHandler {
 				TOWN,TEL,RATING,VOTES,PRICE_CAT,SEATS,AVAIL}, RES+"='"+name+"'", null, null, null, null);
 		if (c.getCount() > 1)
 		{
-			System.err.println("Error : two retaurants seem to have the same name.");
+			System.err.println("Error : two or more retaurants seem to have the same name.");
 		}
 		c.moveToFirst();
 		String chain = c.getString(c.getColumnIndex(CHAIN));
@@ -217,6 +219,18 @@ public class DBHandler {
 
 		this.close();
 		return retour;
+	}
+	
+	/**
+	 * Updates the DB after a new rating.
+	 * @param resName
+	 * @param rating
+	 * @return 
+	 */
+	long rateRestaurant (String resName, int rating)
+	{
+		// TODO
+		return 0;
 	}
 	
 	/**
@@ -305,24 +319,113 @@ public class DBHandler {
 		return dishes;
 	}
 	
-	String getStringOrNull(Cursor c)
+	
+	/*
+	 * Queries on the client
+	 */
+	
+	/**
+	 * Checks whether the client has entered the right password.
+	 * @param clientMail
+	 * @param password
+	 * @return true or false, depending on whether the password is the same as the one found in the DB
+	 */
+	boolean correctPassword (String clientMail, String password)
 	{
-		//TODO
-		return null;
+		this.openRead();
+		Cursor c;
+		
+		c = db.query(TABLE_CLIENT, new String[] {password}, MAIL+"='"+clientMail+"'", null, null, null, null);
+		int count = c.getCount();
+		if (count == 1)
+		{
+			return (password.equals(c.getString(1)));
+			
+		}
+		else if (count > 1)
+		{
+			System.err.println("Error : two or more clients seem to have the same mail.");
+		} 
+		else if (count == 0)
+		{
+			// no such client in the DB
+		} 
+		else 
+		{
+			System.err.println("Error : the access to the DB must have failed.");
+		}
+		return false;
 	}
-	int getIntOrNull(Cursor c)
+
+	/**
+	 * Adds a client to the DB.
+	 * @param mail, must not be null
+	 * @param name, must not be null
+	 * @param password, must not be null
+	 * @param tel
+	 * @return if -1, then error; otherwise the new rowId
+	 */
+	long addClient (String mail, String name, String password, String tel) throws SQLiteException
 	{
-		//TODO
-		return 0;
+		// throws an exception if the mandatory information is not given
+		if ((mail==null) || (name==null) || (password==null))
+		{
+			throw new SQLiteException("Arguments missing!");
+		}
+		
+		this.openWrite();
+
+		ContentValues insertValues = new ContentValues();
+		insertValues.put(MAIL, mail);
+		insertValues.put(CLIENT, name);
+		insertValues.put(PASSWORD, password);
+		insertValues.put(TEL, tel);
+		long rowId = db.insertOrThrow(TABLE_CLIENT, TEL, insertValues);
+		
+		return rowId;
 	}
-	short getShortOrNull(Cursor c)
+	
+	/* NULL value safe DB access methods */
+	// UTILITE ?
+	// tests sur le Quick!
+	String getStringOrNull(Cursor c, int i)
 	{
-		//TODO
-		return 0;
+		if(c.isNull(i))
+		{ 
+			return null;
+		} else
+		{
+			return c.getString(i);
+		}
 	}
-	short getFloatOrNull(Cursor c)
+	int getIntOrNull(Cursor c, int i)
 	{
-		//TODO
-		return 0;
+		if (c.isNull(i))
+		{
+			return 0;
+		} else
+		{
+			return c.getInt(i);
+		}
+	}
+	short getShortOrNull(Cursor c, int i)
+	{
+		if (c.isNull(i))
+		{
+			return 0;
+		} else
+		{
+			return c.getShort(i);
+		}
+	}
+	float getFloatOrNull(Cursor c, int i)
+	{
+		if (c.isNull(i))
+		{
+			return 0;
+		} else
+		{
+			return c.getFloat(i);
+		}
 	}
 }
