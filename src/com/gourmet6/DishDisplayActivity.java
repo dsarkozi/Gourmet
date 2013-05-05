@@ -5,12 +5,15 @@ import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.os.Build;
 
 public class DishDisplayActivity extends Activity {
 
+	private Dish plat = null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -22,6 +25,10 @@ public class DishDisplayActivity extends Activity {
 		
 		ImageView img = (ImageView) findViewById(R.id.imageView1);
 		
+		TextView desc = (TextView) findViewById(R.id.textView2);
+		desc.setText(this.plat.getDescription());
+		
+		TextView content = (TextView) findViewById(R.id.textView1);
 		
 	}
 
