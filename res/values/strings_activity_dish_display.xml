@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
+    <string name="dishdescstring">Description unknow</string>
+    <string name="dishcontentstring">Unknow</string>
+    
 </resources>

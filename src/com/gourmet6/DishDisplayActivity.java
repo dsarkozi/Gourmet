@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.os.Build;
@@ -16,6 +17,12 @@ public class DishDisplayActivity extends Activity {
 		setContentView(R.layout.activity_dish_display);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		Bundle extra = getIntent().getExtras(); 
+		
+		ImageView img = (ImageView) findViewById(R.id.imageView1);
+		
+		
 	}
 
 	/**
