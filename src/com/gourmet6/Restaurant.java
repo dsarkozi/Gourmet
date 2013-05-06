@@ -226,7 +226,7 @@ public class Restaurant {
 	 * 
 	 * @param res
 	 * @return cette methode renvoit true si la reservation est correcte, c-a-d:
-	 * -Qu'elle specifie des plats qui sont encore disponibles, si une commande est joind à la reservation
+	 * -Qu'elle specifie des plats qui sont encore disponibles, si une commande est jointe à la reservation
 	 * -Qu'elle reserve lorsque le restaurant est ouvert.
 	 * -Qu'elle spécifie une nombre de personne <= au nombre de place encore disponible dans le restaurant.
 	 * Renvoit false sinon.
