@@ -263,11 +263,13 @@ public class Restaurant {
 	}
 	
 	public void rateRestaurant(byte vote){
-		//TODO synchronisation avec la DB ??
+		
 		rating *=nbrPrsHasVoted;
 		nbrPrsHasVoted++;
 		rating += vote;
 		rating /=nbrPrsHasVoted;
+		
+		//TODO synchronisation avec la DB ??
 	}
 	
 	public String[] getDishesName()
