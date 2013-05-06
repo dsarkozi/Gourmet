@@ -18,8 +18,8 @@ import android.database.sqlite.SQLiteException;
  */
 public class DBHandler {
 	
-	private SQLiteDatabase db;
-	private DBHelper dbHelper;
+	protected SQLiteDatabase db;
+	protected DBHelper dbHelper;
 	
 	private boolean read = false;
 	private boolean write = false;
@@ -58,10 +58,11 @@ public class DBHandler {
     public static final String QUANTITY = "quantity";
     public static final String RATING = "rating";
     public static final String RES = "resName";
-    public static final String RESER_NR = "reservNr";
+    public static final String RESERV_NR = "reservNr";
     public static final String INVENTORY = "inventory";
     public static final String SEATS = "seats";
     public static final String STREET = "street";
+    public static final String SUBTYPE = "subtype";
     public static final String TEL = "tel";
     public static final String TIME_OPEN = "timeOpen";
     public static final String TIME_CLOSE = "timeClose";
@@ -255,7 +256,7 @@ public class DBHandler {
 		 */
 		c = db.query(TABLE_TIMETABLE, new String[] {DAY,"strftime('%H:%M', timeOpen)","strftime('%H:%M', timeClose)"},
 			RES+"='"+name+"'", null, null, null, "CASE "+DAY+" WHEN 'lundi' THEN 0 WHEN 'mardi' THEN 1 WHEN 'mercredi'"+
-			" THEN 2 WHEN 'jeudi' THEN 3 WHEN 'vendredi' THEN 4 WHEN 'samedi' THEN 5 WHEN 'dimanche' THEN 6 END, timeOpen DESC");
+			" THEN 2 WHEN 'jeudi' THEN 3 WHEN 'vendredi' THEN 4 WHEN 'samedi' THEN 5 WHEN 'dimanche' THEN 6 END, timeOpen");
 		c.moveToFirst();
 		int position;
 		while(!c.isAfterLast())
@@ -352,9 +353,9 @@ public class DBHandler {
 		Cursor c;
 		Cursor d;
 		
-		c = db.query(TABLE_DISH, new String[] {DISH, RES, TYPE, DESCRIPTION, INVENTORY, PRICE},
-				RES+"='"+resName+"'", null, null, null, " CASE "+TYPE+" WHEN 'entrée' THEN 1 WHEN 'plat' THEN 2"+
-				" WHEN 'dessert' THEN 3 WHEN 'boisson' THEN 4 END, "+DISH+" DESC");
+		c = db.query(TABLE_DISH, new String[] {DISH, RES, TYPE, SUBTYPE, DESCRIPTION, INVENTORY, PRICE},
+				RES+"='"+resName+"'", null, null, null, " CASE "+TYPE+" WHEN 'Entrées' THEN 1 WHEN 'Plats' THEN 2"+
+				" WHEN 'Desserts' THEN 3 WHEN 'Boissons' THEN 4 END, "+SUBTYPE);
 		c.moveToFirst();
 		
 		ArrayList<Dish> dishes = new ArrayList<Dish>(c.getCount());
@@ -362,6 +363,7 @@ public class DBHandler {
 		{
 			String dishName = c.getString(c.getColumnIndex(DISH));
 			String type = c.getString(c.getColumnIndex(TYPE));
+			String subtype = c.getString(c.getColumnIndex(SUBTYPE));
 			String description = c.getString(c.getColumnIndex(DESCRIPTION));
 			int inventory = c.getInt(c.getColumnIndex(INVENTORY));
 			float price = c.getFloat(c.getColumnIndex(PRICE));
@@ -383,7 +385,7 @@ public class DBHandler {
 			}
 			
 			// new dish object
-			Dish dish = new Dish(dishName, type, price, inventory, description, allergens);
+			Dish dish = new Dish(dishName, type, subtype, price, inventory, description, allergens);
 			dishes.add(dish);
 			c.moveToNext();
 		}
