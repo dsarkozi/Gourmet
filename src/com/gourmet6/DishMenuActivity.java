@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
@@ -23,14 +24,15 @@ public class DishMenuActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setTitle(R.string.activity_menu_title);
 		setContentView(R.layout.activity_dish_menu);
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
+		setTitle(R.string.activity_menu_title);
+		
 		current = g.getRest();
 		
-		ListView dishes = (ListView) findViewById(R.id.listView1);
+		ExpandableListView dishes = (ExpandableListView) findViewById(R.id.expandableListView1);
 		this.dishesname = current.getDishesName();
 		
 	}
