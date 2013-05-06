@@ -31,6 +31,8 @@ public class TownActivity extends ListActivity
 	protected void onStart()
 	{
 		super.onStart();
+		//TODO
+		// utiliser la méthode de DBHandler
 		Cursor query = dbHand.db.query(true, "restaurant", new String[]
 		{ "1 _id","town" }, null, null, null, null, null, null);
 		ListAdapter adapter = new SimpleCursorAdapter(this,
