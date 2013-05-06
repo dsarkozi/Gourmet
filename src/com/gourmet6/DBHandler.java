@@ -71,8 +71,6 @@ public class DBHandler {
     public static final String VOTES = "votes";
     public static final String ZIP = "zip";
     
-	 // variable globale ?
-	 //Integer get(String)
     // helps managing the timetables given a certain day
     static public HashMap<String,Integer> weekMap = new HashMap<String,Integer>();
     static {
