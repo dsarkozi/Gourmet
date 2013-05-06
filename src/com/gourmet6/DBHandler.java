@@ -240,6 +240,7 @@ public class DBHandler {
 		
 		
 		// timetable
+		@SuppressWarnings("unchecked")
 		ArrayList<TimeTable> semaine[] = new ArrayList[7];
 		for (int i=0; i<7; i++)
 		{
