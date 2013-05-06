@@ -163,6 +163,35 @@ public class DBHandler {
 	}
 	
 	/**
+	 * Returns an array containing all the distinct town names appearing in the DB table restaurant,
+	 * sorted in alphabetically.
+	 * @param town a town in which to search restaurants
+	 * @return a String array containing all the town names; if town is null, returns all the towns.
+	 */
+	public String[] getAllResNames(String town)
+	{
+		this.openRead();
+		Cursor c;
+		
+		if (town != null)
+		{
+			c = db.query(TABLE_RESTAURANT, new String[] {RES}, TOWN+"='"+town+"'", null, null, null, RES);
+		} else {
+			c = db.query(TABLE_RESTAURANT, new String[] {RES}, null, null, null, null, RES);
+		}
+		int length = c.getCount();
+		String[] retour = new String[length];
+		for (int i=0; i<length; i++)
+		{
+			c.moveToPosition(i);
+			retour[i] = c.getString(1);
+		}
+		
+		this.close();
+		return retour;
+	}
+	
+	/**
 	 * Returns a restaurant object based on his name in the DB.
 	 * @param name
 	 * @return the Restaurant corresponding to name, without his dishes
@@ -188,7 +217,7 @@ public class DBHandler {
 		short zip = c.getShort(c.getColumnIndex(ZIP));
 		String town = c.getString(c.getColumnIndex(TOWN));
 		String tel = c.getString(c.getColumnIndex(TEL));
-		byte rating = (byte) c.getInt(c.getColumnIndex(RATING));
+		float rating = c.getFloat(c.getColumnIndex(RATING));
 		int votes = c.getInt(c.getColumnIndex(VOTES));
 		float priceCat = c.getFloat(c.getColumnIndex(PRICE_CAT));
 		short seats = c.getShort(c.getColumnIndex(SEATS));
@@ -244,15 +273,14 @@ public class DBHandler {
 	/**
 	 * Updates the DB after a new rating.
 	 * @param resName the name of the restaurant, must not be null
-	 * @param rating the new rating, must be between 1 and 5
+	 * @param rating the new rating, must be between 0 and 5
 	 * @param votes the new number of votes, must be > 0
 	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occurred
 	 */
-	//TODO a revoir avec Quentin
-	long rateRestaurant (String resName, int rating, int votes) throws SQLiteException
+	long rateRestaurant (String resName, float rating, int votes) throws SQLiteException
 	{
-		// throws an exception if the rating is not valid or if resName is null
-		if (rating>5 || rating<1)
+		// throws an exception if rating is not valid or if resName is null
+		if (rating>5 || rating<0)
 		{
 			throw new SQLiteException("Error : wrong rating : "+rating);
 		} 
@@ -265,25 +293,8 @@ public class DBHandler {
 			throw new SQLiteException("Error : no restaurant name given for request");
 		}
 		
-		// TODO
-		// variable qui limite le nombre de fois qu'on peut voter ?
 		this.openWrite();
-		//Cursor c;
-		
-		// query on the table restaurant to get the current rating
-		//c = db.query(TABLE_RESTAURANT, new String[] {RATING, VOTES}, RES+"='"+resName+"'", null, null, null, null);
-		//if (c.getCount() > 1)
-		//{
-		//	System.err.println("Error : two or more retaurants seem to have the same name.");
-		//}
-		//c.moveToFirst();
-		//float oldRating = (float) c.getInt(c.getColumnIndex(RATING));
-		//float oldVotes = (float) c.getInt(c.getColumnIndex(VOTES));
-		//float ratingF = (float) rating;
-		//int oldVotes = c.getInt(c.getColumnIndex(VOTES));
-		
-		// new rating
-		//int newRating = Math.round(((oldRating*oldVotes)+ratingF)/(oldVotes+1));
+
 		ContentValues insertValues = new ContentValues(2);
 		insertValues.put(RATING, rating);
 		insertValues.put(VOTES, votes+1);
@@ -294,33 +305,32 @@ public class DBHandler {
 	}
 	
 	/**
-	 * Returns an array containing all the distinct town names appearing in the DB table restaurant,
-	 * sorted in alphabetically.
-	 * @param town a town in which to search restaurants
-	 * @return a String array containing all the town names; if town is null, returns all the towns.
+	 * @param resName the name of the restaurant, must not be null
+	 * @param newAvail the new number of available seats, must be >= 0
+	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occurred
 	 */
-	public String[] getAllResNames(String town)
+	long updateAvail (String resName, short newAvail)
 	{
-		this.openRead();
-		Cursor c;
+		// throws an exception if newAvail is not valid or if resName is null
+		if (newAvail<0)
+		{
+			throw new SQLiteException("Error : wrong rating : "+newAvail);
+		} 
+		else if (resName == null)
+		{
+			throw new SQLiteException("Error : no restaurant name given for request");
+		}
 		
-		if (town != null)
-		{
-			c = db.query(TABLE_RESTAURANT, new String[] {RES}, TOWN+"='"+town+"'", null, null, null, RES);
-		} else {
-			c = db.query(TABLE_RESTAURANT, new String[] {RES}, null, null, null, null, RES);
-		}
-		int length = c.getCount();
-		String[] retour = new String[length];
-		for (int i=0; i<length; i++)
-		{
-			c.moveToPosition(i);
-			retour[i] = c.getString(1);
-		}
+		this.openWrite();
+		
+		ContentValues insertValues = new ContentValues(1);
+		insertValues.put(AVAIL, newAvail);
+		long nrRows = db.update(TABLE_RESTAURANT, insertValues, RES+"='"+resName+"'", null);
 		
 		this.close();
-		return retour;
+		return nrRows;
 	}
+
 	
 	
 	/*******
@@ -448,6 +458,7 @@ public class DBHandler {
 		insertValues.put(TEL, tel);
 		long rowId = db.insertOrThrow(TABLE_CLIENT, TEL, insertValues);
 		
+		this.close();
 		return rowId;
 	}
 	
