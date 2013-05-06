@@ -1,7 +1,6 @@
 package com.gourmet6;
 
 import android.annotation.SuppressLint;
-import android.text.style.LeadingMarginSpan;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -142,7 +141,7 @@ public class Restaurant {
 		return description;
 	}
 	public void setDescription(String description) {
-		description = description;
+		this.description = description;
 	}
 	public ArrayList<String> getCuisines() {
 		return cuisines;
