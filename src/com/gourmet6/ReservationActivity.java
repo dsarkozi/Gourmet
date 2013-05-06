@@ -15,19 +15,24 @@ import android.os.Build;
 public class ReservationActivity extends Activity {
 	
 	private int people = 0;
+	private int hour = 0;
+	private int date = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTitle(R.string.activity_reservation_title);
 		setContentView(R.layout.activity_reservation);
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
-		//récupération des valeur entrer par le client
+		//récupération des valeurs entrées par le client
 		EditText seats = (EditText) findViewById(R.id.editText1);
 		this.people = Integer.parseInt(seats.getText().toString());
 		
+		EditText time = (EditText) findViewById(R.id.editText2);
 		
+		EditText date = (EditText) findViewById(R.id.editText3);
 		
 		//Reaction du bouton de commande
 		Button order = (Button) findViewById(R.id.button1);
@@ -37,6 +42,7 @@ public class ReservationActivity extends Activity {
 			public void onClick(View v) {
 				//TODO create the reservation object
 				Intent commande = new Intent(ReservationActivity.this, OrderActivity.class);
+				commande.putExtra("from", false);
 				startActivity(commande);			
 			}
 		});	

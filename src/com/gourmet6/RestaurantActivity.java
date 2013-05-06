@@ -28,6 +28,7 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTitle(this.current.getName()); //TODO
 		setContentView(R.layout.activity_restaurant);
 		// Show the Up button in the action bar.
 		setupActionBar();
@@ -49,6 +50,7 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 			@Override
 			public void onClick(View v) {
 				Intent commande = new Intent(RestaurantActivity.this, OrderActivity.class);
+				commande.putExtra("from", true);
 				startActivity(commande);
 			}
 		});

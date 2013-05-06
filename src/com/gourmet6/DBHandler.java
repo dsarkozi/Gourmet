@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.gourmet6;
 
 import java.util.ArrayList;
@@ -18,7 +15,6 @@ import android.database.sqlite.SQLiteException;
  * 
  * @author Group 6
  * @version 04.05.2013
- *
  */
 public class DBHandler {
 	
@@ -89,10 +85,11 @@ public class DBHandler {
     }
 
     
-    /*
+    /*************************
+     * 
      * General access methods.
      * 
-     */
+     *************************/
     /**
      * Constructor
      * @param context of the activity it is called in
@@ -138,9 +135,32 @@ public class DBHandler {
 	}
 	
 	
-	/*
-	 * Queries on the restaurant
+	/************
+	 * 
+	 * Restaurant
+	 * 
+	 ************/
+	
+	/**
+	 * Returns a list of the distinct towns known by the DB.
+	 * @return a String array containing the names of all the known towns
 	 */
+	public String[] getTowns()
+	{
+		this.openRead();
+		Cursor c;
+		
+		c = db.query(true, TABLE_RESTAURANT, new String[] {TOWN}, null, null, null, null, TOWN, null);
+		int count = c.getCount();
+		String[] towns = new String[count];
+		for (int i=0; i<count; i++)
+		{
+			towns[i] = c.getString(i);
+		}
+		
+		this.close();
+		return towns;
+	}
 	
 	/**
 	 * Returns a restaurant object based on his name in the DB.
@@ -223,20 +243,60 @@ public class DBHandler {
 	
 	/**
 	 * Updates the DB after a new rating.
-	 * @param resName
-	 * @param rating
-	 * @return 
+	 * @param resName the name of the restaurant, must not be null
+	 * @param rating the new rating, must be between 1 and 5
+	 * @param votes the new number of votes, must be > 0
+	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occurred
 	 */
-	long rateRestaurant (String resName, int rating)
+	//TODO a revoir avec Quentin
+	long rateRestaurant (String resName, int rating, int votes) throws SQLiteException
 	{
+		// throws an exception if the rating is not valid or if resName is null
+		if (rating>5 || rating<1)
+		{
+			throw new SQLiteException("Error : wrong rating : "+rating);
+		} 
+		else if (votes<=0)
+		{
+			throw new SQLiteException("Error : wrong number of votes : "+votes);
+		}
+		else if (resName == null)
+		{
+			throw new SQLiteException("Error : no restaurant name given for request");
+		}
+		
 		// TODO
-		return 0;
+		// variable qui limite le nombre de fois qu'on peut voter ?
+		this.openWrite();
+		//Cursor c;
+		
+		// query on the table restaurant to get the current rating
+		//c = db.query(TABLE_RESTAURANT, new String[] {RATING, VOTES}, RES+"='"+resName+"'", null, null, null, null);
+		//if (c.getCount() > 1)
+		//{
+		//	System.err.println("Error : two or more retaurants seem to have the same name.");
+		//}
+		//c.moveToFirst();
+		//float oldRating = (float) c.getInt(c.getColumnIndex(RATING));
+		//float oldVotes = (float) c.getInt(c.getColumnIndex(VOTES));
+		//float ratingF = (float) rating;
+		//int oldVotes = c.getInt(c.getColumnIndex(VOTES));
+		
+		// new rating
+		//int newRating = Math.round(((oldRating*oldVotes)+ratingF)/(oldVotes+1));
+		ContentValues insertValues = new ContentValues(2);
+		insertValues.put(RATING, rating);
+		insertValues.put(VOTES, votes+1);
+		long nrRows = db.update(TABLE_RESTAURANT, insertValues, RES+"='"+resName+"'", null);
+		
+		this.close();
+		return nrRows;
 	}
 	
 	/**
 	 * Returns an array containing all the distinct town names appearing in the DB table restaurant,
 	 * sorted in alphabetically.
-	 * @param town
+	 * @param town a town in which to search restaurants
 	 * @return a String array containing all the town names; if town is null, returns all the towns.
 	 */
 	public String[] getAllResNames(String town)
@@ -263,14 +323,16 @@ public class DBHandler {
 	}
 	
 	
-	/*
-	 * Queries on the dishes
-	 */
+	/*******
+	 * 
+	 * Dish
+	 * 
+	 *******/
 	
 	/**
 	 * Returns an arraylist of the dishes served in a restaurant, sorted by type (starter, main course, dessert, drinks)
 	 * and the alphabetically.
-	 * @param resName
+	 * @param resName the name of the restaurant
 	 * @return the arraylist of all the dishes served in the restaurant resName
 	 */
 	public ArrayList<Dish> getDishes(String resName)
@@ -320,9 +382,11 @@ public class DBHandler {
 	}
 	
 	
-	/*
-	 * Queries on the client
-	 */
+	/*********
+	 * 
+	 * Client
+	 * 
+	 *********/
 	
 	/**
 	 * Checks whether the client has entered the right password.
@@ -330,7 +394,7 @@ public class DBHandler {
 	 * @param password
 	 * @return true or false, depending on whether the password is the same as the one found in the DB
 	 */
-	boolean correctPassword (String clientMail, String password)
+	boolean checkPassword (String clientMail, String password)
 	{
 		this.openRead();
 		Cursor c;
@@ -339,6 +403,7 @@ public class DBHandler {
 		int count = c.getCount();
 		if (count == 1)
 		{
+			this.close();
 			return (password.equals(c.getString(1)));
 			
 		}
@@ -354,6 +419,7 @@ public class DBHandler {
 		{
 			System.err.println("Error : the access to the DB must have failed.");
 		}
+		this.close();
 		return false;
 	}
 
@@ -375,7 +441,7 @@ public class DBHandler {
 		
 		this.openWrite();
 
-		ContentValues insertValues = new ContentValues();
+		ContentValues insertValues = new ContentValues(4);
 		insertValues.put(MAIL, mail);
 		insertValues.put(CLIENT, name);
 		insertValues.put(PASSWORD, password);
@@ -384,6 +450,115 @@ public class DBHandler {
 		
 		return rowId;
 	}
+	
+	/**
+	 * Changes the mail of a client in the DB.
+	 * @param oldMail the client's old mail (used to identify him), must not be null
+	 * @param newMail the client's new mail, must not be null
+	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occurred
+	 * @throws SQLiteException
+	 */
+	long changeMail (String oldMail, String newMail) throws SQLiteException
+	{
+		// throws an exception if the mandatory information is not given
+		if ((oldMail==null) || (newMail==null))
+		{
+			throw new SQLiteException("Arguments missing!");
+		}
+		
+		this.openWrite();
+		
+		ContentValues insertValues = new ContentValues(1);
+		insertValues.put(MAIL, newMail);
+		long nrRows = db.update(TABLE_CLIENT, insertValues, MAIL+"='"+oldMail+"'", null);
+		
+		this.close();
+		return nrRows;
+	}
+	
+	/**
+	 * Changes the name of a client in the DB.
+	 * @param mail the mail which identifies the client, must not be null
+	 * @param newName the new name the client wants to have in the DB, must not be null
+	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occurred
+	 * @throws SQLiteException
+	 */
+	long changeName (String mail, String newName) throws SQLiteException
+	{
+		// throws an exception if the mandatory information is not given
+		if ((mail==null) || (newName==null))
+		{
+			throw new SQLiteException("Arguments missing!");
+		}
+
+		this.openWrite();
+		
+		ContentValues insertValues = new ContentValues(1);
+		insertValues.put(CLIENT, newName);
+		long nrRows = db.update(TABLE_CLIENT, insertValues, MAIL+"='"+mail+"'", null);
+
+		this.close();
+		return nrRows;
+	}
+	
+	long changePassword (String mail, String newPassword) throws SQLiteException
+	{
+		// throws an exception if the mandatory information is not given
+		if ((mail==null) || (newPassword==null))
+		{
+			throw new SQLiteException("Arguments missing!");
+		}
+		
+		this.openWrite();
+		
+		ContentValues insertValues = new ContentValues(1);
+		insertValues.put(PASSWORD, newPassword);
+		long nrRows = db.update(TABLE_CLIENT, insertValues, MAIL+"='"+mail+"'", null);
+		
+		this.close();
+		return nrRows;
+	}
+	
+	/**
+	 * Changes the mail of a client in the DB.
+	 * @param mail the client's mail which identifies him, must not be null
+	 * @param newTel the phone number the client wants to have in the DB, may be null
+	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occurred
+	 * @throws SQLiteException
+	 */
+	long changeTel (String mail, String newTel) throws SQLiteException
+	{
+		// throws an exception if the mandatory information is not given
+		if (mail==null)
+		{
+			throw new SQLiteException("Arguments missing!");
+		}
+		
+		this.openWrite();
+		
+		ContentValues insertValues = new ContentValues(1);
+		insertValues.put(TEL, newTel);
+		long nrRows = db.update(TABLE_CLIENT, insertValues, MAIL+"='"+mail+"'", null);
+		
+		this.close();
+		return nrRows;
+	}
+	
+	
+	
+	/*********
+	 * 
+	 * Orders
+	 *
+	 *********/
+	
+	
+	
+	/**************
+	 * 
+	 * Reservations
+	 *
+	 **************/
 	
 	/* NULL value safe DB access methods */
 	// UTILITE ?
@@ -428,4 +603,5 @@ public class DBHandler {
 			return c.getFloat(i);
 		}
 	}
+
 }
