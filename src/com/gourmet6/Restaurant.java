@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
@@ -271,11 +273,67 @@ public class Restaurant {
 		return true;
 	}
 	
-	public void sortDishes(String s){
-		//TODO
+	/**
+	 * Trie la liste des Dish par ordre croissant de prix.
+	 */
+	public void sortDishesPrice(){
 		if(listDishes==null){
-			
+			System.out.println("sortDishesPrice avec une liste de dish vide. Appelez createDishes avant.");
 		}
+		else{
+			Collections.sort(listDishes, new Comparator<Dish>() {
+
+				@Override
+				public int compare(Dish o1, Dish o2) {
+					return (int) (o1.getPrice()-o2.getPrice());
+				}
+		  
+			});
+		}
+	}
+	
+	/**
+	 * @param type
+	 * @return Renvoit une liste de Dish qui ne contient que les Dish ayant le type correspondant a
+	 * celui passe en parametre.
+	 * Si il n'y a aucun plat correspondant, ou que la liste des plats a trier est vide, cette fonction 
+	 * renvoit null.
+	 */
+	public ArrayList<Dish> filterDishesType(String type)
+	{
+		ArrayList<Dish> result = new ArrayList<Dish>();
+		for(Dish d : listDishes)
+		{
+			if(d.getType().equals(type)){
+				result.add(d);
+			}
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * @param al
+	 * @return Renvoit une liste de Dish qui ne contient pas les Dish n'ayant pas l'allergene correspondant a
+	 * celui passe en parametre.
+	 * Si la liste des plats a trier est vide, cette fonction renvoit null.
+	 */
+	public ArrayList<Dish> filterDishesAllergen(String al)
+	{
+		boolean ajout = true;
+		ArrayList<Dish> result = new ArrayList<Dish>();
+		for(Dish d : listDishes)
+		{
+			for(int i=0; ajout && i<d.getAllergens().size(); i++)
+			{
+				if(d.getAllergens().get(i).equals(al)){
+					ajout = false;
+				}
+			}
+			if(ajout) result.add(d);
+		}
+		
+		return result;
 	}
 	
 	public void rateRestaurant(float vote, DBHandler dbh){
