@@ -16,6 +16,7 @@ import android.os.Build;
 
 public class DishMenuActivity extends Activity {
 	
+	Gourmet g = (Gourmet)getApplication();
 	private Restaurant current  = null;
 	private String[] dishesname = null;
 	
@@ -27,19 +28,11 @@ public class DishMenuActivity extends Activity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
+		current = g.getRest();
+		
 		ListView dishes = (ListView) findViewById(R.id.listView1);
 		this.dishesname = current.getDishesName();
-		dishes.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,dishesname));
 		
-		dishes.setOnItemClickListener(new OnItemClickListener(){
-			
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,long id){
-				Intent dish = new Intent(DishMenuActivity.this, DishDisplayActivity.class);
-				dish.putExtra("plat",dishesname[position]);
-				startActivity(dish);
-			}
-		});
 	}
 
 	/**

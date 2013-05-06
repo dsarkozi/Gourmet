@@ -35,9 +35,6 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 		setupActionBar();
 		
 		current = g.getRest();
-				
-		//Récupération des variables passées par l'activité parent
-		Bundle extra = getIntent().getExtras(); 
 		
 		//TextView
 		TextView description = (TextView) findViewById(R.id.textView1);
