@@ -1,7 +1,6 @@
-import com.gourmet6.Client;
-import com.gourmet6.Restaurant;
-import android.app.Application;
+package com.gourmet6;
 
+import android.app.Application;
 
 public class Gourmet extends Application{
 	

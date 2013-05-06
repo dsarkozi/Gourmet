@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
@@ -16,30 +17,24 @@ import android.os.Build;
 
 public class DishMenuActivity extends Activity {
 	
+	Gourmet g = (Gourmet)getApplication();
 	private Restaurant current  = null;
 	private String[] dishesname = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setTitle(R.string.activity_menu_title);
 		setContentView(R.layout.activity_dish_menu);
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
-		ListView dishes = (ListView) findViewById(R.id.listView1);
-		this.dishesname = current.getDishesName();
-		dishes.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,dishesname));
+		setTitle(R.string.activity_menu_title);
 		
-		dishes.setOnItemClickListener(new OnItemClickListener(){
-			
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,long id){
-				Intent dish = new Intent(DishMenuActivity.this, DishDisplayActivity.class);
-				dish.putExtra("plat",dishesname[position]);
-				startActivity(dish);
-			}
-		});
+		current = g.getRest();
+		
+		ExpandableListView dishes = (ExpandableListView) findViewById(R.id.expandableListView1);
+		this.dishesname = current.getDishesName();
+		
 	}
 
 	/**

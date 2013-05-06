@@ -6,5 +6,6 @@
     <string name="commandButton">Commander</string>
     <string name="descstring">Description unknow</string>
     <string name="locstring">Localisation unknow</string>
+    <string name="num_peop_rat">Localisation unknow</string>
     
 </resources>

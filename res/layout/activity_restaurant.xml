@@ -65,11 +65,19 @@
         style="?android:attr/ratingBarStyleIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:rating="0.0" 
-        android:isIndicator = "false"
         android:layout_above="@+id/button3"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
-        android:numStars="5" />
+        android:layout_alignLeft="@+id/button3"
+        android:layout_marginBottom="21dp"
+        android:isIndicator="false"
+        android:numStars="5"
+        android:rating="0.0" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ratingBar1"
+        android:layout_toRightOf="@+id/textView2"
+        android:text="@string/num_peop_rat" />
 
 </RelativeLayout>

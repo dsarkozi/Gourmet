@@ -20,11 +20,12 @@ public class ReservationActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setTitle(R.string.activity_reservation_title);
+		super.onCreate(savedInstanceState);		
 		setContentView(R.layout.activity_reservation);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		setTitle(R.string.activity_reservation_title);
 		
 		//récupération des valeurs entrées par le client
 		EditText seats = (EditText) findViewById(R.id.editText1);
