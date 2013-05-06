@@ -27,11 +27,11 @@ public class Restaurant {
 	private String description;
 	private ArrayList<String> cuisines;
 	private ArrayList<String> photos;
-	private float rating;
 	private short zip;
 	private short seats;
 	private short availableSeats; // en temps reel
 	private int nbrPrsHasVoted;
+	private float rating;
 	private float latitude;
 	private float longitude;
 	private float priceCat; // Si un restaurant est cher -> moyenne des prix
@@ -56,7 +56,7 @@ public class Restaurant {
 	}
 	
 	public Restaurant(String name, String chain, String address, String town, String tel, 
-			String description, byte rating, int nbrPrsHasVoted, short zip, short seats, 
+			String description, float rating, int nbrPrsHasVoted, short zip, short seats, 
 			short availableSeats, float latitude, float longitude, float priceCat)
 	{
 		this.name = name;
@@ -113,23 +113,37 @@ public class Restaurant {
 	}
 	
 	
-	public String getName() {
+	public String getName()
+	{
 		return name;
 	}
-	public void setName(String name) {
+	public void setName(String name)
+	{
 		this.name = name;
 	}
-	public String getAdress() {
+	public String getAdress()
+	{
 		return address;
 	}
-	public void setAdress(String adress) {
+	public void setAdress(String adress)
+	{
 		this.address = adress;
 	}
-	public String getTown() {
+	public String getTown()
+	{
 		return town;
 	}
-	public void setTown(String town) {
+	public void setTown(String town) 
+	{
 		this.town = town;
+	}
+	public int getNbrPrsHasVoted()
+	{
+		return this.nbrPrsHasVoted;
+	}
+	public void setNbrPrsHasVoted(int nbrPrsHasVoted)
+	{
+		this.nbrPrsHasVoted = nbrPrsHasVoted;
 	}
 	public String getTel() {
 		return tel;
@@ -164,7 +178,7 @@ public class Restaurant {
 	public float getRating() {
 		return rating;
 	}
-	public void setRating(byte rating) {
+	public void setRating(float rating) {
 		this.rating = rating;
 	}
 	public short getZip() {
@@ -215,10 +229,9 @@ public class Restaurant {
 	public void setSemaine(ArrayList<TimeTable>[] semaine) {
 		this.semaine = semaine;
 	}
-
-
-	public void createListDishes(){
-		//TODO
+	public void createListDishes(DBHandler dbh)
+	{
+		this.listDishes = dbh.getDishes(this.name);
 	}
 	
 	/**
@@ -260,14 +273,18 @@ public class Restaurant {
 	
 	public void sortDishes(String s){
 		//TODO
+		if(listDishes==null){
+			
+		}
 	}
 	
-	public void rateRestaurant(byte vote){
-		//TODO synchronisation avec la DB ??
+	public void rateRestaurant(float vote, DBHandler dbh){
 		rating *=nbrPrsHasVoted;
 		nbrPrsHasVoted++;
 		rating += vote;
 		rating /=nbrPrsHasVoted;
+		
+		dbh.rateRestaurant(name, rating, nbrPrsHasVoted);
 	}
 	
 	public String[] getDishesName()
