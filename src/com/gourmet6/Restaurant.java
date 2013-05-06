@@ -49,10 +49,9 @@ public class Restaurant {
 	 */
 	private ArrayList<TimeTable> semaine[];
 	
-	public Restaurant(String restaurant)
+	public Restaurant(String name)
 	{
-		//TODO DB query based on the restaurant's name
-		// problème : pas possible sans contexte -> voir dans RestaurantDBHandler
+		this.name = name;
 		
 	}
 	
