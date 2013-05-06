@@ -32,6 +32,7 @@ public class DishMenuActivity extends Activity {
 		setTitle(R.string.activity_menu_title);
 		
 		current = g.getRest();
+		//TODO create listDishes in current if don't exist
 		
 		//Reaction du bouton de commande
 		Button order = (Button) findViewById(R.id.button1);
