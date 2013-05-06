@@ -23,6 +23,7 @@ import android.os.Build;
 @SuppressWarnings("deprecation") 
 public class RestaurantActivity extends Activity implements RatingBar.OnRatingBarChangeListener {
 	
+	Gourmet g = (Gourmet)getApplication();
 	private Restaurant current = null;
 
 	@Override
@@ -33,7 +34,7 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
-		Gourmet g = (Gourmet)getApplication();
+		current = g.getRest();
 				
 		//Récupération des variables passées par l'activité parent
 		Bundle extra = getIntent().getExtras(); 
