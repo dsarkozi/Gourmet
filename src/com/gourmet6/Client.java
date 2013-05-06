@@ -114,14 +114,4 @@ public class Client {
 		return odd;
 		
 	}
-	
-	/**
-	 * Changes the restaurant's rating according on the client's contribution.
-	 * @param res the restaurant to rate
-	 * @param value the rating value, must be between 1 and 5
-	 */
-	public void rate(Restaurant res, byte value)
-	{
-		res.rateRestaurant(value);
-	}
 }

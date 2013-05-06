@@ -18,8 +18,8 @@ import android.database.sqlite.SQLiteException;
  */
 public class DBHandler {
 	
-	protected SQLiteDatabase db;
-	protected DBHelper dbHelper;
+	private SQLiteDatabase db;
+	private DBHelper dbHelper;
 	
 	private boolean read = false;
 	private boolean write = false;
@@ -73,7 +73,7 @@ public class DBHandler {
 	 // variable globale ?
 	 //Integer get(String)
     // helps managing the timetables given a certain day
-    static HashMap<String,Integer> weekMap = new HashMap<String,Integer>();
+    static public HashMap<String,Integer> weekMap = new HashMap<String,Integer>();
     static {
     	weekMap.put("dimanche", 0);
     	weekMap.put("lundi", 1);

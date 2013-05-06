@@ -285,6 +285,7 @@ public class Restaurant {
 		rating /=nbrPrsHasVoted;
 		
 		dbh.rateRestaurant(name, rating, nbrPrsHasVoted);
+		//TODO synchronisation avec la DB ??
 	}
 	
 	public String[] getDishesName()
