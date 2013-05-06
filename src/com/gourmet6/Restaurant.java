@@ -16,28 +16,26 @@ import java.util.TimeZone;
 
 public class Restaurant {
 	
-	// TODO
-	// ajouter mail et site web ?
-	
 	private String name;
 	private String chain;
 	private String address;
-	private String town;
-	private String tel;
-	private String description;
-	private ArrayList<String> cuisines;
-	private ArrayList<String> photos;
 	private short zip;
-	private short seats;
-	private short availableSeats; // en temps reel
-	private int nbrPrsHasVoted;
-	private float rating;
+	private String town;
 	private float latitude;
 	private float longitude;
+	private String tel;
+	private String mail;
+	private String web;
+	private String description;
+	private ArrayList<String> cuisines;
+	private short seats;
+	private short availableSeats; // en temps reel
+	private float rating;
+	private int nbrPrsHasVoted;
 	private float priceCat; // Si un restaurant est cher -> moyenne des prix
 	private ArrayList<Dish> listDishes;
 	/**
-	 * Semaine contient 7 cases, une par jour de la semaine. A chaque jour correspond une list de plage horraire.
+	 * Semaine contient 7 cases, une par jour de la semaine. A chaque jour correspond une list de plage horaire.
 	 * Correspondance :
 	 * 0 : Dimanche
 	 * 1 : Lundi
@@ -151,6 +149,34 @@ public class Restaurant {
 	public void setTel(String tel) {
 		this.tel = tel;
 	}
+	/**
+	 * @return the mail
+	 */
+	public String getMail() {
+		return mail;
+	}
+
+	/**
+	 * @param mail the mail to set
+	 */
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
+	/**
+	 * @return the web
+	 */
+	public String getWeb() {
+		return web;
+	}
+
+	/**
+	 * @param web the web to set
+	 */
+	public void setWeb(String web) {
+		this.web = web;
+	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -168,12 +194,6 @@ public class Restaurant {
 	}
 	public void setChain(String chain) {
 		this.chain = chain;
-	}
-	public ArrayList<String> getPhotos() {
-		return photos;
-	}
-	public void setPhotos(ArrayList<String> photos) {
-		this.photos = photos;
 	}
 	public float getRating() {
 		return rating;
