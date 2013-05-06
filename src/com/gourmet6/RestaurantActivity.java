@@ -11,13 +11,13 @@ import android.widget.Button;
 import android.widget.Gallery;//Il me dit que la gallery n'est peut-etre plus valable...
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+
 
 //Il me dit que la gallery n'est plus valable à partir de l'API 16...
 @SuppressWarnings("deprecation") 
@@ -33,6 +33,8 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
+		Gourmet g = (Gourmet)getApplication();
+				
 		//Récupération des variables passées par l'activité parent
 		Bundle extra = getIntent().getExtras(); 
 		
@@ -42,6 +44,9 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 		
 		TextView localisation = (TextView) findViewById(R.id.textView2);
 		localisation.setText(current.getAdress());
+		
+		TextView numrating = (TextView) findViewById(R.id.textView3);
+		numrating.setText(current.getNbrPrsHasVoted());
 		
 		//Reaction du bouton de commande
 		Button order = (Button) findViewById(R.id.button3);
