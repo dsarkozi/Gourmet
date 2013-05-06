@@ -75,13 +75,13 @@ public class DBHandler {
     // helps managing the timetables given a certain day
     static HashMap<String,Integer> weekMap = new HashMap<String,Integer>();
     static {
-    	weekMap.put("lundi", 0);
-    	weekMap.put("mardi", 1);
-    	weekMap.put("mercredi", 2);
-    	weekMap.put("jeudi", 3);
-    	weekMap.put("vendredi", 4);
-    	weekMap.put("samedi", 5);
-    	weekMap.put("dimanche", 6);
+    	weekMap.put("dimanche", 0);
+    	weekMap.put("lundi", 1);
+    	weekMap.put("mardi", 2);
+    	weekMap.put("mercredi", 3);
+    	weekMap.put("jeudi", 4);
+    	weekMap.put("vendredi", 5);
+    	weekMap.put("samedi", 6);
     }
 
     
