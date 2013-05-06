@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.support.v4.app.NavUtils;
@@ -17,7 +18,7 @@ import android.os.Build;
 
 public class DishMenuActivity extends Activity {
 	
-	Gourmet g = (Gourmet)getApplication();
+	private Gourmet g = (Gourmet)getApplication();
 	private Restaurant current  = null;
 	private String[] dishesname = null;
 	
@@ -31,6 +32,19 @@ public class DishMenuActivity extends Activity {
 		setTitle(R.string.activity_menu_title);
 		
 		current = g.getRest();
+		
+		//Reaction du bouton de commande
+		Button order = (Button) findViewById(R.id.button1);
+		order.setOnClickListener(new View.OnClickListener() {
+					
+			@Override
+			public void onClick(View v) {
+				//TODO 
+				Intent commande = new Intent(DishMenuActivity.this, OrderActivity.class);
+				commande.putExtra("from", false);
+				startActivity(commande);			
+			}
+		});	
 		
 		ExpandableListView dishes = (ExpandableListView) findViewById(R.id.expandableListView1);
 		this.dishesname = current.getDishesName();

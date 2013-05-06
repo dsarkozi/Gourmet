@@ -23,7 +23,7 @@ import android.os.Build;
 @SuppressWarnings("deprecation") 
 public class RestaurantActivity extends Activity implements RatingBar.OnRatingBarChangeListener {
 	
-	Gourmet g = (Gourmet)getApplication();
+	private Gourmet g = (Gourmet)getApplication();
 	private Restaurant current = null;
 
 	@Override

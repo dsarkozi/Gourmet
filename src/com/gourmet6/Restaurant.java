@@ -35,7 +35,7 @@ public class Restaurant {
 	private float rating;
 	private int nbrPrsHasVoted;
 	private float priceCat; // Si un restaurant est cher -> moyenne des prix
-	private ArrayList<Dish> listDishes;
+	private ArrayList<Dish> listDishes = null;
 	/**
 	 * Semaine contient 7 cases, une par jour de la semaine. A chaque jour correspond une list de plage horaire.
 	 * Correspondance :
@@ -253,7 +253,8 @@ public class Restaurant {
 	}
 	public void createListDishes(DBHandler dbh)
 	{
-		this.listDishes = dbh.getDishes(this.name);
+		if(listDishes == null)
+			this.listDishes = dbh.getDishes(this.name);
 	}
 	
 	/**
