@@ -49,6 +49,7 @@ public class Dish {
 	 */
 	public boolean hasAllergen(String allergen)
 	{
+		//TODO watch if empty...
 		return this.allergens.contains(allergen);
 	}
 	

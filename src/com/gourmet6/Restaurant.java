@@ -55,6 +55,23 @@ public class Restaurant {
 		
 	}
 	
+	/**
+	 * Constructor.
+	 * @param name
+	 * @param chain
+	 * @param address
+	 * @param town
+	 * @param tel
+	 * @param description
+	 * @param rating
+	 * @param nbrPrsHasVoted
+	 * @param zip
+	 * @param seats
+	 * @param availableSeats
+	 * @param latitude
+	 * @param longitude
+	 * @param priceCat
+	 */
 	public Restaurant(String name, String chain, String address, String town, String tel, 
 			String description, float rating, int nbrPrsHasVoted, short zip, short seats, 
 			short availableSeats, float latitude, float longitude, float priceCat)
@@ -75,186 +92,191 @@ public class Restaurant {
 		this.priceCat = priceCat;
 	}
 	
-	/**
-	 * 
-	 * @param date
-	 * @return Cette fonction transforme un String date en une date GregorianCalendar.
-	 * Cette fonction supporte 3 formats :
-	 * dd/MM/yyyy hh:mm
-	 * dd-MM-yyyy hh:mm
-	 * hh:mm
-	 * Si ces formats ne sont pas respectes, ou qu'elle ne reussit pas la conversion, elle renvoit null.
-	 */
-	@SuppressLint("SimpleDateFormat")
-	public GregorianCalendar parseDate(String date){
-		SimpleDateFormat ourFormat;
-		TimeZone timezone = TimeZone.getDefault();
-		GregorianCalendar cal = null;
-		if(date.contains("/") && date.contains("-")){
-			ourFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-		}
-		else if(date.contains("-") && date.contains(":")){
-			ourFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
-		}
-		else if(date.contains(":") && (!date.contains("/") || !date.contains("-"))){
-			ourFormat = new SimpleDateFormat("hh:mm");
-		}
-		else return cal;
-		try{
-			cal = new GregorianCalendar();
-			cal.setTime(ourFormat.parse(date));
-			cal.setTimeZone(timezone);
-		}
-		catch (ParseException e){
-			System.out.println("Error encoding the date : "+e);
-			e.printStackTrace();
-		}
-		return cal;
-	}
-	
-	
-	public String getName()
-	{
-		return name;
-	}
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-	public String getAdress()
-	{
-		return address;
-	}
-	public void setAdress(String adress)
-	{
-		this.address = adress;
-	}
-	public String getTown()
-	{
-		return town;
-	}
-	public void setTown(String town) 
-	{
-		this.town = town;
-	}
-	public int getNbrPrsHasVoted()
-	{
-		return this.nbrPrsHasVoted;
-	}
-	public void setNbrPrsHasVoted(int nbrPrsHasVoted)
-	{
-		this.nbrPrsHasVoted = nbrPrsHasVoted;
-	}
-	public String getTel() {
-		return tel;
-	}
-	public void setTel(String tel) {
-		this.tel = tel;
-	}
-	/**
-	 * @return the mail
-	 */
-	public String getMail() {
-		return mail;
-	}
 
 	/**
-	 * @param mail the mail to set
+	 * Adds all the restaurant's dishes known by the DB to the restaurant.
+	 * @param dbh the DBHandler to be used to interact with the DB
 	 */
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
-
-	/**
-	 * @return the web
-	 */
-	public String getWeb() {
-		return web;
-	}
-
-	/**
-	 * @param web the web to set
-	 */
-	public void setWeb(String web) {
-		this.web = web;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public ArrayList<String> getCuisines() {
-		return cuisines;
-	}
-	public void setCuisines(ArrayList<String> cuisines) {
-		this.cuisines = cuisines;
-	}
-	public String getChain() {
-		return chain;
-	}
-	public void setChain(String chain) {
-		this.chain = chain;
-	}
-	public float getRating() {
-		return rating;
-	}
-	public void setRating(float rating) {
-		this.rating = rating;
-	}
-	public short getZip() {
-		return zip;
-	}
-	public void setZip(short zip) {
-		this.zip = zip;
-	}
-	public short getSeats() {
-		return seats;
-	}
-	public void setSeats(short seats) {
-		this.seats = seats;
-	}
-	public short getAvailableSeats() {
-		return availableSeats;
-	}
-	public void setAvailableSeats(short availableSeats) {
-		this.availableSeats = availableSeats;
-	}
-	public float getLatitude() {
-		return latitude;
-	}
-	public void setLatitude(float latitude) {
-		this.latitude = latitude;
-	}
-	public float getLongitude() {
-		return longitude;
-	}
-	public void setLongitude(float longitude) {
-		this.longitude = longitude;
-	}
-	public float getPriceCat() {
-		return priceCat;
-	}
-	public void setPriceCat(float priceCat) {
-		this.priceCat = priceCat;
-	}
-	public ArrayList<Dish> getListDishes() {
-		return listDishes;
-	}
-	public void setListDishes(ArrayList<Dish> listDishes) {
-		this.listDishes = listDishes;
-	}
-	public ArrayList<TimeTable>[] getSemaine() {
-		return semaine;
-	}
-	public void setSemaine(ArrayList<TimeTable>[] semaine) {
-		this.semaine = semaine;
-	}
 	public void createListDishes(DBHandler dbh)
 	{
-		if(listDishes == null)
+		if (this.listDishes == null)
 			this.listDishes = dbh.getDishes(this.name);
+	}
+	
+	/**
+	 * Gets the names of all the Dishes served in the restaurant.
+	 * @return a table containing the name of all Dishes served in the restaurant.
+	 * If listDishes is null, returns null.
+	 */
+	public String[] getDishesNames()
+	{
+		if (this.listDishes == null)
+		{
+			return null;
+		}
+		
+		int length = this.listDishes.size();
+		String [] names = new String[length];
+		for (int i=0; i<length; i++)
+		{
+			names[i] = this.listDishes.get(i).getName();
+		}
+		return names;
+	}
+	
+	/**
+	 * Sorts the ArrayList of Dishes in increasing price order.
+	 */
+	public void sortDishesPrice(){
+		if (this.listDishes == null)
+		{
+			System.err.println("sortDishesPrice with an empty listDishes. Call createDishes.");
+			return;
+		}
+
+		Collections.sort(this.listDishes, new Comparator<Dish>() {
+			@Override
+			public int compare(Dish o1, Dish o2) {
+				return (int) (o1.getPrice()-o2.getPrice());
+			}
+
+		});
+	}
+	
+	/**
+	 * Gets all distinct types of all Dishes served in the restaurant.
+	 * @return an ArrayList containing all the different types of Dishes.
+	 * If listDishes is empty or if no Dish has a type, returns an empty Arraylist.
+	 */
+	public ArrayList<String> getDishesTypes()
+	{
+		if (this.listDishes == null)
+		{
+			System.err.println("getDishesType with an empty listDishes. Call createDishes.");
+		}
+		
+		ArrayList<String> result = new ArrayList<String>();
+		String type;
+		for (Dish d : this.listDishes)
+		{
+			type = d.getType();
+			if (!(result.contains(type)))
+				result.add(type);
+		}
+		return result;
+	}
+	
+	/**
+	 * Gets all Dishes of a certain type served in the restaurant.
+	 * @param type the type of the wanted Dishes
+	 * @return an ArrayList of Dishes of the given type. If there is no such Dish or
+	 * if the list of Dishes is empty, returns an empty ArrayList.
+	 */
+	public ArrayList<Dish> filterDishesType(String type)
+	{
+		if (this.listDishes == null)
+		{
+			System.err.println("filterDishesType with an empty listDishes. Call createDishes.");
+		}
+		
+		ArrayList<Dish> result = new ArrayList<Dish>();
+		for (Dish d : this.listDishes)
+		{
+			if (d.getType().equals(type))
+				result.add(d);
+		}
+		return result;
+	}
+	
+	public ArrayList<String> getDishesSubtypes()
+	{
+		if (this.listDishes == null)
+		{
+			System.err.println("getDishesSubtype with an empty listDishes. Call createDishes.");
+		}
+		
+		ArrayList<String> result = new ArrayList<String>();
+		String subtype;
+		for (Dish d : this.listDishes)
+		{
+			subtype = d.getSubtype();
+			if (!(result.contains(subtype)))
+				result.add(subtype);
+		}
+		return result;
+	}
+	
+	/**
+	 * @param subtype the subtype of the wanted Dishes
+	 * @return an ArrayList of Dishes of the given subtype. If there is no such Dish or
+	 * if the list of Dishes is empty, returns an empty ArrayList.
+	 */
+	public ArrayList<Dish> filterDishesSubtype(String subtype)
+	{
+		if (this.listDishes == null)
+		{
+			System.err.println("filterDishesSubtype with an empty listDishes. Call createDishes.");
+		}
+		
+		ArrayList<Dish> result = new ArrayList<Dish>();
+		for (Dish d : this.listDishes)
+		{
+			if (d.getSubtype().equals(subtype))
+				result.add(d);
+		}
+		return result;
+	}
+	
+	/**
+	 * Gets all the Dishes not containing a certain allergen served in the restaurant.
+	 * @param al the allergen to exclude
+	 * @return an ArrayList of Dishes not containing al as allergen. If there is no such Dish or
+	 * if the list of Dishes is empty, returns an empty ArrayList.
+	 */
+	public ArrayList<Dish> filterDishesAllergen(String al)
+	{
+//		boolean ajout = true;
+		ArrayList<Dish> result = new ArrayList<Dish>();
+		for (Dish d : this.listDishes)
+		{
+			if (!(d.hasAllergen(al)))
+				result.add(d);
+			
+//			for (int i=0; ajout && i<d.getAllergens().size(); i++)
+//			{
+//				if(d.getAllergens().get(i).equals(al)){
+//					ajout = false;
+//				}
+//			}
+//			if(ajout) result.add(d);
+		}
+		return result;
+	}
+	
+	
+	/**
+	 * Changes the rating of the restaurant given the current rate, the new rating
+	 * and the number of people who have voted. Updates the DB.
+	 * @param vote the new rating
+	 * @param dbh the DBHandler used to interact with the DB
+	 */
+	public void rateRestaurant(float vote, DBHandler dbh)
+	{
+		this.rating *= this.nbrPrsHasVoted;
+		this.nbrPrsHasVoted++;
+		this.rating += vote;
+		this.rating /= this.nbrPrsHasVoted;
+		
+		dbh.rateRestaurant(this.name, this.rating, this.nbrPrsHasVoted);
+	}
+	
+	public boolean checkOrder(Order order)
+	{
+		for (Dish dish : order.getOrderDishes())
+		{
+			if (dish.getQuantity()>dish.getInventory()) return false;
+		}
+		return true;
 	}
 	
 	/**
@@ -272,7 +294,7 @@ public class Restaurant {
 				if(dish.getQuantity()>dish.getInventory()) return false;
 			}
 		}
-		//Check heure.
+		//Check hour.
 		boolean timeTableOk = false; 
 		int reservationHour = res.getReservationTime().get(GregorianCalendar.HOUR_OF_DAY);
 		int reservationMinute = res.getReservationTime().get(GregorianCalendar.MINUTE);
@@ -287,94 +309,201 @@ public class Restaurant {
 		return (timeTableOk && res.getReservationPeople()<=availableSeats);
 	}
 	
-	public boolean checkOrder(Order order){
-		for(Dish dish : order.getOrderDishes()){
-			if(dish.getQuantity()>dish.getInventory()) return false;
-		}
-		return true;
-	}
-	
+	/***********************
+	 * Formatting functions
+	 ***********************/
 	/**
-	 * Trie la liste des Dish par ordre croissant de prix.
+	 * Formats a String containing a date and/or time into a GregorianCalendar object representing the date.
+	 * @param date the date to parse, may be one of the following 3 formats :
+	 * 			dd/MM/yyyy hh:mm
+	 * 			dd-MM-yyyy hh:mm
+	 * 			hh:mm  
+	 * @return a GregorianCalendar representing the date originally contained in the String.
+	 * 		   If the format is not respected, returns null.
 	 */
-	public void sortDishesPrice(){
-		if(listDishes==null){
-			System.out.println("sortDishesPrice avec une liste de dish vide. Appelez createDishes avant.");
-		}
-		else{
-			Collections.sort(listDishes, new Comparator<Dish>() {
-
-				@Override
-				public int compare(Dish o1, Dish o2) {
-					return (int) (o1.getPrice()-o2.getPrice());
-				}
-		  
-			});
-		}
-	}
-	
-	/**
-	 * @param type
-	 * @return Renvoit une liste de Dish qui ne contient que les Dish ayant le type correspondant a
-	 * celui passe en parametre.
-	 * Si il n'y a aucun plat correspondant, ou que la liste des plats a trier est vide, cette fonction 
-	 * renvoit null.
-	 */
-	public ArrayList<Dish> filterDishesType(String type)
-	{
-		ArrayList<Dish> result = new ArrayList<Dish>();
-		for(Dish d : listDishes)
+	@SuppressLint("SimpleDateFormat")
+	public GregorianCalendar parseDate(String date){
+		SimpleDateFormat ourFormat;
+		TimeZone timezone = TimeZone.getDefault();
+		GregorianCalendar cal = null;
+		if (date.contains("/") && date.contains("-"))
 		{
-			if(d.getType().equals(type)){
-				result.add(d);
-			}
+			ourFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 		}
-		
-		return result;
-	}
-	
-	/**
-	 * @param al
-	 * @return Renvoit une liste de Dish qui ne contient pas les Dish n'ayant pas l'allergene correspondant a
-	 * celui passe en parametre.
-	 * Si la liste des plats a trier est vide, cette fonction renvoit null.
-	 */
-	public ArrayList<Dish> filterDishesAllergen(String al)
-	{
-		boolean ajout = true;
-		ArrayList<Dish> result = new ArrayList<Dish>();
-		for(Dish d : listDishes)
+		else if (date.contains("-") && date.contains(":"))
 		{
-			for(int i=0; ajout && i<d.getAllergens().size(); i++)
-			{
-				if(d.getAllergens().get(i).equals(al)){
-					ajout = false;
-				}
-			}
-			if(ajout) result.add(d);
+			ourFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
 		}
-		
-		return result;
-	}
-	
-	public void rateRestaurant(float vote, DBHandler dbh){
-		rating *=nbrPrsHasVoted;
-		nbrPrsHasVoted++;
-		rating += vote;
-		rating /=nbrPrsHasVoted;
-		
-		dbh.rateRestaurant(name, rating, nbrPrsHasVoted);
-		//TODO synchronisation avec la DB ??
-	}
-	
-	public String[] getDishesName()
-	{
-		int length = listDishes.size();
-		String [] names = new String[length];
-		for(int i = 0; i<length; i++)
+		else if (date.contains(":") && (!date.contains("/") || !date.contains("-")))
 		{
-			names[i] = listDishes.get(i).getName();
+			ourFormat = new SimpleDateFormat("hh:mm");
 		}
-		return names;
+		else return cal;
+		try
+		{
+			cal = new GregorianCalendar();
+			cal.setTime(ourFormat.parse(date));
+			cal.setTimeZone(timezone);
+		}
+		catch (ParseException e)
+		{
+			System.err.println("Error encoding the date : "+e);
+			e.printStackTrace();
+		}
+		return cal;
+	}
+	
+	/**********************
+	 * Getters and setters
+	 **********************/
+	public String getName()
+	{
+		return name;
+	}
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+	public String getChain()
+	{
+		return chain;
+	}
+	public void setChain(String chain)
+	{
+		this.chain = chain;
+	}
+	public String getAdress()
+	{
+		return address;
+	}
+	public void setAdress(String adress)
+	{
+		this.address = adress;
+	}
+	public short getZip() {
+		return zip;
+	}
+	public void setZip(short zip) 
+	{
+		this.zip = zip;
+	}
+	public String getTown()
+	{
+		return town;
+	}
+	public void setTown(String town) 
+	{
+		this.town = town;
+	}
+	public float getLatitude() 
+	{
+		return latitude;
+	}
+	public void setLatitude(float latitude) 
+	{
+		this.latitude = latitude;
+	}
+	public float getLongitude() 
+	{
+		return longitude;
+	}
+	public void setLongitude(float longitude) 
+	{
+		this.longitude = longitude;
+	}
+	public String getTel() 
+	{
+		return tel;
+	}
+	public void setTel(String tel) 
+	{
+		this.tel = tel;
+	}
+	public String getMail() 
+	{
+		return mail;
+	}
+	public void setMail(String mail) 
+	{
+		this.mail = mail;
+	}
+	public String getWeb() 
+	{
+		return web;
+	}
+	public void setWeb(String web) 
+	{
+		this.web = web;
+	}
+	public String getDescription() 
+	{
+		return description;
+	}
+	public void setDescription(String description) 
+	{
+		this.description = description;
+	}
+	public ArrayList<String> getCuisines() 
+	{
+		return cuisines;
+	}
+	public void setCuisines(ArrayList<String> cuisines) 
+	{
+		this.cuisines = cuisines;
+	}
+	public short getSeats() 
+	{
+		return seats;
+	}
+	public void setSeats(short seats) 
+	{
+		this.seats = seats;
+	}
+	public short getAvailableSeats() 
+	{
+		return availableSeats;
+	}
+	public void setAvailableSeats(short availableSeats) 
+	{
+		this.availableSeats = availableSeats;
+	}
+	public float getRating() 
+	{
+		return rating;
+	}
+	public void setRating(float rating) 
+	{
+		this.rating = rating;
+	}
+	public int getNbrPrsHasVoted()
+	{
+		return this.nbrPrsHasVoted;
+	}
+	public void setNbrPrsHasVoted(int nbrPrsHasVoted)
+	{
+		this.nbrPrsHasVoted = nbrPrsHasVoted;
+	}
+	public float getPriceCat() {
+		return priceCat;
+	}
+	public void setPriceCat(float priceCat)
+	{
+		this.priceCat = priceCat;
+	}
+	public ArrayList<Dish> getListDishes() 
+	{
+		return listDishes;
+	}
+	public void setListDishes(ArrayList<Dish> listDishes) 
+	{
+		this.listDishes = listDishes;
+	}
+	public ArrayList<TimeTable>[] getSemaine() 
+	{
+		return semaine;
+	}
+	public void setSemaine(ArrayList<TimeTable>[] semaine) 
+	{
+		this.semaine = semaine;
 	}
 }

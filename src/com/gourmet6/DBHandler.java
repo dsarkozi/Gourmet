@@ -141,20 +141,20 @@ public class DBHandler {
 	 ************/
 	
 	/**
-	 * Returns a list of the distinct towns known by the DB.
-	 * @return a String array containing the names of all the known towns
+	 * Returns an ArrayList of the distinct towns known by the DB.
+	 * @return a String ArrayList containing the names of all the known towns
 	 */
-	public String[] getTowns()
+	public ArrayList<String> getTowns()
 	{
 		this.openRead();
 		Cursor c;
 		
 		c = db.query(true, TABLE_RESTAURANT, new String[] {TOWN}, null, null, null, null, TOWN, null);
 		int count = c.getCount();
-		String[] towns = new String[count];
+		ArrayList<String> towns = new ArrayList<String>(count);
 		for (int i=0; i<count; i++)
 		{
-			towns[i] = c.getString(i);
+			towns.add(c.getString(i));
 		}
 		
 		this.close();
@@ -162,12 +162,12 @@ public class DBHandler {
 	}
 	
 	/**
-	 * Returns an array containing all the distinct town names appearing in the DB table restaurant,
+	 * Returns an ArrayList containing all the distinct town names appearing in the DB table restaurant,
 	 * sorted in alphabetically.
 	 * @param town a town in which to search restaurants
-	 * @return a String array containing all the town names; if town is null, returns all the towns.
+	 * @return an String ArrayList containing all the town names; if town is null, returns all the towns.
 	 */
-	public String[] getAllResNames(String town)
+	public ArrayList<String> getAllResNames(String town)
 	{
 		this.openRead();
 		Cursor c;
@@ -179,11 +179,11 @@ public class DBHandler {
 			c = db.query(TABLE_RESTAURANT, new String[] {RES}, null, null, null, null, RES);
 		}
 		int length = c.getCount();
-		String[] retour = new String[length];
+		ArrayList<String> retour = new ArrayList<String>(length);
 		for (int i=0; i<length; i++)
 		{
 			c.moveToPosition(i);
-			retour[i] = c.getString(1);
+			retour.add(c.getString(i));
 		}
 		
 		this.close();

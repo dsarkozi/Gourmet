@@ -47,7 +47,7 @@ public class DishMenuActivity extends Activity {
 		});	
 		
 		ExpandableListView dishes = (ExpandableListView) findViewById(R.id.expandableListView1);
-		this.dishesname = current.getDishesName();
+		this.dishesname = current.getDishesNames();
 		
 	}
 
