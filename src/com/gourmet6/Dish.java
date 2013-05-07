@@ -15,7 +15,7 @@ public class Dish {
 	private String subtype;
 	private double price;
 	private int inventory;
-	private int quantity;
+	private int quantity = 0;
 	private String description;
 	private ArrayList<String> allergens;
 	

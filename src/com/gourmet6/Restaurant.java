@@ -226,6 +226,26 @@ public class Restaurant {
 		return result;
 	}
 	
+	public ArrayList<String> getDishesSubtypes(String type)
+	{
+		if (this.listDishes == null)
+		{
+			System.err.println("getDishesSubtype with an empty listDishes. Call createDishes.");
+		}
+		
+		ArrayList<String> result = new ArrayList<String>();
+		String subtype;
+		for (Dish d : this.listDishes)
+		{
+			if(d.getType().equals(type)){
+				subtype = d.getSubtype();
+				if (!(result.contains(subtype)))
+					result.add(subtype);
+			}
+		}
+		return result;
+	}
+	
 	/**
 	 * @param subtype the subtype of the wanted Dishes
 	 * @return an ArrayList of Dishes of the given subtype. If there is no such Dish or
@@ -242,6 +262,22 @@ public class Restaurant {
 		for (Dish d : this.listDishes)
 		{
 			if (d.getSubtype().equals(subtype))
+				result.add(d);
+		}
+		return result;
+	}
+	
+	public ArrayList<Dish> filterDishesSubtype(String subtype, String type)
+	{
+		if (this.listDishes == null)
+		{
+			System.err.println("filterDishesSubtype with an empty listDishes. Call createDishes.");
+		}
+		
+		ArrayList<Dish> result = new ArrayList<Dish>();
+		for (Dish d : this.listDishes)
+		{
+			if ((d.getType().equals(type)) && (d.getSubtype().equals(subtype)))
 				result.add(d);
 		}
 		return result;

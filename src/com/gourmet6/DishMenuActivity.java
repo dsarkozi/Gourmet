@@ -41,12 +41,13 @@ public class DishMenuActivity extends Activity {
 			public void onClick(View v) {
 				//TODO 
 				Intent commande = new Intent(DishMenuActivity.this, OrderActivity.class);
-				commande.putExtra("from", false);
+				commande.putExtra("from", true);
 				startActivity(commande);			
 			}
 		});	
 		
 		ExpandableListView dishes = (ExpandableListView) findViewById(R.id.expandableListView1);
+		dishes.setAdapter(new MenuAdapter(this, current, false));
 		
 	}
 

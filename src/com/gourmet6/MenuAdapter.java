@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 public class MenuAdapter extends BaseExpandableListAdapter{
@@ -18,9 +19,8 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 	private ArrayList<Groupe> list;
 	private boolean fromOrder = false;
 	
-	public MenuAdapter (Context c, ArrayList<Groupe> list, Restaurant current, boolean fromOrder){
+	public MenuAdapter (Context c, Restaurant current, boolean fromOrder){
 		this.context = c;
-		this.list = list;
 		this.current = current;
 		this.fromOrder = fromOrder;
 		this.inflater = LayoutInflater.from(context);
@@ -29,7 +29,7 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 	
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
-		return list.get(groupPosition).getSubtypes().get(childPosition);
+		return list.get(groupPosition).getSubtypes();
 	}
 
 	@Override
@@ -41,7 +41,11 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 	public View getChildView(int groupPosition, int childPosition,boolean isLastChild, View convertView, ViewGroup parent) {
 		//TODO
 		
+		ExpandableListView dev = (ExpandableListView) getChild(groupPosition,childPosition);
 		
+		dev.setAdapter(new ChildAdapter(context, ((Groupe)getGroup(groupPosition)).getSub()));
+		
+		convertView = dev;
 		
 		return convertView;
 	}
@@ -49,7 +53,7 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 	@Override
 	public int getChildrenCount(int groupPosition) {
 		
-		return list.get(groupPosition).getSubtypes().size();
+		return 1;
 	}
 
 	@Override
@@ -108,10 +112,6 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 		public TextView type;
 	}
 	
-	private class SubGroupeViewHolder{
-		public TextView type;
-	}
-	
 	private class DishViewHolder{
 		public TextView name;
 		public TextView price;
@@ -122,7 +122,14 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 	
 	private class Groupe{
 		private String type;
-		private ArrayList<Subgroupe> subtypes;
+		private ExpandableListView subtypes = new ExpandableListView(context);
+		private ArrayList<Subgroupe> subtypelist;
+		
+		public Groupe(String type, ArrayList<Subgroupe> subt)
+		{
+			this.type = type;
+			this.subtypelist = subt;
+		}
 		
 		public String getType()
 		{
@@ -134,21 +141,36 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 			this.type = type;
 		}
 		
-		public ArrayList<Subgroupe> getSubtypes() 
+		public ExpandableListView getSubtypes() 
 		{
 			return subtypes;
 		}
 		
-		public void setSubtypes(ArrayList<Subgroupe> subtypes) 
+		public void setSubtypes(ExpandableListView subtypes) 
 		{
 			this.subtypes = subtypes;
 		}
 		
+		public ArrayList<Subgroupe> getSub() 
+		{
+			return subtypelist;
+		}
+		
+		public void setSub(ArrayList<Subgroupe> subtypes) 
+		{
+			this.subtypelist = subtypes;
+		}
 	}
 	
 	private class Subgroupe{
 		private String subtype;
-		private ArrayList<DishElem> dishlist;
+		private ArrayList<Dish> dishlist;
+		
+		public Subgroupe(String sub, ArrayList<Dish> list)
+		{
+			this.subtype = sub;
+			this.dishlist = list;
+		}
 		
 		public String getSubtype() 
 		{
@@ -158,36 +180,36 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 		{
 			this.subtype = subtype;
 		}
-		public ArrayList<DishElem> getDishlist() 
+		public ArrayList<Dish> getDishlist() 
 		{
 			return dishlist;
 		}
-		public void setDishlist(ArrayList<DishElem> dishlist) 
+		public void setDishlist(ArrayList<Dish> dishlist) 
 		{
 			this.dishlist = dishlist;
 		}
 	}
-	
-	private class DishElem{
-		private Subgroupe sgrp;
-		private String name;
+
+	private ArrayList<Groupe> populateType(ArrayList<String> types)
+	{
+		ArrayList<Groupe> res = new ArrayList<Groupe>(types.size());
 		
-		public Subgroupe getSgrp() 
-		{
-			return sgrp;
+		for(String s : types){
+			res.add(new Groupe(s, populateSubType(s, current.getDishesSubtypes(s))));
 		}
-		public void setSgrp(Subgroupe sgrp) 
-		{
-			this.sgrp = sgrp;
+		
+		return res;
+	}
+	
+	private ArrayList<Subgroupe> populateSubType(String type ,ArrayList<String> subtypes)
+	{
+		ArrayList<Subgroupe> res = new ArrayList<Subgroupe>(subtypes.size());
+		
+		for(String s: subtypes){
+			res.add(new Subgroupe(s, current.filterDishesSubtype(s, type)));
 		}
-		public String getName() 
-		{
-			return name;
-		}
-		public void setName(String name) 
-		{
-			this.name = name;
-		}
+		
+		return res;
 	}
 	
 	private class ChildAdapter extends BaseExpandableListAdapter{
@@ -220,8 +242,8 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 		public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 			DishViewHolder dholder;
 			
-			DishElem dish = (DishElem) getChild(groupPosition, childPosition);
-			Dish currentdish = current.getDish(dish.getName());
+			final Dish currentdish = (Dish) getChild(groupPosition, childPosition);
+			
 			if(convertView == null){
 				dholder = new DishViewHolder();
 				convertView = inflater.inflate(R.layout.dish_list_element, null);
@@ -236,7 +258,7 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 				dholder = (DishViewHolder) convertView.getTag();
 			}
 			
-			dholder.name.setText(dish.getName());
+			dholder.name.setText(currentdish.getName());
 			dholder.price.setText(String.valueOf(currentdish.getPrice()));
 			dholder.count.setText("Stock:"+String.valueOf(currentdish.getInventory()));
 			
@@ -252,7 +274,10 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					
+					if(currentdish.getQuantity() < currentdish.getInventory())
+					{
+						currentdish.setQuantity(currentdish.getQuantity() + 1 );
+					}
 				}
 			});
 			
@@ -294,19 +319,19 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 
 		@Override
 		public View getGroupView(int groupPosition, boolean isExpanded,View convertView, ViewGroup parent) {
-			SubGroupeViewHolder sholder;
+			GroupeViewHolder sholder;
 			
 			Subgroupe sgrp = (Subgroupe) getGroup(groupPosition);
 			
 			if(convertView == null)
 			{
-				sholder = new SubGroupeViewHolder();
+				sholder = new GroupeViewHolder();
 				convertView = inflater.inflate(R.layout.child_layout, null);
 				sholder.type = (TextView) convertView.findViewById(R.id.child); 
 				convertView.setTag(sholder);
 			}
 			else{
-				sholder = (SubGroupeViewHolder) convertView.getTag();
+				sholder = (GroupeViewHolder) convertView.getTag();
 			}
 			
 			sholder.type.setText(sgrp.getSubtype());
