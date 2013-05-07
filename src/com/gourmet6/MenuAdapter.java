@@ -52,6 +52,7 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 				public boolean onChildClick(ExpandableListView parent, View v,int groupPosition, int childPosition, long id) {
 
 					Intent display = new Intent(context, DishDisplayActivity.class);
+					display.putExtra("the_dish",((Dish) getChild(groupPosition,childPosition)).getName());
 					context.startActivity(display);
 					return true;
 				}
