@@ -1,10 +1,6 @@
 package com.gourmet6;
 
 import java.util.ArrayList;
-
-import com.gourmet6.MenuAdapter.DishElem;
-import com.gourmet6.MenuAdapter.DishViewHolder;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
@@ -82,75 +78,101 @@ public class ResAndComActivity extends Activity {
 		}
 
 		@Override
-		public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+		public View getChildView(int indexR, int indexO, boolean isLastChild, View convertView, ViewGroup parent) {
 			DishViewHolder dholder;
 			
-			Dish dish = (Dish) this.getChild(groupPosition, childPosition);
+			final Dish dish = (Dish) this.getChild(indexR, indexO);
 			
 			if(convertView == null){
 				dholder = new DishViewHolder();
-			//	convertView = inflater.inflate(R.layout.dish_list_element, null);
 				
-				dholder.name = (TextView) convertView.findViewById(R.id.dishname);
-				dholder.price = (TextView) convertView.findViewById(R.id.textView1);
-				dholder.count = (TextView) convertView.findViewById(R.id.textView2);
+				convertView = inflater.inflate(R.layout.dish_list, null);
+				
+				dholder.name = (TextView) convertView.findViewById(R.id.dishName);
+				dholder.price = (TextView) convertView.findViewById(R.id.dishPrice);
+				dholder.count = (TextView) convertView.findViewById(R.id.dishCount);
+				dholder.type = (TextView) convertView.findViewById(R.id.dishType);
+				dholder.subtype = (TextView) convertView.findViewById(R.id.dishSubtype);
+				
+				convertView.setTag(dholder);
 			}
 			else{
 				dholder = (DishViewHolder) convertView.getTag();
 			}
-			
-			
 			dholder.name.setText(dish.getName());
-			dholder.price.setText(String.valueOf(currentdish.getPrice()));
+			dholder.price.setText(String.valueOf(dish.getPrice()));
+			dholder.count.setText(dish.getQuantity());
+			dholder.type.setText(dish.getType());
+			dholder.subtype.setText(dish.getSubtype());
 			
 			return convertView;
-
-		@Override
-		public int getChildrenCount(int arg0) {
-			// TODO Auto-generated method stub
-			return 0;
 		}
 
 		@Override
-		public Object getGroup(int arg0) {
-			// TODO Auto-generated method stub
-			return null;
+		public int getChildrenCount(int indexR) {
+			return myRes.get(indexR).getOrder().getOrderDishes().size();
+		}
+
+		@Override
+		public Object getGroup(int indexR) {
+			return myRes.get(indexR);
 		}
 
 		@Override
 		public int getGroupCount() {
-			// TODO Auto-generated method stub
-			return 0;
+			return myRes.size();
 		}
 
 		@Override
-		public long getGroupId(int arg0) {
-			// TODO Auto-generated method stub
-			return 0;
+		public long getGroupId(int indexR) {
+			return indexR;
 		}
 
 		@Override
-		public View getGroupView(int arg0, boolean arg1, View arg2, ViewGroup arg3) {
-			// TODO Auto-generated method stub
-			return null;
+		public View getGroupView(int indexR, boolean indexO, View convertView, ViewGroup parent) {
+			ResViewHolder rholder;
+			
+			Reservation res = (Reservation) getGroup(indexR);
+			
+			if(convertView == null){
+				rholder = new ResViewHolder();
+				
+				convertView = inflater.inflate(R.layout.res_list, null);
+				
+				rholder.tvRes = (TextView)convertView.findViewById(R.id.resData);
+				
+				convertView.setTag(rholder);
+			}
+			else{
+				rholder = (ResViewHolder)convertView.getTag();
+			}
+			rholder.tvRes.setText(res.getReservationTime()+" "+res.getReservationPeople()+" "+res.getReservationResName());
+			return convertView;
 		}
 
 		@Override
 		public boolean hasStableIds() {
-			// TODO Auto-generated method stub
-			return false;
+			return true;
 		}
 
 		@Override
 		public boolean isChildSelectable(int arg0, int arg1) {
-			// TODO Auto-generated method stub
-			return false;
+			return true;
 		}
+		
+		
 		
 		private class DishViewHolder{
 			public TextView name;
 			public TextView price;
 			public TextView count;
+			public TextView type;
+			public TextView subtype;
+		}
+		
+		private class ResViewHolder{
+			public TextView tvRes;
+			
 		}
 	}
 }
