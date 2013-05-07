@@ -125,6 +125,27 @@ public class Restaurant {
 	}
 	
 	/**
+	 * @param name
+	 * @return the dish which has the name specified in param. If the listDishes, or if no dish corresponded,
+	 * return null.
+	 */
+	public Dish getDish(String name)
+	{
+		if(listDishes==null)
+		{
+			System.err.println("getDishe with an empty listDishes. Call createDishes before.");
+		}
+		else
+		{
+			for(Dish d : listDishes)
+			{
+				if(d.getName().equals(name)) return d;
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Sorts the ArrayList of Dishes in increasing price order.
 	 */
 	public void sortDishesPrice(){
@@ -188,6 +209,9 @@ public class Restaurant {
 		return result;
 	}
 	
+	/**
+	 * @return
+	 */
 	public ArrayList<String> getDishesSubtypes()
 	{
 		if (this.listDishes == null)
@@ -235,20 +259,11 @@ public class Restaurant {
 	 */
 	public ArrayList<Dish> filterDishesAllergen(String al)
 	{
-//		boolean ajout = true;
 		ArrayList<Dish> result = new ArrayList<Dish>();
 		for (Dish d : this.listDishes)
 		{
 			if (!(d.hasAllergen(al)))
 				result.add(d);
-			
-//			for (int i=0; ajout && i<d.getAllergens().size(); i++)
-//			{
-//				if(d.getAllergens().get(i).equals(al)){
-//					ajout = false;
-//				}
-//			}
-//			if(ajout) result.add(d);
 		}
 		return result;
 	}
