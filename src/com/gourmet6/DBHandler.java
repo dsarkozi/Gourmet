@@ -102,7 +102,7 @@ public class DBHandler {
 	/**
 	 * Opens the DB for reading only.
 	 */
-	public void openRead()
+	public void openRead() throws SQLiteException
 	{
 		if (!read)
 		{
@@ -115,7 +115,7 @@ public class DBHandler {
 	/**
 	 * Opens the DB for reading and writing.
 	 */
-	public void openWrite()
+	public void openWrite() throws SQLiteException
 	{
 		if(!write)
 		{
@@ -143,18 +143,20 @@ public class DBHandler {
 	/**
 	 * Returns an ArrayList of the distinct towns known by the DB.
 	 * @return a String ArrayList containing the names of all the known towns
+	 * in alphabetical order.
 	 */
-	public ArrayList<String> getTowns()
+	public String[] getTowns() throws SQLiteException
 	{
 		this.openRead();
 		Cursor c;
 		
-		c = db.query(true, TABLE_RESTAURANT, new String[] {TOWN}, null, null, null, null, TOWN, null);
+		c = db.query(true, TABLE_RESTAURANT, new String[] {TOWN}, null, null, null, null, TOWN, TOWN);
 		int count = c.getCount();
-		ArrayList<String> towns = new ArrayList<String>(count);
+		String[] towns = new String[count];
 		for (int i=0; i<count; i++)
 		{
-			towns.add(c.getString(i));
+			c.moveToPosition(i);
+			towns[i] = c.getString(1);
 		}
 		
 		this.close();
@@ -167,7 +169,7 @@ public class DBHandler {
 	 * @param town a town in which to search restaurants
 	 * @return an String ArrayList containing all the town names; if town is null, returns all the towns.
 	 */
-	public ArrayList<String> getAllResNames(String town)
+	public ArrayList<String> getAllResNames(String town) throws SQLiteException
 	{
 		this.openRead();
 		Cursor c;
@@ -195,7 +197,7 @@ public class DBHandler {
 	 * @param name
 	 * @return the Restaurant corresponding to name, without his dishes
 	 */
-	public Restaurant getRestaurant(String name)
+	public Restaurant getRestaurant(String name) throws SQLiteException
 	{
 		this.openRead();
 		Cursor c;
@@ -277,7 +279,7 @@ public class DBHandler {
 	 * @param votes the new number of votes, must be > 0
 	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occurred
 	 */
-	long rateRestaurant (String resName, float rating, int votes) throws SQLiteException
+	public long rateRestaurant (String resName, float rating, int votes) throws SQLiteException
 	{
 		// throws an exception if rating is not valid or if resName is null
 		if (rating>5 || rating<0)
@@ -309,7 +311,7 @@ public class DBHandler {
 	 * @param newAvail the new number of available seats, must be >= 0
 	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occurred
 	 */
-	long updateAvail (String resName, short newAvail)
+	public long updateAvail (String resName, short newAvail) throws SQLiteException
 	{
 		// throws an exception if newAvail is not valid or if resName is null
 		if (newAvail<0)
@@ -345,7 +347,7 @@ public class DBHandler {
 	 * @param resName the name of the restaurant
 	 * @return the arraylist of all the dishes served in the restaurant resName
 	 */
-	public ArrayList<Dish> getDishes(String resName)
+	public ArrayList<Dish> getDishes(String resName) throws SQLiteException
 	{
 		this.openRead();
 		Cursor c;
@@ -405,7 +407,7 @@ public class DBHandler {
 	 * @param password
 	 * @return true or false, depending on whether the password is the same as the one found in the DB
 	 */
-	boolean checkPassword (String clientMail, String password)
+	public boolean checkPassword (String clientMail, String password) throws SQLiteException
 	{
 		this.openRead();
 		Cursor c;
@@ -442,7 +444,7 @@ public class DBHandler {
 	 * @param tel
 	 * @return if -1, then error; otherwise the new rowId
 	 */
-	long addClient (String mail, String name, String password, String tel) throws SQLiteException
+	public long addClient (String mail, String name, String password, String tel) throws SQLiteException
 	{
 		// throws an exception if the mandatory information is not given
 		if ((mail==null) || (name==null) || (password==null))
@@ -470,7 +472,7 @@ public class DBHandler {
 	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occurred
 	 * @throws SQLiteException
 	 */
-	long changeMail (String oldMail, String newMail) throws SQLiteException
+	public long changeMail (String oldMail, String newMail) throws SQLiteException
 	{
 		// throws an exception if the mandatory information is not given
 		if ((oldMail==null) || (newMail==null))
@@ -495,7 +497,7 @@ public class DBHandler {
 	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occurred
 	 * @throws SQLiteException
 	 */
-	long changeName (String mail, String newName) throws SQLiteException
+	public long changeName (String mail, String newName) throws SQLiteException
 	{
 		// throws an exception if the mandatory information is not given
 		if ((mail==null) || (newName==null))
@@ -513,7 +515,7 @@ public class DBHandler {
 		return nrRows;
 	}
 	
-	long changePassword (String mail, String newPassword) throws SQLiteException
+	public long changePassword (String mail, String newPassword) throws SQLiteException
 	{
 		// throws an exception if the mandatory information is not given
 		if ((mail==null) || (newPassword==null))
@@ -538,7 +540,7 @@ public class DBHandler {
 	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occurred
 	 * @throws SQLiteException
 	 */
-	long changeTel (String mail, String newTel) throws SQLiteException
+	public long changeTel (String mail, String newTel) throws SQLiteException
 	{
 		// throws an exception if the mandatory information is not given
 		if (mail==null)
@@ -575,7 +577,7 @@ public class DBHandler {
 	/* NULL value safe DB access methods */
 	// UTILITE ?
 	// tests sur le Quick!
-	String getStringOrNull(Cursor c, int i)
+	private String getStringOrNull(Cursor c, int i)
 	{
 		if(c.isNull(i))
 		{ 
@@ -585,7 +587,7 @@ public class DBHandler {
 			return c.getString(i);
 		}
 	}
-	int getIntOrNull(Cursor c, int i)
+	private int getIntOrNull(Cursor c, int i)
 	{
 		if (c.isNull(i))
 		{
@@ -595,7 +597,7 @@ public class DBHandler {
 			return c.getInt(i);
 		}
 	}
-	short getShortOrNull(Cursor c, int i)
+	private short getShortOrNull(Cursor c, int i)
 	{
 		if (c.isNull(i))
 		{
@@ -605,7 +607,7 @@ public class DBHandler {
 			return c.getShort(i);
 		}
 	}
-	float getFloatOrNull(Cursor c, int i)
+	private float getFloatOrNull(Cursor c, int i)
 	{
 		if (c.isNull(i))
 		{

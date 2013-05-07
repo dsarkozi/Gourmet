@@ -11,11 +11,12 @@ import java.util.GregorianCalendar;
  */
 public class Reservation {
 	
+	private int nr;
 	private Restaurant restaurant;
-	private GregorianCalendar date;
-	private int people;
 	private String name;
 	private String email;
+	private GregorianCalendar date;
+	private int people;
 	private Order order;
 	
 	/**
@@ -57,84 +58,72 @@ public class Reservation {
 	/**
 	 * 
 	 */
-	public Reservation() {
+	public Reservation()
+	{
 	}
 	
-	/**
-	 * @return the time of the reservation
-	 */
-	public GregorianCalendar getReservationTime() {
-		return date;
+
+	/**********************
+	 * Getters and setters
+	 **********************/
+	public int getReservationNr() 
+	{
+		return nr;
 	}
-	/**
-	 * @param time the time to set
-	 */
-	public void setReservationTime(String date) {
-		this.date = restaurant.parseDate(date);
+	public void setReservationNr(int nr) 
+	{
+		this.nr = nr;
 	}
-	/**
-	 * @param date the date to set
-	 */
-	public void setReservationTime(GregorianCalendar date){
-		this.date = date;
+	public Restaurant getReservationResName()
+	{
+		return restaurant;
 	}
-	
-	/**
-	 * @return the people of the reservation
-	 */
-	public int getReservationPeople() {
-		return people;
+	public void setReservationRestaurant(Restaurant restaurant)
+	{
+		this.restaurant = restaurant;
 	}
-	/**
-	 * @param people the people to set
-	 */
-	public void setReservationPeople(int people) {
-		this.people = people;
-	}
-	
-	/**
-	 * @return the name of the client who made the reservation
-	 */
-	public String getReservationName() {
+	public String getReservationName()
+	{
 		return name;
 	}
-	/**
-	 * @param name the name to set
-	 */
-	public void setReservationName(String name) {
+	public void setReservationName(String name)
+	{
 		this.name = name;
 	}
-	/**
-	 * @return the email of the client who made the reservation
-	 */
-	public String getReservationEmail() {
+	public String getReservationEmail()
+	{
 		return email;
 	}
-	/**
-	 * @param email the email to set
-	 */
-	public void setReservationEmail(String email) {
+	public void setReservationEmail(String email)
+	{
 		this.email = email;
 	}
-	
-	/**
-	 * @return the order bound to the reservation
-	 */
-	public Order getOrder() {
+	public GregorianCalendar getReservationTime()
+	{
+		return date;
+	}
+	public void setReservationDate(String date)
+	{
+		this.date = restaurant.parseDate(date);
+	}
+	public void setReservationDate(GregorianCalendar date)
+	{
+		this.date = date;
+	}
+	public int getReservationPeople()
+	{
+		return people;
+	}
+	public void setReservationPeople(int people)
+	{
+		this.people = people;
+	}
+	public Order getOrder()
+	{
 		return order;
 	}
-	/**
-	 * @param order the order to set
-	 */
-	public void setOrder(Order order) {
+	public void setOrder(Order order)
+	{
 		this.order = order;
 	}
-
-	/**
-	 * @param order the order to add to the reservation
-	 */
-	void addOrder(Order order) {
-		this.setOrder(order);	
-	}
-
 }

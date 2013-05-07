@@ -10,64 +10,24 @@ import java.util.ArrayList;
  */
 public class Order {
 	
-	private ArrayList<Dish> dishes;
+	private int nr;
+	private Restaurant restaurant;
 	private String name;
 	private String email;
-	
-	/**
-	 * @param name the name with which to address the client
-	 * @param email the email related to the account from which the booking was made
-	 */
-	public Order(String name, String email)
+	private ArrayList<Dish> dishes;
+
+	public Order(int nr, Restaurant restaurant, String name, String email)
 	{
-		this.dishes = null;
+		this.nr = nr;
+		this.restaurant = restaurant;
 		this.name = name;
 		this.email = email;
+		this.dishes = null;
 	}
 	
-	/**
-	 * @return the dishes of the order
-	 */
-	public ArrayList<Dish> getOrderDishes() {
-		return dishes;
-	}
-	/**
-	 * @param dishes the dishes to set
-	 */
-	public void setOrderDishes(ArrayList<Dish> dishes) {
-		this.dishes = dishes;
-	}
-
-	/**
-	 * @return the name of the client who made the order
-	 */
-	public String getOrderName() {
-		return name;
-	}
-	/**
-	 * @param name the name to set
-	 */
-	public void setOrderName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * @return the email of the client who made the order
-	 */
-	public String getOrderEmail() {
-		return email;
-	}
-
-	/**
-	 * @param email the email to set
-	 */
-	public void setOrderEmail(String email) {
-		this.email = email;
-	}
-
 	/**
 	 * Adds a given quantity of a dish to the order.
-	 * @param dish the dish to add to the arraylist of dishes
+	 * @param dish the dish to add to the ArrayList of dishes
 	 * @param quantity the amount of this dish that has to be added
 	 */
 	public void addDish(Dish dish, int quantity) {
@@ -82,7 +42,53 @@ public class Order {
 	public double getOrderPrice() {
 		double totalPrice = 0;
 		for (Dish d : dishes)
+		{
 			totalPrice += (d.getPrice()*d.getInventory());
+		}
 		return totalPrice;
+	}
+	
+	/**********************
+	 * Getters and setters
+	 **********************/
+	public int getOrderNr()
+	{
+		return nr;
+	}
+	public void setOrderNr(int nr)
+	{
+		this.nr = nr;
+	}
+
+	public Restaurant getOrderRestaurant()
+	{
+		return restaurant;
+	}
+	public void setOrderRestaurant(Restaurant restaurant)
+	{
+		this.restaurant = restaurant;
+	}
+	public String getOrderName()
+	{
+		return name;
+	}
+	public void setOrderName(String name)
+	{
+		this.name = name;
+	}
+	public String getOrderEmail()
+	{
+		return email;
+	}
+	public void setOrderEmail(String email)
+	{
+		this.email = email;
+	}	public ArrayList<Dish> getOrderDishes()
+	{
+		return dishes;
+	}
+	public void setOrderDishes(ArrayList<Dish> dishes)
+	{
+		this.dishes = dishes;
 	}
 }

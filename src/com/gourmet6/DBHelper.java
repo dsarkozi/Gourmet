@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 
 /**
  * A helper class to manage database creation and version management. 
@@ -17,7 +19,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DBHelper extends SQLiteOpenHelper {
 
-	private static final String DB_NAME = "gourmet5.sqlite";
+	private static final String DB_NAME = "gourmet6.sqlite";
 	private static String DB_DIR = "/data/data/com.gourmet6/databases/";
 	private static String DB_PATH = DB_DIR + DB_NAME;
 	public static final int DB_VERSION = 1;
@@ -75,6 +77,13 @@ public class DBHelper extends SQLiteOpenHelper {
 		input.close();
 		
 		getWritableDatabase().close();
+	}
+	
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	@Override
+	public void onConfigure (SQLiteDatabase db)
+	{
+		db.setForeignKeyConstraintsEnabled(true);
 	}
 	
 	@Override
