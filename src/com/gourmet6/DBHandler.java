@@ -566,6 +566,21 @@ public class DBHandler {
 	 *
 	 *********/
 	
+	public Order getOrder(int orderNr) throws SQLiteException
+	{
+		this.openRead();
+		Cursor c;
+		
+		c = db.query(TABLE_ORDER_OVERVIEW, new String[] {RES, MAIL}, "_id="+orderNr, null, null, null, null);
+		if (c.getColumnCount() > 1)
+		{
+			System.err.println("Error : two or more orders seem to have the same number.");
+		}
+		c.moveToFirst();
+		Restaurant restaurant = 
+		
+	}
+	
 	
 	
 	/**************

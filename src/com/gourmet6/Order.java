@@ -10,15 +10,13 @@ import java.util.ArrayList;
  */
 public class Order {
 	
-	private int nr;
 	private Restaurant restaurant;
 	private String name;
 	private String email;
 	private ArrayList<Dish> dishes;
 
-	public Order(int nr, Restaurant restaurant, String name, String email)
+	public Order(Restaurant restaurant, String name, String email)
 	{
-		this.nr = nr;
 		this.restaurant = restaurant;
 		this.name = name;
 		this.email = email;
@@ -51,14 +49,6 @@ public class Order {
 	/**********************
 	 * Getters and setters
 	 **********************/
-	public int getOrderNr()
-	{
-		return nr;
-	}
-	public void setOrderNr(int nr)
-	{
-		this.nr = nr;
-	}
 
 	public Restaurant getOrderRestaurant()
 	{

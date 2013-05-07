@@ -11,7 +11,6 @@ import java.util.GregorianCalendar;
  */
 public class Reservation {
 	
-	private int nr;
 	private Restaurant restaurant;
 	private String name;
 	private String email;
@@ -66,14 +65,7 @@ public class Reservation {
 	/**********************
 	 * Getters and setters
 	 **********************/
-	public int getReservationNr() 
-	{
-		return nr;
-	}
-	public void setReservationNr(int nr) 
-	{
-		this.nr = nr;
-	}
+
 	public Restaurant getReservationResName()
 	{
 		return restaurant;
