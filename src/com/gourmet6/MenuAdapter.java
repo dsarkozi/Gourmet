@@ -15,11 +15,13 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 	private LayoutInflater inflater;
 	private Restaurant current;
 	private ArrayList<Groupe> list;
+	private boolean fromOrder = false;
 	
-	public MenuAdapter (Context c, ArrayList<Groupe> list, Restaurant current){
+	public MenuAdapter (Context c, ArrayList<Groupe> list, Restaurant current, boolean fromOrder){
 		this.context = c;
 		this.list = list;
 		this.current = current;
+		this.fromOrder = fromOrder;
 		this.inflater = LayoutInflater.from(context);
 		
 	}
@@ -227,10 +229,30 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 			DishViewHolder dholder;
 			
 			DishElem dish = (DishElem) getChild(groupPosition, childPosition);
+			Dish currentdish = current.getDish(dish.getName());
 			if(convertView == null){
 				dholder = new DishViewHolder();
+				convertView = inflater.inflate(R.layout.dish_list_element, null);
 				
+				dholder.name = (TextView) convertView.findViewById(R.id.dishname);
+				dholder.price = (TextView) convertView.findViewById(R.id.textView1);
+				dholder.count = (TextView) convertView.findViewById(R.id.textView2);
+				dholder.plus = (Button) convertView.findViewById(R.id.plus);
+				dholder.minus = (Button) convertView.findViewById(R.id.minus);		
 			}
+			else{
+				dholder = (DishViewHolder) convertView.getTag();
+			}
+			
+			if(fromOrder){
+				dholder.plus.setVisibility(View.VISIBLE);
+				dholder.plus.setClickable(true);
+				dholder.minus.setVisibility(View.VISIBLE);
+				dholder.minus.setClickable(true);
+			}
+			
+			dholder.name.setText(dish.getName());
+			dholder.price.setText(String.valueOf(currentdish.getPrice()));
 			
 			return convertView;
 		}

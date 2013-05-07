@@ -15,7 +15,8 @@
         android:layout_toLeftOf="@+id/textView2"
         android:text="@string/plus_button"
         android:textSize="12sp"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:clickable="false" />
 
     <Button
         android:id="@+id/minus"
@@ -26,7 +27,8 @@
         android:layout_alignParentTop="true"
         android:text="@string/minus_button"
         android:textSize="12sp"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:clickable="false" />
 
     <TextView
         android:id="@+id/textView2"
