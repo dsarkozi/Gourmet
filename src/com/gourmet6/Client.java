@@ -81,7 +81,7 @@ public class Client {
 	 * @param people the number of people who will need a seat
 	 * @return the reservation containing the required information
 	 */
-	public Reservation createReservation(Timestamp time, int people)
+	public Reservation createReservation(Restaurant restaurant, String date, int people)
 	{
 		//TODO Récupérer l'objet Restaurant.
 		//Reservation greed = new Reservation(time,people,this.name,this.email);
@@ -108,10 +108,8 @@ public class Client {
 	 * Creates an order.
 	 * @return an empty order
 	 */
-	public Order createOrder()
+	public Order createOrder(String restName)
 	{
-		Order odd = new Order(this.name,this.email);
-		return odd;
-		
+		return new Order(restName, this.name,this.email);
 	}
 }

@@ -1,13 +1,9 @@
 package com.gourmet6;
 
-import android.annotation.SuppressLint;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.GregorianCalendar;
-import java.util.TimeZone;
 
 /**
  * A class representing a restaurant and its properties.
@@ -322,50 +318,6 @@ public class Restaurant {
 			}
 		}
 		return (timeTableOk && res.getReservationPeople()<=availableSeats);
-	}
-	
-	/***********************
-	 * Formatting functions
-	 ***********************/
-	/**
-	 * Formats a String containing a date and/or time into a GregorianCalendar object representing the date.
-	 * @param date the date to parse, may be one of the following 3 formats :
-	 * 			dd/MM/yyyy hh:mm
-	 * 			dd-MM-yyyy hh:mm
-	 * 			hh:mm  
-	 * @return a GregorianCalendar representing the date originally contained in the String.
-	 * 		   If the format is not respected, returns null.
-	 */
-	@SuppressLint("SimpleDateFormat")
-	public GregorianCalendar parseDate(String date){
-		SimpleDateFormat ourFormat;
-		TimeZone timezone = TimeZone.getDefault();
-		GregorianCalendar cal = null;
-		if (date.contains("/") && date.contains("-"))
-		{
-			ourFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-		}
-		else if (date.contains("-") && date.contains(":"))
-		{
-			ourFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
-		}
-		else if (date.contains(":") && (!date.contains("/") || !date.contains("-")))
-		{
-			ourFormat = new SimpleDateFormat("hh:mm");
-		}
-		else return cal;
-		try
-		{
-			cal = new GregorianCalendar();
-			cal.setTime(ourFormat.parse(date));
-			cal.setTimeZone(timezone);
-		}
-		catch (ParseException e)
-		{
-			System.err.println("Error encoding the date : "+e);
-			e.printStackTrace();
-		}
-		return cal;
 	}
 	
 	/**********************
