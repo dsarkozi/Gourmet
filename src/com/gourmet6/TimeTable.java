@@ -68,6 +68,9 @@ public class TimeTable {
 		return cal;
 	}
 	
+	/**********************
+	 * Getters and setters
+	 **********************/
 	public GregorianCalendar getOpenTime()
 	{
 		return this.openTime;

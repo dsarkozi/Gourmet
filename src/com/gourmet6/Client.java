@@ -28,54 +28,6 @@ public class Client {
 	}
 	
 	/**
-	 * @return email the client's email
-	 */
-	public String getEmail() 
-	{
-		return email;
-	}
-
-	/**
-	 * @param email the client's email
-	 */
-	public void setEmail(String email)
-	{
-		this.email = email;
-	}
-
-	/**
-	 * @return name the client's name
-	 */
-	public String getName() 
-	{
-		return name;
-	}
-
-	/**
-	 * @param name the client's name
-	 */
-	public void setName(String name) 
-	{
-		this.name = name;
-	}
-
-	/**
-	 * @return phone the client's phone
-	 */
-	public String getPhone() 
-	{
-		return phone;
-	}
-
-	/**
-	 * @param phone the client's phone
-	 */
-	public void setPhone(String phone) 
-	{
-		this.phone = phone;
-	}
-	
-	/**
 	 * Creates a reservation for the client.
 	 * @param time the time and date of the booking
 	 * @param people the number of people who will need a seat
@@ -110,6 +62,34 @@ public class Client {
 	 */
 	public Order createOrder(String restName)
 	{
-		return new Order(restName, this.name,this.email);
+		return new Order(restName, this.name, this.email);
+	}
+	
+	/**********************
+	 * Getters and setters
+	 **********************/
+	public String getEmail() 
+	{
+		return email;
+	}
+	public void setEmail(String email)
+	{
+		this.email = email;
+	}
+	public String getName() 
+	{
+		return name;
+	}
+	public void setName(String name) 
+	{
+		this.name = name;
+	}
+	public String getPhone() 
+	{
+		return phone;
+	}
+	public void setPhone(String phone) 
+	{
+		this.phone = phone;
 	}
 }

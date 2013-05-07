@@ -39,7 +39,7 @@ public class OrderActivity extends Activity {
 		Bundle extra = getIntent().getExtras();
 		this.fromRestaurant = extra.getBoolean("from");
 		
-		ListView list = (ListView) findViewById(R.id.listView1);
+		/*ListView list = (ListView) findViewById(R.id.listView1);
 		this.dishesname = this.current.getDishesNames();
 		list.setAdapter(new DishAdapter(this,R.layout.dish_list_element,dishesname));
 		
@@ -49,7 +49,7 @@ public class OrderActivity extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				//TODO make the list of the selected dishes				
 			}
-		});
+		});*/
 		
 		Button submit = (Button) findViewById(R.id.button1);
 		submit.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +113,7 @@ public class OrderActivity extends Activity {
 				
 				 holder = new ViewHolder();
 				 holder.name = (TextView) convertView.findViewById(R.id.dishname);
-				 holder.box = (CheckBox) convertView.findViewById(R.id.checkBox1);
+				 //holder.box = (CheckBox) convertView.findViewById(R.id.checkBox1);
 				 convertView.setTag(holder);
 				 
 			}

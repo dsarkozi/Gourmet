@@ -33,6 +33,7 @@ public class Reservation {
 		this.people = people;
 		this.name = name;
 		this.email = email;
+		this.order = null;
 	}
 	
 	/**
@@ -65,7 +66,6 @@ public class Reservation {
 	/**********************
 	 * Getters and setters
 	 **********************/
-
 	public String getReservationResName()
 	{
 		return restaurant;
@@ -110,11 +110,11 @@ public class Reservation {
 	{
 		this.people = people;
 	}
-	public Order getOrder()
+	public Order getReservationOrder()
 	{
 		return order;
 	}
-	public void setOrder(Order order)
+	public void setReservationOrder(Order order)
 	{
 		this.order = order;
 	}

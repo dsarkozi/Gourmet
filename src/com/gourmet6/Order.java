@@ -49,7 +49,6 @@ public class Order {
 	/**********************
 	 * Getters and setters
 	 **********************/
-
 	public String getOrderRestaurant()
 	{
 		return restaurant;
