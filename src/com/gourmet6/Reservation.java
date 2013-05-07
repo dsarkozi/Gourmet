@@ -66,7 +66,6 @@ public class Reservation {
 	/**********************
 	 * Getters and setters
 	 **********************/
-
 	public String getReservationResName()
 	{
 		return restaurant;
