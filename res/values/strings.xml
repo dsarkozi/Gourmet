@@ -15,5 +15,8 @@
     <string name="title_activity_dish_menu">DishMenuActivity</string>
     <string name="title_activity_dish_display">DishDisplayActivity</string>
     <string name="title_activity_town">TownActivity</string>
+    <string name="title_activity_client">ClientActivity</string>
+    <string name="title_activity_res_and_com">ResAndComActivity</string>
+    <string name="title_activity_pref">PrefActivity</string>
 
 </resources>
