@@ -58,7 +58,6 @@ public class DBHandler {
     public static final String QUANTITY = "quantity";
     public static final String RATING = "rating";
     public static final String RES = "resName";
-    public static final String RESERV_NR = "reservNr";
     public static final String INVENTORY = "inventory";
     public static final String SEATS = "seats";
     public static final String STREET = "street";
@@ -570,6 +569,7 @@ public class DBHandler {
 	{
 		this.openRead();
 		Cursor c;
+		Cursor d;
 		
 		c = db.query(TABLE_ORDER_OVERVIEW, new String[] {RES, MAIL}, "_id="+orderNr, null, null, null, null);
 		if (c.getColumnCount() > 1)
@@ -577,8 +577,47 @@ public class DBHandler {
 			System.err.println("Error : two or more orders seem to have the same number.");
 		}
 		c.moveToFirst();
-		Restaurant restaurant = 
+		String resName = c.getString(c.getColumnIndex(RES));
+		String mail = c.getString(c.getColumnIndex(MAIL));
 		
+		c = db.query(TABLE_CLIENT, new String[] {CLIENT}, MAIL+"='"+mail+"'", null, null, null, null);
+		if (c.getColumnCount() > 1)
+		{
+			System.err.println("Error : two or more client seem to have the same mail.");
+		}
+		c.moveToFirst();
+		String client = c.getString(c.getColumnIndex(CLIENT));
+		
+		c = db.query(TABLE_ORDER_DETAIL, new String[] {DISH, QUANTITY}, ORDER_NR+"="+orderNr, null, null, null, null);
+		ArrayList<Dish> dish = new ArrayList<Dish>(c.getCount());
+		c.moveToFirst();
+		while (!c.isAfterLast())
+		{
+			String dishName = c.getString(c.getColumnIndex(DISH));
+			int quantity = c.getInt(c.getColumnIndex(QUANTITY));
+			
+			d = db.query(TABLE_DISH, new String[] {TYPE, SUBTYPE, PRICE}, DISH+"='"+dishName+"' AND "+RES+"='"+resName+"'", null, null, null, null);
+			if (d.getCount() > 1)
+			{
+				System.err.println("Error : two or more dishes seem to have the same name and restaurant.");
+			}
+			String type = c.getString(c.getColumnIndex(TYPE));
+			String subtype = c.getString(c.getColumnIndex(SUBTYPE));
+			float price = c.getFloat(c.getColumnIndex(PRICE));
+			
+			d = db.query(TABLE_ALLERGEN, new String[] {ALLERGEN}, DISH+"='"+dishName+"'", null, null, null, null);
+			if (c.getCount() > 0) {
+				d.moveToFirst();
+				
+			}
+			
+			//Dish d = new Dish(dishName, type, subtype, price, 0, null,  )
+			
+			//public Dish(String name, String type, String subtype, float price, 
+			//		int inventory, String description, ArrayList<String> allergens)
+		}
+		
+		return new Order(null, null, null);
 	}
 	
 	
