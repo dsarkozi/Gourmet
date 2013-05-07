@@ -37,9 +37,7 @@ public class MainGourmet extends Activity
 			@Override
 			public void uncaughtException(Thread thread, Throwable ex)
 			{
-				final StringWriter stackTrace = new StringWriter();
-				ex.printStackTrace(new PrintWriter(stackTrace));
-				Log.e("MainGourmet", stackTrace.toString(), ex);
+				Log.e("MainGourmet", Log.getStackTraceString(ex), ex);
 				ExceptionHandler.kill();
 				/*runOnUiThread(new Runnable()
 				{

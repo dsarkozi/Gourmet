@@ -9,23 +9,23 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Process;
+import android.util.Log;
 
 public class ExceptionHandler
 {
 	
 	public static void caughtException(Context context, Throwable exception)
 	{
-		StringWriter stackTrace = new StringWriter();
-		exception.printStackTrace(new PrintWriter(stackTrace));
-		showDialog(context, true, stackTrace.toString());
+		Log.e("MainGourmet", Log.getStackTraceString(exception), exception);
+		showDialog(context, true, exception.getMessage());
 	}
 	
-	public static void showDialog(Context context, boolean isCaught, String stackTrace)
+	public static void showDialog(Context context, boolean isCaught, String message)
 	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		if (isCaught) builder.setTitle(R.string.caught_exception);
 		else builder.setTitle(R.string.uncaught_exception);
-		builder.setMessage(stackTrace);
+		builder.setMessage(message + "\n" + "Please see the LogCat for more informations.");
 		builder.setPositiveButton(android.R.string.ok, new OnClickListener()
 		{
 			
