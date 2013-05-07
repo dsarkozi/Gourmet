@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
@@ -146,18 +147,9 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 	}
 	
 	private class Subgroupe{
-		private Groupe grp;
 		private String subtype;
 		private ArrayList<DishElem> dishlist;
 		
-		public Groupe getGrp() 
-		{
-			return grp;
-		}
-		public void setGrp(Groupe grp) 
-		{
-			this.grp = grp;
-		}
 		public String getSubtype() 
 		{
 			return subtype;
@@ -244,6 +236,10 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 				dholder = (DishViewHolder) convertView.getTag();
 			}
 			
+			dholder.name.setText(dish.getName());
+			dholder.price.setText(String.valueOf(currentdish.getPrice()));
+			dholder.count.setText("Stock:"+String.valueOf(currentdish.getInventory()));
+			
 			if(fromOrder){
 				dholder.plus.setVisibility(View.VISIBLE);
 				dholder.plus.setClickable(true);
@@ -251,8 +247,23 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 				dholder.minus.setClickable(true);
 			}
 			
-			dholder.name.setText(dish.getName());
-			dholder.price.setText(String.valueOf(currentdish.getPrice()));
+			dholder.plus.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			
+			dholder.plus.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 			
 			return convertView;
 		}
