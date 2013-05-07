@@ -11,7 +11,7 @@ import java.util.GregorianCalendar;
  */
 public class Reservation {
 	
-	private Restaurant restaurant;
+	private String restaurant;
 	private String name;
 	private String email;
 	private GregorianCalendar date;
@@ -26,10 +26,10 @@ public class Reservation {
 	 * @param name the name with which to address the client
 	 * @param email the email related to the account from which the booking was made
 	 */
-	public Reservation(Restaurant restaurant, String date, int people, String name, String email)
+	public Reservation(String restaurant, String date, int people, String name, String email)
 	{
 		this.restaurant = restaurant;
-		this.date = restaurant.parseDate(date);
+		this.date = parseDate(date);
 		this.people = people;
 		this.name = name;
 		this.email = email;
@@ -44,7 +44,7 @@ public class Reservation {
 	 * @param email the email related to the account from which the booking was made
 	 * @param order the order bound to this booking
 	 */
-	public Reservation(Restaurant restaurant, String date, int people, String name, String email, Order order)
+	public Reservation(String restaurant, String date, int people, String name, String email, Order order)
 	{
 		this.restaurant = restaurant;
 		this.date = restaurant.parseDate(date);
@@ -66,11 +66,11 @@ public class Reservation {
 	 * Getters and setters
 	 **********************/
 
-	public Restaurant getReservationResName()
+	public String getReservationResName()
 	{
 		return restaurant;
 	}
-	public void setReservationRestaurant(Restaurant restaurant)
+	public void setReservationRestaurant(String restaurant)
 	{
 		this.restaurant = restaurant;
 	}
@@ -96,7 +96,7 @@ public class Reservation {
 	}
 	public void setReservationDate(String date)
 	{
-		this.date = restaurant.parseDate(date);
+		this.date = parseDate(date);
 	}
 	public void setReservationDate(GregorianCalendar date)
 	{
