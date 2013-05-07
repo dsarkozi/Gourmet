@@ -350,7 +350,6 @@ public class DBHandler {
 	{
 		this.openRead();
 		Cursor c;
-		Cursor d;
 		
 		c = db.query(TABLE_DISH, new String[] {DISH, RES, TYPE, SUBTYPE, DESCRIPTION, INVENTORY, PRICE},
 				RES+"='"+resName+"'", null, null, null, " CASE "+TYPE+" WHEN 'Entrées' THEN 1 WHEN 'Plats' THEN 2"+
@@ -368,20 +367,7 @@ public class DBHandler {
 			float price = c.getFloat(c.getColumnIndex(PRICE));
 			
 			// the dish's allergens
-			d = db.query(TABLE_ALLERGEN, new String[]{ALLERGEN}, RES+"='"+resName+"' AND "+DISH+"='"+dishName+"'",
-					null, null, null, ALLERGEN);
-			ArrayList<String> allergens = new ArrayList<String>();
-			if (d.getCount() > 0 )
-			{
-				d.moveToFirst();
-				while (!d.isAfterLast())
-				{
-					allergens.add(c.getString(1));
-					d.moveToNext();
-				}
-			} else {
-				allergens = null;
-			}
+			ArrayList<String> allergens = this.searchForAllergens(resName, dishName);
 			
 			// new dish object
 			Dish dish = new Dish(dishName, type, subtype, price, inventory, description, allergens);
@@ -571,6 +557,7 @@ public class DBHandler {
 		Cursor c;
 		Cursor d;
 		
+		// information held by the order_overview table
 		c = db.query(TABLE_ORDER_OVERVIEW, new String[] {RES, MAIL}, "_id="+orderNr, null, null, null, null);
 		if (c.getColumnCount() > 1)
 		{
@@ -580,6 +567,7 @@ public class DBHandler {
 		String resName = c.getString(c.getColumnIndex(RES));
 		String mail = c.getString(c.getColumnIndex(MAIL));
 		
+		// information held by the client table
 		c = db.query(TABLE_CLIENT, new String[] {CLIENT}, MAIL+"='"+mail+"'", null, null, null, null);
 		if (c.getColumnCount() > 1)
 		{
@@ -588,14 +576,19 @@ public class DBHandler {
 		c.moveToFirst();
 		String client = c.getString(c.getColumnIndex(CLIENT));
 		
+		// new Order, will be returned
+		Order retour = new Order(resName, client, mail);
+		
+		// information held by the order_detail table
 		c = db.query(TABLE_ORDER_DETAIL, new String[] {DISH, QUANTITY}, ORDER_NR+"="+orderNr, null, null, null, null);
-		ArrayList<Dish> dish = new ArrayList<Dish>(c.getCount());
+		ArrayList<Dish> dishes = new ArrayList<Dish>(c.getCount());
 		c.moveToFirst();
 		while (!c.isAfterLast())
 		{
 			String dishName = c.getString(c.getColumnIndex(DISH));
 			int quantity = c.getInt(c.getColumnIndex(QUANTITY));
 			
+			// information held by the dish table
 			d = db.query(TABLE_DISH, new String[] {TYPE, SUBTYPE, PRICE}, DISH+"='"+dishName+"' AND "+RES+"='"+resName+"'", null, null, null, null);
 			if (d.getCount() > 1)
 			{
@@ -605,19 +598,18 @@ public class DBHandler {
 			String subtype = c.getString(c.getColumnIndex(SUBTYPE));
 			float price = c.getFloat(c.getColumnIndex(PRICE));
 			
-			d = db.query(TABLE_ALLERGEN, new String[] {ALLERGEN}, DISH+"='"+dishName+"'", null, null, null, null);
-			if (c.getCount() > 0) {
-				d.moveToFirst();
+			// information held by the allergen table
+			ArrayList<String> allergens = this.searchForAllergens(resName, dishName);
 				
-			}
 			
-			//Dish d = new Dish(dishName, type, subtype, price, 0, null,  )
-			
-			//public Dish(String name, String type, String subtype, float price, 
-			//		int inventory, String description, ArrayList<String> allergens)
+			Dish dish = new Dish(dishName, type, subtype, price, 0, null, allergens);
+			dish.setQuantity(quantity);
+			dishes.add(dish);
 		}
-		
-		return new Order(null, null, null);
+		retour.setOrderDishes(dishes);
+
+		this.close();
+		return retour;
 	}
 	
 	
@@ -627,6 +619,39 @@ public class DBHandler {
 	 * Reservations
 	 *
 	 **************/
+	
+	
+	
+	
+	
+	/*******************
+	 * Internal methods
+	 *******************/
+	
+	private ArrayList<String> searchForAllergens(String resName, String dishName) throws SQLiteException
+	{
+		// information held by the allergen table
+		Cursor c = db.query(TABLE_ALLERGEN, new String[]{ALLERGEN}, RES+"='"+resName+"' AND "+DISH+"='"+dishName+"'",
+				null, null, null, ALLERGEN);
+		int count = c.getCount();
+		if (count == 0)
+			return null;
+		
+		ArrayList<String> allergens = new ArrayList<String>(count);
+		c.moveToFirst();
+		while (!c.isAfterLast())
+		{
+			allergens.add(c.getString(1));
+			c.moveToNext();
+		}
+
+		return allergens;
+	}
+	
+	
+	
+	
+	
 	
 	/* NULL value safe DB access methods */
 	// UTILITE ?
