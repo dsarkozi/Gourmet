@@ -356,6 +356,13 @@ public class Restaurant {
 		return (timeTableOk && res.getReservationPeople()<=availableSeats);
 	}
 	
+	public void Orderreboot()
+	{
+		for(Dish d : this.listDishes)
+		{
+			d.setQuantity(0);
+		}
+	}
 	/**********************
 	 * Getters and setters
 	 **********************/

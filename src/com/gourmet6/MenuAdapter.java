@@ -2,6 +2,7 @@ package com.gourmet6;
 
 import java.util.ArrayList;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.TextView;
 
 public class MenuAdapter extends BaseExpandableListAdapter{
@@ -16,7 +18,7 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 	private Context context;
 	private LayoutInflater inflater;
 	private Restaurant current;
-	private ArrayList<Groupe> list;
+	private ArrayList<Groupe> list = populateType(current.getDishesTypes());
 	private boolean fromOrder = false;
 	
 	public MenuAdapter (Context c, Restaurant current, boolean fromOrder){
@@ -40,11 +42,21 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 	@Override
 	public View getChildView(int groupPosition, int childPosition,boolean isLastChild, View convertView, ViewGroup parent) {
 		//TODO
-		
 		ExpandableListView dev = (ExpandableListView) getChild(groupPosition,childPosition);
 		
 		dev.setAdapter(new ChildAdapter(context, ((Groupe)getGroup(groupPosition)).getSub()));
-		
+		if(!fromOrder){
+			dev.setOnChildClickListener(new OnChildClickListener() {
+			
+				@Override
+				public boolean onChildClick(ExpandableListView parent, View v,int groupPosition, int childPosition, long id) {
+
+					Intent display = new Intent(context, DishDisplayActivity.class);
+					context.startActivity(display);
+					return true;
+				}
+			});
+		}
 		convertView = dev;
 		
 		return convertView;
@@ -136,30 +148,16 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 			return type;
 		}
 		
-		public void setType(String type) 
-		{
-			this.type = type;
-		}
-		
 		public ExpandableListView getSubtypes() 
 		{
 			return subtypes;
 		}
-		
-		public void setSubtypes(ExpandableListView subtypes) 
-		{
-			this.subtypes = subtypes;
-		}
-		
+
 		public ArrayList<Subgroupe> getSub() 
 		{
 			return subtypelist;
 		}
-		
-		public void setSub(ArrayList<Subgroupe> subtypes) 
-		{
-			this.subtypelist = subtypes;
-		}
+	
 	}
 	
 	private class Subgroupe{
@@ -176,17 +174,9 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 		{
 			return subtype;
 		}
-		public void setSubtype(String subtype) 
-		{
-			this.subtype = subtype;
-		}
 		public ArrayList<Dish> getDishlist() 
 		{
 			return dishlist;
-		}
-		public void setDishlist(ArrayList<Dish> dishlist) 
-		{
-			this.dishlist = dishlist;
 		}
 	}
 
@@ -240,7 +230,7 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 
 		@Override
 		public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-			DishViewHolder dholder;
+			final DishViewHolder dholder;
 			
 			final Dish currentdish = (Dish) getChild(groupPosition, childPosition);
 			
@@ -277,6 +267,7 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 					if(currentdish.getQuantity() < currentdish.getInventory())
 					{
 						currentdish.setQuantity(currentdish.getQuantity() + 1 );
+						dholder.count.setText(currentdish.getQuantity());
 					}
 				}
 			});
@@ -286,7 +277,11 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					
+					if(currentdish.getQuantity() > 0)
+					{
+						currentdish.setQuantity(currentdish.getQuantity() - 1 );
+						dholder.count.setText(currentdish.getQuantity());
+					}
 				}
 			});
 			
