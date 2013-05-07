@@ -1,8 +1,5 @@
 package com.gourmet6;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;

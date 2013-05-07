@@ -1,7 +1,5 @@
 package com.gourmet6;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.lang.Thread.UncaughtExceptionHandler;
 
 import android.app.Activity;
