@@ -17,8 +17,6 @@ import android.widget.ListView;
 public class MainGourmet extends Activity
 {
 	@SuppressWarnings("unused")
-	private String[] towns;
-	@SuppressWarnings("unused")
 	private String currentTown;
 	private String[] restaurants;
 	@SuppressWarnings("unused")
@@ -104,6 +102,18 @@ public class MainGourmet extends Activity
 						//showTowns();
 					}
 				});
+	}
+
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+	}
+
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
 	}
 
 	@Override

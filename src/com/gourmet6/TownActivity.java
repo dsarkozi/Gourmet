@@ -2,19 +2,19 @@ package com.gourmet6;
 
 import android.annotation.TargetApi;
 import android.app.ListActivity;
-import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 
 public class TownActivity extends ListActivity
 {
 
 	private DBHandler dbHand;
+	private String[] towns;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -31,13 +31,10 @@ public class TownActivity extends ListActivity
 	protected void onStart()
 	{
 		super.onStart();
-		//TODO
-		// utiliser la méthode de DBHandler
-		Cursor query = dbHand.db.query(true, "restaurant", new String[]
-		{ "1 _id","town" }, null, null, null, null, null, null);
-		ListAdapter adapter = new SimpleCursorAdapter(this,
-				android.R.layout.simple_list_item_1, query, 
-				new String[] { "town" }, new int[] {android.R.id.text1},0);
+		towns = dbHand.getTowns();
+		ListAdapter adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, 
+				towns);
 		setListAdapter(adapter);
 	}
 
