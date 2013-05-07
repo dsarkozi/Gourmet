@@ -20,39 +20,49 @@ public class TimeTable {
 	
 	public TimeTable(String openTime, String closingTime)
 	{
-		this.openTime = parseHour(openTime);
-		this.closingTime = parseHour(closingTime);
+		this.openTime = parseDate(openTime);
+		this.closingTime = parseDate(closingTime);
 	}
 	
+	/***********************
+	 * Formatting functions
+	 ***********************/
 	/**
-	 * 
-	 * @param date
-	 * @return Cette fonction transforme un String jour en une hour GregorianCalendar.
-	 * Cette fonction supporte 1 format :
-	 * hh:mm
-	 * Si ces formats ne sont pas respectes, ou qu'elle ne reussit pas la conversion, elle renvoit null.
+	 * Formats a String containing a date and/or time into a GregorianCalendar object representing the date.
+	 * @param date the date to parse, may be one of the following 3 formats :
+	 * 			dd/MM/yyyy hh:mm
+	 * 			dd-MM-yyyy hh:mm
+	 * 			hh:mm  
+	 * @return a GregorianCalendar representing the date originally contained in the String.
+	 * 		   If the format is not respected, returns null.
 	 */
 	@SuppressLint("SimpleDateFormat")
-	public GregorianCalendar parseHour(String hour)
-	{
+	public static GregorianCalendar parseDate(String date){
 		SimpleDateFormat ourFormat;
 		TimeZone timezone = TimeZone.getDefault();
 		GregorianCalendar cal = null;
-		if (hour.contains(":") && (!hour.contains("/") || !hour.contains("-")))
+		if (date.contains("/") && date.contains(":"))
+		{
+			ourFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+		}
+		else if (date.contains("-") && date.contains(":"))
+		{
+			ourFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+		}
+		else if (date.contains(":") && (!date.contains("/") || !date.contains("-")))
 		{
 			ourFormat = new SimpleDateFormat("hh:mm");
 		}
-		else 
-			return cal;
+		else return cal;
 		try
 		{
 			cal = new GregorianCalendar();
-			cal.setTime(ourFormat.parse(hour));
+			cal.setTime(ourFormat.parse(date));
 			cal.setTimeZone(timezone);
 		}
 		catch (ParseException e)
 		{
-			System.out.println("Error encoding the date : "+e);
+			System.err.println("Error encoding the date : "+e);
 			e.printStackTrace();
 		}
 		return cal;
@@ -68,7 +78,7 @@ public class TimeTable {
 	}
 	public void setOpenTime(String openTime)
 	{
-		this.openTime = parseHour(openTime);
+		this.openTime = parseDate(openTime);
 	}
 	public GregorianCalendar getClosingTime()
 	{
@@ -80,6 +90,6 @@ public class TimeTable {
 	}
 	public void setClosingTime(String closingTime)
 	{
-		this.closingTime = parseHour(closingTime);
+		this.closingTime = parseDate(closingTime);
 	}
 }

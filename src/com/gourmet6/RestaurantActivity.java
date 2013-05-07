@@ -21,7 +21,8 @@ import android.os.Build;
 
 //Il me dit que la gallery n'est plus valable à partir de l'API 16...
 @SuppressWarnings("deprecation") 
-public class RestaurantActivity extends Activity implements RatingBar.OnRatingBarChangeListener {
+public class RestaurantActivity extends Activity implements RatingBar.OnRatingBarChangeListener
+{
 	
 	private Gourmet g = (Gourmet)getApplication();
 	private Restaurant current = null;

@@ -29,7 +29,7 @@ public class Reservation {
 	public Reservation(String restaurant, String date, int people, String name, String email)
 	{
 		this.restaurant = restaurant;
-		this.date = parseDate(date);
+		this.date = TimeTable.parseDate(date);
 		this.people = people;
 		this.name = name;
 		this.email = email;
@@ -47,7 +47,7 @@ public class Reservation {
 	public Reservation(String restaurant, String date, int people, String name, String email, Order order)
 	{
 		this.restaurant = restaurant;
-		this.date = restaurant.parseDate(date);
+		this.date = TimeTable.parseDate(date);
 		this.people = people;
 		this.name = name;
 		this.email = email;
@@ -96,7 +96,7 @@ public class Reservation {
 	}
 	public void setReservationDate(String date)
 	{
-		this.date = parseDate(date);
+		this.date = TimeTable.parseDate(date);
 	}
 	public void setReservationDate(GregorianCalendar date)
 	{
