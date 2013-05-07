@@ -300,8 +300,8 @@ public class Restaurant {
 	 * Renvoit false sinon.
 	 */
 	public boolean checkReservation(Reservation res){
-		if(res.getOrder()!=null){
-			for(Dish dish : res.getOrder().getOrderDishes()){
+		if(res.getReservationOrder()!=null){
+			for(Dish dish : res.getReservationOrder().getOrderDishes()){
 				if(dish.getQuantity()>dish.getInventory()) return false;
 			}
 		}

@@ -29,49 +29,49 @@ public class DBHandler {
 	 */
 	
 	/* Tables */
-	public static final String TABLE_ALLERGEN = "allergen";
-	public static final String TABLE_CLIENT = "client";
-	public static final String TABLE_CUISINE = "cuisine";
-	public static final String TABLE_DISH = "dish";
-	public static final String TABLE_ORDER_DETAIL = "order_detail";
-	public static final String TABLE_ORDER_OVERVIEW = "order_overview";
-	public static final String TABLE_RESERVATION = "reservation";
-	public static final String TABLE_RESTAURANT = "restaurant";
-	public static final String TABLE_TIMETABLE = "timetable";
+	private static final String TABLE_ALLERGEN = "allergen";
+	private static final String TABLE_CLIENT = "client";
+	private static final String TABLE_CUISINE = "cuisine";
+	private static final String TABLE_DISH = "dish";
+	private static final String TABLE_ORDER_DETAIL = "order_detail";
+	private static final String TABLE_ORDER_OVERVIEW = "order_overview";
+	private static final String TABLE_RESERVATION = "reservation";
+	private static final String TABLE_RESTAURANT = "restaurant";
+	private static final String TABLE_TIMETABLE = "timetable";
 	
 	/* Column names */
-    public static final String ALLERGEN = "alleName";
-    public static final String AVAIL = "avail";
-	public static final String CHAIN = "chainName";
-    public static final String CLIENT = "cliName";
-    public static final String DATETIME = "datetime";
-    public static final String DAY = "day";
-    public static final String DESCRIPTION = "description";
-    public static final String DISH = "dishName";
-    public static final String LAT = "lat";
-    public static final String LONG = "long";
-    public static final String MAIL = "mail";
-    public static final String ORDER_NR = "orderNr";
-    public static final String PRICE = "price";
-    public static final String PRICE_CAT = "priceCat";
-    public static final String PASSWORD = "password";
-    public static final String QUANTITY = "quantity";
-    public static final String RATING = "rating";
-    public static final String RES = "resName";
-    public static final String INVENTORY = "inventory";
-    public static final String SEATS = "seats";
-    public static final String STREET = "street";
-    public static final String SUBTYPE = "subtype";
-    public static final String TEL = "tel";
-    public static final String TIME_OPEN = "timeOpen";
-    public static final String TIME_CLOSE = "timeClose";
-    public static final String TOWN = "town";
-    public static final String TYPE = "type";
-    public static final String VOTES = "votes";
-    public static final String ZIP = "zip";
+	private static final String ALLERGEN = "alleName";
+	private static final String AVAIL = "avail";
+	private static final String CHAIN = "chainName";
+	private static final String CLIENT = "cliName";
+	private static final String DATETIME = "datetime";
+	private static final String DAY = "day";
+	private static final String DESCRIPTION = "description";
+    private static final String DISH = "dishName";
+    private static final String LAT = "lat";
+    private static final String LONG = "long";
+    private static final String MAIL = "mail";
+    private static final String ORDER_NR = "orderNr";
+    private static final String PRICE = "price";
+    private static final String PRICE_CAT = "priceCat";
+    private static final String PASSWORD = "password";
+    private static final String QUANTITY = "quantity";
+    private static final String RATING = "rating";
+    private static final String RES = "resName";
+    private static final String INVENTORY = "inventory";
+    private static final String SEATS = "seats";
+    private static final String STREET = "street";
+    private static final String SUBTYPE = "subtype";
+    private static final String TEL = "tel";
+    private static final String TIME_OPEN = "timeOpen";
+    private static final String TIME_CLOSE = "timeClose";
+    private static final String TOWN = "town";
+    private static final String TYPE = "type";
+    private static final String VOTES = "votes";
+    private static final String ZIP = "zip";
     
-    // helps managing the timetables given a certain day
-    static public HashMap<String,Integer> weekMap = new HashMap<String,Integer>();
+    /* helps managing the timetables given a certain day */
+    static public HashMap<String,Integer> weekMap = new HashMap<String,Integer>(7);
     static {
     	weekMap.put("dimanche", 0);
     	weekMap.put("lundi", 1);
@@ -103,12 +103,12 @@ public class DBHandler {
 	 */
 	public void openRead() throws SQLiteException
 	{
-		if (!read)
+		if (!this.read)
 		{
 			db = dbHelper.getReadableDatabase();
 			
 		}
-		read = true;
+		this.read = true;
 	}
 	
 	/**
@@ -116,11 +116,11 @@ public class DBHandler {
 	 */
 	public void openWrite() throws SQLiteException
 	{
-		if(!write)
+		if(!this.write)
 		{
 			db = dbHelper.getWritableDatabase();
 		}
-		write = true; read = true;
+		this.write = true; this.read = true;
 	}
 	
 	/**
@@ -128,8 +128,8 @@ public class DBHandler {
 	 */
 	public void close()
 	{
-		db.close();
-		read = false; write = false;
+		this.dbHelper.close();
+		this.read = false; this.write = false;
 	}
 	
 	
@@ -143,6 +143,7 @@ public class DBHandler {
 	 * Returns an ArrayList of the distinct towns known by the DB.
 	 * @return a String ArrayList containing the names of all the known towns
 	 * in alphabetical order.
+	 * @throws SQLiteException
 	 */
 	public String[] getTowns() throws SQLiteException
 	{
@@ -167,6 +168,7 @@ public class DBHandler {
 	 * sorted in alphabetically.
 	 * @param town a town in which to search restaurants
 	 * @return an String ArrayList containing all the town names; if town is null, returns all the towns.
+	 * @throws SQLiteException
 	 */
 	public ArrayList<String> getAllResNames(String town) throws SQLiteException
 	{
@@ -195,6 +197,7 @@ public class DBHandler {
 	 * Returns a restaurant object based on his name in the DB.
 	 * @param name
 	 * @return the Restaurant corresponding to name, without his dishes
+	 * @throws SQLiteException
 	 */
 	public Restaurant getRestaurant(String name) throws SQLiteException
 	{
@@ -277,6 +280,7 @@ public class DBHandler {
 	 * @param rating the new rating, must be between 0 and 5
 	 * @param votes the new number of votes, must be > 0
 	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occurred
+	 * @throws SQLiteException
 	 */
 	public long rateRestaurant (String resName, float rating, int votes) throws SQLiteException
 	{
@@ -294,14 +298,23 @@ public class DBHandler {
 			throw new SQLiteException("Error : no restaurant name given for request");
 		}
 		
+		long nrRows = -1;
 		this.openWrite();
+		db.beginTransaction();
+		try
+		{
+			ContentValues insertValues = new ContentValues(2);
+			insertValues.put(RATING, rating);
+			insertValues.put(VOTES, votes+1);
+			nrRows = db.update(TABLE_RESTAURANT, insertValues, RES+"='"+resName+"'", null);
+			db.setTransactionSuccessful();
+		}
+		finally
+		{
+			db.endTransaction();
+			this.close();
+		}
 
-		ContentValues insertValues = new ContentValues(2);
-		insertValues.put(RATING, rating);
-		insertValues.put(VOTES, votes+1);
-		long nrRows = db.update(TABLE_RESTAURANT, insertValues, RES+"='"+resName+"'", null);
-		
-		this.close();
 		return nrRows;
 	}
 	
@@ -309,6 +322,7 @@ public class DBHandler {
 	 * @param resName the name of the restaurant, must not be null
 	 * @param newAvail the new number of available seats, must be >= 0
 	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occurred
+	 * @throws SQLiteException
 	 */
 	public long updateAvail (String resName, short newAvail) throws SQLiteException
 	{
@@ -322,13 +336,22 @@ public class DBHandler {
 			throw new SQLiteException("Error : no restaurant name given for request");
 		}
 		
+		long nrRows = -1;
 		this.openWrite();
+		db.beginTransaction();
+		try
+		{
+			ContentValues insertValues = new ContentValues(1);
+			insertValues.put(AVAIL, newAvail);
+			nrRows = db.update(TABLE_RESTAURANT, insertValues, RES+"='"+resName+"'", null);
+			db.setTransactionSuccessful();
+		}
+		finally
+		{
+			db.endTransaction();
+			this.close();
+		}
 		
-		ContentValues insertValues = new ContentValues(1);
-		insertValues.put(AVAIL, newAvail);
-		long nrRows = db.update(TABLE_RESTAURANT, insertValues, RES+"='"+resName+"'", null);
-		
-		this.close();
 		return nrRows;
 	}
 
@@ -345,6 +368,7 @@ public class DBHandler {
 	 * and the alphabetically.
 	 * @param resName the name of the restaurant
 	 * @return the arraylist of all the dishes served in the restaurant resName
+	 * @throws SQLiteException
 	 */
 	public ArrayList<Dish> getDishes(String resName) throws SQLiteException
 	{
@@ -372,6 +396,7 @@ public class DBHandler {
 			// new dish object
 			Dish dish = new Dish(dishName, type, subtype, price, inventory, description, allergens);
 			dishes.add(dish);
+			
 			c.moveToNext();
 		}
 		
@@ -428,6 +453,7 @@ public class DBHandler {
 	 * @param password, must not be null
 	 * @param tel
 	 * @return if -1, then error; otherwise the new rowId
+	 * @throws SQLiteException
 	 */
 	public long addClient (String mail, String name, String password, String tel) throws SQLiteException
 	{
@@ -437,16 +463,25 @@ public class DBHandler {
 			throw new SQLiteException("Arguments missing!");
 		}
 		
+		long rowId = -1;
 		this.openWrite();
-
-		ContentValues insertValues = new ContentValues(4);
-		insertValues.put(MAIL, mail);
-		insertValues.put(CLIENT, name);
-		insertValues.put(PASSWORD, password);
-		insertValues.put(TEL, tel);
-		long rowId = db.insertOrThrow(TABLE_CLIENT, TEL, insertValues);
+		db.beginTransaction();
+		try
+		{
+			ContentValues insertValues = new ContentValues(4);
+			insertValues.put(MAIL, mail);
+			insertValues.put(CLIENT, name);
+			insertValues.put(PASSWORD, password);
+			insertValues.put(TEL, tel);
+			rowId = db.insertOrThrow(TABLE_CLIENT, TEL, insertValues);
+			db.setTransactionSuccessful();
+		}
+		finally
+		{
+			db.endTransaction();
+			this.close();
+		}
 		
-		this.close();
 		return rowId;
 	}
 	
@@ -465,13 +500,22 @@ public class DBHandler {
 			throw new SQLiteException("Arguments missing!");
 		}
 		
+		long nrRows = -1;
 		this.openWrite();
+		db.beginTransaction();
+		try
+		{
+			ContentValues insertValues = new ContentValues(1);
+			insertValues.put(MAIL, newMail);
+			nrRows = db.update(TABLE_CLIENT, insertValues, MAIL+"='"+oldMail+"'", null);
+			db.setTransactionSuccessful();
+		}
+		finally
+		{
+			db.endTransaction();
+			this.close();
+		}
 		
-		ContentValues insertValues = new ContentValues(1);
-		insertValues.put(MAIL, newMail);
-		long nrRows = db.update(TABLE_CLIENT, insertValues, MAIL+"='"+oldMail+"'", null);
-		
-		this.close();
 		return nrRows;
 	}
 	
@@ -490,16 +534,32 @@ public class DBHandler {
 			throw new SQLiteException("Arguments missing!");
 		}
 
+		long nrRows = -1;
 		this.openWrite();
-		
-		ContentValues insertValues = new ContentValues(1);
-		insertValues.put(CLIENT, newName);
-		long nrRows = db.update(TABLE_CLIENT, insertValues, MAIL+"='"+mail+"'", null);
+		db.beginTransaction();
+		try
+		{	
+			ContentValues insertValues = new ContentValues(1);
+			insertValues.put(CLIENT, newName);
+			nrRows = db.update(TABLE_CLIENT, insertValues, MAIL+"='"+mail+"'", null);
+			db.setTransactionSuccessful();
+		}
+		finally
+		{
+			db.endTransaction();
+			this.close();
+		}
 
-		this.close();
 		return nrRows;
 	}
 	
+	/**
+	 * Changes a client's password in the DB
+	 * @param mail the client's mail
+	 * @param newPassword the client's new password
+	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occurred
+	 * @throws SQLiteException
+	 */
 	public long changePassword (String mail, String newPassword) throws SQLiteException
 	{
 		// throws an exception if the mandatory information is not given
@@ -508,13 +568,21 @@ public class DBHandler {
 			throw new SQLiteException("Arguments missing!");
 		}
 		
+		long nrRows = -1;
 		this.openWrite();
+		db.beginTransaction();
+		try {
+			ContentValues insertValues = new ContentValues(1);
+			insertValues.put(PASSWORD, newPassword);
+			nrRows = db.update(TABLE_CLIENT, insertValues, MAIL+"='"+mail+"'", null);
+			db.setTransactionSuccessful();
+		}
+		finally
+		{
+			db.endTransaction();
+			this.close();
+		}
 		
-		ContentValues insertValues = new ContentValues(1);
-		insertValues.put(PASSWORD, newPassword);
-		long nrRows = db.update(TABLE_CLIENT, insertValues, MAIL+"='"+mail+"'", null);
-		
-		this.close();
 		return nrRows;
 	}
 	
@@ -533,13 +601,21 @@ public class DBHandler {
 			throw new SQLiteException("Arguments missing!");
 		}
 		
+		long nrRows = -1;
 		this.openWrite();
+		db.beginTransaction();
+		try
+		{
+			ContentValues insertValues = new ContentValues(1);
+			insertValues.put(TEL, newTel);
+			nrRows = db.update(TABLE_CLIENT, insertValues, MAIL+"='"+mail+"'", null);
+			db.setTransactionSuccessful();
+		} finally
+		{
+			db.endTransaction();
+			this.close();
+		}
 		
-		ContentValues insertValues = new ContentValues(1);
-		insertValues.put(TEL, newTel);
-		long nrRows = db.update(TABLE_CLIENT, insertValues, MAIL+"='"+mail+"'", null);
-		
-		this.close();
 		return nrRows;
 	}
 	
@@ -550,10 +626,140 @@ public class DBHandler {
 	 * Orders
 	 *
 	 *********/
-	
-	public Order getOrder(int orderNr) throws SQLiteException
+	/**
+	 * Gets all the orders a client has ever made that are known to the DB.
+	 * @param mail the client's mail
+	 * @return  an ArrayList containing all orders relative to a client.
+	 * All dishes are included (excepted their description and inventory).
+	 * @throws SQLiteException
+	 */
+	public ArrayList<Order> getClientOrders(String mail) throws SQLiteException
 	{
 		this.openRead();
+		Cursor c;
+		
+		// information held by the table order_overview
+		c = db.query(TABLE_ORDER_OVERVIEW, new String[] {"_id"}, MAIL+"='"+mail+"'", null, null, null, null);
+		int count = c.getCount();
+		if (count == 0) {
+			this.close();
+			return null;
+		}
+		
+		ArrayList<Order> orders = new ArrayList<Order>(count);
+		c.moveToFirst();
+		while (!c.isAfterLast())
+		{
+			int orderNr = c.getInt(c.getColumnIndex("_id"));
+			Order order = getOrder(orderNr);
+			orders.add(order);
+			
+			c.moveToNext();
+		}
+		
+		this.close();
+		return orders;
+	}
+	
+	
+	
+	/**************
+	 * 
+	 * Reservations
+	 *
+	 **************/
+	
+	/**
+	 * Gets all the reservations a client has ever made that are known to the DB.
+	 * @param mail the client's mail
+	 * @return an ArrayList containing all the reservations relative to a client.
+	 * If a reservation holds an order, it is contained.
+	 * @throws SQLiteException
+	 */
+	public ArrayList<Reservation> getClientReservations(String mail) throws SQLiteException
+	{
+		this.openRead();
+		Cursor c;
+		
+		// information held by the client table
+		String client = this.getClientName(mail);
+		
+		// information held by the reservation table
+		c = db.query(TABLE_RESERVATION, new String[] {RES, ORDER_NR, DATETIME, SEATS}, MAIL+"='"+mail+"'", null, null, null, DATETIME);
+		int count = c.getCount();
+		if (count == 0)
+		{
+			this.close();
+			return null;
+		}
+		
+		ArrayList<Reservation> reservations = new ArrayList<Reservation>(count);
+		c.moveToFirst();
+		while (!c.isAfterLast())
+		{
+			String resName = c.getString(c.getColumnIndex(RES));
+			String datetime = c.getString(c.getColumnIndex(DATETIME));
+			int seats = c.getInt(c.getColumnIndex(SEATS));
+			
+			// new Reservation
+			Reservation reserv = new Reservation(resName, datetime, seats, client, mail);
+			
+			// adds the corresponding order if there is one
+			if (!c.isNull(c.getColumnIndex(ORDER_NR)))
+			{
+				int orderNr = c.getInt(c.getColumnIndex(ORDER_NR));
+				Order order = getOrder(orderNr);
+				reserv.setReservationOrder(order);
+			}
+			
+			c.moveToNext();
+		}
+		
+		this.close();
+		return reservations;
+	}
+
+	
+	/*******************
+	 * Internal methods
+	 *******************/
+	
+	private ArrayList<String> searchForAllergens(String resName, String dishName)
+	{
+		// information held by the allergen table
+		Cursor c = db.query(TABLE_ALLERGEN, new String[]{ALLERGEN}, RES+"='"+resName+"' AND "+DISH+"='"+dishName+"'",
+				null, null, null, ALLERGEN);
+		int count = c.getCount();
+		if (count == 0)
+			return null;
+		
+		ArrayList<String> allergens = new ArrayList<String>(count);
+		c.moveToFirst();
+		while (!c.isAfterLast())
+		{
+			allergens.add(c.getString(c.getColumnIndex(ALLERGEN)));
+			c.moveToNext();
+		}
+
+		return allergens;
+	}
+	
+	private String getClientName(String mail)
+	{
+		// information held by the client table
+		Cursor c = db.query(TABLE_CLIENT, new String[] {CLIENT}, MAIL+"='"+mail+"'", null, null, null, null);
+		if (c.getColumnCount() > 1)
+		{
+			System.err.println("Error : two or more client seem to have the same mail.");
+		}
+		c.moveToFirst();
+		String name = c.getString(c.getColumnIndex(CLIENT));
+		
+		return name;
+	}
+	
+	private Order getOrder(int orderNr)
+	{		
 		Cursor c;
 		Cursor d;
 		
@@ -568,13 +774,7 @@ public class DBHandler {
 		String mail = c.getString(c.getColumnIndex(MAIL));
 		
 		// information held by the client table
-		c = db.query(TABLE_CLIENT, new String[] {CLIENT}, MAIL+"='"+mail+"'", null, null, null, null);
-		if (c.getColumnCount() > 1)
-		{
-			System.err.println("Error : two or more client seem to have the same mail.");
-		}
-		c.moveToFirst();
-		String client = c.getString(c.getColumnIndex(CLIENT));
+		String client = this.getClientName(mail);
 		
 		// new Order, will be returned
 		Order retour = new Order(resName, client, mail);
@@ -601,56 +801,16 @@ public class DBHandler {
 			// information held by the allergen table
 			ArrayList<String> allergens = this.searchForAllergens(resName, dishName);
 				
-			
 			Dish dish = new Dish(dishName, type, subtype, price, 0, null, allergens);
 			dish.setQuantity(quantity);
 			dishes.add(dish);
+			
+			c.moveToNext();
 		}
 		retour.setOrderDishes(dishes);
 
-		this.close();
 		return retour;
 	}
-	
-	
-	
-	/**************
-	 * 
-	 * Reservations
-	 *
-	 **************/
-	
-	
-	
-	
-	
-	/*******************
-	 * Internal methods
-	 *******************/
-	
-	private ArrayList<String> searchForAllergens(String resName, String dishName) throws SQLiteException
-	{
-		// information held by the allergen table
-		Cursor c = db.query(TABLE_ALLERGEN, new String[]{ALLERGEN}, RES+"='"+resName+"' AND "+DISH+"='"+dishName+"'",
-				null, null, null, ALLERGEN);
-		int count = c.getCount();
-		if (count == 0)
-			return null;
-		
-		ArrayList<String> allergens = new ArrayList<String>(count);
-		c.moveToFirst();
-		while (!c.isAfterLast())
-		{
-			allergens.add(c.getString(1));
-			c.moveToNext();
-		}
-
-		return allergens;
-	}
-	
-	
-	
-	
 	
 	
 	/* NULL value safe DB access methods */
