@@ -36,52 +36,69 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 
 	@Override
 	public View getChildView(int groupPosition, int childPosition,boolean isLastChild, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
+		//TODO
 		
-		return null;
+		
+		
+		return convertView;
 	}
 
 	@Override
 	public int getChildrenCount(int groupPosition) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return list.get(groupPosition).getSubtypes().size();
 	}
 
 	@Override
 	public Object getGroup(int groupPosition) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return list.get(groupPosition);
 	}
 
 	@Override
 	public int getGroupCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return list.size();
 	}
 
 	@Override
 	public long getGroupId(int groupPosition) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return groupPosition;
 	}
 
 	@Override
-	public View getGroupView(int groupPosition, boolean isExpanded,
-			View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
-		return null;
+	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+		GroupeViewHolder gholder;
+		
+		Groupe group = (Groupe) getGroup(groupPosition);
+		
+		if(convertView == null)
+		{
+			gholder = new GroupeViewHolder();
+			convertView = inflater.inflate(R.layout.grp_layout, null);
+			gholder.type = (TextView) convertView.findViewById(R.id.groupe);
+			convertView.setTag(gholder);
+		}
+		else{
+			gholder = (GroupeViewHolder) convertView.getTag();
+		}
+			
+		gholder.type.setText(group.getType());
+		
+		return convertView;
 	}
 
 	@Override
 	public boolean hasStableIds() {
-		// TODO Auto-generated method stub
-		return false;
+		
+		return true;
 	}
 
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		return true;
 	}
 	
 	private class GroupeViewHolder{
@@ -177,6 +194,105 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 		{
 			this.name = name;
 		}
+	}
+	
+	private class ChildAdapter extends BaseExpandableListAdapter{
+		
+		private Context context;
+		private LayoutInflater inflater;
+		private ArrayList<Subgroupe> sublist;
+		
+		public ChildAdapter(Context c, ArrayList<Subgroupe> list)
+		{
+			this.context = c;
+			this.sublist = list;
+			this.inflater = LayoutInflater.from(context);
+			
+		}
+
+		@Override
+		public Object getChild(int groupPosition, int childPosition) {
+			
+			return sublist.get(groupPosition).getDishlist().get(childPosition);
+		}
+
+		@Override
+		public long getChildId(int groupPosition, int childPosition) {
+			
+			return childPosition;
+		}
+
+		@Override
+		public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+			DishViewHolder dholder;
+			
+			DishElem dish = (DishElem) getChild(groupPosition, childPosition);
+			if(convertView == null){
+				dholder = new DishViewHolder();
+				
+			}
+			
+			return convertView;
+		}
+
+		@Override
+		public int getChildrenCount(int groupPosition) {
+			
+			return sublist.get(groupPosition).getDishlist().size();
+		}
+
+		@Override
+		public Object getGroup(int groupPosition) {
+			
+			return sublist.get(groupPosition);
+		}
+
+		@Override
+		public int getGroupCount() {
+			
+			return sublist.size();
+		}
+
+		@Override
+		public long getGroupId(int groupPosition) {
+			
+			return groupPosition;
+		}
+
+		@Override
+		public View getGroupView(int groupPosition, boolean isExpanded,View convertView, ViewGroup parent) {
+			SubGroupeViewHolder sholder;
+			
+			Subgroupe sgrp = (Subgroupe) getGroup(groupPosition);
+			
+			if(convertView == null)
+			{
+				sholder = new SubGroupeViewHolder();
+				convertView = inflater.inflate(R.layout.child_layout, null);
+				sholder.type = (TextView) convertView.findViewById(R.id.child); 
+				convertView.setTag(sholder);
+			}
+			else{
+				sholder = (SubGroupeViewHolder) convertView.getTag();
+			}
+			
+			sholder.type.setText(sgrp.getSubtype());
+			
+			return convertView;
+		}
+
+		@Override
+		public boolean hasStableIds() {
+			
+			return true;
+		}
+
+		@Override
+		public boolean isChildSelectable(int groupPosition, int childPosition) {
+			
+			return true;
+		}
+		
 	}
 
 }
