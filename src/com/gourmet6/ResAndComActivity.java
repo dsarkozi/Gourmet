@@ -2,23 +2,16 @@ package com.gourmet6;
 
 import java.util.ArrayList;
 
-import com.gourmet6.MenuAdapter.DishElem;
-import com.gourmet6.MenuAdapter.DishViewHolder;
-
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
 
 
 public class ResAndComActivity extends Activity {
@@ -35,7 +28,7 @@ public class ResAndComActivity extends Activity {
 		
 		currentCli = g.getClient();
 		
-		//myRes = ;  utiliser méthode Lena permettant de récupérer les résevations d'un Client depuis la DB
+		//myRes = ;  utiliser mï¿½thode Lena permettant de rï¿½cupï¿½rer les rï¿½sevations d'un Client depuis la DB
 		
 		/*
 		 * expandableList = (ExpandableListView) findViewById(R.id.expandableListView1);
@@ -71,7 +64,7 @@ public class ResAndComActivity extends Activity {
 			inflater = LayoutInflater.from(context);
 		}
 
-		@Override //on a une liste de réservations qui contient une liste de plats
+		@Override //on a une liste de rï¿½servations qui contient une liste de plats
 		public Object getChild(int indexR, int indexO) {
 			return myRes.get(indexR).getOrder().getOrderDishes().get(indexO);
 		}
@@ -89,7 +82,7 @@ public class ResAndComActivity extends Activity {
 			
 			if(convertView == null){
 				dholder = new DishViewHolder();
-			//	convertView = inflater.inflate(R.layout.dish_list_element, null);
+				convertView = inflater.inflate(R.layout.dish_list_element, null);
 				
 				dholder.name = (TextView) convertView.findViewById(R.id.dishname);
 				dholder.price = (TextView) convertView.findViewById(R.id.textView1);
@@ -101,10 +94,10 @@ public class ResAndComActivity extends Activity {
 			
 			
 			dholder.name.setText(dish.getName());
-			dholder.price.setText(String.valueOf(currentdish.getPrice()));
+			//dholder.price.setText(String.valueOf(currentdish.getPrice()));
 			
 			return convertView;
-
+		}
 		@Override
 		public int getChildrenCount(int arg0) {
 			// TODO Auto-generated method stub
