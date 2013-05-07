@@ -1,5 +1,7 @@
 package com.gourmet6;
 
+import java.util.ArrayList;
+
 import android.annotation.TargetApi;
 import android.app.ListActivity;
 import android.content.Intent;
@@ -15,11 +17,11 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class TownActivity extends ListActivity
+public class RestaurantListActivity extends ListActivity
 {
 
 	private DBHandler dbHand;
-	private String[] towns;
+	private ArrayList<String> restaurants;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -36,9 +38,11 @@ public class TownActivity extends ListActivity
 	protected void onStart()
 	{
 		super.onStart();
+		Intent intent = getIntent();
+		String currentTown = intent.getStringExtra("currentTown");
 		try
 		{
-			towns = dbHand.getTowns();
+			restaurants = dbHand.getAllResNames(currentTown);
 		}
 		catch (SQLiteException e)
 		{
@@ -46,7 +50,7 @@ public class TownActivity extends ListActivity
 		}
 		ListAdapter adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, 
-				towns);
+				restaurants);
 		setListAdapter(adapter);
 	}
 
@@ -57,6 +61,7 @@ public class TownActivity extends ListActivity
 		TextView selection = (TextView)v;
 		Intent returnIntent = new Intent();
 		returnIntent.putExtra("selection", selection.getText().toString());
+		returnIntent.putExtra("restaurants", restaurants);
 		setResult(RESULT_OK, returnIntent);
 		finish();
 	}

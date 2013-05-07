@@ -150,13 +150,14 @@ public class DBHandler {
 		this.openRead();
 		Cursor c;
 		
-		c = db.query(true, TABLE_RESTAURANT, new String[] {TOWN}, null, null, null, null, TOWN, TOWN);
+		c = db.query(true, TABLE_RESTAURANT, new String[] {TOWN}, null, null, null, null, TOWN, null);
 		int count = c.getCount();
 		String[] towns = new String[count];
-		for (int i=0; i<count; i++)
+		int i = 0;
+		while (c.moveToNext())
 		{
-			c.moveToPosition(i);
-			towns[i] = c.getString(1);
+			towns[i] = c.getString(0);
+			i++;
 		}
 		
 		this.close();
@@ -178,19 +179,20 @@ public class DBHandler {
 		if (town != null)
 		{
 			c = db.query(TABLE_RESTAURANT, new String[] {RES}, TOWN+"='"+town+"'", null, null, null, RES);
-		} else {
+		}
+		else
+		{
 			c = db.query(TABLE_RESTAURANT, new String[] {RES}, null, null, null, null, RES);
 		}
 		int length = c.getCount();
-		ArrayList<String> retour = new ArrayList<String>(length);
-		for (int i=0; i<length; i++)
+		ArrayList<String> restaurants = new ArrayList<String>(length);
+		while (c.moveToNext())
 		{
-			c.moveToPosition(i);
-			retour.add(c.getString(i));
+			restaurants.add(c.getString(0));
 		}
 		
 		this.close();
-		return retour;
+		return restaurants;
 	}
 	
 	/**
@@ -252,7 +254,7 @@ public class DBHandler {
 		 
 		/*
 		 * fonctionne aussi normalement
-		 * c = db.rawQuery("SELECT day,timeOpen,timeClose FROM timetable WHERE resName='Crêperie Bretonne' ORDER BY CASE day"+
+		 * c = db.rawQuery("SELECT day,timeOpen,timeClose FROM timetable WHERE resName='CrÔøΩperie Bretonne' ORDER BY CASE day"+
 		 *		" WHEN 'lundi' THEN 0 WHEN 'mardi' THEN 1 WHEN 'mercredi' THEN 2 WHEN 'jeudi' THEN 3 WHEN 'vendredi' THEN 4 WHEN"+
 		 *		" 'samedi' THEN 5 WHEN 'dimanche' THEN 6 END, timeOpen DESC", null);
 		 */
@@ -376,7 +378,7 @@ public class DBHandler {
 		Cursor c;
 		
 		c = db.query(TABLE_DISH, new String[] {DISH, RES, TYPE, SUBTYPE, DESCRIPTION, INVENTORY, PRICE},
-				RES+"='"+resName+"'", null, null, null, " CASE "+TYPE+" WHEN 'Entrées' THEN 1 WHEN 'Plats' THEN 2"+
+				RES+"='"+resName+"'", null, null, null, " CASE "+TYPE+" WHEN 'EntrÔøΩes' THEN 1 WHEN 'Plats' THEN 2"+
 				" WHEN 'Desserts' THEN 3 WHEN 'Boissons' THEN 4 END, "+SUBTYPE);
 		c.moveToFirst();
 		

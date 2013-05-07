@@ -6,17 +6,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.AndroidRuntimeException;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
 
 public class MainGourmet extends Activity
 {
-	@SuppressWarnings("unused")
+	public static final int TOWN_LIST = 1;
+	public static final int RESTO_LIST = 2;
+	
 	private String currentTown;
 	private String[] restaurants;
 	@SuppressWarnings("unused")
@@ -130,6 +129,28 @@ public class MainGourmet extends Activity
 		return true;
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		if (resultCode == RESULT_CANCELED)
+			ExceptionHandler.caughtException(
+					this,
+					new AndroidRuntimeException("resultCode canceled"));
+		switch (requestCode)
+		{
+			case TOWN_LIST:
+				currentTown = data.getStringExtra("selection");
+				showRestaurants();
+				break;
+			case RESTO_LIST:
+				restaurants = data.getStringArrayExtra("restaurants");
+				makeRestaurant(data.getStringExtra("selection"));
+				break;
+			default:
+				throw new AndroidRuntimeException("No such request code.");
+		}
+	}
+
 	public void login(View view)
 	{
 		Intent intent = new Intent(this, LoginActivity.class);
@@ -138,11 +159,15 @@ public class MainGourmet extends Activity
 
 	public void showTowns()
 	{
-		startActivity(new Intent(this, TownActivity.class));
+		startActivityForResult(new Intent(this, TownActivity.class), TOWN_LIST);
 	}
 
-	public void showRestaurants() // TODO SimpleAdapter -- junk
+	public void showRestaurants()
 	{
+		Intent intent = new Intent(this, RestaurantListActivity.class);
+		intent.putExtra("currentTown", currentTown);
+		startActivityForResult(intent, RESTO_LIST);
+		/*
 		setContentView(R.layout.lists);
 		ListView restoList = (ListView) findViewById(R.id.list);
 		ArrayAdapter<String> restoAdapter = new ArrayAdapter<String>(this,
@@ -159,6 +184,7 @@ public class MainGourmet extends Activity
 				makeRestaurant(buttonClicked.getText().toString());
 			}
 		});
+		*/
 	}
 
 	// pas dans Restaurant, mais dans DBHandler
