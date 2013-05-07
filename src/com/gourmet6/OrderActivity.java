@@ -40,7 +40,7 @@ public class OrderActivity extends Activity {
 		this.fromRestaurant = extra.getBoolean("from");
 		
 		ListView list = (ListView) findViewById(R.id.listView1);
-		this.dishesname = this.current.getDishesName();
+		this.dishesname = this.current.getDishesNames();
 		list.setAdapter(new DishAdapter(this,R.layout.dish_list_element,dishesname));
 		
 		list.setOnItemClickListener(new OnItemClickListener() {
