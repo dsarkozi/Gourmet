@@ -14,7 +14,7 @@
         android:layout_below="@+id/textView1"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:prompt="@string/sort_spinner" />
+        android:prompt="@string/sort_spinner"/>
 
     <TextView
         android:id="@+id/textView1"
@@ -22,7 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/sort_spinner" />
+        android:text="@string/sort_spinner"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/button1"
