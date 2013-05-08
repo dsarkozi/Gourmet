@@ -66,7 +66,7 @@ public class ResAndComActivity extends Activity {
 
 		@Override //on a une liste de r�servations qui contient une liste de plats
 		public Object getChild(int indexR, int indexO) {
-			return myRes.get(indexR).getOrder().getOrderDishes().get(indexO);
+			return myRes.get(indexR).getReservationOrder().getOrderDishes().get(indexO);
 		}
 
 		@Override
@@ -106,7 +106,7 @@ public class ResAndComActivity extends Activity {
 
 		@Override
 		public int getChildrenCount(int indexR) {
-			return myRes.get(indexR).getOrder().getOrderDishes().size();
+			return myRes.get(indexR).getReservationOrder().getOrderDishes().size();
 		}
 
 		@Override
