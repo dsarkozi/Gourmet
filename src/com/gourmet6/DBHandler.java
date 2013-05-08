@@ -345,7 +345,7 @@ public class DBHandler {
 		// cuisine
 		c = this.db.query(TABLE_CUISINE, new String [] {TYPE}, RES+"='"+name+"'", null, null, null, TYPE);
 		ArrayList<String> cuisine = new ArrayList<String>(c.getCount());
-		while(!c.moveToNext())
+		while(c.moveToNext())
 		{
 			cuisine.add(c.getString(c.getColumnIndex(TYPE)));
 		}
@@ -369,7 +369,7 @@ public class DBHandler {
 				RES+"='"+name+"'", null, null, null, "CASE "+DAY+" WHEN 'lundi' THEN 0 WHEN 'mardi' THEN 1 WHEN 'mercredi'"+
 				" THEN 2 WHEN 'jeudi' THEN 3 WHEN 'vendredi' THEN 4 WHEN 'samedi' THEN 5 WHEN 'dimanche' THEN 6 END, timeOpen");
 		int position;
-		while(!c.moveToNext())
+		while(c.moveToNext())
 		{
 			position = (int) weekMap.get(c.getString(c.getColumnIndex(DAY)));
 			TimeTable temp = new TimeTable(c.getString(c.getColumnIndex(TIME_OPEN)),c.getString(c.getColumnIndex(TIME_CLOSE)));
@@ -485,7 +485,7 @@ public class DBHandler {
 				"'Plats' THEN 2 WHEN 'Desserts' THEN 3 WHEN 'Boissons' THEN 4 END, "+SUBTYPE);
 		
 		ArrayList<Dish> dishes = new ArrayList<Dish>(c.getCount());
-		while (!c.moveToNext())
+		while (c.moveToNext())
 		{
 			String dishName = c.getString(c.getColumnIndex(DISH));
 			String type = c.getString(c.getColumnIndex(TYPE));
@@ -768,7 +768,7 @@ public class DBHandler {
 		}
 
 		ArrayList<Order> orders = new ArrayList<Order>(count);
-		while (!c.moveToNext())
+		while (c.moveToNext())
 		{
 			int orderNr = c.getInt(c.getColumnIndex("_id"));
 			Order order = getOrder(orderNr);
@@ -861,7 +861,7 @@ public class DBHandler {
 		}
 		
 		ArrayList<Reservation> reservations = new ArrayList<Reservation>(count);
-		while (!c.moveToNext())
+		while (c.moveToNext())
 		{
 			String resName = c.getString(c.getColumnIndex(RES));
 			String datetime = c.getString(c.getColumnIndex(DATETIME));
@@ -1036,7 +1036,7 @@ public class DBHandler {
 		// information held by the order_detail table
 		c = this.db.query(TABLE_ORDER_DETAIL, new String[] {DISH, QUANTITY}, ORDER_NR+"="+orderNr, null, null, null, null);
 		ArrayList<Dish> dishes = new ArrayList<Dish>(c.getCount());
-		while (!c.moveToNext())
+		while (c.moveToNext())
 		{
 			String dishName = c.getString(c.getColumnIndex(DISH));
 			int quantity = c.getInt(c.getColumnIndex(QUANTITY));
