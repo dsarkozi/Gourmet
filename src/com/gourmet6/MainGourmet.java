@@ -144,7 +144,8 @@ public class MainGourmet extends Activity
 				break;
 			case RESTO_LIST:
 				restaurants = data.getStringArrayExtra("restaurants");
-				makeRestaurant(data.getStringExtra("selection"));
+				Gourmet gourmet = (Gourmet)getApplication();
+				gourmet.setRest(makeRestaurant(data.getStringExtra("selection")));
 				break;
 			default:
 				throw new AndroidRuntimeException("No such request code.");
