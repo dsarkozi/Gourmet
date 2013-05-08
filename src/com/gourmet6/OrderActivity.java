@@ -51,7 +51,7 @@ public class OrderActivity extends Activity {
 			}
 		});*/
 		
-		Button submit = (Button) findViewById(R.id.comInReserv);
+		Button submit = (Button) findViewById(R.id.button1);
 		submit.setOnClickListener(new View.OnClickListener() {
 			
 			@Override

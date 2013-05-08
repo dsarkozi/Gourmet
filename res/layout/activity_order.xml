@@ -9,7 +9,7 @@
     tools:context=".OrderActivity" >
 
     <Button
-        android:id="@+id/comInReserv"
+        android:id="@+id/button1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_above="@+id/comInReserv" >
+        android:layout_above="@+id/button1" >
     </ExpandableListView>
 
 </RelativeLayout>
