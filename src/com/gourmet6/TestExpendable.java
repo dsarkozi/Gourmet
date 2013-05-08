@@ -128,7 +128,7 @@ public class TestExpendable extends BaseExpandableListAdapter{
 		return true;
 	}
 	
-	class GroupViewHolder {
+	private class GroupViewHolder {
 	      public TextView textViewGroup;
 	}
 
