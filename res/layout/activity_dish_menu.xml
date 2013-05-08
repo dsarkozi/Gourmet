@@ -30,15 +30,15 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/spinner1"
-        android:layout_below="@+id/spinner1"
+        android:layout_alignParentBottom="true"
         android:text="@string/order_from_menu" />
 
-    <ExpandableListView
+   <ExpandableListView
         android:id="@+id/dish_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_below="@+id/button1" >
+        android:layout_above="@+id/button1"
+        android:layout_below="@+id/spinner1" >
     </ExpandableListView>
 
 </RelativeLayout>
