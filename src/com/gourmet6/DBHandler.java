@@ -982,7 +982,7 @@ public class DBHandler {
 		}
 		
 		ArrayList<String> allergens = new ArrayList<String>(count);
-		while (!c.moveToNext())
+		while (c.moveToNext())
 		{
 			allergens.add(c.getString(c.getColumnIndex(ALLERGEN)));
 		}
