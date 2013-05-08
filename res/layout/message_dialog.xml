@@ -8,7 +8,7 @@
         android:id="@+id/textViewMessageDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Large Text"
+        android:textIsSelectable="true"
         android:layout_gravity="center_horizontal"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
