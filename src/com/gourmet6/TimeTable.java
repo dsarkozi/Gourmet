@@ -3,26 +3,46 @@ package com.gourmet6;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
 
-public class TimeTable {
+public class TimeTable 
+{
 	
+	private String jourDebut;
+	private String jourFin;
 	private GregorianCalendar openTime;
 	private GregorianCalendar closingTime;
 	
-	public TimeTable(GregorianCalendar openTime, GregorianCalendar closingTime)
+	public TimeTable(String jourDebut, String jourFin, GregorianCalendar openTime, GregorianCalendar closingTime)
 	{
+		this.setJourDebut(jourDebut);
+		this.setJourFin(jourFin);
 		this.openTime = openTime;
 		this.closingTime = closingTime;
 	}
 	
-	public TimeTable(String openTime, String closingTime)
+	public TimeTable(String jourDebut, String jourFin, String openTime, String closingTime)
 	{
+		this.setJourDebut(jourDebut);
+		this.setJourFin(jourFin);
 		this.openTime = parseDate(openTime);
 		this.closingTime = parseDate(closingTime);
 	}
+	
+	/* helps managing the timetables given a certain day */
+    static public HashMap<String,Integer> weekMap = new HashMap<String,Integer>(7);
+    static {
+    	weekMap.put("dimanche", 1);
+    	weekMap.put("lundi", 	2);
+    	weekMap.put("mardi", 	3);
+    	weekMap.put("mercredi", 4);
+    	weekMap.put("jeudi", 	5);
+    	weekMap.put("vendredi", 6);
+    	weekMap.put("samedi", 	7);
+    }
 	
 	/***********************
 	 * Formatting functions
@@ -80,6 +100,20 @@ public class TimeTable {
 		return res;
 	}
 	
+	public boolean isInTimeTable(GregorianCalendar date)
+	{
+		int day = date.get(GregorianCalendar.DAY_OF_WEEK);
+		int hour = date.get(GregorianCalendar.HOUR_OF_DAY);
+		int minute = date.get(GregorianCalendar.MINUTE);
+		
+		return (Integer)weekMap.get(this.getJourDebut())<=day
+				&& day<=(Integer)DBHandler.weekMap.get(this.getJourFin())
+				&& this.getOpenTime().get(GregorianCalendar.HOUR_OF_DAY)<=hour
+				&& this.getOpenTime().get(GregorianCalendar.MINUTE)<=minute
+				&& hour<=this.getClosingTime().get(GregorianCalendar.HOUR_OF_DAY)
+				&& minute<=this.getClosingTime().get(GregorianCalendar.MINUTE);
+	}
+	
 	/**********************
 	 * Getters and setters
 	 **********************/
@@ -106,5 +140,21 @@ public class TimeTable {
 	public void setClosingTime(String closingTime)
 	{
 		this.closingTime = parseDate(closingTime);
+	}
+
+	public String getJourDebut() {
+		return jourDebut;
+	}
+
+	public void setJourDebut(String jourDebut) {
+		this.jourDebut = jourDebut;
+	}
+
+	public String getJourFin() {
+		return jourFin;
+	}
+
+	public void setJourFin(String jourFin) {
+		this.jourFin = jourFin;
 	}
 }

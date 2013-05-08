@@ -5,23 +5,17 @@ import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.Gallery;//Il me dit que la gallery n'est peut-etre plus valable...
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
 
-//Il me dit que la gallery n'est plus valable à partir de l'API 16...
-@SuppressWarnings("deprecation") 
 public class RestaurantActivity extends Activity implements RatingBar.OnRatingBarChangeListener
 {
 	
@@ -55,19 +49,45 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 		setTitle(this.currentRest.getName());
 		
 		//Image
+		listImg = (LinearLayout) findViewById(R.id.listImgRest);
 		//TODO
 		
 		//rating bar
 		ratingBar = (RatingBar) findViewById(R.id.ratingRest);
 		ratingBar.setRating(currentRest.getRating());
+		//TODO viewListener ?
+		//Coter le restaurant
+		ratingBar.setOnRatingBarChangeListener(this);
 		
 		//TextView
+		description = (TextView) findViewById(R.id.descriptionRest);
+		description.setText(currentRest.getDescription());
+		description.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				LayoutParams params = description.getLayoutParams();
+				if(extended){
+					params.height = 120;
+					extended = false;
+				}
+				else{
+					params.height = (currentRest.getDescription().length()*params.width)+20;
+					extended = true;
+				}
+				description.setLayoutParams(params);
+			}
+		});
 		
+		horaire = (TextView) findViewById(R.id.horaireRest);
+		//TODO affichage des villes
 		
+		localisation = (TextView) findViewById(R.id.localisationRest);
+		localisation.setText(currentRest.getAdress()+", "+currentRest.getZip()+", "+currentRest.getTown());
+		
+		//Button
 		//Reaction du bouton de commande
-		Button order = (Button) findViewById(R.id.commandeInRest);
+		order = (Button) findViewById(R.id.commandeInRest);
 		order.setOnClickListener(new View.OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
 				Intent commande = new Intent(RestaurantActivity.this, OrderActivity.class);
@@ -77,9 +97,8 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 		});
 		
 		//Reaction du bouton de reservation
-		Button reserver = (Button) findViewById(R.id.reserveInRest);
-		reserver.setOnClickListener(new View.OnClickListener() {
-			
+		reserve = (Button) findViewById(R.id.reserveInRest);
+		reserve.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent reserv = new Intent(RestaurantActivity.this, ReservationActivity.class);
@@ -88,61 +107,15 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 		});
 		
 		//Reaction du bouton menu
-		Button menu = (Button) findViewById(R.id.menuInRest);
+		menu = (Button) findViewById(R.id.menuInRest);
 		menu.setOnClickListener(new View.OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
 				Intent dishes = new Intent(RestaurantActivity.this, DishMenuActivity.class);
 				startActivity(dishes);
 			}
 		});
-		
-		//Coter le restaurant
-		RatingBar imp = (RatingBar) findViewById(R.id.ratingRest);
-		imp.setRating(currentRest.getRating());
-		imp.setOnRatingBarChangeListener(this);
 	}
-	
-	public class ImageAdapter extends BaseAdapter {
-		
-		private Context mContext;
-
-		public ImageAdapter(Context c) {
-            mContext = c;
-        }
-		
-		public int getCount() {
-	        return ImageIdList.length;
-	    }
-	 
-	    public Object getItem(int position) {
-	        return position;
-	    }
-	 
-	    public long getItemId(int position) {
-	        return position;
-	    }
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			ImageView i = new ImageView(mContext);
-			
-			i.setImageResource(ImageIdList[position]);
-	        i.setLayoutParams(new Gallery.LayoutParams(150, 100));
-	        i.setScaleType(ImageView.ScaleType.FIT_XY);
-			
-			return i;
-		}
-		
-	}
-
-	//liste des images TODO
-	private Integer[] ImageIdList = {
-	        R.drawable.ic_launcher,
-	        R.drawable.ic_launcher,
-	        R.drawable.ic_launcher
-	};
 		
 	@Override
 	public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) 

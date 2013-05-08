@@ -32,18 +32,7 @@ public class Restaurant {
 	private int nbrPrsHasVoted;
 	private float priceCat; // Si un restaurant est cher -> moyenne des prix
 	private ArrayList<Dish> listDishes = null;
-	/**
-	 * Semaine contient 7 cases, une par jour de la semaine. A chaque jour correspond une list de plage horaire.
-	 * Correspondance :
-	 * 0 : Dimanche
-	 * 1 : Lundi
-	 * 2 : Mardi
-	 * 3 : Mercredi
-	 * 4 : Jeudi
-	 * 5 : Vendredi
-	 * 6 : Samedi
-	 */
-	private ArrayList<TimeTable> semaine[];
+	private ArrayList<TimeTable> semaine;
 	
 	public Restaurant(String name)
 	{
@@ -342,14 +331,11 @@ public class Restaurant {
 			}
 		}
 		//Check hour.
-		boolean timeTableOk = false; 
-		int reservationHour = res.getReservationTime().get(GregorianCalendar.HOUR_OF_DAY);
-		int reservationMinute = res.getReservationTime().get(GregorianCalendar.MINUTE);
-		for(TimeTable tt : semaine[res.getReservationTime().get(GregorianCalendar.DAY_OF_WEEK)-1]){
-			if(tt.getOpenTime().get(GregorianCalendar.HOUR_OF_DAY)<=reservationHour
-			&& tt.getOpenTime().get(GregorianCalendar.MINUTE)<=reservationMinute
-			&& reservationHour <= tt.getClosingTime().get(GregorianCalendar.HOUR_OF_DAY)
-			&& reservationMinute <= tt.getClosingTime().get(GregorianCalendar.MINUTE)){
+		boolean timeTableOk = false;
+		for(TimeTable tt : semaine)
+		{
+			if(tt.isInTimeTable(res.getReservationTime()))
+			{
 				timeTableOk = true;
 			}
 		}
@@ -510,11 +496,11 @@ public class Restaurant {
 	{
 		this.listDishes = listDishes;
 	}
-	public ArrayList<TimeTable>[] getSemaine() 
+	public ArrayList<TimeTable> getSemaine() 
 	{
 		return semaine;
 	}
-	public void setSemaine(ArrayList<TimeTable>[] semaine) 
+	public void setSemaine(ArrayList<TimeTable> semaine) 
 	{
 		this.semaine = semaine;
 	}
