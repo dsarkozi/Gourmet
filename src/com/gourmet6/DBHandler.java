@@ -178,7 +178,7 @@ public class DBHandler {
 		
 		if (town != null)
 		{
-			c = db.query(TABLE_RESTAURANT, new String[] {RES}, TOWN+"='"+town+"'", null, null, null, RES);
+			c = db.query(TABLE_RESTAURANT, new String[] {RES, CHAIN}, TOWN+"='"+town+"'", null, null, null, RES);
 		}
 		else
 		{
@@ -188,7 +188,10 @@ public class DBHandler {
 		ArrayList<String> restaurants = new ArrayList<String>(length);
 		while (c.moveToNext())
 		{
-			restaurants.add(c.getString(0));
+			if (c.getString(1) != null)
+				restaurants.add(c.getString(1));
+			else
+				restaurants.add(c.getString(0));
 		}
 		
 		this.close();
