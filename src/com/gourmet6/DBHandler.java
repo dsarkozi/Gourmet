@@ -11,6 +11,7 @@ import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -202,8 +203,9 @@ public class DBHandler {
 	
 	/**
 	 * Opens the DB for reading only.
+	 * @throws SQLiteException if the DB cannot be accessed for reading
 	 */
-	public void openRead() throws SQLiteException
+	private void openRead() throws SQLiteException
 	{
 		if (!this.read)
 		{
@@ -215,8 +217,9 @@ public class DBHandler {
 	
 	/**
 	 * Opens the DB for reading and writing.
+	 * @throws SQLiteException if the DB cannot be accessed for reading
 	 */
-	public void openWrite() throws SQLiteException
+	private void openWrite() throws SQLiteException
 	{
 		if(!this.write)
 		{
@@ -228,7 +231,7 @@ public class DBHandler {
 	/**
 	 * Closes the DB.
 	 */
-	public void close()
+	private void close()
 	{
 		this.dbHelper.close();
 		this.read = false; this.write = false;
@@ -245,7 +248,7 @@ public class DBHandler {
 	 * Returns an ArrayList of the distinct towns known by the DB.
 	 * @return a String ArrayList containing the names of all the known towns
 	 * in alphabetical order.
-	 * @throws SQLiteException
+	 * @throws SQLiteException if the DB cannot be accessed for reading
 	 */
 	public String[] getTowns() throws SQLiteException
 	{
@@ -270,8 +273,8 @@ public class DBHandler {
 	 * Returns an ArrayList containing all the distinct town names appearing in the DB table restaurant,
 	 * sorted in alphabetically.
 	 * @param town a town in which to search restaurants
-	 * @return an String ArrayList containing all the town names; if town is null, returns all the towns.
-	 * @throws SQLiteException
+	 * @return a String ArrayList containing all the town names; if town is null, returns all the towns.
+	 * @throws SQLiteException if the DB cannot be accessed for reading
 	 */
 	public ArrayList<String> getAllResNames(String town) throws SQLiteException
 	{
@@ -302,9 +305,9 @@ public class DBHandler {
 	
 	/**
 	 * Returns a restaurant object based on his name in the DB.
-	 * @param name
+	 * @param name the name of the restaurant
 	 * @return the Restaurant corresponding to name, without his dishes
-	 * @throws SQLiteException
+	 * @throws SQLiteException if the DB cannot be accessed for reading
 	 */
 	public Restaurant getRestaurant(String name) throws SQLiteException
 	{
@@ -384,22 +387,23 @@ public class DBHandler {
 	 * @param rating the new rating, must be between 0 and 5
 	 * @param votes the new number of votes, must be > 0
 	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occurred
-	 * @throws SQLiteException
+	 * @throws SQLiteException if the DB cannot be accessed for writing
+	 * @throws SQLException if one of the arguments is illegal
 	 */
-	public long rateRestaurant (String resName, float rating, int votes) throws SQLiteException
+	public long rateRestaurant (String resName, float rating, int votes) throws SQLiteException, SQLException
 	{
 		// throws an exception if rating is not valid or if resName is null
-		if ((rating>5) || (rating<0))
+		if ((rating > 5) || (rating < 0))
 		{
-			throw new SQLiteException("Error : wrong rating : "+rating);
+			throw new SQLException("Error : wrong rating : "+rating);
 		} 
 		else if (votes<=0)
 		{
-			throw new SQLiteException("Error : wrong number of votes : "+votes);
+			throw new SQLException("Error : wrong number of votes : "+votes);
 		}
 		else if (resName == null)
 		{
-			throw new SQLiteException("Error : no restaurant name given for request");
+			throw new SQLException("Error : no restaurant name given for request");
 		}
 		
 		long nrRows = -1;
@@ -421,21 +425,23 @@ public class DBHandler {
 	}
 	
 	/**
+	 * Updates the number of available seats for a restaurant in the DB.
 	 * @param resName the name of the restaurant, must not be null
 	 * @param newAvail the new number of available seats, must be >= 0
 	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occurred
-	 * @throws SQLiteException
+	 * @throws SQLiteException if the DB cannot be accessed for writing
+	 * @throws SQLException if one of the arguments is illegal
 	 */
-	public long updateAvail (String resName, short newAvail) throws SQLiteException
+	public long updateAvail (String resName, short newAvail) throws SQLiteException, SQLException
 	{
 		// throws an exception if newAvail is not valid or if resName is null
 		if (newAvail < 0)
 		{
-			throw new SQLiteException("Error : wrong rating : "+newAvail);
+			throw new SQLException("Error : wrong rating : "+newAvail);
 		} 
 		else if (resName == null)
 		{
-			throw new SQLiteException("Error : no restaurant name given for request");
+			throw new SQLException("Error : no restaurant name given for request");
 		}
 		
 		long nrRows = -1;
@@ -463,11 +469,11 @@ public class DBHandler {
 	 *******/
 	
 	/**
-	 * Returns an arraylist of the dishes served in a restaurant, sorted by type (starter, main course, dessert, drinks)
-	 * and the alphabetically.
+	 * Returns an ArrayList of the dishes served in a restaurant, sorted by type (starter, main course, dessert, drinks)
+	 * and then alphabetically.
 	 * @param resName the name of the restaurant
-	 * @return the arraylist of all the dishes served in the restaurant resName
-	 * @throws SQLiteException
+	 * @return the ArrayList of all the dishes served in the restaurant resName
+	 * @throws SQLiteException if the DB cannot be accessed for reading
 	 */
 	public ArrayList<Dish> getDishes(String resName) throws SQLiteException
 	{
@@ -506,12 +512,61 @@ public class DBHandler {
 	 * Client
 	 * 
 	 *********/
+
+	/**
+	 * Adds a client to the DB.
+	 * @param mail, must not be null
+	 * @param name, must not be null
+	 * @param password, must not be null
+	 * @param tel the client's phone, optional
+	 * @return  if -1, then error; otherwise the rowId of the newly inserted data
+	 * @throws SQLiteException if the DB cannot be accessed for writing
+	 * @throws SQLException if one of the arguments id invalid or if the insert fails
+	 */
+	public long addClient (String mail, String name, String password, String tel) throws SQLiteException, SQLException
+	{
+		// throws an exception if the mandatory information is not given
+		if (mail == null)
+		{
+			throw new SQLException("Error : no client mail given.");
+		}
+		else if (name == null)
+		{
+			throw new SQLException("Error : no client name given.");
+		}
+		else if (password == null)
+		{
+			throw new SQLException("Error : no client password given.");
+		}
+		long rowId = -1;
+		this.openWrite();
+		
+		ContentValues insertValues = new ContentValues(4);
+		insertValues.put(MAIL, mail);
+		insertValues.put(CLIENT, name);
+		insertValues.put(PASSWORD, password);
+		insertValues.put(TEL, tel);
+		this.db.beginTransaction();
+		try
+		{
+			rowId = this.db.insertOrThrow(TABLE_CLIENT, null, insertValues);
+			this.db.setTransactionSuccessful();
+		}
+		finally
+		{
+			this.db.endTransaction();
+			this.close();
+		}
+
+		return rowId;
+	}
 	
 	/**
 	 * Checks whether the client has entered the right password.
-	 * @param clientMail
-	 * @param password
+	 * @param clientMail the client's identifier (mail address)
+	 * @param password the password the client has entered
 	 * @return true or false, depending on whether the password is the same as the one found in the DB
+	 * @throws SQLiteException if the DB cannot be accessed for reading
 	 */
 	public boolean checkPassword (String clientMail, String password) throws SQLiteException
 	{
@@ -538,48 +593,9 @@ public class DBHandler {
 		{
 			System.err.println("Error : the access to the DB must have failed.");
 		}
+		
 		this.close();
 		return false;
-	}
-
-	/**
-	 * Adds a client to the DB.
-	 * @param mail, must not be null
-	 * @param name, must not be null
-	 * @param password, must not be null
-	 * @param tel
-	 * @return if -1, then error; otherwise the new rowId
-	 * @throws SQLiteException
-	 */
-	public long addClient (String mail, String name, String password, String tel) throws SQLiteException
-	{
-		// throws an exception if the mandatory information is not given
-		if ((mail==null) || (name==null) || (password==null))
-		{
-			throw new SQLiteException("Arguments missing!");
-		}
-		
-		long rowId = -1;
-		this.openWrite();
-		
-		ContentValues insertValues = new ContentValues(4);
-		insertValues.put(MAIL, mail);
-		insertValues.put(CLIENT, name);
-		insertValues.put(PASSWORD, password);
-		insertValues.put(TEL, tel);
-		this.db.beginTransaction();
-		try
-		{
-			rowId = this.db.insertOrThrow(TABLE_CLIENT, null, insertValues);
-			this.db.setTransactionSuccessful();
-		}
-		finally
-		{
-			this.db.endTransaction();
-			this.close();
-		}
-
-		return rowId;
 	}
 	
 	/**
@@ -587,14 +603,19 @@ public class DBHandler {
 	 * @param oldMail the client's old mail (used to identify him), must not be null
 	 * @param newMail the client's new mail, must not be null
 	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occurred
-	 * @throws SQLiteException
+	 * @throws SQLiteException if the DB cannot be accessed for writing
+	 * @throws SQLException if one of the arguments is invalid
 	 */
-	public long changeMail (String oldMail, String newMail) throws SQLiteException
+	public long changeMail (String oldMail, String newMail) throws SQLiteException, SQLException
 	{
 		// throws an exception if the mandatory information is not given
-		if ((oldMail==null) || (newMail==null))
+		if (oldMail == null)
 		{
-			throw new SQLiteException("Arguments missing!");
+			throw new SQLException("No old mail given.");
+		}
+		else if (newMail == null)
+		{
+			throw new SQLException("No new mail given.");
 		}
 		
 		long nrRows = -1;
@@ -618,16 +639,21 @@ public class DBHandler {
 	 * @param mail the mail which identifies the client, must not be null
 	 * @param newName the new name the client wants to have in the DB, must not be null
 	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occurred
-	 * @throws SQLiteException
+	 * @throws SQLiteException if the DB cannot be accessed for writing
+	 * @throws SQLException if one of the arguments is invalid
 	 */
-	public long changeName (String mail, String newName) throws SQLiteException
+	public long changeName (String mail, String newName) throws SQLiteException, SQLException
 	{
 		// throws an exception if the mandatory information is not given
-		if ((mail==null) || (newName==null))
+		if (mail == null)
 		{
-			throw new SQLiteException("Arguments missing!");
+			throw new SQLException("No mail given");
 		}
-
+		else if (newName == null)
+		{
+			throw new SQLException("No new name given.");
+		}
+		
 		long nrRows = -1;
 		this.openWrite();
 
@@ -649,14 +675,19 @@ public class DBHandler {
 	 * @param mail the client's mail
 	 * @param newPassword the client's new password
 	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occurred
-	 * @throws SQLiteException
+	 * @throws SQLiteException if the DB cannot be accessed for writing
+	 * @throws SQLException if one of the arguments is invalid
 	 */
-	public long changePassword (String mail, String newPassword) throws SQLiteException
+	public long changePassword (String mail, String newPassword) throws SQLiteException, SQLException
 	{
 		// throws an exception if the mandatory information is not given
-		if ((mail==null) || (newPassword==null))
+		if (mail == null)
 		{
-			throw new SQLiteException("Arguments missing!");
+			throw new SQLiteException("No mail given.");
+		}
+		else if (newPassword == null)
+		{
+			throw new SQLException("No password given.");
 		}
 		
 		long nrRows = -1;
@@ -675,20 +706,21 @@ public class DBHandler {
 		this.close();
 		return nrRows;
 	}
-	
+
 	/**
 	 * Changes the mail of a client in the DB.
 	 * @param mail the client's mail which identifies him, must not be null
 	 * @param newTel the phone number the client wants to have in the DB, may be null
 	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occurred
-	 * @throws SQLiteException
+	 * @throws SQLiteException if the DB cannot be accessed for writing
+	 * @throws SQLException if the first argument is illegal
 	 */
-	public long changeTel (String mail, String newTel) throws SQLiteException
+	public long changeTel (String mail, String newTel) throws SQLiteException, SQLException
 	{
 		// throws an exception if the mandatory information is not given
-		if (mail==null)
+		if (mail == null)
 		{
-			throw new SQLiteException("Arguments missing!");
+			throw new SQLException("No mail given.");
 		}
 		
 		long nrRows = -1;
@@ -709,18 +741,18 @@ public class DBHandler {
 	}
 	
 	
-	
 	/*********
 	 * 
 	 * Orders
 	 *
 	 *********/
+	
 	/**
 	 * Gets all the orders a client has ever made that are known to the DB.
 	 * @param mail the client's mail
 	 * @return  an ArrayList containing all orders relative to a client.
 	 * All dishes are included (excepted their description and inventory).
-	 * @throws SQLiteException
+	 * @throws SQLiteException if the DB cannot be accessed for reading
 	 */
 	public ArrayList<Order> getClientOrders(String mail) throws SQLiteException
 	{
@@ -747,12 +779,19 @@ public class DBHandler {
 		return orders;
 	}
 	
-	public long addOrder(Order order) throws SQLiteException
+	/**
+	 * Inserts an order into the DB.
+	 * @param order the order to insert into the DB, must not be null
+	 * @return  if -1, then error; otherwise the rowId of the newly inserted data
+	 * @throws SQLiteException if the DB cannot be accessed for reading
+	 * @throws SQLException if order is null or if insert fails
+	 */
+	public long addOrder(Order order) throws SQLiteException, SQLException
 	{
 		// throws an exception if the mandatory information is not given
 		if (order == null)
 		{
-			throw new SQLiteException("Arguments missing!");
+			throw new SQLException("No order provided.");
 		}
 		
 		this.openWrite();
@@ -802,7 +841,7 @@ public class DBHandler {
 	 * @param mail the client's mail
 	 * @return an ArrayList containing all the reservations relative to a client.
 	 * If a reservation holds an order, it is contained.
-	 * @throws SQLiteException
+	 * @throws SQLiteException if the DB cannot be accessed for reading
 	 */
 	public ArrayList<Reservation> getClientReservations(String mail) throws SQLiteException
 	{
@@ -844,12 +883,21 @@ public class DBHandler {
 		return reservations;
 	}
 	
-	public long addReservation(Reservation reservation, int orderNr)
+	/**
+	 * Inserts a reservation into the DB.
+	 * @param reservation the reservation to insert, must not be null
+	 * @param orderNr if > 0, the identifier of the order bound to the reservation, otherwise
+	 * indicates that no order has to be bound.
+	 * @return if -1, then error; otherwise the rowId of the newly inserted data
+	 * @throws SQLiteException if DB cannot be accessed
+	 * @throws SQLException if reservation is null or if insert fails
+	 */
+	public long addReservation(Reservation reservation, int orderNr) throws SQLiteException, SQLException
 	{
 		// throws an exception if the mandatory information is not given
 		if (reservation == null)
 		{
-			throw new SQLiteException("Arguments missing!");
+			throw new SQLException("Arguments missing!");
 		}
 
 		this.openWrite();
@@ -886,6 +934,11 @@ public class DBHandler {
 	 * Internal methods
 	 *******************/
 	
+	/**
+	 * Gets a restaurant's price category.
+	 * @param resName the restaurant's name
+	 * @return the price category
+	 */
 	private float getResPriceCat(String resName)
 	{
 		Cursor c = this.db.rawQuery("SELECT avg(price) as ? FROM ? d, ? r WHERE d.?=r.? AND r.?='?'",
@@ -900,6 +953,11 @@ public class DBHandler {
 		return priceCat;
 	}
 	
+	/**
+	 * @param resName the restaurant's name
+	 * @param dishName the dish's name
+	 * @return an ArrayList of the allergens contained in the dish
+	 */
 	private ArrayList<String> searchForAllergens(String resName, String dishName)
 	{
 		// information held by the allergen table
@@ -920,6 +978,10 @@ public class DBHandler {
 		return allergens;
 	}
 	
+	/**
+	 * @param mail the client's mail
+	 * @return the client's name
+	 */
 	private String getClientName(String mail)
 	{
 		// information held by the client table
@@ -934,6 +996,10 @@ public class DBHandler {
 		return name;
 	}
 	
+	/**
+	 * @param orderNr the identifier of the order in the DB
+	 * @return an object order with all the information from the DB
+	 */
 	private Order getOrder(int orderNr)
 	{		
 		Cursor c;
