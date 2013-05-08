@@ -313,7 +313,7 @@ public class DBHandler {
 		
 		// information held by the restaurant table
 		c = this.db.query(TABLE_RESTAURANT, new String[]{CHAIN,DESCRIPTION,LAT,LONG,STREET,ZIP,
-				TOWN,TEL,RATING,VOTES,PRICE_CAT,SEATS,AVAIL}, RES+"='"+name+"'", null, null, null, null);
+				TOWN,TEL,RATING,VOTES,SEATS,AVAIL}, RES+"='"+name+"'", null, null, null, null);
 		if (c.getCount() > 1)
 		{
 			System.err.println("Error : two or more retaurants seem to have the same name.");
@@ -329,9 +329,11 @@ public class DBHandler {
 		String tel = c.getString(c.getColumnIndex(TEL));
 		float rating = c.getFloat(c.getColumnIndex(RATING));
 		int votes = c.getInt(c.getColumnIndex(VOTES));
-		float priceCat = c.getFloat(c.getColumnIndex(PRICE_CAT));
 		short seats = c.getShort(c.getColumnIndex(SEATS));
 		short availableSeats = c.getShort(c.getColumnIndex(AVAIL));
+		
+		// information on the price category
+		float priceCat = getResPriceCat(name);
 		
 		// creates the Restaurant object to be returned
 		Restaurant retour = new Restaurant(name, chain, address, town, tel, description, rating, votes,
@@ -804,6 +806,20 @@ public class DBHandler {
 	 * Internal methods
 	 *******************/
 	
+	private float getResPriceCat(String resName)
+	{
+		Cursor c = this.db.rawQuery("SELECT avg(price) as ? FROM ? d, ? r WHERE d.?=r.? AND r.?='?'",
+				new String[]{PRICE_CAT,TABLE_DISH,TABLE_RESTAURANT,RES,RES,RES,resName});
+		if (c.getCount() > 1)
+		{
+			System.err.println("Error : two or more restaurants seem to have the same name.");
+		}
+		c.moveToFirst();
+		float priceCat = c.getFloat(c.getColumnIndex(PRICE_CAT));
+		
+		return priceCat;
+	}
+	
 	private ArrayList<String> searchForAllergens(String resName, String dishName)
 	{
 		// information held by the allergen table
@@ -862,8 +878,7 @@ public class DBHandler {
 		// information held by the order_detail table
 		c = this.db.query(TABLE_ORDER_DETAIL, new String[] {DISH, QUANTITY}, ORDER_NR+"="+orderNr, null, null, null, null);
 		ArrayList<Dish> dishes = new ArrayList<Dish>(c.getCount());
-		c.moveToFirst();
-		while (!c.isAfterLast())
+		while (!c.moveToNext())
 		{
 			String dishName = c.getString(c.getColumnIndex(DISH));
 			int quantity = c.getInt(c.getColumnIndex(QUANTITY));
@@ -885,8 +900,7 @@ public class DBHandler {
 			Dish dish = new Dish(dishName, type, subtype, price, 0, null, allergens);
 			dish.setQuantity(quantity);
 			dishes.add(dish);
-			
-			c.moveToNext();
+
 		}
 		retour.setOrderDishes(dishes);
 
