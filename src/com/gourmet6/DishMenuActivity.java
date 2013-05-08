@@ -34,7 +34,7 @@ public class DishMenuActivity extends Activity {
 		//TODO create listDishes in current if don't exist
 		
 		//Reaction du bouton de commande
-		Button order = (Button) findViewById(R.id.button1);
+		Button order = (Button) findViewById(R.id.comInReserv);
 		order.setOnClickListener(new View.OnClickListener() {
 					
 			@Override

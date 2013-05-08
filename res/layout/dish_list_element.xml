@@ -12,7 +12,7 @@
         android:layout_height="30dp"
         android:layout_alignBottom="@+id/minus"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/textView2"
+        android:layout_toLeftOf="@+id/dateTime"
         android:text="@string/plus_button"
         android:textSize="12sp"
         android:visibility="invisible"
@@ -31,7 +31,7 @@
         android:clickable="false" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/dateTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/plus"

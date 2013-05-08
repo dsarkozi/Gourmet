@@ -14,10 +14,15 @@ import android.os.Build;
 
 public class ReservationActivity extends Activity {
 	
-	private int people = 0;
-	private int hour = 0;
-	private int date = 0;
+	private int people;
+	private int year;
+	private int month;
+	private int day;
+	private int hour;
+	private int minute;
 
+	//TODO Attention au format String de la date -> yyyy-mm-dd hh:mm, pas dd-mm-yyyy hh:mm
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);		
@@ -28,15 +33,9 @@ public class ReservationActivity extends Activity {
 		setTitle(R.string.activity_reservation_title);
 		
 		//récupération des valeurs entrées par le client
-		EditText seats = (EditText) findViewById(R.id.editText1);
-		this.people = Integer.parseInt(seats.getText().toString());
-		
-		EditText time = (EditText) findViewById(R.id.editText2);
-		
-		EditText date = (EditText) findViewById(R.id.editText3);
 		
 		//Reaction du bouton de commande
-		Button order = (Button) findViewById(R.id.button1);
+		Button order = (Button) findViewById(R.id.comInReserv);
 		order.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -49,7 +48,7 @@ public class ReservationActivity extends Activity {
 		});	
 		
 		//Reaction du bouton de soumission
-		Button submit = (Button) findViewById(R.id.button2);
+		Button submit = (Button) findViewById(R.id.validateReserv);
 		submit.setOnClickListener(new View.OnClickListener() {
 			
 			@Override

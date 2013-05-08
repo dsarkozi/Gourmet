@@ -4,8 +4,6 @@
     <string name="resorderButton">Commander</string>
     <string name="ressubmitButton">Soumettre</string>
     <string name="resseats">How many people?</string>
-    <string name="reshour">Which hour?</string>
-    <string name="resday">Which day?</string>
     <string name="activity_reservation_title">Reservation</string>
     
 </resources>

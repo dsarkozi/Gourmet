@@ -12,7 +12,7 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button2"
+        android:layout_above="@+id/validateReserv"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="166dp"
         android:text="@string/descstring" />
@@ -34,7 +34,7 @@
         android:text="@string/commandButton" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/validateReserv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -43,16 +43,16 @@
         android:text="@string/reservButton" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/comInReserv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button2"
-        android:layout_alignBottom="@+id/button2"
+        android:layout_alignBaseline="@+id/validateReserv"
+        android:layout_alignBottom="@+id/validateReserv"
         android:layout_alignParentRight="true"
         android:text="@string/menuButton" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/dateTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/textView1"
@@ -73,11 +73,11 @@
         android:rating="0.0" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/Reserv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/ratingBar1"
-        android:layout_toRightOf="@+id/textView2"
+        android:layout_toRightOf="@+id/dateTime"
         android:text="@string/num_peop_rat" />
 
 </RelativeLayout>

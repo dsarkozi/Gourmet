@@ -44,7 +44,7 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 		TextView localisation = (TextView) findViewById(R.id.textView2);
 		localisation.setText(current.getAdress());
 		
-		TextView numrating = (TextView) findViewById(R.id.textView3);
+		TextView numrating = (TextView) findViewById(R.id.Reserv);
 		numrating.setText(current.getNbrPrsHasVoted());
 		
 		//Reaction du bouton de commande
@@ -60,7 +60,7 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 		});
 		
 		//Reaction du bouton de reservation
-		Button reserver = (Button) findViewById(R.id.button2);
+		Button reserver = (Button) findViewById(R.id.validateReserv);
 		reserver.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -71,7 +71,7 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 		});
 		
 		//Reaction du bouton menu
-		Button menu = (Button) findViewById(R.id.button1);
+		Button menu = (Button) findViewById(R.id.comInReserv);
 		menu.setOnClickListener(new View.OnClickListener() {
 			
 			@Override

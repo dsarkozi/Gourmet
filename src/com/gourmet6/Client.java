@@ -33,11 +33,9 @@ public class Client {
 	 * @param people the number of people who will need a seat
 	 * @return the reservation containing the required information
 	 */
-	public Reservation createReservation(Restaurant restaurant, String date, int people)
+	public Reservation createReservation(String restName, String date, int people)
 	{
-		//TODO Récupérer l'objet Restaurant.
-		//Reservation greed = new Reservation(time,people,this.name,this.email);
-		return new Reservation();
+		return new Reservation(restName, date, people, this.name, this.email);
 		
 	}
 	
@@ -48,7 +46,7 @@ public class Client {
 	 * @param order the order to bind to the booking
 	 * @return the reservation containing the required information
 	 */
-	public Reservation createReservationWithOrder(Timestamp time, int people, Order order)
+	public Reservation createReservationWithOrder(String restName, Timestamp time, int people, Order order)
 	{
 		//TODO Récupérer l'objet Restaurant.
 		//Reservation greed = new Reservation(time,people,this.name,this.email,order);

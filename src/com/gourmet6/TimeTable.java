@@ -43,17 +43,21 @@ public class TimeTable {
 		GregorianCalendar cal = null;
 		if (date.contains("/") && date.contains(":"))
 		{
-			ourFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+			ourFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
 		}
 		else if (date.contains("-") && date.contains(":"))
 		{
-			ourFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+			ourFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 		}
 		else if (date.contains(":") && (!date.contains("/") || !date.contains("-")))
 		{
 			ourFormat = new SimpleDateFormat("hh:mm");
 		}
-		else return cal;
+		else
+		{
+			System.err.println("Date's format unknow");
+			return cal;
+		}
 		try
 		{
 			cal = new GregorianCalendar();

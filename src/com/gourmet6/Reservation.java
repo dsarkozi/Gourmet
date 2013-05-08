@@ -26,12 +26,12 @@ public class Reservation {
 	 * @param name the name with which to address the client
 	 * @param email the email related to the account from which the booking was made
 	 */
-	public Reservation(String restaurant, String date, int people, String name, String email)
+	public Reservation(String restaurant, String date, int people, String nameClient, String email)
 	{
 		this.restaurant = restaurant;
 		this.date = TimeTable.parseDate(date);
 		this.people = people;
-		this.name = name;
+		this.name = nameClient;
 		this.email = email;
 		this.order = null;
 	}

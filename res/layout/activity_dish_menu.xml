@@ -15,11 +15,10 @@
         android:layout_above="@+id/button1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" >
-
     </ExpandableListView>
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/comInReserv"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
