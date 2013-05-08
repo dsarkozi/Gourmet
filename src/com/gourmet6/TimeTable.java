@@ -72,6 +72,14 @@ public class TimeTable {
 		return cal;
 	}
 	
+	public static String parseDateInString(GregorianCalendar cal)
+	{
+		String res = cal.get(GregorianCalendar.YEAR)+"-"+cal.get(GregorianCalendar.MONTH)
+				+"-"+cal.get(GregorianCalendar.DAY_OF_MONTH)+" "+cal.get(GregorianCalendar.HOUR_OF_DAY)
+				+":"+cal.get(GregorianCalendar.MINUTE);
+		return res;
+	}
+	
 	/**********************
 	 * Getters and setters
 	 **********************/
