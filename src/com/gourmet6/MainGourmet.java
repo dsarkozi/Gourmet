@@ -17,7 +17,6 @@ public class MainGourmet extends Activity
 	public static final int RESTO_LIST = 2;
 	
 	private String currentTown;
-	private String[] restaurants;
 	@SuppressWarnings("unused")
 	private Location location = null;
 	public DBHandler dbHand;
@@ -146,6 +145,7 @@ public class MainGourmet extends Activity
 				restaurants = data.getStringArrayExtra("restaurants");
 				Gourmet gourmet = (Gourmet)getApplication();
 				gourmet.setRest(makeRestaurant(data.getStringExtra("selection")));
+				startActivity(new Intent(this, RestaurantActivity.class));
 				break;
 			default:
 				throw new AndroidRuntimeException("No such request code.");
