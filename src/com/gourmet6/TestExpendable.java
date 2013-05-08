@@ -19,6 +19,11 @@ public class TestExpendable extends BaseExpandableListAdapter{
 		this.inflater = LayoutInflater.from(context);
 		this.list = list;	
 	}
+	
+	@Override
+	public boolean areAllItemsEnabled() {
+		return true;
+	}
 
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
