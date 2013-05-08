@@ -1,5 +1,7 @@
 package com.gourmet6;
 
+import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,6 +13,7 @@ import android.widget.ExpandableListView;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 
 public class OrderActivity extends Activity {
@@ -49,7 +52,8 @@ public class OrderActivity extends Activity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO add a reservation
-							
+							Intent resv = new Intent(OrderActivity.this,ReservationActivity.class);
+							startActivity(resv);
 						}
 					});
 					builder.setNegativeButton(R.string.no_button, new DialogInterface.OnClickListener() {
@@ -67,6 +71,12 @@ public class OrderActivity extends Activity {
 			}
 		});
 		
+	}
+	
+	private ArrayList<Dish> ordered()
+	{
+		
+		return null;
 	}
 
 	/**
