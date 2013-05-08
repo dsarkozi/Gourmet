@@ -570,7 +570,7 @@ public class DBHandler {
 		this.db.beginTransaction();
 		try
 		{
-			rowId = this.db.insertOrThrow(TABLE_CLIENT, TEL, insertValues);
+			rowId = this.db.insertOrThrow(TABLE_CLIENT, null, insertValues);
 			this.db.setTransactionSuccessful();
 		}
 		finally
@@ -747,6 +747,49 @@ public class DBHandler {
 		return orders;
 	}
 	
+	public long addOrder(Order order) throws SQLiteException
+	{
+		// throws an exception if the mandatory information is not given
+		if (order == null)
+		{
+			throw new SQLiteException("Arguments missing!");
+		}
+		
+		this.openWrite();
+		
+		// table order_overview
+		long rowIdOverview = -1;
+		ContentValues insertOverview = new ContentValues(2);
+		insertOverview.put(RES, order.getOrderRestaurant());
+		insertOverview.put(MAIL, order.getOrderEmail());
+		
+		// starts a new transaction
+		this.db.beginTransaction();
+		try
+		{
+			rowIdOverview = this.db.insertOrThrow(TABLE_ORDER_OVERVIEW, null, insertOverview);
+			
+			// table order_detail
+			ContentValues insertDetail = new ContentValues();
+			for (Dish d : order.getOrderDishes())
+			{
+				insertDetail.put(DISH, d.getName());
+				insertDetail.put(QUANTITY, d.getQuantity());
+				insertDetail.put(RES, order.getOrderRestaurant());
+				insertDetail.put(ORDER_NR, rowIdOverview);
+				this.db.insertOrThrow(TABLE_ORDER_DETAIL, null, insertDetail);
+			}
+			this.db.setTransactionSuccessful();
+		}
+		finally
+		{
+			this.db.endTransaction();
+			this.close();
+		}
+		
+		return rowIdOverview;
+	}
+	
 	
 	/**************
 	 * 
@@ -800,7 +843,44 @@ public class DBHandler {
 		this.close();
 		return reservations;
 	}
+	
+	public long addReservation(Reservation reservation, int orderNr)
+	{
+		// throws an exception if the mandatory information is not given
+		if (reservation == null)
+		{
+			throw new SQLiteException("Arguments missing!");
+		}
 
+		this.openWrite();
+
+		// table reservation
+		long rowId = -1;
+		ContentValues insertValues = new ContentValues(5);
+		insertValues.put(RES, reservation.getReservationResName());
+		insertValues.put(DATETIME, TimeTable.parseDateInString(reservation.getReservationTime()));
+		insertValues.put(SEATS, reservation.getReservationPeople());
+		insertValues.put(MAIL, reservation.getReservationEmail());
+		if (orderNr > 0) {
+			insertValues.put(ORDER_NR, orderNr);
+		}
+		
+		// starts a new transaction
+		this.db.beginTransaction();
+		try
+		{
+			rowId = this.db.insertOrThrow(TABLE_RESERVATION, null, insertValues);
+			this.db.setTransactionSuccessful();
+		}
+		finally
+		{
+			this.db.endTransaction();
+			this.close();
+		}
+
+		return rowId;
+	}
+	
 	
 	/*******************
 	 * Internal methods
