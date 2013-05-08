@@ -33,7 +33,7 @@ public class ReservationActivity extends Activity {
 	private TextView dateTime;
 	private EditText nbrPrs;
 	
-	private Gourmet g = (Gourmet)getApplication();
+	private Gourmet g ;
 	
 	private Dialog dialog;
 	private Dialog message;
@@ -45,6 +45,8 @@ public class ReservationActivity extends Activity {
 		super.onCreate(savedInstanceState);		
 		setContentView(R.layout.activity_reservation);
 		setTitle(R.string.activity_reservation_title);
+		
+		g = (Gourmet)getApplication();
 		
 		final Calendar c = Calendar.getInstance();
 		c.setTimeZone(TimeZone.getDefault());

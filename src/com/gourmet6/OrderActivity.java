@@ -18,6 +18,7 @@ import android.os.Build;
 
 public class OrderActivity extends Activity {
 	
+	private Gourmet g;
 	private Restaurant current = null;
 	private boolean fromRestaurant = false;
 
@@ -29,6 +30,9 @@ public class OrderActivity extends Activity {
 		setupActionBar();
 
 		setTitle(R.string.activity_order_title);		
+		
+		g = (Gourmet)getApplication();
+		current = g.getRest();
 		
 		Bundle extra = getIntent().getExtras();
 		this.fromRestaurant = extra.getBoolean("from");
@@ -75,8 +79,15 @@ public class OrderActivity extends Activity {
 	
 	private ArrayList<Dish> ordered()
 	{
+		ArrayList<Dish> res = new ArrayList<Dish>();
 		
-		return null;
+		for(Dish d : current.getListDishes()){
+			if(d.getQuantity() != 0){
+				res.add(d);
+			}
+		}
+		
+		return res;
 	}
 
 	/**
