@@ -3,28 +3,19 @@ package com.gourmet6;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.ExpandableListView;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 
 public class OrderActivity extends Activity {
 	
 	private Restaurant current = null;
-	private String[] dishesname = null;
 	private boolean fromRestaurant = false;
 
 	@Override
@@ -39,17 +30,8 @@ public class OrderActivity extends Activity {
 		Bundle extra = getIntent().getExtras();
 		this.fromRestaurant = extra.getBoolean("from");
 		
-		/*ListView list = (ListView) findViewById(R.id.listView1);
-		this.dishesname = this.current.getDishesNames();
-		list.setAdapter(new DishAdapter(this,R.layout.dish_list_element,dishesname));
-		
-		list.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				//TODO make the list of the selected dishes				
-			}
-		});*/
+		ExpandableListView dishes = (ExpandableListView) findViewById(R.id.expandableListView1);
+		dishes.setAdapter(new MenuAdapter(this, current, true));
 		
 		Button submit = (Button) findViewById(R.id.button1);
 		submit.setOnClickListener(new View.OnClickListener() {
@@ -84,58 +66,6 @@ public class OrderActivity extends Activity {
 				}
 			}
 		});
-		
-	}
-	
-	private class DishAdapter extends ArrayAdapter<String>{
-		
-		private String[] dishlist;
-		boolean[] checkBoxState;
-
-		public DishAdapter(Context context, int textViewResourceId,String[] dishlist) {
-			super(context, textViewResourceId, dishlist);
-			checkBoxState=new boolean[dishlist.length];
-		}
-		
-		private class ViewHolder{
-			CheckBox box;
-			TextView name;
-		}
-		
-		@Override
-		public View getView(final int position, View convertView, ViewGroup parent){
-			
-			ViewHolder holder = null;
-			
-			if (convertView == null) {
-				LayoutInflater vi = (LayoutInflater)getSystemService( Context.LAYOUT_INFLATER_SERVICE);
-				convertView = vi.inflate(R.layout.dish_list_element, null);
-				
-				 holder = new ViewHolder();
-				 holder.name = (TextView) convertView.findViewById(R.id.dishname);
-				 //holder.box = (CheckBox) convertView.findViewById(R.id.checkBox1);
-				 convertView.setTag(holder);
-				 
-			}
-			else {
-			     holder = (ViewHolder) convertView.getTag();
-			}	 
-			
-			holder.name.setText(dishlist[position]);
-			holder.box.setChecked(checkBoxState[position]);
-			
-			holder.box.setOnClickListener(new View.OnClickListener() {
-			     
-				   public void onClick(View v) {
-				    if(((CheckBox)v).isChecked())
-				     checkBoxState[position]=true;
-				    else
-				     checkBoxState[position]=false;				     
-				    }
-		   });
-			
-			return convertView;
-		}
 		
 	}
 

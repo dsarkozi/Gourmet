@@ -5,9 +5,6 @@ import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.support.v4.app.NavUtils;
@@ -19,7 +16,6 @@ public class DishMenuActivity extends Activity {
 	
 	private Gourmet g = (Gourmet)getApplication();
 	private Restaurant current  = null;
-	private String[] dishesname = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
