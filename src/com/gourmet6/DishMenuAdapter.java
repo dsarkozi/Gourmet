@@ -2,6 +2,7 @@ package com.gourmet6;
 
 import java.util.ArrayList;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,25 +39,27 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 
 	@Override
 	public View getChildView(int groupPosition, int childPosition,boolean isLastChild, View convertView, ViewGroup parent) {
-		final DishViewHolder dholder;
+		
 		
 		final SubGroupe sgrp = (SubGroupe) getChild(groupPosition, childPosition);
 		boolean nat = sgrp.getWhat();
 		
 		if(nat){
+			GroupeViewHolder gholder;
 			if(convertView == null){
-				dholder = new DishViewHolder();
+				gholder = new GroupeViewHolder();
 				convertView = inflater.inflate(R.layout.child_layout, null);
-				dholder.name = (TextView) convertView.findViewById(R.id.child);
+				gholder.type = (TextView) convertView.findViewById(R.id.child);
 			}
 			else{
-				dholder = (DishViewHolder) convertView.getTag();
+				gholder = (GroupeViewHolder) convertView.getTag();
 			}
 			
-			dholder.name.setText(sgrp.getTitle());	
+			gholder.type.setText(sgrp.getTitle());	
 			return convertView;
 		}
 		else{
+			final DishViewHolder dholder;
 			final Dish currentdish = current.getDish(sgrp.getTitle());
 		
 			if(convertView == null){
@@ -82,31 +85,42 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 				dholder.plus.setClickable(true);
 				dholder.minus.setVisibility(View.VISIBLE);
 				dholder.minus.setClickable(true);
+			
+		
+				dholder.plus.setOnClickListener(new OnClickListener() {
+			
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						if(currentdish.getQuantity() < currentdish.getInventory())
+						{
+							currentdish.setQuantity(currentdish.getQuantity() + 1 );
+							dholder.count.setText(currentdish.getQuantity());
+						}
+					}
+				});
+		
+				dholder.plus.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						if(currentdish.getQuantity() > 0)
+						{
+							currentdish.setQuantity(currentdish.getQuantity() - 1 );
+							dholder.count.setText(currentdish.getQuantity());
+						}
+					}
+				});
+			
 			}
-		
-			dholder.plus.setOnClickListener(new OnClickListener() {
-			
+			convertView.setOnClickListener(new OnClickListener() {
+				
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					if(currentdish.getQuantity() < currentdish.getInventory())
-					{
-						currentdish.setQuantity(currentdish.getQuantity() + 1 );
-						dholder.count.setText(currentdish.getQuantity());
-					}
-				}
-			});
-		
-			dholder.plus.setOnClickListener(new OnClickListener() {
-			
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					if(currentdish.getQuantity() > 0)
-					{
-						currentdish.setQuantity(currentdish.getQuantity() - 1 );
-						dholder.count.setText(currentdish.getQuantity());
-					}
+					Intent display = new Intent(context, DishDisplayActivity.class);
+					display.putExtra("the_dish", currentdish.getName());
+					context.startActivity(display);
 				}
 			});
 		

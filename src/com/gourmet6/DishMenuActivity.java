@@ -1,7 +1,5 @@
 package com.gourmet6;
 
-import java.util.ArrayList;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
@@ -13,8 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.TextView;
 
 public class DishMenuActivity extends Activity {
 	
@@ -49,18 +45,8 @@ public class DishMenuActivity extends Activity {
 		ExpandableListView dishes = (ExpandableListView) findViewById(R.id.dish_menu);
 		//dishes.setAdapter(new TestExpendable(this, current.getListDishes()));
 		//dishes.setAdapter(new MenuAdapter(this, current, false));
-		
 		dishes.setAdapter(new DishMenuAdapter(this, current, false));
-		dishes.setOnChildClickListener(new OnChildClickListener() {
-			
-			@Override
-			public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-				Intent display = new Intent(DishMenuActivity.this, DishDisplayActivity.class);
-				display.putExtra("the_dish",((TextView)v.findViewById(R.id.dishname)).getText().toString());
-				startActivity(display);
-				return true;
-			}
-		});
+
 		
 	}
 
