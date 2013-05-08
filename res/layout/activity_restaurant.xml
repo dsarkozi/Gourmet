@@ -35,7 +35,7 @@
         </HorizontalScrollView>
 
         <RatingBar
-            android:id="@+id/ratingBar1"
+            android:id="@+id/ratingRest"
             style="?android:attr/ratingBarStyleIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,44 +45,45 @@
             android:rating="0.0" />
 
     	<TextView
-        	android:id="@+id/textView1"
+        	android:id="@+id/descriptionRest"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
         	android:layout_gravity="center_horizontal"
+        	android:lines="3"
         	android:text="@string/descstring" />
 
     	<TextView
-    	    android:id="@+id/dateTime"
+    	    android:id="@+id/horaireRest"
     	    android:layout_width="wrap_content"
     	    android:layout_height="wrap_content"
     	    android:layout_gravity="center_horizontal"
     	    android:text="@string/locstring" />
 
     	<TextView
-        	android:id="@+id/Reserv"
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:layout_gravity="center_horizontal"
-        	android:text="@string/num_peop_rat" />
+    	    android:id="@+id/localisationRest"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:layout_gravity="center_horizontal"
+    	    android:text="@string/descstring" />
 
     	<LinearLayout
     	    android:layout_width="match_parent"
     	    android:layout_height="wrap_content" >
 
     	    <Button
-    	        android:id="@+id/button3"
+    	        android:id="@+id/commandeInRest"
     	        android:layout_width="wrap_content"
     	        android:layout_height="wrap_content"
     	        android:text="@string/commandButton" />
 
     	    <Button
-    	        android:id="@+id/validateReserv"
+    	        android:id="@+id/reserveInRest"
     	        android:layout_width="wrap_content"
     	        android:layout_height="wrap_content"
     	        android:text="@string/reservButton" />
 
     	    <Button
-    	        android:id="@+id/comInReserv"
+    	        android:id="@+id/menuInRest"
     	        android:layout_width="wrap_content"
     	        android:layout_height="wrap_content"
     	        android:text="@string/menuButton" />

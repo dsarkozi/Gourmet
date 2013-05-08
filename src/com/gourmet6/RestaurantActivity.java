@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Gallery;//Il me dit que la gallery n'est peut-etre plus valable...
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
@@ -24,8 +25,22 @@ import android.os.Build;
 public class RestaurantActivity extends Activity implements RatingBar.OnRatingBarChangeListener
 {
 	
-	private Gourmet g = (Gourmet)getApplication();
-	private Restaurant current = null;
+	private Gourmet g;
+	private Restaurant currentRest;
+	
+	private LinearLayout listImg;
+	
+	private RatingBar ratingBar;
+	
+	private TextView description;
+	private TextView horaire;
+	private TextView localisation;
+	
+	private Button order;
+	private Button reserve;
+	private Button menu;
+	
+	private boolean extended;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,21 +49,23 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
-		current = g.getRest();
-		setTitle(this.current.getName());
+		g = (Gourmet)getApplication();
+		
+		currentRest = g.getRest();
+		setTitle(this.currentRest.getName());
+		
+		//Image
+		//TODO
+		
+		//rating bar
+		ratingBar = (RatingBar) findViewById(R.id.ratingRest);
+		ratingBar.setRating(currentRest.getRating());
 		
 		//TextView
-		TextView description = (TextView) findViewById(R.id.textView1);
-		description.setText(current.getDescription());
 		
-		//TextView localisation = (TextView) findViewById(R.id.textView2);
-		//localisation.setText(current.getAdress());
-		
-		TextView numrating = (TextView) findViewById(R.id.Reserv);
-		numrating.setText(current.getNbrPrsHasVoted());
 		
 		//Reaction du bouton de commande
-		Button order = (Button) findViewById(R.id.button3);
+		Button order = (Button) findViewById(R.id.commandeInRest);
 		order.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -60,7 +77,7 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 		});
 		
 		//Reaction du bouton de reservation
-		Button reserver = (Button) findViewById(R.id.validateReserv);
+		Button reserver = (Button) findViewById(R.id.reserveInRest);
 		reserver.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -71,7 +88,7 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 		});
 		
 		//Reaction du bouton menu
-		Button menu = (Button) findViewById(R.id.comInReserv);
+		Button menu = (Button) findViewById(R.id.menuInRest);
 		menu.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -82,14 +99,9 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 		});
 		
 		//Coter le restaurant
-		RatingBar imp = (RatingBar) findViewById(R.id.ratingBar1);
-		imp.setRating(current.getRating());
+		RatingBar imp = (RatingBar) findViewById(R.id.ratingRest);
+		imp.setRating(currentRest.getRating());
 		imp.setOnRatingBarChangeListener(this);
-		
-		
-		//Gallery  d'images
-		Gallery envy = (Gallery) findViewById(R.id.gallery1);
-		envy.setAdapter(new ImageAdapter(this));
 	}
 	
 	public class ImageAdapter extends BaseAdapter {
