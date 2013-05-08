@@ -22,7 +22,7 @@ import android.os.Build;
 
 public class ReservationActivity extends Activity {
 	
-	private String people;
+	private int people;
 	private int year;
 	private int month;
 	private int day;
@@ -115,9 +115,10 @@ public class ReservationActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				//TODO create the reservation object
-				people = nbrPrs.getText().toString();
+				people = Integer.parseInt(nbrPrs.getText().toString());
 				s = year+"-"+(month+1)+"-"+day+" "+hour+":"+minute;
-				Reservation reservTemp = new Reservation(g.getRest().getName(), s, );
+				Reservation reservTemp = new Reservation(g.getRest().getName(), s, people, g.getClient().getName(), g.getClient().getEmail());
+				
 				//if()
 				Intent commande = new Intent(ReservationActivity.this, OrderActivity.class);
 				commande.putExtra("from", false);

@@ -41,8 +41,8 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 		TextView description = (TextView) findViewById(R.id.textView1);
 		description.setText(current.getDescription());
 		
-		TextView localisation = (TextView) findViewById(R.id.textView2);
-		localisation.setText(current.getAdress());
+		//TextView localisation = (TextView) findViewById(R.id.textView2);
+		//localisation.setText(current.getAdress());
 		
 		TextView numrating = (TextView) findViewById(R.id.Reserv);
 		numrating.setText(current.getNbrPrsHasVoted());
