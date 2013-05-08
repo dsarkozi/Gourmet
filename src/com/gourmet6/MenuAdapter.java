@@ -104,6 +104,8 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 		else{
 			gholder = (GroupeViewHolder) convertView.getTag();
 		}
+		
+		
 			
 		gholder.type.setText(group.getType());
 		
