@@ -47,14 +47,17 @@ public class TestExpendable extends BaseExpandableListAdapter{
 		{
 			gholder = new GroupViewHolder();
 			convertView = inflater.inflate(R.layout.grp_layout, null);
-			gholder.textViewGroup = (TextView) convertView.findViewById(R.id.textView1); 
+			gholder.textViewGroup = (TextView) convertView.findViewById(R.id.groupe); 
 			convertView.setTag(gholder);
 		}
 		else{
 			gholder = (GroupViewHolder) convertView.getTag();
 		}
 		
-		gholder.textViewGroup.setText((String)getChild(groupPosition, childPosition));
+		String aller = (String)getChild(groupPosition, childPosition);
+		
+		if(aller != null)
+			gholder.textViewGroup.setText(aller);
 		
 		return convertView;
 	}
@@ -62,7 +65,13 @@ public class TestExpendable extends BaseExpandableListAdapter{
 	@Override
 	public int getChildrenCount(int groupPosition) {
 		// TODO Auto-generated method stub
-		return list.get(groupPosition).getAllergens().size();
+		ArrayList<String> aller = list.get(groupPosition).getAllergens();
+		if (aller != null)
+		{
+			return aller.size();
+		}
+		else
+			return 1;
 	}
 
 	@Override
@@ -95,14 +104,14 @@ public class TestExpendable extends BaseExpandableListAdapter{
 		{
 			gholder = new GroupViewHolder();
 			convertView = inflater.inflate(R.layout.grp_layout, null);
-			gholder.textViewGroup = (TextView) convertView.findViewById(R.id.textView1); 
+			gholder.textViewGroup = (TextView) convertView.findViewById(R.id.groupe); 
 			convertView.setTag(gholder);
 		}
 		else{
 			gholder = (GroupViewHolder) convertView.getTag();
 		}
-		
-		gholder.textViewGroup.setText(dish.getName());
+		String name = dish.getName();
+		gholder.textViewGroup.setText(name);
 		
 		return convertView;
 	}

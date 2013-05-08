@@ -34,7 +34,7 @@
         android:text="@string/order_from_menu" />
 
     <ExpandableListView
-        android:id="@+id/expandableListView1"
+        android:id="@+id/dish_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/button1"

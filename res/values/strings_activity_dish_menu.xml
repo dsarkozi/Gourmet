@@ -7,5 +7,6 @@
     <string name="minus_button">-</string>
     <string name="initial_state">0</string>
     <string name="sort_spinner">Trier</string>
+    <string name="menu_default">(aucun)</string>
     
 </resources>

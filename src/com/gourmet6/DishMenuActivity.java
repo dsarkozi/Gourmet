@@ -1,16 +1,16 @@
 package com.gourmet6;
 
-import android.os.Bundle;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.support.v4.app.NavUtils;
-import android.annotation.TargetApi;
-import android.content.Intent;
-import android.os.Build;
 
 public class DishMenuActivity extends Activity {
 	
@@ -42,8 +42,8 @@ public class DishMenuActivity extends Activity {
 			}
 		});	
 		
-		ExpandableListView dishes = (ExpandableListView) findViewById(R.id.expandableListView1);
-		
+		ExpandableListView dishes = (ExpandableListView) findViewById(R.id.dish_menu);
+		dishes.setAdapter(new TestExpendable(this, current.getListDishes()));
 		//dishes.setAdapter(new MenuAdapter(this, current, false));
 		
 	}
