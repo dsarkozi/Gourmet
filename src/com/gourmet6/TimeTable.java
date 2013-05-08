@@ -98,7 +98,7 @@ public class TimeTable
 				+"-"+cal.get(GregorianCalendar.DAY_OF_MONTH)+" "+cal.get(GregorianCalendar.HOUR_OF_DAY)
 				+":"+cal.get(GregorianCalendar.MINUTE);
 		return res;
-	}
+	}//
 	
 	public boolean isInTimeTable(GregorianCalendar date)
 	{
