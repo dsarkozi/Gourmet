@@ -2,11 +2,17 @@ package com.gourmet6;
 
 import android.app.Application;
 
-public class Gourmet extends Application{
-	
+public class Gourmet extends Application
+{	
 	private Client currentcli = null;
 	private Restaurant currentres = null;
 	
+	@Override
+	public void onCreate()
+	{
+		super.onCreate();
+	}
+
 	public Client getClient() 
 	{
 		return currentcli;

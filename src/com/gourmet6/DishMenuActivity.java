@@ -14,7 +14,7 @@ import android.os.Build;
 
 public class DishMenuActivity extends Activity {
 	
-	private Gourmet g = (Gourmet)getApplication();
+	private Gourmet g;
 	private Restaurant current  = null;
 	
 	@Override
@@ -25,7 +25,7 @@ public class DishMenuActivity extends Activity {
 		setupActionBar();
 		
 		setTitle(R.string.activity_menu_title);
-		
+		g = (Gourmet)getApplicationContext();
 		current = g.getRest();
 		//TODO create listDishes in current if don't exist
 		
@@ -43,7 +43,8 @@ public class DishMenuActivity extends Activity {
 		});	
 		
 		ExpandableListView dishes = (ExpandableListView) findViewById(R.id.expandableListView1);
-		dishes.setAdapter(new MenuAdapter(this, current, false));
+		
+		//dishes.setAdapter(new MenuAdapter(this, current, false));
 		
 	}
 
