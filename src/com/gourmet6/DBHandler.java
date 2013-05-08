@@ -16,6 +16,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
+import android.util.Log;
 
 /**
  * A class which handles the database, i.e. gives methods to 
@@ -149,9 +150,10 @@ public class DBHandler {
     private static final String LONG = "long";
     private static final String MAIL = "mail";
     private static final String ORDER_NR = "orderNr";
+    private static final String PASSWORD = "password";
+    private static final String PEOPLE = "people";
     private static final String PRICE = "price";
     private static final String PRICE_CAT = "priceCat";
-    private static final String PASSWORD = "password";
     private static final String QUANTITY = "quantity";
     private static final String RATING = "rating";
     private static final String RES = "resName";
@@ -852,7 +854,7 @@ public class DBHandler {
 		String client = this.getClientName(mail);
 		
 		// information held by the reservation table
-		c = this.db.query(TABLE_RESERVATION, new String[] {RES,ORDER_NR,DATETIME,SEATS}, MAIL+"='"+mail+"'", null, null, null, DATETIME);
+		c = this.db.query(TABLE_RESERVATION, new String[] {RES,ORDER_NR,DATETIME,PEOPLE}, MAIL+"='"+mail+"'", null, null, null, DATETIME);
 		int count = c.getCount();
 		if (count == 0)
 		{
@@ -865,7 +867,7 @@ public class DBHandler {
 		{
 			String resName = c.getString(c.getColumnIndex(RES));
 			String datetime = c.getString(c.getColumnIndex(DATETIME));
-			int seats = c.getInt(c.getColumnIndex(SEATS));
+			int seats = c.getInt(c.getColumnIndex(PEOPLE));
 			
 			// new Reservation
 			Reservation reserv = new Reservation(resName, datetime, seats, client, mail);
@@ -907,7 +909,7 @@ public class DBHandler {
 		ContentValues insertValues = new ContentValues(5);
 		insertValues.put(RES, reservation.getReservationResName());
 		insertValues.put(DATETIME, TimeTable.parseDateInString(reservation.getReservationTime()));
-		insertValues.put(SEATS, reservation.getReservationPeople());
+		insertValues.put(PEOPLE, reservation.getReservationPeople());
 		insertValues.put(MAIL, reservation.getReservationEmail());
 		if (orderNr > 0) {
 			insertValues.put(ORDER_NR, orderNr);
@@ -929,16 +931,25 @@ public class DBHandler {
 		return rowId;
 	}
 	
-	public int getAvailOnDateTime(String datetime)
+	public int getAvailBetweenDateTime(String resName, String dtStart, String dtEnd) throws SQLiteException
 	{
 		this.openRead();
 		Cursor c;
 		
-		c = this.db.rawQuery("", new String []{""});
+		String avail = "stillAvail";
+		c = this.db.rawQuery("SELECT (? - sum (?)) as ? FROM ? reserv, ? rest WHERE reserv.?= rest.? AND rest.?='?' " +
+				"AND strftime('%Y-%m-%d %H:%M', reserv.?) BETWEEN strftime('%Y-%m-%d %H:%M', '?') AND strftime('%Y-%m-%d %H:%M', '?')",
+				new String []{SEATS,PEOPLE,avail,TABLE_RESERVATION,TABLE_RESTAURANT,RES,RES,RES,resName,DATETIME,dtStart,dtEnd});
+		int count = c.getCount();
+		if (count != 1)
+		{
+			Log.e("DBHandler", "Error : the method failed.");
+		}
+		c.moveToFirst();
+		int seats = c.getInt(c.getColumnIndex(avail));
 		
-		
-		//TODO
-		return 0;
+		this.close();
+		return seats;
 	}
 	
 	
