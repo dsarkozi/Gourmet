@@ -36,10 +36,9 @@ public class ReservationActivity extends Activity {
 	private Gourmet g = (Gourmet)getApplication();
 	
 	private Dialog dialog;
+	private Dialog message;
 	
 	private Context context;
-
-	//TODO Attention au format String de la date -> yyyy-mm-dd hh:mm, pas dd-mm-yyyy hh:mm
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -115,14 +114,11 @@ public class ReservationActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				//TODO create the reservation object
-				people = Integer.parseInt(nbrPrs.getText().toString());
-				s = year+"-"+(month+1)+"-"+day+" "+hour+":"+minute;
-				Reservation reservTemp = new Reservation(g.getRest().getName(), s, people, g.getClient().getName(), g.getClient().getEmail());
-				
-				//if()
-				Intent commande = new Intent(ReservationActivity.this, OrderActivity.class);
-				commande.putExtra("from", false);
-				startActivity(commande);		
+				if(checkReservation()){
+					Intent commande = new Intent(ReservationActivity.this, OrderActivity.class);
+					commande.putExtra("from", false);
+					startActivity(commande);
+				}
 			}
 		});	
 		
@@ -131,11 +127,47 @@ public class ReservationActivity extends Activity {
 		submit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO checker la réservation
-				
+				// TODO suppression reservation ?
+				if(checkReservation()){
+					Intent commande = new Intent(ReservationActivity.this, RestaurantActivity.class);
+					startActivity(commande);
+				}
 			}
 		});
 		
+	}
+	
+	public boolean checkReservation()
+	{
+		people = Integer.parseInt(nbrPrs.getText().toString());
+		s = year+"-"+(month+1)+"-"+day+" "+hour+":"+minute;
+		Reservation reservTemp = new Reservation(g.getRest().getName(), s, people, g.getClient().getName(), g.getClient().getEmail());
+		String res = g.getRest().checkReservation(reservTemp);
+		if(res!=null)
+		{
+			message = new Dialog(context);
+			message.setContentView(R.layout.message_dialog);
+			message.setTitle("Erreur");
+			
+			TextView tv = (TextView) message.findViewById(R.id.textViewMessageDialog);
+			tv.setText(res);
+			
+			Button b = (Button) message.findViewById(R.id.okButtonMessageDialog);
+			b.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					message.cancel();
+				}
+			});
+			
+			message.show();
+			
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 
 	/**

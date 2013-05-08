@@ -335,10 +335,10 @@ public class Restaurant {
 	 * -Qu'elle spécifie une nombre de personne <= au nombre de place encore disponible dans le restaurant.
 	 * Renvoit false sinon.
 	 */
-	public boolean checkReservation(Reservation res){
+	public String checkReservation(Reservation res){
 		if(res.getReservationOrder()!=null){
 			for(Dish dish : res.getReservationOrder().getOrderDishes()){
-				if(dish.getQuantity()>dish.getInventory()) return false;
+				if(dish.getQuantity()>dish.getInventory()) return "Incorrect quantity";
 			}
 		}
 		//Check hour.
@@ -353,7 +353,9 @@ public class Restaurant {
 				timeTableOk = true;
 			}
 		}
-		return (timeTableOk && res.getReservationPeople()<=availableSeats);
+		if(!timeTableOk) return "Incorrect time table";
+		if(res.getReservationPeople()<=availableSeats) return "Too many people";
+		else return null;
 	}
 	
 	public void Orderreboot()
