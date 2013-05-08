@@ -929,6 +929,18 @@ public class DBHandler {
 		return rowId;
 	}
 	
+	public int getAvailOnDateTime(String datetime)
+	{
+		this.openRead();
+		Cursor c;
+		
+		c = this.db.rawQuery("", new String []{""});
+		
+		
+		//TODO
+		return 0;
+	}
+	
 	
 	/*******************
 	 * Internal methods
