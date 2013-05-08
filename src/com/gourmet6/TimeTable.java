@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 public class TimeTable 
 {
@@ -32,7 +33,6 @@ public class TimeTable
 		this.closingTime = parseDate(closingTime);
 	}
 	
-	/* helps managing the timetables given a certain day */
     static public HashMap<String,Integer> weekMap = new HashMap<String,Integer>(7);
     static {
     	weekMap.put("dimanche", 1);
@@ -75,7 +75,7 @@ public class TimeTable
 		}
 		else
 		{
-			System.err.println("Date's format unknow");
+			Log.e("Timetable", "Date's format unknow");
 			return cal;
 		}
 		try
@@ -86,7 +86,7 @@ public class TimeTable
 		}
 		catch (ParseException e)
 		{
-			System.err.println("Error encoding the date : "+e);
+			Log.e("Timetable", "Error encoding the date : "+e);
 			e.printStackTrace();
 		}
 		return cal;
@@ -107,7 +107,7 @@ public class TimeTable
 		int minute = date.get(GregorianCalendar.MINUTE);
 		
 		return (Integer)weekMap.get(this.getJourDebut())<=day
-				&& day<=(Integer)DBHandler.weekMap.get(this.getJourFin())
+				&& day<=(Integer)weekMap.get(this.getJourFin())
 				&& this.getOpenTime().get(GregorianCalendar.HOUR_OF_DAY)<=hour
 				&& this.getOpenTime().get(GregorianCalendar.MINUTE)<=minute
 				&& hour<=this.getClosingTime().get(GregorianCalendar.HOUR_OF_DAY)
@@ -141,20 +141,21 @@ public class TimeTable
 	{
 		this.closingTime = parseDate(closingTime);
 	}
-
-	public String getJourDebut() {
+	public String getJourDebut()
+	{
 		return jourDebut;
 	}
-
-	public void setJourDebut(String jourDebut) {
+	public void setJourDebut(String jourDebut) 
+	{
 		this.jourDebut = jourDebut;
 	}
 
-	public String getJourFin() {
+	public String getJourFin()
+	{
 		return jourFin;
 	}
-
-	public void setJourFin(String jourFin) {
+	public void setJourFin(String jourFin)
+	{
 		this.jourFin = jourFin;
 	}
 }

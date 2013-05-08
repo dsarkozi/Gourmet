@@ -32,7 +32,7 @@ public class DBHandler {
 	 */
 	private static class DBHelper extends SQLiteOpenHelper {
 
-		private static final String DB_NAME = "gourmet6.sqlite";
+		private static final String DB_NAME = "gourmet7.sqlite";
 		private static final String DB_DIR = "/data/data/com.gourmet6/databases/";
 		private static String DB_PATH = DB_DIR + DB_NAME;
 		public static final int DB_VERSION = 1;
@@ -143,7 +143,9 @@ public class DBHandler {
 	private static final String CHAIN = "chainName";
 	private static final String CLIENT = "cliName";
 	private static final String DATETIME = "datetime";
-	private static final String DAY = "day";
+	//private static final String DAY = "day";
+	private static final String DAY_END = "dayEnd";
+	private static final String DAY_START = "dayStart";
 	private static final String DESCRIPTION = "description";
     private static final String DISH = "dishName";
     private static final String LAT = "lat";
@@ -354,30 +356,20 @@ public class DBHandler {
 		retour.setCuisines(cuisine);
 		
 		// timetable
-		@SuppressWarnings("unchecked")
-		ArrayList<TimeTable> semaine[] = new ArrayList[7];
-		for (int i=0; i<7; i++)
-		{
-			semaine[i] = new ArrayList<TimeTable>(2);
-		}
-		 
-		/*
-		 * fonctionne aussi normalement
-		 * c = db.rawQuery("SELECT day,timeOpen,timeClose FROM timetable WHERE resName='Cr�perie Bretonne' ORDER BY CASE day"+
-		 *		" WHEN 'lundi' THEN 0 WHEN 'mardi' THEN 1 WHEN 'mercredi' THEN 2 WHEN 'jeudi' THEN 3 WHEN 'vendredi' THEN 4 WHEN"+
-		 *		" 'samedi' THEN 5 WHEN 'dimanche' THEN 6 END, timeOpen DESC", null);
-		 */
-		c = db.query(TABLE_TIMETABLE, new String[] {DAY,"strftime('%H:%M', timeOpen)","strftime('%H:%M', timeClose)"},
-				RES+"='"+name+"'", null, null, null, "CASE "+DAY+" WHEN 'lundi' THEN 0 WHEN 'mardi' THEN 1 WHEN 'mercredi'"+
-				" THEN 2 WHEN 'jeudi' THEN 3 WHEN 'vendredi' THEN 4 WHEN 'samedi' THEN 5 WHEN 'dimanche' THEN 6 END, timeOpen");
-		int position;
+		c = this.db.query(TABLE_TIMETABLE, new String[] {DAY_START,DAY_END,TIME_OPEN,TIME_CLOSE}, RES+"='"+name+"'",
+				null, null, null, "CASE "+DAY_START+" WHEN 'lundi' THEN 1 WHEN 'mardi' THEN 12 WHEN 'mercredi' THEN 3 "+
+				"WHEN 'jeudi' THEN 4 WHEN 'vendredi' THEN 5 WHEN  'samedi' THEN 6 WHEN 'dimanche' THEN 7 END, timeOpen");
+		ArrayList<TimeTable> timetable = new ArrayList<TimeTable>(c.getCount());
 		while(c.moveToNext())
 		{
-			position = (int) weekMap.get(c.getString(c.getColumnIndex(DAY)));
-			TimeTable temp = new TimeTable(c.getString(c.getColumnIndex(TIME_OPEN)),c.getString(c.getColumnIndex(TIME_CLOSE)));
-			semaine[position].add(temp);
+			String dayStart = c.getString(c.getColumnIndex(DAY_START));
+			String dayEnd = c.getString(c.getColumnIndex(DAY_END));
+			String timeOpen = c.getString(c.getColumnIndex(TIME_OPEN));
+			String timeClose = c.getString(c.getColumnIndex(TIME_CLOSE));
+			TimeTable tt = new TimeTable(dayStart, dayEnd, timeOpen, timeClose);
+			timetable.add(tt);
 		}
-		retour.setSemaine(semaine);
+		retour.setSemaine(timetable);
 
 		this.close();
 		return retour;
@@ -931,12 +923,22 @@ public class DBHandler {
 		return rowId;
 	}
 	
+	/**
+	 * Gets the number of seats available in a restaurant on a given day between two given hours,
+	 * based on the reservations and the total number of seats in the DB.
+	 * @param resName the restaurant's name
+	 * @param dtStart a String representing the date and start hour, format must be yyyy-mm-dd hh:mm
+	 * @param dtEnd a String representing the date and ending hour, format must be yyyy-mm-dd hh:mm
+	 * @return the number of seats available between the dtStart and dtEnd
+	 * @throws SQLiteException if the DB cannot be accessed for reading
+	 */
 	public int getAvailBetweenDateTime(String resName, String dtStart, String dtEnd) throws SQLiteException
 	{
 		this.openRead();
 		Cursor c;
 		
-		String avail = "stillAvail";
+		// tables reservation and restaurant
+		String avail = "stillAvailable";
 		c = this.db.rawQuery("SELECT (? - sum (?)) as ? FROM ? reserv, ? rest WHERE reserv.?= rest.? AND rest.?='?' " +
 				"AND strftime('%Y-%m-%d %H:%M', reserv.?) BETWEEN strftime('%Y-%m-%d %H:%M', '?') AND strftime('%Y-%m-%d %H:%M', '?')",
 				new String []{SEATS,PEOPLE,avail,TABLE_RESERVATION,TABLE_RESTAURANT,RES,RES,RES,resName,DATETIME,dtStart,dtEnd});

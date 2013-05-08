@@ -3,7 +3,8 @@ package com.gourmet6;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.GregorianCalendar;
+
+import android.util.Log;
 
 /**
  * A class representing a restaurant and its properties.
@@ -27,10 +28,10 @@ public class Restaurant {
 	private String description;
 	private ArrayList<String> cuisines;
 	private short seats;
-	private short availableSeats; // en temps reel
+	private short availableSeats; // real-time based
 	private float rating;
 	private int nbrPrsHasVoted;
-	private float priceCat; // Si un restaurant est cher -> moyenne des prix
+	private float priceCat; // average price
 	private ArrayList<Dish> listDishes = null;
 	private ArrayList<TimeTable> semaine;
 	
@@ -110,15 +111,15 @@ public class Restaurant {
 	}
 	
 	/**
-	 * @param name
-	 * @return the dish which has the name specified in param. If the listDishes, or if no dish corresponded,
-	 * return null.
+	 * @param name hte dish's name
+	 * @return the dish which has the name specified in param. If the listDishes is empty
+	 *  or if no dish corresponded, returns null.
 	 */
 	public Dish getDish(String name)
 	{
 		if(listDishes==null)
 		{
-			System.err.println("getDishe with an empty listDishes. Call createDishes before.");
+			Log.e("Restaurant", "getDish with an empty listDishes. Call createDishes before.");
 		}
 		else
 		{
@@ -136,7 +137,7 @@ public class Restaurant {
 	public void sortDishesPrice(){
 		if (this.listDishes == null)
 		{
-			System.err.println("sortDishesPrice with an empty listDishes. Call createDishes.");
+			Log.e("Restaurant", "sortDishesPrice with an empty listDishes. Call createDishes.");
 			return;
 		}
 
@@ -182,7 +183,7 @@ public class Restaurant {
 	{
 		if (this.listDishes == null)
 		{
-			System.err.println("filterDishesType with an empty listDishes. Call createDishes.");
+			Log.e("Restaurant", "filterDishesType with an empty listDishes. Call createDishes.");
 		}
 		
 		ArrayList<Dish> result = new ArrayList<Dish>();
@@ -201,7 +202,7 @@ public class Restaurant {
 	{
 		if (this.listDishes == null)
 		{
-			System.err.println("getDishesSubtype with an empty listDishes. Call createDishes.");
+			Log.e("Restaurant", "getDishesSubtype with an empty listDishes. Call createDishes.");
 		}
 		
 		ArrayList<String> result = new ArrayList<String>();
@@ -219,7 +220,7 @@ public class Restaurant {
 	{
 		if (this.listDishes == null)
 		{
-			System.err.println("getDishesSubtype with an empty listDishes. Call createDishes.");
+			Log.e("Restaurant", "getDishesSubtype with an empty listDishes. Call createDishes.");
 		}
 		
 		ArrayList<String> result = new ArrayList<String>();
@@ -244,7 +245,7 @@ public class Restaurant {
 	{
 		if (this.listDishes == null)
 		{
-			System.err.println("filterDishesSubtype with an empty listDishes. Call createDishes.");
+			Log.e("Restaurant", "filterDishesSubtype with an empty listDishes. Call createDishes.");
 		}
 		
 		ArrayList<Dish> result = new ArrayList<Dish>();
@@ -260,7 +261,7 @@ public class Restaurant {
 	{
 		if (this.listDishes == null)
 		{
-			System.err.println("filterDishesSubtype with an empty listDishes. Call createDishes.");
+			Log.e("Restaurant", "filterDishesSubtype with an empty listDishes. Call createDishes.");
 		}
 		
 		ArrayList<Dish> result = new ArrayList<Dish>();
@@ -339,7 +340,7 @@ public class Restaurant {
 				timeTableOk = true;
 			}
 		}
-		if(!timeTableOk) return "Incorrect time table";
+		if(!timeTableOk) return "Incorrect date or hour, please see the time table";
 		if(res.getReservationPeople()<=availableSeats) return "Too many people";
 		else return null;
 	}
@@ -350,7 +351,10 @@ public class Restaurant {
 		{
 			d.setQuantity(0);
 		}
+		
+		//TODO listDishes = null ?
 	}
+	
 	/**********************
 	 * Getters and setters
 	 **********************/
