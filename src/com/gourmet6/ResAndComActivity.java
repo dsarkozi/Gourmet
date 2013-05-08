@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 
 public class ResAndComActivity extends Activity {
 
+	private DBHandler dbHand;
 	private Gourmet g = (Gourmet)getApplication();
 	private Client currentCli;
 	private ExpandableListView expandableList = null;
@@ -25,22 +25,15 @@ public class ResAndComActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_res_and_com);
+		dbHand = new DBHandler(this);
+		dbHand.openRead();
 		
 		currentCli = g.getClient();
+		myRes = dbHand.getClientReservations(currentCli.getEmail());
+		expandableList = (ExpandableListView) findViewById(R.id.expandableListView1);
 		
-		//myRes = ;  utiliser m�thode Lena permettant de r�cup�rer les r�sevations d'un Client depuis la DB
-		
-		/*
-		 * expandableList = (ExpandableListView) findViewById(R.id.expandableListView1);
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 */
-		
-		
+		ResAndComAdapter adapter = new ResAndComAdapter(this, myRes);
+		expandableList.setAdapter(adapter);
 	}
 
 	@Override
@@ -57,16 +50,16 @@ public class ResAndComActivity extends Activity {
 		private LayoutInflater inflater;
 		private ArrayList<Reservation> myResHere;
 		
-		public ResAndComAdapter(Context context, ArrayList<Reservation> myResRAC) //myResRac = myRes !!!
+		public ResAndComAdapter(Context context, ArrayList<Reservation> myResHere) //myResRac = myRes !!!
 		{
 			this.context = context;
-			myResHere = myResRAC;
+			this.myResHere = myResHere;
 			inflater = LayoutInflater.from(context);
 		}
 
 		@Override //on a une liste de r�servations qui contient une liste de plats
 		public Object getChild(int indexR, int indexO) {
-			return myRes.get(indexR).getReservationOrder().getOrderDishes().get(indexO);
+			return myResHere.get(indexR).getReservationOrder().getOrderDishes().get(indexO);
 		}
 
 		@Override
@@ -106,17 +99,17 @@ public class ResAndComActivity extends Activity {
 
 		@Override
 		public int getChildrenCount(int indexR) {
-			return myRes.get(indexR).getReservationOrder().getOrderDishes().size();
+			return myResHere.get(indexR).getReservationOrder().getOrderDishes().size();
 		}
 
 		@Override
 		public Object getGroup(int indexR) {
-			return myRes.get(indexR);
+			return myResHere.get(indexR);
 		}
 
 		@Override
 		public int getGroupCount() {
-			return myRes.size();
+			return myResHere.size();
 		}
 
 		@Override

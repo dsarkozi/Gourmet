@@ -14,14 +14,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:textIsSelectable="true"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
         android:id="@+id/mail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/textView1"
-        android:layout_below="@+id/textView1"
+        android:layout_alignRight="@+id/mail"
+        android:layout_below="@+id/mail"
+        android:textIsSelectable="true"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <Button
@@ -31,7 +33,7 @@
         android:layout_below="@+id/name"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="73dp"
-        android:text="Reservations/Orders" />
+        android:text="@string/rescom" />
 
     <Button
         android:id="@+id/pref"
@@ -40,6 +42,6 @@
         android:layout_below="@+id/rescom"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="101dp"
-        android:text="Preferencies" />
+        android:text="@string/pref" />
     
 </RelativeLayout>
