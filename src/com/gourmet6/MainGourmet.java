@@ -142,7 +142,6 @@ public class MainGourmet extends Activity
 				showRestaurants();
 				break;
 			case RESTO_LIST:
-				restaurants = data.getStringArrayExtra("restaurants");
 				Gourmet gourmet = (Gourmet)getApplication();
 				gourmet.setRest(makeRestaurant(data.getStringExtra("selection")));
 				startActivity(new Intent(this, RestaurantActivity.class));

@@ -61,7 +61,6 @@ public class RestaurantListActivity extends ListActivity
 		TextView selection = (TextView)v;
 		Intent returnIntent = new Intent();
 		returnIntent.putExtra("selection", selection.getText().toString());
-		returnIntent.putExtra("restaurants", restaurants);
 		setResult(RESULT_OK, returnIntent);
 		finish();
 	}
