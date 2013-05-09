@@ -19,6 +19,7 @@ import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class DishMenuActivity extends Activity {
 	
@@ -115,8 +116,7 @@ public class DishMenuActivity extends Activity {
 					dishes.setAdapter(new DishMenuAdapter(DishMenuActivity.this,current,listdish, false));
 				}
 				else{
-					updateLists(current.getListDishes());
-					dishes.setAdapter(new DishMenuAdapter(DishMenuActivity.this,current,listdish, false));
+					Toast.makeText(DishMenuActivity.this,"Current list does not contain any dish from "+str, Toast.LENGTH_LONG) .show();
 				}
 			}
 

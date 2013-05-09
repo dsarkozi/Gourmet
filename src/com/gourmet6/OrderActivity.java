@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.support.v4.app.NavUtils;
@@ -143,8 +144,7 @@ public class OrderActivity extends Activity {
 					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,current,listdish, true));
 				}
 				else{
-					updateLists(current.getListDishes());
-					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,current,listdish, true));
+					Toast.makeText(OrderActivity.this,"Current list does not contain any dish from "+str, Toast.LENGTH_LONG) .show();
 				}
 			}
 
