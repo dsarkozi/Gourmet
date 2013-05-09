@@ -5,13 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -156,7 +154,7 @@ public class DBHandler {
     private static final String PEOPLE = "people";
     private static final String PRICE = "price";
     private static final String PICTURES = "pictures";
-    //private static final String PRICE_CAT = "priceCat";
+    private static final String PRICE_CAT = "priceCat";
     private static final String QUANTITY = "quantity";
     private static final String RATING = "rating";
     private static final String RES = "resName";
@@ -277,7 +275,7 @@ public class DBHandler {
 		
 		if (town != null)
 		{
-			c = this.db.query(TABLE_RESTAURANT, new String[] {RES,CHAIN}, TOWN+"='"+town+"'", null, null, null, RES);
+			c = this.db.query(TABLE_RESTAURANT, new String[] {RES,CHAIN}, TOWN+"=?", new String[] {town}, null, null, RES);
 		}
 		else
 		{
@@ -310,7 +308,7 @@ public class DBHandler {
 		
 		// information held by the restaurant table
 		c = this.db.query(TABLE_RESTAURANT, new String[]{CHAIN,DESCRIPTION,LAT,LONG,STREET,ZIP,
-				TOWN,TEL,MAIL,WEB,RATING,VOTES,SEATS,AVAIL,PICTURES}, RES+"='"+name+"'", null, null, null, null);
+				TOWN,TEL,MAIL,WEB,RATING,VOTES,SEATS,AVAIL,PICTURES}, RES+"=?", new String[] {name}, null, null, null);
 		if (c.getCount() > 1)
 		{
 			Log.e("DBHandler","Error : two or more retaurants seem to have the same name.");
@@ -340,7 +338,7 @@ public class DBHandler {
 				zip, seats, availableSeats, latitude, longitude, priceCat, pictures);
 		
 		// cuisine
-		c = this.db.query(TABLE_CUISINE, new String [] {TYPE}, RES+"='"+name+"'", null, null, null, TYPE);
+		c = this.db.query(TABLE_CUISINE, new String [] {TYPE}, RES+"=?", new String[] {name}, null, null, TYPE);
 		ArrayList<String> cuisine = new ArrayList<String>(c.getCount());
 		while(c.moveToNext())
 		{
@@ -349,9 +347,9 @@ public class DBHandler {
 		retour.setCuisines(cuisine);
 		
 		// timetable
-		c = this.db.query(TABLE_TIMETABLE, new String[] {DAY_START,DAY_END,TIME_OPEN,TIME_CLOSE}, RES+"='"+name+"'",
-				null, null, null, "CASE "+DAY_START+" WHEN 'lundi' THEN 1 WHEN 'mardi' THEN 12 WHEN 'mercredi' THEN 3 "+
-				"WHEN 'jeudi' THEN 4 WHEN 'vendredi' THEN 5 WHEN  'samedi' THEN 6 WHEN 'dimanche' THEN 7 END, timeOpen");
+		c = this.db.query(TABLE_TIMETABLE, new String[] {DAY_START,DAY_END,TIME_OPEN,TIME_CLOSE}, RES+"=?",
+				new String[] {name}, null, null, "CASE "+DAY_START+" WHEN 'lundi' THEN 1 WHEN 'mardi' THEN 12 WHEN 'mercredi' THEN 3 "+
+				"WHEN 'jeudi' THEN 4 WHEN 'vendredi' THEN 5 WHEN  'samedi' THEN 6 WHEN 'dimanche' THEN 7 END, "+TIME_OPEN);
 		ArrayList<TimeTable> timetable = new ArrayList<TimeTable>(c.getCount());
 		while(c.moveToNext())
 		{
@@ -400,7 +398,7 @@ public class DBHandler {
 		insertValues.put(RATING, rating);
 		insertValues.put(VOTES, votes+1);
 		this.db.beginTransaction();
-		nrRows = this.db.update(TABLE_RESTAURANT, insertValues, RES+"='"+resName+"'", null);
+		nrRows = this.db.update(TABLE_RESTAURANT, insertValues, RES+"=?", new String[] {resName});
 		if (nrRows > 0)
 		{
 			this.db.setTransactionSuccessful();
@@ -437,7 +435,7 @@ public class DBHandler {
 		ContentValues insertValues = new ContentValues(1);
 		insertValues.put(AVAIL, newAvail);
 		this.db.beginTransaction();
-		nrRows = this.db.update(TABLE_RESTAURANT, insertValues, RES+"='"+resName+"'", null);
+		nrRows = this.db.update(TABLE_RESTAURANT, insertValues, RES+"=?", new String[] {resName});
 		if (nrRows > 0)
 		{
 			this.db.setTransactionSuccessful();
@@ -468,7 +466,7 @@ public class DBHandler {
 		Cursor c;
 		
 		c = db.query(TABLE_DISH, new String[] {DISH,RES,TYPE,SUBTYPE,DESCRIPTION,INVENTORY,PRICE},
-				RES+"='"+resName+"'", null, null, null, " CASE "+TYPE+" WHEN 'Entrï¿½es' THEN 1 WHEN " +
+				RES+"=?", new String[] {resName}, null, null, " CASE "+TYPE+" WHEN 'EntrŽes' THEN 1 WHEN " +
 				"'Plats' THEN 2 WHEN 'Desserts' THEN 3 WHEN 'Boissons' THEN 4 END, "+SUBTYPE);
 		
 		ArrayList<Dish> dishes = new ArrayList<Dish>(c.getCount());
@@ -480,8 +478,6 @@ public class DBHandler {
 			String description = c.getString(c.getColumnIndex(DESCRIPTION));
 			int inventory = c.getInt(c.getColumnIndex(INVENTORY));
 			float price = c.getFloat(c.getColumnIndex(PRICE));
-			
-			String dishNameForFurtherQuery = DatabaseUtils.sqlEscapeString(dishName);
 			
 			// the dish's allergens
 			ArrayList<String> allergens = this.searchForAllergens(resName, dishName);
@@ -549,7 +545,7 @@ public class DBHandler {
 		Cursor c;
 		
 		// table client
-		c = this.db.query(TABLE_CLIENT, new String[]{CLIENT, TEL}, MAIL+"='"+mail+"'", null, null, null, null);
+		c = this.db.query(TABLE_CLIENT, new String[]{CLIENT, TEL}, MAIL+"=?", new String[] {mail}, null, null, null);
 		if (c.getCount() > 1)
 		{
 			Log.e("DBHandler","Error : two or more clients seem to have the same mail.");
@@ -575,7 +571,7 @@ public class DBHandler {
 		this.openRead();
 		Cursor c;
 		
-		c = this.db.query(TABLE_CLIENT, new String[] {PASSWORD}, MAIL+"='"+clientMail+"'", null, null, null, null);
+		c = this.db.query(TABLE_CLIENT, new String[] {PASSWORD}, MAIL+"=?", new String[] {clientMail}, null, null, null);
 		int count = c.getCount();
 		if (count == 1)
 		{
@@ -628,7 +624,7 @@ public class DBHandler {
 		ContentValues insertValues = new ContentValues(1);
 		insertValues.put(MAIL, newMail);
 		this.db.beginTransaction();
-		nrRows = this.db.update(TABLE_CLIENT, insertValues, MAIL+"='"+oldMail+"'", null);
+		nrRows = this.db.update(TABLE_CLIENT, insertValues, MAIL+"=?", new String[] {oldMail});
 		if (nrRows > 0)
 		{
 			this.db.setTransactionSuccessful();
@@ -664,7 +660,7 @@ public class DBHandler {
 		ContentValues insertValues = new ContentValues(1);
 		insertValues.put(CLIENT, newName);
 		this.db.beginTransaction();
-		nrRows = this.db.update(TABLE_CLIENT, insertValues, MAIL+"='"+mail+"'", null);
+		nrRows = this.db.update(TABLE_CLIENT, insertValues, MAIL+"=?", new String[] {mail});
 		if (nrRows > 0)
 		{
 			this.db.setTransactionSuccessful();
@@ -700,7 +696,7 @@ public class DBHandler {
 		ContentValues insertValues = new ContentValues(1);
 		insertValues.put(PASSWORD, newPassword);
 		this.db.beginTransaction();
-		nrRows = this.db.update(TABLE_CLIENT, insertValues, MAIL+"='"+mail+"'", null);
+		nrRows = this.db.update(TABLE_CLIENT, insertValues, MAIL+"=?", new String[] {mail});
 		if (nrRows > 0)
 		{
 			this.db.setTransactionSuccessful();
@@ -733,7 +729,7 @@ public class DBHandler {
 		ContentValues insertValues = new ContentValues(1);
 		insertValues.put(TEL, newTel);
 		this.db.beginTransaction();
-		nrRows = db.update(TABLE_CLIENT, insertValues, MAIL+"='"+mail+"'", null);
+		nrRows = db.update(TABLE_CLIENT, insertValues, MAIL+"=?", new String[] {mail});
 		if (nrRows > 0)
 		{
 			this.db.setTransactionSuccessful();
@@ -764,7 +760,7 @@ public class DBHandler {
 		Cursor c;
 		
 		// information held by the table order_overview
-		c = this.db.query(TABLE_ORDER_OVERVIEW, new String[] {"_id"}, MAIL+"='"+mail+"'", null, null, null, null);
+		c = this.db.query(TABLE_ORDER_OVERVIEW, new String[] {"_id"}, MAIL+"=?", new String[] {mail}, null, null, null);
 		int count = c.getCount();
 		if (count == 0) {
 			this.close();
@@ -856,7 +852,8 @@ public class DBHandler {
 		String client = this.getClientName(mail);
 		
 		// information held by the reservation table
-		c = this.db.query(TABLE_RESERVATION, new String[] {RES,ORDER_NR,DATETIME,PEOPLE}, MAIL+"='"+mail+"'", null, null, null, DATETIME);
+		c = this.db.query(TABLE_RESERVATION, new String[] {RES,ORDER_NR,DATETIME,PEOPLE}, MAIL+"=?",
+				new String[] {mail}, null, null, DATETIME);
 		int count = c.getCount();
 		if (count == 0)
 		{
@@ -949,9 +946,10 @@ public class DBHandler {
 		
 		// tables reservation and restaurant
 		String avail = "stillAvailable";
-		c = this.db.rawQuery("SELECT (? - sum (?)) as ? FROM ? reserv, ? rest WHERE reserv.?= rest.? AND rest.?='?' " +
-				"AND strftime('%Y-%m-%d %H:%M', reserv.?) BETWEEN strftime('%Y-%m-%d %H:%M', '?') AND strftime('%Y-%m-%d %H:%M', '?')",
-				new String []{SEATS,PEOPLE,avail,TABLE_RESERVATION,TABLE_RESTAURANT,RES,RES,RES,resName,DATETIME,dtStart,dtEnd});
+		c = this.db.rawQuery("SELECT ("+SEATS+" - sum ("+PEOPLE+")) as ? FROM "+TABLE_RESERVATION+" reserv, "+TABLE_RESTAURANT+
+				" rest WHERE reserv."+RES+"= rest."+RES+" AND rest."+RES+"=? AND strftime('%Y-%m-%d %H:%M', reserv."+DATETIME+") " +
+				"BETWEEN strftime('%Y-%m-%d %H:%M', ?) AND strftime('%Y-%m-%d %H:%M', ?)",
+				new String []{avail,resName,dtStart,dtEnd});
 		int count = c.getCount();
 		if (count != 1)
 		{
@@ -976,8 +974,8 @@ public class DBHandler {
 	 */
 	private double getResPriceCat(String resName)
 	{
-		Cursor c = this.db.rawQuery("SELECT avg(price) as PRICE_CAT FROM dish d, restaurant r " +
-				"WHERE d.resName=r.resName AND r.resName='"+resName+"'", null);
+		Cursor c = this.db.rawQuery("SELECT avg(price) as "+PRICE_CAT+" FROM "+TABLE_DISH+" d, "+TABLE_RESTAURANT+
+				" r WHERE d."+RES+"=r."+RES+" AND r."+RES+"=?", new String[] {resName});
 		if (c.getCount() > 1)
 		{
 			Log.e("DBHandler","Error : two or more restaurants seem to have the same name.");
@@ -985,7 +983,7 @@ public class DBHandler {
 		double priceCat = 0;
 		while (c.moveToNext())
 		{
-			 priceCat = c.getDouble(0);
+			 priceCat = c.getDouble(c.getColumnIndex(PRICE_CAT));
 		}
 
 		return priceCat;
@@ -1000,7 +998,7 @@ public class DBHandler {
 	{
 		// information held by the allergen table
 		Cursor c = this.db.query(TABLE_ALLERGEN, new String[]{ALLERGEN},
-				"?=? AND ?=?", new String[]{RES,resName,DISH,dishName}, null, null, ALLERGEN);
+				RES+"=? AND "+DISH+"=?", new String[]{resName,dishName}, null, null, ALLERGEN);
 		int count = c.getCount();
 		if (count == 0)
 		{
@@ -1023,7 +1021,7 @@ public class DBHandler {
 	private String getClientName(String mail)
 	{
 		// information held by the client table
-		Cursor c = this.db.query(TABLE_CLIENT, new String[] {CLIENT}, MAIL+"='"+mail+"'", null, null, null, null);
+		Cursor c = this.db.query(TABLE_CLIENT, new String[] {CLIENT}, MAIL+"=?", new String[] {mail}, null, null, null);
 		if (c.getColumnCount() > 1)
 		{
 			Log.e("DBHandler", "Error : two or more client seem to have the same mail.");
@@ -1044,10 +1042,11 @@ public class DBHandler {
 		Cursor d;
 		
 		// information held by the order_overview table
-		c = this.db.query(TABLE_ORDER_OVERVIEW, new String[] {RES, MAIL}, "_id="+orderNr, null, null, null, null);
+		c = this.db.query(TABLE_ORDER_OVERVIEW, new String[] {RES, MAIL}, "_id=?",
+				new String[] {Integer.toString(orderNr)}, null, null, null);
 		if (c.getColumnCount() > 1)
 		{
-			System.err.println("Error : two or more orders seem to have the same number.");
+			Log.e("DBHandler","Error : two or more orders seem to have the same number.");
 		}
 		c.moveToFirst();
 		String resName = c.getString(c.getColumnIndex(RES));
@@ -1060,7 +1059,8 @@ public class DBHandler {
 		Order retour = new Order(resName, client, mail);
 		
 		// information held by the order_detail table
-		c = this.db.query(TABLE_ORDER_DETAIL, new String[] {DISH, QUANTITY}, ORDER_NR+"="+orderNr, null, null, null, null);
+		c = this.db.query(TABLE_ORDER_DETAIL, new String[] {DISH, QUANTITY}, ORDER_NR+"=?", 
+				new String[] {Integer.toString(orderNr)}, null, null, null);
 		ArrayList<Dish> dishes = new ArrayList<Dish>(c.getCount());
 		while (c.moveToNext())
 		{
@@ -1068,11 +1068,11 @@ public class DBHandler {
 			int quantity = c.getInt(c.getColumnIndex(QUANTITY));
 			
 			// information held by the dish table
-			d = this.db.query(TABLE_DISH, new String[] {TYPE, SUBTYPE, PRICE}, DISH+"='"+dishName+"' AND "+RES+"='"+resName+"'",
-					null, null, null, null);
+			d = this.db.query(TABLE_DISH, new String[] {TYPE, SUBTYPE, PRICE}, DISH+"=? AND "+RES+"=?",
+					new String[] {dishName,resName}, null, null, null);
 			if (d.getCount() > 1)
 			{
-				System.err.println("Error : two or more dishes seem to have the same name and restaurant.");
+				Log.e("DBHandler","Error : two or more dishes seem to have the same name and restaurant.");
 			}
 			String type = c.getString(c.getColumnIndex(TYPE));
 			String subtype = c.getString(c.getColumnIndex(SUBTYPE));
