@@ -1,14 +1,11 @@
 package com.gourmet6;
 
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.GregorianCalendar;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.util.Log;
 
 /**
@@ -466,12 +463,14 @@ public class Restaurant {
 	 */
 	public void rateRestaurant(double vote, DBHandler dbh)
 	{
+		System.out.println(rating);
 		this.rating *= this.nbrPrsHasVoted;
 		this.nbrPrsHasVoted++;
 		this.rating += vote;
 		this.rating /= this.nbrPrsHasVoted;
 		
-		//dbh.rateRestaurant(this.name, this.rating, this.nbrPrsHasVoted);
+		dbh.rateRestaurant(this.name, (float)this.rating, this.nbrPrsHasVoted);
+		System.out.println(rating);
 	}
 	
 	public boolean checkOrder(Order order)
@@ -521,7 +520,6 @@ public class Restaurant {
 	
 	private String getInString(GregorianCalendar date, int hour, int minute)
 	{
-		// TODO Auto-generated method stub
 		GregorianCalendar temp = date;
 		//on soustrait le temps adéquat.
 		temp.set(GregorianCalendar.HOUR_OF_DAY, temp.get(GregorianCalendar.HOUR_OF_DAY)+hour);

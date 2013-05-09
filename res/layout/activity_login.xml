@@ -122,9 +122,17 @@
                     android:paddingRight="@dimen/buttonPaddingRight"
                     android:text="@string/action_register"
                     android:textStyle="bold" />
-
-
+				
             </LinearLayout>
+
+            <Button
+                android:id="@+id/guest_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/buttonPaddingLeft"
+                android:paddingRight="@dimen/buttonPaddingRight"
+                android:layout_gravity="center"
+                android:text="@string/action_as_guest" />
 
         </LinearLayout>
 

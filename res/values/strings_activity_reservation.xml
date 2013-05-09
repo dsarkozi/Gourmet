@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="resorderButton">Commander</string>
-    <string name="ressubmitButton">Soumettre</string>
-    <string name="resseats">How many people?</string>
-    <string name="activity_reservation_title">Reservation</string>
+    <string name="resorderButton">Order</string>
+    <string name="ressubmitButton">Submit</string>
+    <string name="resseats">How many people ?</string>
+    <string name="activity_reservation_title">Booking</string>
     
 </resources>

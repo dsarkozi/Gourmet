@@ -3,6 +3,8 @@ package com.gourmet6;
 import java.lang.Thread.UncaughtExceptionHandler;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteException;
 import android.location.Location;
@@ -10,10 +12,10 @@ import android.os.Bundle;
 import android.util.AndroidRuntimeException;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
 
 public class MainGourmet extends Activity
 {
+	public static final int LOGIN = 0;
 	public static final int TOWN_LIST = 1;
 	public static final int RESTO_LIST = 2;
 	
@@ -21,6 +23,9 @@ public class MainGourmet extends Activity
 	@SuppressWarnings("unused")
 	private Location location = null;
 	public DBHandler dbHand;
+	private Gourmet g;
+	public static boolean isDone = false;
+	public static boolean showResto = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -72,35 +77,32 @@ public class MainGourmet extends Activity
 		 * //locationManager.removeUpdates(locationListener);
 		 */
 		dbHand = new DBHandler(this);
-
+		g = (Gourmet) getApplicationContext();
 	}
 
 	@Override
 	protected void onStart()
 	{
 		super.onStart();
-		setContentView(R.layout.activity_main);
-
-		findViewById(R.id.no_button_connection).setOnClickListener(
-				new View.OnClickListener()
-				{
-					@Override
-					public void onClick(View view)
-					{
-						showTowns();
-					}
-				});
-
-		findViewById(R.id.yes_button_connection).setOnClickListener(
-				new View.OnClickListener()
-				{
-					@Override
-					public void onClick(View view)
-					{
-						login(view);
-						//showTowns();
-					}
-				});
+		if (showResto)
+		{
+			showResto = false;
+			isDone = true;
+			showRestaurants();
+		}
+		else
+		{
+			if (g.getClient() == null && !isDone)
+			{
+				isDone = true;
+				login();
+			}
+			else
+			{
+				if (!isDone)
+					showTowns();
+			}
+		}
 	}
 
 	@Override
@@ -133,20 +135,37 @@ public class MainGourmet extends Activity
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
 		if (resultCode == RESULT_CANCELED)
-			ExceptionHandler.caughtException(
-					this,
-					new AndroidRuntimeException("resultCode canceled"));
+		{
+			switch (requestCode)
+			{
+				case LOGIN:
+					isDone = false;
+					finish();
+					break;
+				case TOWN_LIST:
+					exitDialog();
+					break;
+				case RESTO_LIST:
+					showTowns();
+					break;
+				default:
+					throw new AndroidRuntimeException("No such request code.");
+			}
+			return;
+		}
 		switch (requestCode)
 		{
+			case LOGIN:
+				showTowns();
+				break;
 			case TOWN_LIST:
 				currentTown = data.getStringExtra("selection");
 				showRestaurants();
 				break;
 			case RESTO_LIST:
-				Gourmet gourmet = (Gourmet)getApplication();
 				try
 				{
-					gourmet.setRest(dbHand.getRestaurant(data.getStringExtra("selection")));
+					g.setRest(dbHand.getRestaurant(data.getStringExtra("selection")));
 				}
 				catch (SQLiteException e)
 				{
@@ -160,10 +179,9 @@ public class MainGourmet extends Activity
 		}
 	}
 
-	public void login(View view)
+	public void login()
 	{
-		Intent intent = new Intent(this, LoginActivity.class);
-		startActivity(intent);
+		startActivityForResult(new Intent(this, LoginActivity.class), LOGIN);
 	}
 
 	public void showTowns()
@@ -194,5 +212,31 @@ public class MainGourmet extends Activity
 			}
 		});
 		*/
+	}
+	
+	public void exitDialog()
+	{
+		AlertDialog.Builder exit = new AlertDialog.Builder(this);
+		exit.setTitle("Logout");
+		exit.setMessage("You are about to log out. Are you sure ?");
+		exit.setPositiveButton("Yes", new DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which)
+			{
+				g.setClient(null);
+				login();
+			}
+		});
+		exit.setNegativeButton("No", new DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which)
+			{
+				isDone = true;
+				showTowns();
+			}
+		});
+		exit.show();
 	}
 }

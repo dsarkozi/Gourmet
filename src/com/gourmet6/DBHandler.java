@@ -11,6 +11,7 @@ import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -32,7 +33,7 @@ public class DBHandler {
 	 */
 	private static class DBHelper extends SQLiteOpenHelper {
 
-		private static final String DB_NAME = "gourmet7.sqlite";
+		private static final String DB_NAME = "gourmet9.sqlite";
 		private static final String DB_DIR = "/data/data/com.gourmet6/databases/";
 		private static String DB_PATH = DB_DIR + DB_NAME;
 		public static final int DB_VERSION = 1;
@@ -286,10 +287,10 @@ public class DBHandler {
 		ArrayList<String> restaurants = new ArrayList<String>(length);
 		while (c.moveToNext())
 		{
-			if (c.getString(1) != null)
-				restaurants.add(c.getString(1));
+			if (c.getString(c.getColumnIndex(CHAIN)) != null)
+				restaurants.add((c.getString(c.getColumnIndex(CHAIN))+"*"+c.getString(c.getColumnIndex(RES))));
 			else
-				restaurants.add(c.getString(0));
+				restaurants.add(c.getString(c.getColumnIndex(RES)));
 		}
 		
 		this.close();
@@ -479,6 +480,8 @@ public class DBHandler {
 			String description = c.getString(c.getColumnIndex(DESCRIPTION));
 			int inventory = c.getInt(c.getColumnIndex(INVENTORY));
 			float price = c.getFloat(c.getColumnIndex(PRICE));
+			
+			String dishNameForFurtherQuery = DatabaseUtils.sqlEscapeString(dishName);
 			
 			// the dish's allergens
 			ArrayList<String> allergens = this.searchForAllergens(resName, dishName);
@@ -997,7 +1000,7 @@ public class DBHandler {
 	{
 		// information held by the allergen table
 		Cursor c = this.db.query(TABLE_ALLERGEN, new String[]{ALLERGEN},
-				RES+"='"+resName+"' AND "+DISH+"='"+dishName+"'", null, null, null, ALLERGEN);
+				"?=? AND ?=?", new String[]{RES,resName,DISH,dishName}, null, null, ALLERGEN);
 		int count = c.getCount();
 		if (count == 0)
 		{

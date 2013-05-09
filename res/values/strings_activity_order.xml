@@ -4,7 +4,7 @@
     <string name="activity_order_title">Order</string>
     <string name="orderButton">Submit</string>
     <string name="udish">Unknown</string>
-    <string name="do_you_res">Do you wish to make a reservation?</string>
-    <string name="yes_button">YES</string>
-    <string name="no_button">NO</string>
+    <string name="do_you_res">Do you wish to make a booking ?</string>
+    <string name="yes_button">Yes</string>
+    <string name="no_button">No</string>
 </resources>

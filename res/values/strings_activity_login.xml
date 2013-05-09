@@ -10,14 +10,15 @@
     <string name="prompt_phone">Phone</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_register">Register</string>
+    <string name="action_as_guest">Log in as guest</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="action_forgot_password">Recover lost password</string>
     <string name="login_progress_signing_in">Signing in&#8230;</string>
     <string name="login_progress_registering">Registering&#8230;</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_no_password_match">The password doesn\'t match with the confirmation</string>
-    <string name="error_credentials_no_match">The combination email/password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
+    <string name="error_invalid_email">This email address is invalid.</string>
+    <string name="error_invalid_password">This password is too short.</string>
+    <string name="error_no_password_match">The password doesn\'t match with the confirmation.</string>
+    <string name="error_credentials_no_match">The combination email/password is incorrect.</string>
+    <string name="error_field_required">This field is required.</string>
 
 </resources>
