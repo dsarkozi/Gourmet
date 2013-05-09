@@ -319,15 +319,15 @@ public class DBHandler {
 		double latitude = c.getDouble(c.getColumnIndex(LAT));
 		double longitude = c.getDouble(c.getColumnIndex(LONG));
 		String address = c.getString(c.getColumnIndex(STREET));
-		short zip = (short) c.getInt(c.getColumnIndex(ZIP));
+		int zip = c.getInt(c.getColumnIndex(ZIP));
 		String town = c.getString(c.getColumnIndex(TOWN));
 		String tel = c.getString(c.getColumnIndex(TEL));
 		String mail = c.getString(c.getColumnIndex(MAIL));
 		String web = c.getString(c.getColumnIndex(WEB));
 		double rating = c.getDouble(c.getColumnIndex(RATING));
 		int votes = c.getInt(c.getColumnIndex(VOTES));
-		short seats = (short) c.getInt(c.getColumnIndex(SEATS));
-		short availableSeats = (short) c.getInt(c.getColumnIndex(AVAIL));
+		int seats = c.getInt(c.getColumnIndex(SEATS));
+		int availableSeats = c.getInt(c.getColumnIndex(AVAIL));
 		
 		// information on the price category
 		double priceCat = getResPriceCat(name);
