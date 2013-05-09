@@ -484,7 +484,7 @@ public class DBHandler {
 			String dishNameForFurtherQuery = DatabaseUtils.sqlEscapeString(dishName);
 			
 			// the dish's allergens
-			ArrayList<String> allergens = this.searchForAllergens(resName, dishNameForFurtherQuery);
+			ArrayList<String> allergens = this.searchForAllergens(resName, dishName);
 			
 			// new dish object
 			Dish dish = new Dish(dishName, type, subtype, price, inventory, description, allergens);
@@ -1000,7 +1000,7 @@ public class DBHandler {
 	{
 		// information held by the allergen table
 		Cursor c = this.db.query(TABLE_ALLERGEN, new String[]{ALLERGEN},
-				RES+"='"+resName+"' AND "+DISH+"='"+dishName+"'", null, null, null, ALLERGEN);
+				"?=? AND ?=?", new String[]{RES,resName,DISH,dishName}, null, null, ALLERGEN);
 		int count = c.getCount();
 		if (count == 0)
 		{
