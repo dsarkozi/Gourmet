@@ -74,7 +74,7 @@ public class RestaurantActivity extends Activity
 		hasRated = false;
 		
 		currentRest = g.getRest();
-		setTitle(this.currentRest.getName());
+		setTitle(this.currentRest.getName().split("_")[0]);
 		
 		//Image
 		listImg = (LinearLayout) findViewById(R.id.listImgRest);
@@ -211,12 +211,13 @@ public class RestaurantActivity extends Activity
 	
 	private void addImage()
 	{
-		String nameImg = Restaurant.getNameImg(currentRest.getName());
+		String nameImg = Restaurant.getNameImg(currentRest.getName().split("_")[0]);
 		ImageView img;
 		for(int i=0; i<currentRest.getNbrImage(); i++)
 		{
 			img = new ImageView(context);
 			img.setImageResource(getResources().getIdentifier(nameImg+i, "drawable", getPackageName()));
+			
 			listImg.addView(img);
 		}
 		

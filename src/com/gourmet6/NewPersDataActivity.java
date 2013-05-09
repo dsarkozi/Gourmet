@@ -11,7 +11,7 @@ import android.widget.TextView;
 public class NewPersDataActivity extends Activity {
 
 	private DBHandler dbHand;
-	private Gourmet g = (Gourmet)getApplication();
+	private Gourmet g;
 	private Client currentCli;
 	
 	
@@ -37,6 +37,7 @@ public class NewPersDataActivity extends Activity {
 		setContentView(R.layout.activity_new_pers_data);
 		
 		dbHand = new DBHandler(this);
+		g = (Gourmet)getApplication();
 		currentCli = g.getClient();
 		
 		
