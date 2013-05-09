@@ -413,7 +413,6 @@ public class LoginActivity extends Activity
 			
 			if (check)
 			{
-				Gourmet g = (Gourmet) getApplicationContext();
 				g.setClient(db.getClient(mEmail));
 				return true;
 			}
