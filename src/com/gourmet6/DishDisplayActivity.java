@@ -1,55 +1,60 @@
 package com.gourmet6;
 
+import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.support.v4.app.NavUtils;
-import android.annotation.TargetApi;
-import android.os.Build;
 
 public class DishDisplayActivity extends Activity {
 
 	private Gourmet g;
 	private Dish plat;
-	private String dish;
 	private Restaurant current;
+	
+	private TextView dishName;
+	private ImageView dishImage;
+	private TextView dishDescr;
+	private TextView dishInfo;
+	
+	
+	private String price;
+	private String type;
+	private String subtype;
+	private String inventory;
+	private String allergens;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
 		setContentView(R.layout.activity_dish_display);
-		// Show the Up button in the action bar.
-		setupActionBar();
 		
-		g = (Gourmet)getApplicationContext();
+		g = (Gourmet)getApplication();
 		current = g.getRest();
 		
 		Bundle extra = getIntent().getExtras();
 		plat = current.getDish(extra.getString("the_dish"));
 		
-		setTitle(this.plat.getName());
+		dishName  = (TextView)findViewById(R.id.dishname);
+		dishName.setText(plat.getName());
 		
-		ImageView img = (ImageView) findViewById(R.id.imageView1);
+		dishImage = (ImageView)findViewById(R.id.dishimage);
+		//dishImage.setImageResource(1234); // a faire mettre la ressource de l'image :/
 		
-		TextView desc = (TextView) findViewById(R.id.textView2);
-		desc.setText(this.plat.getDescription());
+		dishDescr  = (TextView)findViewById(R.id.dishdescr);
+		dishDescr.setText("Description : "+plat.getDescription());
 		
-		TextView content = (TextView) findViewById(R.id.textView1);
+		// en suspend
+		price ="-price : "+plat.getPrice()+"\n";
+		type ="-type : "+plat.getType()+"\n";
+		subtype="-subtype : "+plat.getSubtype()+"\n";
+		inventory="-inventory : "+plat.getInventory()+"\n";
+		allergens="-allergens : "+arrayListOfStringToString(plat.getAllergens());
 		
-	}
-
-	/**
-	 * Set up the {@link android.app.ActionBar}, if the API is available.
-	 */
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	private void setupActionBar() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			getActionBar().setDisplayHomeAsUpEnabled(true);
-		}
+		dishInfo  = (TextView)findViewById(R.id.dishinfo);
+		dishInfo.setText("Info about this dish :\n"+price+type+subtype+inventory+allergens);
 	}
 
 	@Override
@@ -58,22 +63,12 @@ public class DishDisplayActivity extends Activity {
 		getMenuInflater().inflate(R.menu.dish_display, menu);
 		return true;
 	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
-			NavUtils.navigateUpFromSameTask(this);
-			return true;
+	
+	public static String arrayListOfStringToString(ArrayList<String> str){
+		String s = str.get(0);
+		for(int i=1; i<str.size(); i++){
+			s = s +", "+str.get(i);
 		}
-		return super.onOptionsItemSelected(item);
+		return s;
 	}
-
 }

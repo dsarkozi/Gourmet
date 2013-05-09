@@ -8,31 +8,39 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".DishDisplayActivity" >
 
-    <ImageView
-        android:id="@+id/imageView1"
+    <TextView
+        android:id="@+id/dishname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
-        android:src="@android:drawable/ic_menu_help" />
+        android:textIsSelectable="true"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
-        android:id="@+id/textView2"
+    <ImageView
+        android:id="@+id/dishimage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
-        android:text="@string/dishdescstring" />
+        android:layout_alignLeft="@+id/dishname"
+        android:layout_below="@+id/dishname"
+        android:src="@drawable/ic_launcher" />
 
     <TextView
-        android:id="@+id/TextView1"
+        android:id="@+id/dishdescr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
-        android:text="@string/dishcontentstring" />
+        android:layout_alignLeft="@+id/dishimage"
+        android:layout_below="@+id/dishimage"
+        android:textIsSelectable="true"
+        android:text="@string/descr" />
+
+    <TextView
+        android:id="@+id/dishinfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/dishdescr"
+        android:layout_below="@+id/dishdescr"
+        android:textIsSelectable="true"
+        android:text="@string/info" />
 
 </RelativeLayout>
