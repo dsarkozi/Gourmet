@@ -3,11 +3,11 @@
 
     <string name="app_name">Gourmet</string>
     <string name="action_settings">Settings</string>
-    <string name="start">Voulez-vous vous connecter ?</string>
-    <string name="createAccount">Créer un compte.</string>
-    <string name="yesButton">Oui</string>
-    <string name="noButton">Non</string>
-    <string name="return_button">Retour</string>
+    <string name="start">Do you want to log in ?</string>
+    <string name="createAccount">Sign up</string>
+    <string name="yesButton">Yes</string>
+    <string name="noButton">No</string>
+    <string name="return_button">Back</string>
     <string name="title_activity_restaurant">RestaurantActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_reservation">ReservationActivity</string>
