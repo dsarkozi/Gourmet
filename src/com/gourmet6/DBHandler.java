@@ -976,7 +976,7 @@ public class DBHandler {
 			Log.e("DBHandler","Error : two or more restaurants seem to have the same name.");
 		}
 		c.moveToFirst();
-		double priceCat = c.getDouble(c.getColumnIndex(PRICE_CAT));
+		double priceCat = c.getDouble(0);
 		
 		return priceCat;
 	}
@@ -1016,7 +1016,7 @@ public class DBHandler {
 		Cursor c = this.db.query(TABLE_CLIENT, new String[] {CLIENT}, MAIL+"='"+mail+"'", null, null, null, null);
 		if (c.getColumnCount() > 1)
 		{
-			System.err.println("Error : two or more client seem to have the same mail.");
+			Log.e("DBHandler", "Error : two or more client seem to have the same mail.");
 		}
 		c.moveToFirst();
 		String name = c.getString(c.getColumnIndex(CLIENT));
