@@ -95,7 +95,7 @@ public class RestaurantActivity extends Activity
 			public void onClick(View v) {
 				LayoutParams params = description.getLayoutParams();
 				if(extended){
-					params.height = 120;
+					params.height = 77;
 					extended = false;
 				}
 				else{

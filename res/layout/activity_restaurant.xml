@@ -42,9 +42,8 @@
     	<TextView
         	android:id="@+id/descriptionRest"
         	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
+        	android:layout_height="52sp"
         	android:layout_gravity="center_horizontal"
-        	android:lines="3"
         	android:text="@string/descstring" />
 
     	<TextView
