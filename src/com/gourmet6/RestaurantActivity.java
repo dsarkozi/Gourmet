@@ -177,6 +177,11 @@ public class RestaurantActivity extends Activity
 				startActivity(dishes);
 			}
 		});
+		if(g.getClient()==null)
+		{
+			order.setEnabled(false);
+			reserve.setEnabled(false);
+		}
 	}
 	
 	public void checkSizeDesc()
@@ -289,7 +294,7 @@ public class RestaurantActivity extends Activity
 				currentRest.rateRestaurant(toRateBar.getRating(), dbh);
 				hasRated = true;
 				ratingBar.setRating((float) currentRest.getRating());
-				dialog.cancel();
+				dialog.dismiss();
 			}
 		});
 		

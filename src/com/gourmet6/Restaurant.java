@@ -463,12 +463,14 @@ public class Restaurant {
 	 */
 	public void rateRestaurant(double vote, DBHandler dbh)
 	{
+		System.out.println(rating);
 		this.rating *= this.nbrPrsHasVoted;
 		this.nbrPrsHasVoted++;
 		this.rating += vote;
 		this.rating /= this.nbrPrsHasVoted;
 		
-		//dbh.rateRestaurant(this.name, this.rating, this.nbrPrsHasVoted);
+		dbh.rateRestaurant(this.name, (float)this.rating, this.nbrPrsHasVoted);
+		System.out.println(rating);
 	}
 	
 	public boolean checkOrder(Order order)
