@@ -8,58 +8,62 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ReservationActivity" >
 
-    <Button
-        android:id="@+id/comInReserv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="94dp"
-        android:layout_marginLeft="21dp"
-        android:text="@string/resorderButton" />
-
-    <Button
-        android:id="@+id/validateReserv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/comInReserv"
-        android:layout_marginLeft="18dp"
-        android:layout_toRightOf="@+id/comInReserv"
-        android:text="@string/ressubmitButton" />
-
-    <TextView
-        android:id="@+id/dateTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textIsSelectable="true" />
-
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/dateTime"
-        android:layout_centerHorizontal="true" >
+        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/TextView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="84dp"
+            android:layout_gravity="center_horizontal"
             android:text="@string/resseats"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText
             android:id="@+id/nbrPrsReserv"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:maxLength="2"
-            android:ems="10"
-            android:inputType="number" >
+            android:layout_gravity="center_horizontal"
+            android:inputType="number"
+            android:maxLength="2" >
 
             <requestFocus />
         </EditText>
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/linearLayout1"
+        android:layout_below="@+id/dateTime"
+        android:layout_marginTop="40dp" >
+
+        <Button
+            android:id="@+id/comInReserv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/resorderButton" />
+
+        <Button
+            android:id="@+id/validateReserv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/ressubmitButton" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/dateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="33dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textIsSelectable="true" />
 
 </RelativeLayout>

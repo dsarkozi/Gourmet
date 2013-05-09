@@ -2,7 +2,7 @@
 <resources>
     
     <string name="activity_order_title">Order</string>
-    <string name="orderButton">Soubmit</string>
+    <string name="orderButton">Submit</string>
     <string name="udish">Unknown</string>
     <string name="do_you_res">Do you wish to make a reservation?</string>
     <string name="yes_button">YES</string>
