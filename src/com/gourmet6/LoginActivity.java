@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.view.MenuItem;
@@ -30,6 +32,7 @@ public class LoginActivity extends Activity
 	private static final String[] DUMMY_CREDENTIALS = new String[]
 	{ "foo@example.com:hello", "bar@example.com:world" };
 
+	private DBHandler db;
 	/**
 	 * The default email to populate the email field with.
 	 */
@@ -38,18 +41,27 @@ public class LoginActivity extends Activity
 	/**
 	 * Keep track of the login task to ensure we can cancel it if requested.
 	 */
-	private UserLoginTask mAuthTask = null;
+	private AsyncTask<Void, Void, Boolean> mAuthTask = null;
 
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mPassword;
+	private String mConfirm;
+	private String mName;
+	private String mPhone;
 
 	// UI references.
 	private EditText mEmailView;
 	private EditText mPasswordView;
+	private EditText mConfirmView;
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
+	private View mLoginRegisterView;
+	private EditText mLoginRegisterName;
+	private EditText mLoginRegisterPhone;
+	private Button mLoginSignIn;
+	private Button mLoginRegister;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -61,10 +73,10 @@ public class LoginActivity extends Activity
 
 		// Set up the login form.
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
-		mEmailView = (EditText) findViewById(R.id.email);
+		mEmailView = (EditText) findViewById(R.id.login_email);
 		mEmailView.setText(mEmail);
 
-		mPasswordView = (EditText) findViewById(R.id.password);
+		mPasswordView = (EditText) findViewById(R.id.login_password);
 		mPasswordView
 				.setOnEditorActionListener(new TextView.OnEditorActionListener()
 				{
@@ -80,10 +92,18 @@ public class LoginActivity extends Activity
 						return false;
 					}
 				});
+		mConfirmView = (EditText) findViewById(R.id.login_confirm);
 
 		mLoginFormView = findViewById(R.id.login_form);
 		mLoginStatusView = findViewById(R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
+		
+		mLoginRegisterView = findViewById(R.id.login_register);
+		mLoginRegisterName = (EditText) findViewById(R.id.login_name);
+		mLoginRegisterPhone = (EditText) findViewById(R.id.login_phone);
+		mLoginSignIn = (Button) findViewById(R.id.sign_in_button);
+		mLoginRegister = (Button) findViewById(R.id.register_button);
+		
 
 		findViewById(R.id.sign_in_button).setOnClickListener(
 				new View.OnClickListener()
@@ -92,6 +112,25 @@ public class LoginActivity extends Activity
 					public void onClick(View view)
 					{
 						attemptLogin();
+					}
+				});
+		findViewById(R.id.register_button).setOnClickListener(
+				new View.OnClickListener()
+				{
+					
+					@Override
+					public void onClick(View v)
+					{
+						if (mLoginRegisterView.getVisibility() == View.GONE)
+						{
+							mLoginRegisterView.setVisibility(View.VISIBLE);
+							mConfirmView.setVisibility(EditText.VISIBLE);
+							mLoginSignIn.setVisibility(Button.GONE);
+						}
+						else
+						{
+							attemptRegister();
+						}
 					}
 				});
 	}
@@ -138,6 +177,92 @@ public class LoginActivity extends Activity
 		return true;
 	}
 
+	public void attemptRegister()
+	{
+		if (mAuthTask != null)
+		{
+			return;
+		}
+		mEmailView.setError(null);
+		mPasswordView.setError(null);
+		mConfirmView.setError(null);
+		
+		mLoginRegisterName.setError(null);
+		mLoginRegisterPhone.setError(null);
+		
+		mEmail = mEmailView.getText().toString();
+		mPassword = mPasswordView.getText().toString();
+		mConfirm = mConfirmView.getText().toString();
+		mName = mLoginRegisterName.getText().toString();
+		mPhone = mLoginRegisterPhone.getText().toString();
+		
+		boolean cancel = false;
+		View focusView = null;
+		
+		if (TextUtils.isEmpty(mPassword))
+		{
+			mPasswordView.setError(getString(R.string.error_field_required));
+			focusView = mPasswordView;
+			cancel = true;
+		}
+		else if (mPassword.length() < 4)
+		{
+			mPasswordView.setError(getString(R.string.error_invalid_password));
+			focusView = mPasswordView;
+			cancel = true;
+		}
+		
+		if (TextUtils.isEmpty(mConfirm))
+		{
+			mConfirmView.setError(getString(R.string.error_field_required));
+			focusView = mConfirmView;
+			cancel = true;
+		}
+		else if (!TextUtils.equals(mPassword, mConfirm))
+		{
+			mConfirmView.setError(getString(R.string.error_no_password_match));
+			focusView = mConfirmView;
+			cancel = true;
+		}
+
+		// Check for a valid email address.
+		if (TextUtils.isEmpty(mEmail))
+		{
+			mEmailView.setError(getString(R.string.error_field_required));
+			focusView = mEmailView;
+			cancel = true;
+		}
+		else if (!mEmail.contains("@"))
+		{
+			mEmailView.setError(getString(R.string.error_invalid_email));
+			focusView = mEmailView;
+			cancel = true;
+		}
+		
+		if (TextUtils.isEmpty(mName))
+		{
+			mLoginRegisterName.setError(getString(R.string.error_field_required));
+			focusView = mLoginRegisterName;
+			cancel = true;
+		}
+
+		if (cancel)
+		{
+			// There was an error; don't attempt login and focus the first
+			// form field with an error.
+			focusView.requestFocus();
+		}
+		else
+		{
+			// Show a progress spinner, and kick off a background task to
+			// perform the user login attempt.
+			mLoginStatusMessageView.setText(R.string.login_progress_registering);
+			showProgress(true);
+			mAuthTask = new UserRegisterTask();
+			mAuthTask.execute((Void) null);
+		}
+	}
+	
 	/**
 	 * Attempts to sign in or register the account specified by the login form.
 	 * If there are form errors (invalid email, missing fields, etc.), the
@@ -165,12 +290,6 @@ public class LoginActivity extends Activity
 		if (TextUtils.isEmpty(mPassword))
 		{
 			mPasswordView.setError(getString(R.string.error_field_required));
-			focusView = mPasswordView;
-			cancel = true;
-		}
-		else if (mPassword.length() < 4)
-		{
-			mPasswordView.setError(getString(R.string.error_invalid_password));
 			focusView = mPasswordView;
 			cancel = true;
 		}
@@ -265,6 +384,61 @@ public class LoginActivity extends Activity
 		protected Boolean doInBackground(Void... params)
 		{
 			// TODO: attempt authentication against a network service.
+			boolean check = false;
+			try
+			{
+				db = new DBHandler(LoginActivity.this);
+				check = db.checkPassword(mEmail, mPassword);
+			}
+			catch (SQLiteException e)
+			{
+				ExceptionHandler.caughtException(LoginActivity.this, e);
+			}
+			
+			if (check)
+			{
+				Gourmet g = (Gourmet) getApplicationContext();
+				g.setClient(db.getClient(mEmail));
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(final Boolean success)
+		{
+			mAuthTask = null;
+			showProgress(false);
+
+			if (success)
+			{
+				finish();
+			}
+			else
+			{
+				mEmailView
+						.setError(getString(R.string.error_credentials_no_match));
+				mEmailView.requestFocus();
+			}
+		}
+
+		@Override
+		protected void onCancelled()
+		{
+			mAuthTask = null;
+			showProgress(false);
+		}
+	}
+	
+	public class UserRegisterTask extends AsyncTask<Void, Void, Boolean>
+	{
+		@Override
+		protected Boolean doInBackground(Void... params)
+		{
+			// TODO: attempt authentication against a network service.
 
 			try
 			{
@@ -302,9 +476,9 @@ public class LoginActivity extends Activity
 			}
 			else
 			{
-				mPasswordView
-						.setError(getString(R.string.error_incorrect_password));
-				mPasswordView.requestFocus();
+				mEmailView
+						.setError(getString(R.string.error_credentials_no_match));
+				mEmailView.requestFocus();
 			}
 		}
 
