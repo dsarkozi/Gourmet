@@ -11,6 +11,7 @@ import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -480,8 +481,10 @@ public class DBHandler {
 			int inventory = c.getInt(c.getColumnIndex(INVENTORY));
 			float price = c.getFloat(c.getColumnIndex(PRICE));
 			
+			String dishNameForFurtherQuery = DatabaseUtils.sqlEscapeString(dishName);
+			
 			// the dish's allergens
-			ArrayList<String> allergens = this.searchForAllergens(resName, dishName);
+			ArrayList<String> allergens = this.searchForAllergens(resName, dishNameForFurtherQuery);
 			
 			// new dish object
 			Dish dish = new Dish(dishName, type, subtype, price, inventory, description, allergens);
