@@ -58,8 +58,10 @@ public class DishMenuActivity extends Activity {
 			}
 		});
 		
+		updateLists(current.getListDishes());
+		
 		dishes = (ExpandableListView) findViewById(R.id.dish_menu);
-		dishad = new DishMenuAdapter(this,current,current.getListDishes(), false);
+		dishad = new DishMenuAdapter(this,current,listdish, false);
 		dishes.setAdapter(dishad);
 		dishes.setOnChildClickListener(new OnChildClickListener() {
 			
@@ -77,8 +79,6 @@ public class DishMenuActivity extends Activity {
 			}
 		});
 		
-		updateLists(current.getListDishes());
-		
 		Spinner sort = (Spinner) findViewById(R.id.spinner1);
 		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, filters);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -90,6 +90,7 @@ public class DishMenuActivity extends Activity {
 				// TODO Auto-generated method stub
 				String str =(String)arg0.getSelectedItem();
 				if(str == "All"){
+					
 					updateLists(current.getListDishes());
 					dishes.setAdapter(new DishMenuAdapter(DishMenuActivity.this,current,listdish, false));
 					

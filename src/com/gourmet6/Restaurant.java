@@ -313,9 +313,11 @@ public class Restaurant {
 		String subtype;
 		for (Dish d : toFilter)
 		{
-			subtype = d.getSubtype();
-			if (!(result.contains(subtype)))
-				result.add(subtype);
+			if(d.getType().equals(type)){
+				subtype = d.getSubtype();
+				if (!(result.contains(subtype)))
+					result.add(subtype);
+			}
 		}
 		return result;
 	}
@@ -383,7 +385,7 @@ public class Restaurant {
 		ArrayList<Dish> result = new ArrayList<Dish>();
 		for (Dish d : toFilter)
 		{
-			if (d.getSubtype().equals(subtype))
+			if (d.getSubtype().equals(subtype) && d.getType().equals(type))
 				result.add(d);
 		}
 		return result;
@@ -438,11 +440,12 @@ public class Restaurant {
 	
 	public ArrayList<String> getFilters(ArrayList<Dish> dishes)
 	{
-		ArrayList<String> filters = getAllergensForFilter(dishes);
+		ArrayList<String> filters = new ArrayList<String>();
+		filters.add("All");
+		filters.addAll(getAllergensForFilter(dishes));
 		filters.addAll(getDishesTypes(dishes));
 		filters.addAll(getDishesSubtypes(dishes));
-		filters.add(0, "All");
-		filters.add(1, "Price");
+		filters.add("Price");
 		
 		return filters;
 	}

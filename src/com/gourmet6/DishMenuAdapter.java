@@ -109,7 +109,7 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 			dholder.minus.setVisibility(View.INVISIBLE);
 			dholder.name.setTextSize(14);
 			dholder.name.setText(currentdish.getName());
-			dholder.price.setText(String.valueOf(currentdish.getPrice()) + " \u20ac");
+			dholder.price.setText(String.format("%.2f", currentdish.getPrice()) + " \u20ac");
 			dholder.count.setText(String.valueOf(currentdish.getInventory()) + " pcs");
 		
 			if(fromOrder){
@@ -262,7 +262,7 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 	
 	private ArrayList<Groupe> populateType(ArrayList<String> types)
 	{
-		ArrayList<Groupe> res = new ArrayList<Groupe>(types.size());
+		ArrayList<Groupe> res = new ArrayList<Groupe>();
 		
 		for(String s : types){
 			res.add(new Groupe(s, populateSubType(s,current.getDishesSubtypes(s, forWork))));
