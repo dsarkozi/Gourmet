@@ -154,7 +154,8 @@ public class DBHandler {
     private static final String PASSWORD = "password";
     private static final String PEOPLE = "people";
     private static final String PRICE = "price";
-    private static final String PRICE_CAT = "priceCat";
+    private static final String PICTURES = "pictures";
+    //private static final String PRICE_CAT = "priceCat";
     private static final String QUANTITY = "quantity";
     private static final String RATING = "rating";
     private static final String RES = "resName";
@@ -308,7 +309,7 @@ public class DBHandler {
 		
 		// information held by the restaurant table
 		c = this.db.query(TABLE_RESTAURANT, new String[]{CHAIN,DESCRIPTION,LAT,LONG,STREET,ZIP,
-				TOWN,TEL,MAIL,WEB,RATING,VOTES,SEATS,AVAIL}, RES+"='"+name+"'", null, null, null, null);
+				TOWN,TEL,MAIL,WEB,RATING,VOTES,SEATS,AVAIL,PICTURES}, RES+"='"+name+"'", null, null, null, null);
 		if (c.getCount() > 1)
 		{
 			Log.e("DBHandler","Error : two or more retaurants seem to have the same name.");
@@ -328,13 +329,14 @@ public class DBHandler {
 		int votes = c.getInt(c.getColumnIndex(VOTES));
 		int seats = c.getInt(c.getColumnIndex(SEATS));
 		int availableSeats = c.getInt(c.getColumnIndex(AVAIL));
+		int pictures = c.getInt(c.getColumnIndex(PICTURES));
 		
 		// information on the price category
 		double priceCat = getResPriceCat(name);
 		
 		// creates the Restaurant object to be returned
 		Restaurant retour = new Restaurant(name, chain, address, town, tel, web, mail, description, rating, votes,
-				zip, seats, availableSeats, latitude, longitude, priceCat);
+				zip, seats, availableSeats, latitude, longitude, priceCat, pictures);
 		
 		// cuisine
 		c = this.db.query(TABLE_CUISINE, new String [] {TYPE}, RES+"='"+name+"'", null, null, null, TYPE);
