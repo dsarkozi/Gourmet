@@ -1,22 +1,27 @@
 package com.gourmet6;
 
-import android.os.Bundle;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.TextView;
-import android.support.v4.app.NavUtils;
-import android.annotation.TargetApi;
-import android.content.Intent;
-import android.os.Build;
 
 
-public class RestaurantActivity extends Activity implements RatingBar.OnRatingBarChangeListener
+public class RestaurantActivity extends Activity
 {
 	
 	private Gourmet g;
@@ -25,25 +30,36 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 	private LinearLayout listImg;
 	
 	private RatingBar ratingBar;
+	private RatingBar toRateBar;
 	
 	private TextView description;
 	private TextView horaire;
 	private TextView localisation;
+	private TextView tvRate;
 	
 	private Button order;
 	private Button reserve;
 	private Button menu;
 	
 	private boolean extended;
+	private boolean hasRated;
+	
+	private Dialog dialog;
+	
+	private Context context;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_restaurant);
+		overridePendingTransition(0, R.anim.commetuveux);
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
 		g = (Gourmet)getApplication();
+		context = this;
+		
+		hasRated = false;
 		
 		currentRest = g.getRest();
 		setTitle(this.currentRest.getName());
@@ -55,9 +71,22 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 		//rating bar
 		ratingBar = (RatingBar) findViewById(R.id.ratingRest);
 		ratingBar.setRating(currentRest.getRating());
+		ratingBar.setRating(4);
+		ratingBar.setIsIndicator(true);
 		//TODO viewListener ?
 		//Coter le restaurant
-		ratingBar.setOnRatingBarChangeListener(this);
+		ratingBar.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				System.out.println("koko");
+				if(!hasRated)
+				{
+					createDialogToRate();
+				}
+				return false;
+			}
+		});
 		
 		//TextView
 		description = (TextView) findViewById(R.id.descriptionRest);
@@ -117,13 +146,6 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 			}
 		});
 	}
-		
-	@Override
-	public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) 
-	{
-		//TODO
-		ratingBar.setIsIndicator(true);
-	}	
 	
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
@@ -132,6 +154,73 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 	private void setupActionBar() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
+		}
+	}
+	
+	public void createDialogToRate()
+	{
+		dialog = new Dialog(context);
+		dialog.setContentView(R.layout.rating_dialog);
+		dialog.setTitle("Rate restaurant");
+		
+		tvRate = (TextView) dialog.findViewById(R.id.typeCotation);
+		lookForType((int)ratingBar.getRating());
+		
+		toRateBar = (RatingBar) dialog.findViewById(R.id.ratingBarToRate);
+		toRateBar.setRating(ratingBar.getRating());
+		toRateBar.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
+			@Override
+			public void onRatingChanged(RatingBar ratingBar, float rating,
+					boolean fromUser) {
+				System.out.println(rating);
+				lookForType((int)rating);
+			}
+		});
+		
+		Button okButtonRate = (Button) dialog.findViewById(R.id.okButtonRate);
+		okButtonRate.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//TODO currentRest.rateRestaurant(toRateBar.getRating(), );
+				hasRated = true;
+				ratingBar.setRating(currentRest.getRating());
+				dialog.cancel();
+			}
+		});
+		
+		Button cancelButtonRate = (Button) dialog.findViewById(R.id.cancelButtonRate);
+		cancelButtonRate.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dialog.cancel();
+			}
+		});
+		
+		dialog.show();
+	}
+	
+	public void lookForType(int rating)
+	{
+		switch(rating)
+		{
+		case 0: 
+			tvRate.setText("Mediocre"); 
+			break;
+		case 1: 
+			tvRate.setText("Mauvais"); 
+			break;
+		case 2: 
+			tvRate.setText("Moyen");
+			break;
+		case 3: 
+			tvRate.setText("Bon");
+			break;
+		case 4: 
+			tvRate.setText("Tres bon");
+			break;
+		case 5: 
+			tvRate.setText("Excellent");
+			break;
 		}
 	}
 

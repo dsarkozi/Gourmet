@@ -92,12 +92,35 @@ public class TimeTable
 		return cal;
 	}
 	
-	public static String parseDateInString(GregorianCalendar cal)
+	public static String parseDateInString(GregorianCalendar temp)
 	{
-		String res = cal.get(GregorianCalendar.YEAR)+"-"+cal.get(GregorianCalendar.MONTH)
-				+"-"+cal.get(GregorianCalendar.DAY_OF_MONTH)+" "+cal.get(GregorianCalendar.HOUR_OF_DAY)
-				+":"+cal.get(GregorianCalendar.MINUTE);
-		return res;
+		String year = temp.get(GregorianCalendar.YEAR)+"-"; String month;
+		if((temp.get(GregorianCalendar.MONTH)+1)<10){
+			month = "0"+(temp.get(GregorianCalendar.MONTH)+1)+"-";
+		}
+		else {
+			month = (temp.get(GregorianCalendar.MONTH)+1)+"-";
+		} String day;
+		if(temp.get(GregorianCalendar.DAY_OF_MONTH)<10){
+			day = "0"+temp.get(GregorianCalendar.DAY_OF_MONTH)+" ";
+		}
+		else{
+			day = temp.get(GregorianCalendar.DAY_OF_MONTH)+" ";
+		}String hour;
+		if(temp.get(GregorianCalendar.HOUR_OF_DAY)<10){
+			hour = "0"+temp.get(GregorianCalendar.HOUR_OF_DAY)+":";
+		}
+		else{
+			hour = temp.get(GregorianCalendar.HOUR_OF_DAY)+":";
+		} String minute;
+		if(temp.get(GregorianCalendar.MINUTE)<10){
+			minute = "0"+temp.get(GregorianCalendar.MINUTE);
+		}
+		else{
+			minute = temp.get(GregorianCalendar.MINUTE)+"";
+		}
+
+		return year+month+day+hour+minute;
 	}//
 	
 	public boolean isInTimeTable(GregorianCalendar date)

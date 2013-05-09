@@ -325,7 +325,7 @@ public class Restaurant {
 	 * -Qu'elle spécifie une nombre de personne <= au nombre de place encore disponible dans le restaurant.
 	 * Renvoit false sinon.
 	 */
-	public String checkReservation(Reservation res){
+	public String checkReservation(Reservation res, DBHandler dbh){
 		if(res.getReservationOrder()!=null){
 			for(Dish dish : res.getReservationOrder().getOrderDishes()){
 				if(dish.getQuantity()>dish.getInventory()) return "Incorrect quantity";
@@ -338,6 +338,12 @@ public class Restaurant {
 			if(tt.isInTimeTable(res.getReservationTime()))
 			{
 				timeTableOk = true;
+				String start = getInString(res.getReservationTime(), -2, 0);
+				String end = getInString(res.getReservationTime(), 2, 0);
+				if(dbh.getAvailBetweenDateTime(res.getReservationResName(), start, end)<res.getReservationPeople()){
+					return "Not enough place for this date";
+				}
+				
 			}
 		}
 		if(!timeTableOk) return "Incorrect date or hour, please see the time table";
@@ -345,6 +351,16 @@ public class Restaurant {
 		else return null;
 	}
 	
+	private String getInString(GregorianCalendar date, int hour, int minute)
+	{
+		// TODO Auto-generated method stub
+		GregorianCalendar temp = date;
+		//on soustrait le temps adéquat.
+		temp.set(GregorianCalendar.HOUR_OF_DAY, temp.get(GregorianCalendar.HOUR_OF_DAY)+hour);
+		temp.set(GregorianCalendar.MINUTE, temp.get(GregorianCalendar.MINUTE)+minute);
+		return TimeTable.parseDateInString(temp);
+	}
+
 	public void Orderreboot()
 	{
 		for(Dish d : this.listDishes)
