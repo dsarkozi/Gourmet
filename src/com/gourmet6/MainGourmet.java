@@ -143,7 +143,10 @@ public class MainGourmet extends Activity
 					finish();
 					break;
 				case TOWN_LIST:
-					exitDialog();
+					if (g.getClient() != null)
+						exitDialog();
+					else
+						login();
 					break;
 				case RESTO_LIST:
 					showTowns();
