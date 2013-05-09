@@ -11,7 +11,7 @@ import android.view.View;
 public class ClientActivity extends Activity {
 
 	
-	private Gourmet g = (Gourmet)getApplication();
+	private Gourmet g;
 	private Client currentCli;
 	
 	
@@ -20,6 +20,7 @@ public class ClientActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_client);
 		
+		g = (Gourmet)getApplication();
 		currentCli = g.getClient();
 		
 		//nom du client + son mail sont affiché au dessus

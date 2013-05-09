@@ -21,14 +21,14 @@
     <string name="okButton">OK</string>
     <string name="cancelButton">Cancel</string>
     <string name="title_activity_new_pers_data">NewPersDataActivity</string>
-    <string name="timetableUnknown">Timetable unknown</string>
-    <string name="unknownTel">Unknow Phone</string>
+    <string name="timetableUnknown">Unknown timetable </string>
+    <string name="unknownTel">Unknown phone</string>
     <string name="unknownMail">Unknown mail</string>
     <string name="unknownWeb">Unknown web</string>
     <string name="catPrice">Average price :</string>
     <string name="restPlace">Available seats :</string>
     <string name="unkown">Unknown</string>
-    <string name="action_settings">settings</string>
+    <string name="action_settings">Settings</string>
     <string name="timeTable">Opening hours :</string>
     <string name="contact">Contacts :</string>
     
