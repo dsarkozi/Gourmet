@@ -48,13 +48,12 @@ public class DishMenuActivity extends Activity {
 		});	
 		
 		ExpandableListView dishes = (ExpandableListView) findViewById(R.id.dish_menu);
-		dishes.setAdapter(new DishMenuAdapter(this, current, false));
+		dishes.setAdapter(new DishMenuAdapter(this,current.getListDishes(), false));
 		subtypes = current.getDishesSubtypes();
 		dishes.setOnChildClickListener(new OnChildClickListener() {
 			
 			@Override
 			public boolean onChildClick(ExpandableListView parent, View v,int groupPosition, int childPosition, long id) {
-				// TODO Auto-generated method st
 				
 				TextView txt = (TextView)v.findViewById(R.id.dishname);
 				

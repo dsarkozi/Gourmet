@@ -38,7 +38,7 @@ public class OrderActivity extends Activity {
 		this.fromRestaurant = extra.getBoolean("from");
 		
 		ExpandableListView dishes = (ExpandableListView) findViewById(R.id.expandableListView1);
-		dishes.setAdapter(new MenuAdapter(this, current, true));
+		dishes.setAdapter(new DishMenuAdapter(this,current.getListDishes(), true));
 		
 		Button submit = (Button) findViewById(R.id.button1);
 		submit.setOnClickListener(new View.OnClickListener() {

@@ -2,6 +2,7 @@ package com.gourmet6;
 
 import java.util.ArrayList;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,19 +15,19 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 	
 	private Context context;
 	private LayoutInflater inflater;
-	private Restaurant current;
+	private ArrayList<Dish> forWork;
 	private ArrayList<Groupe> list;
 	private boolean fromOrder = false;
 	private SubGroupe sgrp;
 	private DishViewHolder dholder;
 	private Dish currentdish;
 	
-	public DishMenuAdapter (Context c, Restaurant current, boolean fromOrder){
+	public DishMenuAdapter (Context c, ArrayList<Dish> forWork, boolean fromOrder){
 		this.context = c;
-		this.current = current;
+		this.forWork = forWork;
 		this.fromOrder = fromOrder;
 		this.inflater = LayoutInflater.from(context);
-		this.list = populateType(current.getDishesTypes());
+		this.list = populateType(getDishesTypes(forWork));
 	}
 
 	@Override
@@ -79,7 +80,8 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 		}
 		else{
 			
-			currentdish = current.getDish(sgrp.getTitle());
+			//TODO
+			currentdish = getDish(sgrp.getTitle(), forWork);
 		
 			if(convertView == null){
 				dholder = new DishViewHolder();
@@ -261,7 +263,7 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 		ArrayList<Groupe> res = new ArrayList<Groupe>(types.size());
 		
 		for(String s : types){
-			res.add(new Groupe(s, populateSubType(s, current.getDishesSubtypes(s))));
+			res.add(new Groupe(s, populateSubType(s,getDishesSubtypes(s, forWork))));
 		}
 		
 		return res;
@@ -273,7 +275,7 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 		
 		for(String s: subtypes){
 			res.add(new SubGroupe(s,true));
-			ArrayList<Dish> dishes = current.filterDishesSubtype(s, type);
+			ArrayList<Dish> dishes = filterDishesSubtype(s, type, forWork);
 			for(Dish d : dishes){
 				res.add(new SubGroupe(d.getName(), false));
 			}
@@ -281,6 +283,76 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 		
 		
 		return res;
+	}
+	
+	private ArrayList<Dish> filterDishesSubtype(String subtype, String type, ArrayList<Dish> listDishes)
+	{
+		if (listDishes == null)
+		{
+			Log.e("Restaurant", "filterDishesSubtype with an empty listDishes. Call createDishes.");
+		}
+		
+		ArrayList<Dish> result = new ArrayList<Dish>();
+		for (Dish d : listDishes)
+		{
+			if ((d.getType().equals(type)) && (d.getSubtype().equals(subtype)))
+				result.add(d);
+		}
+		return result;
+	}
+	
+	private ArrayList<String> getDishesSubtypes(String type, ArrayList<Dish> listDishes)
+	{
+		if (listDishes == null)
+		{
+			Log.e("Restaurant", "getDishesSubtype with an empty listDishes. Call createDishes.");
+		}
+		
+		ArrayList<String> result = new ArrayList<String>();
+		String subtype;
+		for (Dish d : listDishes)
+		{
+			if(d.getType().equals(type)){
+				subtype = d.getSubtype();
+				if (!(result.contains(subtype)))
+					result.add(subtype);
+			}
+		}
+		return result;
+	}
+	
+	public Dish getDish(String name, ArrayList<Dish> listDishes)
+	{
+		if(listDishes==null)
+		{
+			Log.e("Restaurant", "getDish with an empty listDishes. Call createDishes before.");
+		}
+		else
+		{
+			for(Dish d : listDishes)
+			{
+				if(d.getName().equals(name)) return d;
+			}
+		}
+		return null;
+	}
+	
+	private ArrayList<String> getDishesTypes(ArrayList<Dish> listDishes)
+	{
+		if (listDishes == null)
+		{
+			System.err.println("getDishesType with an empty listDishes. Call createDishes.");
+		}
+		
+		ArrayList<String> result = new ArrayList<String>();
+		String type;
+		for (Dish d : listDishes)
+		{
+			type = d.getType();
+			if (!(result.contains(type)))
+				result.add(type);
+		}
+		return result;
 	}
 
 }
