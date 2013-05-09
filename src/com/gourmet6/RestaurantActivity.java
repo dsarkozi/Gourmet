@@ -5,9 +5,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,6 +43,8 @@ public class RestaurantActivity extends Activity
 	private Button order;
 	private Button reserve;
 	private Button menu;
+	
+	private ImageView imgDesc;
 	
 	private boolean extended;
 	private boolean hasRated;
@@ -87,22 +91,22 @@ public class RestaurantActivity extends Activity
 			}
 		});
 		
+		imgDesc = (ImageView) findViewById(R.id.imageViewDesc);
+		imgDesc.setClickable(true);
+		imgDesc.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				checkSizeDesc();
+			}
+		});
+		
 		//TextView
 		description = (TextView) findViewById(R.id.descriptionRest);
 		description.setText(currentRest.getDescription());
 		description.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				LayoutParams params = description.getLayoutParams();
-				if(extended){
-					params.height = 77;
-					extended = false;
-				}
-				else{
-					params.height = (currentRest.getDescription().length()*params.width)+20;
-					extended = true;
-				}
-				description.setLayoutParams(params);
+				checkSizeDesc();
 			}
 		});
 		
@@ -147,12 +151,35 @@ public class RestaurantActivity extends Activity
 		});
 	}
 	
+	public void checkSizeDesc()
+	{
+		LayoutParams params = description.getLayoutParams();
+		if(extended){
+			params.height = 77;
+			imgDesc.setImageResource(android.R.drawable.arrow_down_float);
+			extended = false;
+		}
+		else{
+			params.height = (currentRest.getDescription().length()*params.width)+20;
+			imgDesc.setImageResource(android.R.drawable.arrow_up_float);
+			extended = true;
+		}
+		description.setLayoutParams(params);
+	}
+	
 	private void addImage()
 	{
 		// TODO Auto-generated method stub
-		ImageView img = new ImageView(context);
-		img.setImageResource(R.drawable.ic_launcher);
-		listImg.addView(img);
+		String nameImg = Restaurant.getNameImg(currentRest.getName());
+		ImageView img;
+		//System.out.println(getResources().getIdentifier("quick.png", "drawable", getPackageName())==R.drawable.quick);
+		for(int i=1; i<7; i++)
+		{
+			img = new ImageView(context);
+			img.setImageResource(getResources().getIdentifier(nameImg+i, "drawable", getPackageName()));
+			listImg.addView(img);
+		}
+		
 	}
 
 	private void setLocalisation()
@@ -162,7 +189,7 @@ public class RestaurantActivity extends Activity
 			res = res+currentRest.getAdress()+", ";
 		}
 		if(currentRest.getZip()!=0){
-			res = res+currentRest.getZip()+", ";
+			res = res+currentRest.getZip()+" ";
 		}
 		if(currentRest.getTown()!=null){
 			res = res+ currentRest.getTown();

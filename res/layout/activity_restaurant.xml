@@ -9,14 +9,15 @@
     tools:context=".RestaurantActivity" >
     
     <LinearLayout
-  	    android:layout_width="match_parent"
-  	    android:layout_height="wrap_content"
-  	    android:orientation="vertical" >
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
         <HorizontalScrollView
             android:id="@+id/horizontalScrollView1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="0dp"
+            android:layout_weight="1" >
 
             <LinearLayout
                 android:id="@+id/listImgRest"
@@ -33,60 +34,75 @@
             android:id="@+id/ratingRest"
             style="?android:attr/ratingBarStyleIndicator"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
             android:isIndicator="false"
             android:numStars="5"
             android:rating="0.0" />
 
-    	<TextView
-        	android:id="@+id/descriptionRest"
-        	android:layout_width="wrap_content"
-        	android:layout_height="52sp"
-        	android:layout_gravity="center_horizontal"
-        	android:text="@string/descstring" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-    	<TextView
-    	    android:id="@+id/horaireRest"
-    	    android:layout_width="wrap_content"
-    	    android:layout_height="wrap_content"
-    	    android:layout_gravity="center_horizontal"
-    	    android:text="@string/timetableUnknown" />
+            <TextView
+                android:id="@+id/descriptionRest"
+                android:layout_width="match_parent"
+                android:layout_height="52sp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:text="@string/descstring" />
 
-    	<TextView
-    	    android:id="@+id/localisationRest"
-    	    android:layout_width="wrap_content"
-    	    android:layout_height="wrap_content"
-    	    android:layout_gravity="center_horizontal"
-    	    android:text="@string/descstring" />
+            <ImageView
+                android:id="@+id/imageViewDesc"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:src="@android:drawable/arrow_down_float" />
+        </LinearLayout>
 
-    	<LinearLayout
-    	    android:layout_width="match_parent"
-    	    android:layout_height="wrap_content"
-    	    android:layout_gravity="center_horizontal" >
+        <TextView
+            android:id="@+id/horaireRest"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:text="@string/timetableUnknown" />
 
-    	    <Button
-    	        android:id="@+id/commandeInRest"
-    	        android:layout_width="wrap_content"
-    	        android:layout_height="wrap_content"
-    	        android:layout_gravity="center_horizontal"
-    	        android:text="@string/commandButton" />
+        <TextView
+            android:id="@+id/localisationRest"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:text="@string/descstring" />
 
-    	    <Button
-    	        android:id="@+id/reserveInRest"
-    	        android:layout_width="wrap_content"
-    	        android:layout_height="wrap_content"
-    	        android:layout_gravity="center_horizontal"
-    	        android:text="@string/reservButton" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" >
 
-    	    <Button
-    	        android:id="@+id/menuInRest"
-    	        android:layout_width="wrap_content"
-    	        android:layout_height="wrap_content"
-    	        android:layout_gravity="center_horizontal"
-    	        android:text="@string/menuButton" />
-    	</LinearLayout>
+            <Button
+                android:id="@+id/menuInRest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/menuButton" />
 
+            <Button
+                android:id="@+id/commandeInRest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/commandButton" />
+
+            <Button
+                android:id="@+id/reserveInRest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/reservButton" />
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

@@ -1,10 +1,14 @@
 package com.gourmet6;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.GregorianCalendar;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.util.Log;
 
 /**
@@ -14,24 +18,26 @@ import android.util.Log;
  * @version 06.05.2013
  */
 
+@SuppressLint("DefaultLocale")
 public class Restaurant {
 	
 	private String name;
 	private String chain;
 	private String address;
-	private int zip;
 	private String town;
-	private double latitude;
-	private double longitude;
 	private String tel;
 	private String mail;
 	private String web;
 	private String description;
 	private ArrayList<String> cuisines;
+	private int zip;
 	private int seats;
-	private int availableSeats; // real-time based
-	private double rating;
 	private int nbrPrsHasVoted;
+	private int availableSeats; // real-time based
+	private int nbrImage;
+	private double latitude;
+	private double longitude;
+	private double rating;
 	private double priceCat; // average price
 	private ArrayList<Dish> listDishes = null;
 	private ArrayList<TimeTable> semaine;
@@ -39,7 +45,7 @@ public class Restaurant {
 
 	public Restaurant(String name, String chain, String address, String town, String tel, String web, String mail,
 			String description, double rating, int nbrPrsHasVoted, int zip, int seats, 
-			int availableSeats, double latitude, double longitude, double priceCat)
+			int availableSeats, double latitude, double longitude, double priceCat, int nbrImg)
 	{
 		this.name = name;
 		this.chain = chain;
@@ -57,6 +63,7 @@ public class Restaurant {
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.priceCat = priceCat;
+		this.nbrImage = nbrImg;
 	}
 	
 
@@ -684,5 +691,28 @@ public class Restaurant {
 	public void setSemaine(ArrayList<TimeTable> semaine) 
 	{
 		this.semaine = semaine;
+	}
+	public static String getNameImg(String name)
+	{
+		String res = name;
+		res = res.toLowerCase();
+		res = res.replace(' ', '_');
+		res = res.replace('é', 'e');
+		res = res.replace('ê', 'e');
+		res = res.replace('è', 'e');
+		res = res.replace('à', 'a');
+		res = res+"_";
+		System.out.println(res);
+		return res;
+	}
+
+
+	public int getNbrImage() {
+		return nbrImage;
+	}
+
+
+	public void setNbrImage(int nbrImage) {
+		this.nbrImage = nbrImage;
 	}
 }
