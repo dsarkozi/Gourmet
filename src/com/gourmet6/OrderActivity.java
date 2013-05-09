@@ -71,7 +71,6 @@ public class OrderActivity extends Activity {
 						
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							// TODO add a reservation
 							Intent resv = new Intent(OrderActivity.this,ReservationActivity.class);
 							startActivity(resv);
 						}

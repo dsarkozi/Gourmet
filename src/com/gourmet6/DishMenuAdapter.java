@@ -5,7 +5,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.TextView;
@@ -114,6 +113,7 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 			dholder.name.setTextSize(14);
 			dholder.name.setText(currentdish.getName());
 			dholder.price.setText(String.format("%.2f", currentdish.getPrice()) + " \u20ac");
+			
 			if(currentdish.getQuantity() == 0){
 				dholder.count.setText(currentdish.getInventory() + " pcs");
 			}else{
@@ -123,13 +123,10 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 			if(fromOrder){
 				dholder.plus.setVisibility(View.VISIBLE);
 				dholder.plus.setClickable(true);
-				dholder.plus.setFocusable(false);
 				dholder.minus.setVisibility(View.VISIBLE);
-				dholder.minus.setClickable(true);
-				dholder.minus.setFocusable(false);
-			
+				dholder.minus.setClickable(true);		
 		
-				dholder.plus.setOnClickListener(new OnClickListener() {
+				dholder.plus.setOnClickListener(new Button.OnClickListener() {
 			
 					@Override
 					public void onClick(View v) {
@@ -142,7 +139,7 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 					}
 				});
 		
-				dholder.plus.setOnClickListener(new OnClickListener() {
+				dholder.plus.setOnClickListener(new Button.OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
