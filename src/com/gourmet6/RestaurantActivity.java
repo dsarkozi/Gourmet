@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RatingBar.OnRatingBarChangeListener;
@@ -64,12 +65,15 @@ public class RestaurantActivity extends Activity
 		
 		hasRated = false;
 		
-		currentRest = g.getRest();
+		//currentRest = g.getRest();
+		/*currentRest = new Restaurant("test", "test", "rue de Scoumont", "Rosseignies", "0478625", 
+				"Ceci est un super restaurant super cool avec plein de plats et un menu hyper varié et je me "
+				+"casse pas le cul, patatititititi patatatatatatataat", 4.0, 5, 6230, 48, 20, 8.544, 9.63, 9.62);*/
 		setTitle(this.currentRest.getName());
 		
 		//Image
 		listImg = (LinearLayout) findViewById(R.id.listImgRest);
-		//TODO afficher les images
+		addImage();
 		
 		//rating bar
 		ratingBar = (RatingBar) findViewById(R.id.ratingRest);
@@ -109,7 +113,7 @@ public class RestaurantActivity extends Activity
 		setHorair();
 		
 		localisation = (TextView) findViewById(R.id.localisationRest);
-		localisation.setText(currentRest.getAdress()+", "+currentRest.getZip()+", "+currentRest.getTown());
+		setLocalisation();
 		
 		//Button
 		//Reaction du bouton de commande
@@ -145,6 +149,29 @@ public class RestaurantActivity extends Activity
 		});
 	}
 	
+	private void addImage()
+	{
+		// TODO Auto-generated method stub
+		ImageView img = new ImageView(context);
+		img.setImageResource(R.drawable.ic_launcher);
+		listImg.addView(img);
+	}
+
+	private void setLocalisation()
+	{
+		String res = "";
+		if(currentRest.getAdress()!=null){
+			res = res+currentRest.getAdress()+", ";
+		}
+		if(currentRest.getZip()!=0){
+			res = res+currentRest.getZip()+", ";
+		}
+		if(currentRest.getTown()!=null){
+			res = res+ currentRest.getTown();
+		}
+		localisation.setText(res);
+	}
+
 	private void setHorair()
 	{
 		// TODO A la ligne ?
