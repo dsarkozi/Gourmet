@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <string name="activity_order_title">Commande</string>
-    <string name="orderButton">Soumettre</string>
+    <string name="activity_order_title">Order</string>
+    <string name="orderButton">Soubmit</string>
     <string name="udish">Unknown</string>
-    <string name="do_you_res">Voulez-vous lier une réservation?</string>
-    <string name="yes_button">OUI</string>
-    <string name="no_button">NON</string>
+    <string name="do_you_res">Do you wish to make a reservation?</string>
+    <string name="yes_button">YES</string>
+    <string name="no_button">NO</string>
 </resources>

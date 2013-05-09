@@ -104,6 +104,10 @@
             android:name="com.gourmet6.PrefActivity"
             android:label="@string/title_activity_pref" >
         </activity>
+        <activity
+            android:name="com.gourmet6.NewPersDataActivity"
+            android:label="@string/title_activity_new_pers_data" >
+        </activity>
     </application>
 
 </manifest>

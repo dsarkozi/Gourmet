@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.GregorianCalendar;
 
+import android.util.Log;
+
 /**
  * A class representing a restaurant and its properties.
  * 
@@ -17,66 +19,35 @@ public class Restaurant {
 	private String name;
 	private String chain;
 	private String address;
-	private short zip;
+	private int zip;
 	private String town;
-	private float latitude;
-	private float longitude;
+	private double latitude;
+	private double longitude;
 	private String tel;
 	private String mail;
 	private String web;
 	private String description;
 	private ArrayList<String> cuisines;
-	private short seats;
-	private short availableSeats; // en temps reel
-	private float rating;
+	private int seats;
+	private int availableSeats; // real-time based
+	private double rating;
 	private int nbrPrsHasVoted;
-	private float priceCat; // Si un restaurant est cher -> moyenne des prix
+	private double priceCat; // average price
 	private ArrayList<Dish> listDishes = null;
-	/**
-	 * Semaine contient 7 cases, une par jour de la semaine. A chaque jour correspond une list de plage horaire.
-	 * Correspondance :
-	 * 0 : Dimanche
-	 * 1 : Lundi
-	 * 2 : Mardi
-	 * 3 : Mercredi
-	 * 4 : Jeudi
-	 * 5 : Vendredi
-	 * 6 : Samedi
-	 */
-	private ArrayList<TimeTable> semaine[];
+	private ArrayList<TimeTable> semaine;
 	
-	public Restaurant(String name)
-	{
-		this.name = name;
-		
-	}
-	
-	/**
-	 * Constructor.
-	 * @param name
-	 * @param chain
-	 * @param address
-	 * @param town
-	 * @param tel
-	 * @param description
-	 * @param rating
-	 * @param nbrPrsHasVoted
-	 * @param zip
-	 * @param seats
-	 * @param availableSeats
-	 * @param latitude
-	 * @param longitude
-	 * @param priceCat
-	 */
-	public Restaurant(String name, String chain, String address, String town, String tel, 
-			String description, float rating, int nbrPrsHasVoted, short zip, short seats, 
-			short availableSeats, float latitude, float longitude, float priceCat)
+
+	public Restaurant(String name, String chain, String address, String town, String tel, String web, String mail,
+			String description, double rating, int nbrPrsHasVoted, int zip, int seats, 
+			int availableSeats, double latitude, double longitude, double priceCat)
 	{
 		this.name = name;
 		this.chain = chain;
 		this.address = address;
 		this.town = town;
 		this.tel = tel;
+		this.web = web;
+		this.mail = mail;
 		this.description = description;
 		this.rating = rating;
 		this.nbrPrsHasVoted = nbrPrsHasVoted;
@@ -121,15 +92,15 @@ public class Restaurant {
 	}
 	
 	/**
-	 * @param name
-	 * @return the dish which has the name specified in param. If the listDishes, or if no dish corresponded,
-	 * return null.
+	 * @param name hte dish's name
+	 * @return the dish which has the name specified in param. If the listDishes is empty
+	 *  or if no dish corresponded, returns null.
 	 */
 	public Dish getDish(String name)
 	{
 		if(listDishes==null)
 		{
-			System.err.println("getDishe with an empty listDishes. Call createDishes before.");
+			Log.e("Restaurant", "getDish with an empty listDishes. Call createDishes before.");
 		}
 		else
 		{
@@ -147,7 +118,7 @@ public class Restaurant {
 	public void sortDishesPrice(){
 		if (this.listDishes == null)
 		{
-			System.err.println("sortDishesPrice with an empty listDishes. Call createDishes.");
+			Log.e("Restaurant", "sortDishesPrice with an empty listDishes. Call createDishes.");
 			return;
 		}
 
@@ -193,7 +164,7 @@ public class Restaurant {
 	{
 		if (this.listDishes == null)
 		{
-			System.err.println("filterDishesType with an empty listDishes. Call createDishes.");
+			Log.e("Restaurant", "filterDishesType with an empty listDishes. Call createDishes.");
 		}
 		
 		ArrayList<Dish> result = new ArrayList<Dish>();
@@ -212,7 +183,7 @@ public class Restaurant {
 	{
 		if (this.listDishes == null)
 		{
-			System.err.println("getDishesSubtype with an empty listDishes. Call createDishes.");
+			Log.e("Restaurant", "getDishesSubtype with an empty listDishes. Call createDishes.");
 		}
 		
 		ArrayList<String> result = new ArrayList<String>();
@@ -230,7 +201,7 @@ public class Restaurant {
 	{
 		if (this.listDishes == null)
 		{
-			System.err.println("getDishesSubtype with an empty listDishes. Call createDishes.");
+			Log.e("Restaurant", "getDishesSubtype with an empty listDishes. Call createDishes.");
 		}
 		
 		ArrayList<String> result = new ArrayList<String>();
@@ -255,7 +226,7 @@ public class Restaurant {
 	{
 		if (this.listDishes == null)
 		{
-			System.err.println("filterDishesSubtype with an empty listDishes. Call createDishes.");
+			Log.e("Restaurant", "filterDishesSubtype with an empty listDishes. Call createDishes.");
 		}
 		
 		ArrayList<Dish> result = new ArrayList<Dish>();
@@ -271,7 +242,7 @@ public class Restaurant {
 	{
 		if (this.listDishes == null)
 		{
-			System.err.println("filterDishesSubtype with an empty listDishes. Call createDishes.");
+			Log.e("Restaurant", "filterDishesSubtype with an empty listDishes. Call createDishes.");
 		}
 		
 		ArrayList<Dish> result = new ArrayList<Dish>();
@@ -307,14 +278,14 @@ public class Restaurant {
 	 * @param vote the new rating
 	 * @param dbh the DBHandler used to interact with the DB
 	 */
-	public void rateRestaurant(float vote, DBHandler dbh)
+	public void rateRestaurant(double vote, DBHandler dbh)
 	{
 		this.rating *= this.nbrPrsHasVoted;
 		this.nbrPrsHasVoted++;
 		this.rating += vote;
 		this.rating /= this.nbrPrsHasVoted;
 		
-		dbh.rateRestaurant(this.name, this.rating, this.nbrPrsHasVoted);
+		//dbh.rateRestaurant(this.name, this.rating, this.nbrPrsHasVoted);
 	}
 	
 	public boolean checkOrder(Order order)
@@ -335,36 +306,52 @@ public class Restaurant {
 	 * -Qu'elle spécifie une nombre de personne <= au nombre de place encore disponible dans le restaurant.
 	 * Renvoit false sinon.
 	 */
-	public String checkReservation(Reservation res){
+	public String checkReservation(Reservation res, DBHandler dbh){
 		if(res.getReservationOrder()!=null){
 			for(Dish dish : res.getReservationOrder().getOrderDishes()){
 				if(dish.getQuantity()>dish.getInventory()) return "Incorrect quantity";
 			}
 		}
 		//Check hour.
-		boolean timeTableOk = false; 
-		int reservationHour = res.getReservationTime().get(GregorianCalendar.HOUR_OF_DAY);
-		int reservationMinute = res.getReservationTime().get(GregorianCalendar.MINUTE);
-		for(TimeTable tt : semaine[res.getReservationTime().get(GregorianCalendar.DAY_OF_WEEK)-1]){
-			if(tt.getOpenTime().get(GregorianCalendar.HOUR_OF_DAY)<=reservationHour
-			&& tt.getOpenTime().get(GregorianCalendar.MINUTE)<=reservationMinute
-			&& reservationHour <= tt.getClosingTime().get(GregorianCalendar.HOUR_OF_DAY)
-			&& reservationMinute <= tt.getClosingTime().get(GregorianCalendar.MINUTE)){
+		boolean timeTableOk = false;
+		for(TimeTable tt : semaine)
+		{
+			if(tt.isInTimeTable(res.getReservationTime()))
+			{
 				timeTableOk = true;
+				String start = getInString(res.getReservationTime(), -2, 0);
+				String end = getInString(res.getReservationTime(), 2, 0);
+				if(dbh.getAvailBetweenDateTime(res.getReservationResName(), start, end)<res.getReservationPeople()){
+					return "Not enough place for this date";
+				}
+				
 			}
 		}
-		if(!timeTableOk) return "Incorrect time table";
+		if(!timeTableOk) return "Incorrect date or hour, please see the time table";
 		if(res.getReservationPeople()<=availableSeats) return "Too many people";
 		else return null;
 	}
 	
+	private String getInString(GregorianCalendar date, int hour, int minute)
+	{
+		// TODO Auto-generated method stub
+		GregorianCalendar temp = date;
+		//on soustrait le temps adéquat.
+		temp.set(GregorianCalendar.HOUR_OF_DAY, temp.get(GregorianCalendar.HOUR_OF_DAY)+hour);
+		temp.set(GregorianCalendar.MINUTE, temp.get(GregorianCalendar.MINUTE)+minute);
+		return TimeTable.parseDateInString(temp);
+	}
+
 	public void Orderreboot()
 	{
 		for(Dish d : this.listDishes)
 		{
 			d.setQuantity(0);
 		}
+		
+		//TODO listDishes = null ?
 	}
+	
 	/**********************
 	 * Getters and setters
 	 **********************/
@@ -392,10 +379,10 @@ public class Restaurant {
 	{
 		this.address = adress;
 	}
-	public short getZip() {
+	public int getZip() {
 		return zip;
 	}
-	public void setZip(short zip) 
+	public void setZip(int zip) 
 	{
 		this.zip = zip;
 	}
@@ -407,19 +394,19 @@ public class Restaurant {
 	{
 		this.town = town;
 	}
-	public float getLatitude() 
+	public double getLatitude() 
 	{
 		return latitude;
 	}
-	public void setLatitude(float latitude) 
+	public void setLatitude(double latitude) 
 	{
 		this.latitude = latitude;
 	}
-	public float getLongitude() 
+	public double getLongitude() 
 	{
 		return longitude;
 	}
-	public void setLongitude(float longitude) 
+	public void setLongitude(double longitude) 
 	{
 		this.longitude = longitude;
 	}
@@ -463,27 +450,27 @@ public class Restaurant {
 	{
 		this.cuisines = cuisines;
 	}
-	public short getSeats() 
+	public int getSeats() 
 	{
 		return seats;
 	}
-	public void setSeats(short seats) 
+	public void setSeats(int seats) 
 	{
 		this.seats = seats;
 	}
-	public short getAvailableSeats() 
+	public int getAvailableSeats() 
 	{
 		return availableSeats;
 	}
-	public void setAvailableSeats(short availableSeats) 
+	public void setAvailableSeats(int availableSeats) 
 	{
 		this.availableSeats = availableSeats;
 	}
-	public float getRating() 
+	public double getRating() 
 	{
 		return rating;
 	}
-	public void setRating(float rating) 
+	public void setRating(double rating) 
 	{
 		this.rating = rating;
 	}
@@ -495,10 +482,10 @@ public class Restaurant {
 	{
 		this.nbrPrsHasVoted = nbrPrsHasVoted;
 	}
-	public float getPriceCat() {
+	public double getPriceCat() {
 		return priceCat;
 	}
-	public void setPriceCat(float priceCat)
+	public void setPriceCat(double priceCat)
 	{
 		this.priceCat = priceCat;
 	}
@@ -510,11 +497,11 @@ public class Restaurant {
 	{
 		this.listDishes = listDishes;
 	}
-	public ArrayList<TimeTable>[] getSemaine() 
+	public ArrayList<TimeTable> getSemaine() 
 	{
 		return semaine;
 	}
-	public void setSemaine(ArrayList<TimeTable>[] semaine) 
+	public void setSemaine(ArrayList<TimeTable> semaine) 
 	{
 		this.semaine = semaine;
 	}

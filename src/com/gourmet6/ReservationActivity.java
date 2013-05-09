@@ -1,6 +1,7 @@
 package com.gourmet6;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 import android.os.Bundle;
@@ -33,18 +34,25 @@ public class ReservationActivity extends Activity {
 	private TextView dateTime;
 	private EditText nbrPrs;
 	
-	private Gourmet g = (Gourmet)getApplication();
+	private Gourmet g ;
 	
 	private Dialog dialog;
 	private Dialog message;
 	
 	private Context context;
 	
+	private DBHandler dbh;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);		
+		super.onCreate(savedInstanceState);
+		overridePendingTransition(0, R.anim.commetuveux);
 		setContentView(R.layout.activity_reservation);
 		setTitle(R.string.activity_reservation_title);
+		
+		g = (Gourmet)getApplication();
+		context = this;
+		dbh = new DBHandler(context);
 		
 		final Calendar c = Calendar.getInstance();
 		c.setTimeZone(TimeZone.getDefault());
@@ -53,8 +61,6 @@ public class ReservationActivity extends Activity {
 		day = c.get(Calendar.DAY_OF_MONTH);
 		hour = c.get(Calendar.HOUR_OF_DAY);
 		minute = c.get(Calendar.MINUTE);
-		
-		context = this;
 		
 		// Show the Up button in the action bar.
 		setupActionBar();
@@ -89,7 +95,8 @@ public class ReservationActivity extends Activity {
 						hour = tp.getCurrentHour();
 						minute = tp.getCurrentMinute();
 						
-						s = year+"-"+(month+1)+"-"+day+" "+hour+":"+minute;
+						GregorianCalendar calendar = new GregorianCalendar(year, month, day, hour, minute);
+						s = TimeTable.parseDateInString(calendar);
 						dateTime.setText(s);
 						
 						dialog.cancel();
@@ -142,7 +149,7 @@ public class ReservationActivity extends Activity {
 		people = Integer.parseInt(nbrPrs.getText().toString());
 		s = year+"-"+(month+1)+"-"+day+" "+hour+":"+minute;
 		Reservation reservTemp = new Reservation(g.getRest().getName(), s, people, g.getClient().getName(), g.getClient().getEmail());
-		String res = g.getRest().checkReservation(reservTemp);
+		String res = g.getRest().checkReservation(reservTemp, dbh);
 		if(res!=null)
 		{
 			message = new Dialog(context);

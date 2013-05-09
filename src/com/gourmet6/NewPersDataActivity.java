@@ -37,7 +37,6 @@ public class NewPersDataActivity extends Activity {
 		setContentView(R.layout.activity_new_pers_data);
 		
 		dbHand = new DBHandler(this);
-		dbHand.openRead();
 		currentCli = g.getClient();
 		
 		

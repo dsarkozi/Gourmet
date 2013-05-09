@@ -2,9 +2,11 @@
 <resources>
     
     <string name="activity_menu_title">Menu</string>
-    <string name="order_from_menu">Commander</string>
+    <string name="order_from_menu">Order</string>
     <string name="plus_button">+</string>
     <string name="minus_button">-</string>
     <string name="initial_state">0</string>
+    <string name="sort_spinner">Sort By</string>
+    <string name="menu_default">(aucun)</string>
     
 </resources>

@@ -18,7 +18,7 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 	private Context context;
 	private LayoutInflater inflater;
 	private Restaurant current;
-	private ArrayList<Groupe> list = populateType(current.getDishesTypes());
+	private ArrayList<Groupe> list;
 	private boolean fromOrder = false;
 	
 	public MenuAdapter (Context c, Restaurant current, boolean fromOrder){
@@ -26,6 +26,7 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 		this.current = current;
 		this.fromOrder = fromOrder;
 		this.inflater = LayoutInflater.from(context);
+		this.list = populateType(current.getDishesTypes());
 		
 	}
 	
@@ -103,6 +104,8 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 		else{
 			gholder = (GroupeViewHolder) convertView.getTag();
 		}
+		
+		
 			
 		gholder.type.setText(group.getType());
 		

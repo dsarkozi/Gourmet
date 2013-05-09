@@ -32,8 +32,7 @@ public class ExceptionHandler
 				kill();
 			}
 		});
-		Dialog alert = builder.create();
-		alert.show();
+		builder.show();
 	}
 	
 	public static void kill()

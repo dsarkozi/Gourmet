@@ -18,7 +18,7 @@
         android:src="@android:drawable/ic_menu_help" />
 
     <TextView
-        android:id="@+id/dateTime"
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView1"
@@ -27,10 +27,10 @@
         android:text="@string/dishdescstring" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/TextView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/dateTime"
+        android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="80dp"
         android:text="@string/dishcontentstring" />

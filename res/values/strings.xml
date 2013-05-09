@@ -21,5 +21,6 @@
     <string name="okButton">Ok</string>
     <string name="cancelButton">Cancel</string>
     <string name="title_activity_new_pers_data">NewPersDataActivity</string>
-
+    <string name="timetableUnknown">Timetable unknown</string>
+    
 </resources>

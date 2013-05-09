@@ -8,21 +8,37 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".OrderActivity" >
 
-    <Button
-        android:id="@+id/comInReserv"
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="fill_parent"
+        android:layout_below="@+id/textView1"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:prompt="@string/sort_spinner" />
+
+    <TextView
+        android:id="@+id/textView1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:text="@string/sort_spinner"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/spinner1"
+        android:layout_below="@+id/spinner1"
         android:text="@string/orderButton" />
 
     <ExpandableListView
         android:id="@+id/expandableListView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/comInReserv" >
+        android:layout_alignLeft="@+id/button1"
+        android:layout_below="@+id/button1" >
     </ExpandableListView>
 
 </RelativeLayout>

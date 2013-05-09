@@ -12,7 +12,10 @@ import android.os.Build;
 
 public class DishDisplayActivity extends Activity {
 
-	private Dish plat = null;
+	private Gourmet g;
+	private Dish plat;
+	private String dish;
+	private Restaurant current;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +25,11 @@ public class DishDisplayActivity extends Activity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
-		Bundle extra = getIntent().getExtras(); 
+		g = (Gourmet)getApplicationContext();
+		current = g.getRest();
+		
+		Bundle extra = getIntent().getExtras();
+		plat = current.getDish(extra.getString("the_dish"));
 		
 		setTitle(this.plat.getName());
 		

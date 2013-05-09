@@ -4,6 +4,7 @@ import java.lang.Thread.UncaughtExceptionHandler;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteException;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.AndroidRuntimeException;
@@ -17,7 +18,6 @@ public class MainGourmet extends Activity
 	public static final int RESTO_LIST = 2;
 	
 	private String currentTown;
-	private String[] restaurants;
 	@SuppressWarnings("unused")
 	private Location location = null;
 	public DBHandler dbHand;
@@ -143,9 +143,16 @@ public class MainGourmet extends Activity
 				showRestaurants();
 				break;
 			case RESTO_LIST:
-				restaurants = data.getStringArrayExtra("restaurants");
 				Gourmet gourmet = (Gourmet)getApplication();
-				gourmet.setRest(makeRestaurant(data.getStringExtra("selection")));
+				try
+				{
+					gourmet.setRest(dbHand.getRestaurant(data.getStringExtra("selection")));
+				}
+				catch (SQLiteException e)
+				{
+					ExceptionHandler.caughtException(this, e);
+				}
+				startActivity(new Intent(this, RestaurantActivity.class));
 				break;
 			default:
 				throw new AndroidRuntimeException("No such request code.");
@@ -186,11 +193,5 @@ public class MainGourmet extends Activity
 			}
 		});
 		*/
-	}
-
-	// pas dans Restaurant, mais dans DBHandler
-	public Restaurant makeRestaurant(String restaurant)
-	{
-		return new Restaurant(restaurant);
 	}
 }

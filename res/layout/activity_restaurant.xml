@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,77 +7,87 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".RestaurantActivity" >
+    
+    <LinearLayout
+  	    android:layout_width="match_parent"
+  	    android:layout_height="wrap_content"
+  	    android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/validateReserv"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="166dp"
-        android:text="@string/descstring" />
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
 
-    <Gallery
-        android:id="@+id/gallery1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="75dp" />
+            <LinearLayout
+                android:id="@+id/listImgRest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView1"
-        android:text="@string/commandButton" />
+                <!-- Ajout des images -->
 
-    <Button
-        android:id="@+id/validateReserv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="29dp"
-        android:layout_toRightOf="@+id/button3"
-        android:text="@string/reservButton" />
+            </LinearLayout>
+        </HorizontalScrollView>
 
-    <Button
-        android:id="@+id/comInReserv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/validateReserv"
-        android:layout_alignBottom="@+id/validateReserv"
-        android:layout_alignParentRight="true"
-        android:text="@string/menuButton" />
+        <RatingBar
+            android:id="@+id/ratingRest"
+            style="?android:attr/ratingBarStyleIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:isIndicator="false"
+            android:numStars="5"
+            android:rating="0.0" />
 
-    <TextView
-        android:id="@+id/dateTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/textView1"
-        android:layout_alignTop="@+id/textView1"
-        android:layout_marginTop="82dp"
-        android:text="@string/locstring" />
+    	<TextView
+        	android:id="@+id/descriptionRest"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="center_horizontal"
+        	android:lines="3"
+        	android:text="@string/descstring" />
 
-    <RatingBar
-        android:id="@+id/ratingBar1"
-        style="?android:attr/ratingBarStyleIndicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button3"
-        android:layout_alignLeft="@+id/button3"
-        android:layout_marginBottom="21dp"
-        android:isIndicator="false"
-        android:numStars="5"
-        android:rating="0.0" />
+    	<TextView
+    	    android:id="@+id/horaireRest"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:layout_gravity="center_horizontal"
+    	    android:text="@string/timetableUnknown" />
 
-    <TextView
-        android:id="@+id/Reserv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/ratingBar1"
-        android:layout_toRightOf="@+id/dateTime"
-        android:text="@string/num_peop_rat" />
+    	<TextView
+    	    android:id="@+id/localisationRest"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:layout_gravity="center_horizontal"
+    	    android:text="@string/descstring" />
 
-</RelativeLayout>
+    	<LinearLayout
+    	    android:layout_width="match_parent"
+    	    android:layout_height="wrap_content"
+    	    android:layout_gravity="center_horizontal" >
+
+    	    <Button
+    	        android:id="@+id/commandeInRest"
+    	        android:layout_width="wrap_content"
+    	        android:layout_height="wrap_content"
+    	        android:layout_gravity="center_horizontal"
+    	        android:text="@string/commandButton" />
+
+    	    <Button
+    	        android:id="@+id/reserveInRest"
+    	        android:layout_width="wrap_content"
+    	        android:layout_height="wrap_content"
+    	        android:layout_gravity="center_horizontal"
+    	        android:text="@string/reservButton" />
+
+    	    <Button
+    	        android:id="@+id/menuInRest"
+    	        android:layout_width="wrap_content"
+    	        android:layout_height="wrap_content"
+    	        android:layout_gravity="center_horizontal"
+    	        android:text="@string/menuButton" />
+    	</LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

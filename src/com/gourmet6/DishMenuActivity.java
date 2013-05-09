@@ -1,25 +1,26 @@
 package com.gourmet6;
 
-import android.os.Bundle;
+import java.util.ArrayList;
+
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.support.v4.app.NavUtils;
-import android.annotation.TargetApi;
-import android.content.Intent;
-import android.os.Build;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.TextView;
 
 public class DishMenuActivity extends Activity {
 	
-	private Gourmet g = (Gourmet)getApplication();
+	private Gourmet g;
 	private Restaurant current  = null;
-	private String[] dishesname = null;
+	private ArrayList<String> subtypes;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +30,12 @@ public class DishMenuActivity extends Activity {
 		setupActionBar();
 		
 		setTitle(R.string.activity_menu_title);
-		
+		g = (Gourmet)getApplicationContext();
 		current = g.getRest();
 		//TODO create listDishes in current if don't exist
 		
 		//Reaction du bouton de commande
-		Button order = (Button) findViewById(R.id.comInReserv);
+		Button order = (Button) findViewById(R.id.button1);
 		order.setOnClickListener(new View.OnClickListener() {
 					
 			@Override
@@ -46,8 +47,25 @@ public class DishMenuActivity extends Activity {
 			}
 		});	
 		
-		ExpandableListView dishes = (ExpandableListView) findViewById(R.id.expandableListView1);
-		dishes.setAdapter(new MenuAdapter(this, current, false));
+		ExpandableListView dishes = (ExpandableListView) findViewById(R.id.dish_menu);
+		dishes.setAdapter(new DishMenuAdapter(this,current.getListDishes(), false));
+		subtypes = current.getDishesSubtypes();
+		dishes.setOnChildClickListener(new OnChildClickListener() {
+			
+			@Override
+			public boolean onChildClick(ExpandableListView parent, View v,int groupPosition, int childPosition, long id) {
+				
+				TextView txt = (TextView)v.findViewById(R.id.dishname);
+				
+				String child = txt.getText().toString();
+				if(!(subtypes.contains(child))){
+					Intent display = new Intent(DishMenuActivity.this, DishDisplayActivity.class);
+					display.putExtra("the_dish", child);
+					startActivity(display);
+				}
+				return true;
+			}
+		});
 		
 	}
 

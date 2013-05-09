@@ -29,7 +29,6 @@ public class RestaurantListActivity extends ListActivity
 		super.onCreate(savedInstanceState);
 		//setContentView(R.layout.activity_town);
 		dbHand = new DBHandler(this);
-		dbHand.openRead();
 		// Show the Up button in the action bar.
 		setupActionBar();
 	}
@@ -61,7 +60,6 @@ public class RestaurantListActivity extends ListActivity
 		TextView selection = (TextView)v;
 		Intent returnIntent = new Intent();
 		returnIntent.putExtra("selection", selection.getText().toString());
-		returnIntent.putExtra("restaurants", restaurants);
 		setResult(RESULT_OK, returnIntent);
 		finish();
 	}

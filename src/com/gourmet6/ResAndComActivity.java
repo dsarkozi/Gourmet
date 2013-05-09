@@ -26,7 +26,6 @@ public class ResAndComActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_res_and_com);
 		dbHand = new DBHandler(this);
-		dbHand.openRead();
 		
 		currentCli = g.getClient();
 		myRes = dbHand.getClientReservations(currentCli.getEmail());
