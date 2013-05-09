@@ -31,8 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/dishimage"
         android:layout_below="@+id/dishimage"
-        android:textIsSelectable="true"
-        android:text="@string/descr" />
+        android:textIsSelectable="true"/>
 
     <TextView
         android:id="@+id/dishinfo"

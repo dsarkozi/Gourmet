@@ -19,7 +19,7 @@ public class DishDisplayActivity extends Activity {
 	private TextView dishDescr;
 	private TextView dishInfo;
 	
-	
+	private String name;
 	private String price;
 	private String type;
 	private String subtype;
@@ -37,16 +37,25 @@ public class DishDisplayActivity extends Activity {
 		Bundle extra = getIntent().getExtras();
 		plat = current.getDish(extra.getString("the_dish"));
 		
+		name = plat.getName();
 		dishName  = (TextView)findViewById(R.id.dishname);
-		dishName.setText(plat.getName());
+		dishName.setText(name);
 		
 		dishImage = (ImageView)findViewById(R.id.dishimage);
 		//dishImage.setImageResource(1234); // a faire mettre la ressource de l'image :/
+		String imgName = Restaurant.getNameImg(name);
+		/*
+		if(getIdentifier(imgName, "drawable", getPackageName()).exists()){
+			
+		}
+		elseif(){
+			
+		}*/
+		dishImage.setImageResource(getResources().getIdentifier(imgName, "drawable", getPackageName()));
 		
 		dishDescr  = (TextView)findViewById(R.id.dishdescr);
-		dishDescr.setText("Description : "+plat.getDescription());
+		dishDescr.setText(plat.getDescription()); //"Description : "+
 		
-		// en suspend
 		price ="-price : "+plat.getPrice()+"\n";
 		type ="-type : "+plat.getType()+"\n";
 		subtype="-subtype : "+plat.getSubtype()+"\n";
