@@ -110,7 +110,8 @@ public class Restaurant {
 		{
 			for(Dish d : listDishes)
 			{
-				if(d.getName().equals(name)) return d;
+				if(d.getName().equals(name)) 
+					return d;
 			}
 		}
 		return null;

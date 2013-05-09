@@ -177,8 +177,27 @@ public class OrderActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		
-		current.Orderreboot();
-		super.onBackPressed();
+		AlertDialog.Builder exit = new AlertDialog.Builder(this);
+		exit.setTitle("Exit Order");
+		exit.setMessage("You are about to exit order menu.Are you sure ?");
+		exit.setPositiveButton("Yes", new DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which)
+			{
+				current.Orderreboot();
+				finish();
+			}
+		});
+		exit.setNegativeButton("No", new DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which)
+			{
+				
+			}
+		});
+		exit.show();
 	}
 
 	/**

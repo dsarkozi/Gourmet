@@ -114,32 +114,29 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 			dholder.name.setTextSize(14);
 			dholder.name.setText(currentdish.getName());
 			dholder.price.setText(String.format("%.2f", currentdish.getPrice()) + " \u20ac");
+			dholder.count.setText(currentdish.getInventory() + " pcs");
 			
-			if(currentdish.getQuantity() == 0){
-				dholder.count.setText(currentdish.getInventory() + " pcs");
-			}else{
-				dholder.count.setText(currentdish.getQuantity());
-			}
 		
 			if(fromOrder){
 				dholder.plus.setVisibility(View.VISIBLE);
 				dholder.plus.setClickable(true);
 				dholder.minus.setVisibility(View.VISIBLE);
-				dholder.minus.setClickable(true);		
+				dholder.minus.setClickable(true);
+				dholder.count.setText(0 + " pcs");
 		
 				dholder.plus.setOnClickListener(new Button.OnClickListener() {
 			
 					@Override
 					public void onClick(View v) {
-						if(currentdish.getQuantity() < currentdish.getInventory())
-						{
+						//if(currentdish.getQuantity() < currentdish.getInventory())
+						//{
 							Toast.makeText(context,"I'm working. Fuck you. HAHA!", Toast.LENGTH_LONG) .show();
 							
-							currentdish.incrementQuantity();
-							dholder.count.setText(currentdish.getQuantity());
-							current.setDish(currentdish);
+							//currentdish.incrementQuantity();
+							//dholder.count.setText(currentdish.getQuantity());
+							//current.setDish(currentdish);
 							
-						}
+						//}
 					}
 				});
 		
@@ -147,15 +144,15 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 					
 					@Override
 					public void onClick(View v) {
-						if(currentdish.getQuantity() > 0)
-						{
+						//if(currentdish.getQuantity() > 0)
+						//{
 							Toast.makeText(context,"I'm working. Fuck you. HAHA!", Toast.LENGTH_LONG) .show();
 							
-							currentdish.decrementQuantity();
-							dholder.count.setText(currentdish.getQuantity());
-							current.setDish(currentdish);
+							//currentdish.decrementQuantity();
+							//dholder.count.setText(currentdish.getQuantity());
+							//current.setDish(currentdish);
 							
-						}
+						//}
 					}
 				});
 			
