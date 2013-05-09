@@ -393,7 +393,7 @@ public class DBHandler {
 		
 		ContentValues insertValues = new ContentValues(2);
 		insertValues.put(RATING, rating);
-		insertValues.put(VOTES, votes+1);
+		insertValues.put(VOTES, votes);
 		this.db.beginTransaction();
 		nrRows = this.db.update(TABLE_RESTAURANT, insertValues, RES+"=?", new String[] {resName});
 		if (nrRows > 0)
