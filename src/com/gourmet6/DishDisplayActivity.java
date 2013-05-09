@@ -56,7 +56,7 @@ public class DishDisplayActivity extends Activity {
 		dishDescr  = (TextView)findViewById(R.id.dishdescr);
 		dishDescr.setText(plat.getDescription()); //"Description : "+
 		
-		price ="-price : "+plat.getPrice()+"\n";
+		price ="-price : "+Dish.myRound(plat.getPrice())+"\n";
 		type ="-type : "+plat.getType()+"\n";
 		subtype="-subtype : "+plat.getSubtype()+"\n";
 		inventory="-inventory : "+plat.getInventory()+"\n";
@@ -74,6 +74,7 @@ public class DishDisplayActivity extends Activity {
 	}
 	
 	public static String arrayListOfStringToString(ArrayList<String> str){
+		if(str==null) return "None";
 		String s = str.get(0);
 		for(int i=1; i<str.size(); i++){
 			s = s +", "+str.get(i);

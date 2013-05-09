@@ -125,8 +125,16 @@ public class TimeTable
 	
 	public String parseInString()
 	{
-		return this.getJourDebut()+"-"+this.getJourFin()+" : "+parseHorairInString(this.getOpenTime())+"-"
-				+parseHorairInString(this.getClosingTime());
+		if(this.getJourDebut().equals(this.getClosingTime()))
+		{
+			return this.getJourDebut()+" : "+parseHorairInString(this.getOpenTime())+"-"
+					+parseHorairInString(this.getClosingTime());
+		}
+		else
+		{
+			return this.getJourDebut()+"-"+this.getJourFin()+" : "+parseHorairInString(this.getOpenTime())+"-"
+					+parseHorairInString(this.getClosingTime());
+		}
 	}
 	
 	public String parseHorairInString(GregorianCalendar cal)

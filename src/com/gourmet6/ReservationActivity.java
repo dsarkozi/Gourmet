@@ -41,8 +41,8 @@ public class ReservationActivity extends Activity {
 	
 	private Context context;
 	
-	private Restaurant current;
-	private boolean from = false;
+	private boolean from;
+	private Restaurant currentRest;
 	
 	private DBHandler dbh;
 	
@@ -56,6 +56,7 @@ public class ReservationActivity extends Activity {
 		g = (Gourmet)getApplication();
 		context = this;
 		dbh = new DBHandler(context);
+		from = false;
 		
 		Bundle extra = getIntent().getExtras();
 		this.from = extra.getBoolean("fromOrder");
@@ -131,10 +132,8 @@ public class ReservationActivity extends Activity {
 		order.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//TODO create the reservation object
 				if(checkReservation()){
-					current = g.getRest();
-					current.createListDishes(new DBHandler(ReservationActivity.this));
+					currentRest.createListDishes(new DBHandler(ReservationActivity.this));
 					Intent commande = new Intent(ReservationActivity.this, OrderActivity.class);
 					commande.putExtra("from", false);
 					startActivity(commande);

@@ -5,13 +5,9 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -87,16 +83,18 @@ public class RestaurantActivity extends Activity
 		//rating bar
 		ratingBar = (RatingBar) findViewById(R.id.ratingRest);
 		ratingBar.setIsIndicator(true);
-		ratingBar.setOnTouchListener(new View.OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if(!hasRated)
-				{
-					createDialogToRate();
+		if(g.getClient()!=null){
+			ratingBar.setOnTouchListener(new View.OnTouchListener() {
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					if(!hasRated)
+					{
+						createDialogToRate();
+					}
+					return false;
 				}
-				return false;
-			}
-		});
+			});
+		}
 		
 		imgDesc = (ImageView) findViewById(R.id.imageViewDesc);
 		imgDesc.setClickable(true);
@@ -140,7 +138,7 @@ public class RestaurantActivity extends Activity
 		}
 		if(currentRest.getPriceCat()!=0){
 			tvCatPrice = (TextView) findViewById(R.id.tvPriceCat);
-			tvCatPrice.setText(Math.floor(currentRest.getPriceCat()*100.0)/100+"");
+			tvCatPrice.setText(Dish.myRound(currentRest.getPriceCat())+"");
 		}
 		if(currentRest.getSeats()!=0){
 			tvSeats = (TextView) findViewById(R.id.tvPlaceRest);
@@ -191,7 +189,7 @@ public class RestaurantActivity extends Activity
 	private void actualizeInfoRate()
 	{
 		ratingBar.setRating((float) currentRest.getRating());
-		tvInfoRate.setText(Math.floor(currentRest.getRating()*100.0)/100+"/5 by "
+		tvInfoRate.setText(Dish.myRound(currentRest.getRating())+"/5 by "
 				+currentRest.getNbrPrsHasVoted()+" people");
 	}
 
@@ -243,28 +241,8 @@ public class RestaurantActivity extends Activity
 
 	private void setHorair()
 	{
-		String s=""; String oldStartDay=null; String oldEndDay = null;
 		if(currentRest.getSemaine()==null) return;
-		for(TimeTable tt : currentRest.getSemaine())
-		{
-			if(tt.getJourDebut().equals(tt.getJourFin()))
-			{
-				if(oldStartDay==null && oldEndDay==null)
-				{
-					s = s+tt.parseInString()+"\n";
-					oldStartDay = tt.getJourDebut();
-					oldEndDay = tt.getJourFin();
-				}
-				else
-				{
-					
-				}
-			}
-			else
-			{
-				s = s+tt.parseInString()+"\n";
-			}
-		}
+		String s = currentRest.getHoraireInString();
 		if(s.length()!=0)horaire.setText(s);
 	}
 

@@ -704,7 +704,6 @@ public class Restaurant {
 		res = res.replace('è', 'e');
 		res = res.replace('à', 'a');
 		res = res+"_";
-		System.out.println(res);
 		return res;
 	}
 	
@@ -725,5 +724,50 @@ public class Restaurant {
 
 	public void setNbrImage(int nbrImage) {
 		this.nbrImage = nbrImage;
+	}
+
+
+	public String getHoraireInString()
+	{
+		ArrayList<TimeTable> copy = new ArrayList<TimeTable>();
+		for(TimeTable tt : semaine){
+			copy.add(tt);
+		}
+		TimeTable temp; String res = "";
+		while(copy.size()!=0)
+		{
+			temp = getTimeSlot(copy);
+			res = res+temp.parseInString()+"\n";
+		}
+		return res;
+	}
+
+
+	private TimeTable getTimeSlot(ArrayList<TimeTable> copy)
+	{
+		int i;
+		for(i=2; i<8; i++)
+		{
+			for(TimeTable tt : copy)
+			{
+				if(i==(Integer)TimeTable.weekMap.get(tt.getJourDebut()))
+				{
+					TimeTable res = tt;
+					copy.remove(tt);
+					return res;
+				}
+			}
+		}
+		i=1;
+		for(TimeTable tt : copy)
+		{
+			if(i==(Integer)TimeTable.weekMap.get(tt.getJourDebut()))
+			{
+				TimeTable res = tt;
+				copy.remove(tt);
+				return res;
+			}
+		}
+		return null;
 	}
 }

@@ -131,4 +131,8 @@ public class Dish {
 	{
 		this.quantity = quantity;
 	}
+	public static double myRound(double r)
+	{
+		return Math.floor(r*100.0)/100;
+	}
 }

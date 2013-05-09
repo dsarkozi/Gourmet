@@ -112,7 +112,7 @@
                 android:id="@+id/imageView4"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
-                android:layout_weight="0.33"
+                android:layout_weight="0.2"
                 android:layout_gravity="center|center_vertical|center_horizontal"
                 android:src="@drawable/adress" />
 
@@ -120,7 +120,7 @@
                 android:id="@+id/localisationRest"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.66"
+                android:layout_weight="0.8"
                 android:layout_gravity="center|center_vertical|center_horizontal"
                 android:text="@string/locstring" />
         </LinearLayout>
@@ -136,7 +136,7 @@
                 android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_gravity="center|center_vertical|center_horizontal"
-                android:layout_weight="0.33"
+                android:layout_weight="0.2"
                 android:src="@android:drawable/ic_menu_call" />
 
             <TextView
@@ -144,7 +144,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_vertical|center_horizontal"
-                android:layout_weight="0.66"
+                android:layout_weight="0.8"
                 android:text="@string/unknownTel" />
         </LinearLayout>
 
@@ -158,7 +158,7 @@
                 android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_gravity="center|center_vertical|center_horizontal"
-                android:layout_weight="0.33"
+                android:layout_weight="0.2"
                 android:src="@android:drawable/sym_action_email" />
 
             <TextView
@@ -166,7 +166,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_vertical|center_horizontal"
-                android:layout_weight="0.66"
+                android:layout_weight="0.8"
                 android:text="@string/unknownMail" />
 
         </LinearLayout>
@@ -181,14 +181,14 @@
                 android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_gravity="center|center_vertical|center_horizontal"
-                android:layout_weight="0.33"
+                android:layout_weight="0.2"
                 android:src="@drawable/web" />
 
             <TextView
                 android:id="@+id/tvWebRest"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.66"
+                android:layout_weight="0.8"
                 android:layout_gravity="center|center_vertical|center_horizontal"
                 android:text="@string/unknownWeb" />
         </LinearLayout>
