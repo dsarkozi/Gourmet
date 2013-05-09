@@ -70,6 +70,14 @@ public class RestaurantActivity extends Activity
 				"http://test.be", "test@gmail.be", "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
 				+"dvgffggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg" +
 				"ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" +
+				"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" +
+				"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" +
+				"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" +
+				"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" +
+				"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" +
+				"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" +
+				"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" +
+				"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" +
 				"fin", 4.5, 2, 6250, 58, 28, 9.65, 7.2569, 20.5);
 		setTitle(this.currentRest.getName());
 		
@@ -156,7 +164,7 @@ public class RestaurantActivity extends Activity
 		// TODO Auto-generated method stub
 		ImageView img = new ImageView(context);
 		img.setImageResource(R.drawable.ic_launcher);
-		//listImg.addView(img);
+		listImg.addView(img);
 	}
 
 	private void setLocalisation()
@@ -171,7 +179,9 @@ public class RestaurantActivity extends Activity
 		if(currentRest.getTown()!=null){
 			res = res+ currentRest.getTown();
 		}
-		localisation.setText(res);
+		if(res.length()!=0){
+			localisation.setText(res);
+		}
 	}
 
 	private void setHorair()
