@@ -36,12 +36,6 @@ public class Restaurant {
 	private ArrayList<Dish> listDishes = null;
 	private ArrayList<TimeTable> semaine;
 	
-	public Restaurant(String name)
-	{
-		this.name = name;
-		
-	}
-	
 	/**
 	 * Constructor.
 	 * @param name
