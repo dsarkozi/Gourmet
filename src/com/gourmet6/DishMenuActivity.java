@@ -26,6 +26,7 @@ public class DishMenuActivity extends Activity {
 	private Restaurant current  = null;
 	private ExpandableListView dishes;
 	private DishMenuAdapter dishad;
+	private ArrayAdapter<String> adapter;
 	private ArrayList<String> types;
 	private ArrayList<String> subtypes;
 	private ArrayList<String> allergens;
@@ -41,9 +42,9 @@ public class DishMenuActivity extends Activity {
 		setupActionBar();
 		
 		setTitle(R.string.activity_menu_title);
+		
 		g = (Gourmet)getApplicationContext();
 		current = g.getRest();
-		//TODO create listDishes in current if don't exist
 		
 		//Reaction du bouton de commande
 		Button order = (Button) findViewById(R.id.button1);
@@ -79,7 +80,7 @@ public class DishMenuActivity extends Activity {
 		updateLists(current.getListDishes());
 		
 		Spinner sort = (Spinner) findViewById(R.id.spinner1);
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, filters);
+		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, filters);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		sort.setAdapter(adapter);
 		sort.setOnItemSelectedListener(new OnItemSelectedListener() {

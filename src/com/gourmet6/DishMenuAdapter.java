@@ -2,7 +2,6 @@ package com.gourmet6;
 
 import java.util.ArrayList;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,8 +109,8 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 			dholder.minus.setVisibility(View.INVISIBLE);
 			dholder.name.setTextSize(14);
 			dholder.name.setText(currentdish.getName());
-			dholder.price.setText(String.valueOf(currentdish.getPrice()) + "euro");
-			dholder.count.setText("Stock:"+String.valueOf(currentdish.getInventory()));
+			dholder.price.setText(String.valueOf(currentdish.getPrice()) + " \u20ac");
+			dholder.count.setText(String.valueOf(currentdish.getInventory()) + " pcs");
 		
 			if(fromOrder){
 				dholder.plus.setVisibility(View.VISIBLE);
