@@ -286,10 +286,10 @@ public class DBHandler {
 		ArrayList<String> restaurants = new ArrayList<String>(length);
 		while (c.moveToNext())
 		{
-			if (c.getString(1) != null)
-				restaurants.add(c.getString(1));
+			if (c.getString(c.getColumnIndex(CHAIN)) != null)
+				restaurants.add((c.getString(c.getColumnIndex(CHAIN))+"*"+c.getString(c.getColumnIndex(RES))));
 			else
-				restaurants.add(c.getString(0));
+				restaurants.add(c.getString(c.getColumnIndex(RES)));
 		}
 		
 		this.close();
