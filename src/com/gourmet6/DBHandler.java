@@ -975,9 +975,12 @@ public class DBHandler {
 		{
 			Log.e("DBHandler","Error : two or more restaurants seem to have the same name.");
 		}
-		c.moveToFirst();
-		double priceCat = c.getDouble(0);
-		
+		double priceCat = 0;
+		while (c.moveToNext())
+		{
+			 priceCat = c.getDouble(0);
+		}
+
 		return priceCat;
 	}
 	
