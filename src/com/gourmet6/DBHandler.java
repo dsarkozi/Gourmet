@@ -475,7 +475,7 @@ public class DBHandler {
 		Cursor c;
 		
 		c = db.query(TABLE_DISH, new String[] {DISH,RES,TYPE,SUBTYPE,DESCRIPTION,INVENTORY,PRICE},
-				RES+"='"+resName+"'", null, null, null, " CASE "+TYPE+" WHEN 'EntrŽes' THEN 1 WHEN " +
+				RES+"='"+resName+"'", null, null, null, " CASE "+TYPE+" WHEN 'Entrï¿½es' THEN 1 WHEN " +
 				"'Plats' THEN 2 WHEN 'Desserts' THEN 3 WHEN 'Boissons' THEN 4 END, "+SUBTYPE);
 		
 		ArrayList<Dish> dishes = new ArrayList<Dish>(c.getCount());
@@ -519,21 +519,8 @@ public class DBHandler {
 	 */
 	public long addClient (String mail, String name, String password, String tel) throws SQLiteException, SQLException
 	{
-		// throws an exception if the mandatory information is not given
-		if (mail == null)
-		{
-			throw new SQLException("Error : no client mail given.");
-		}
-		else if (name == null)
-		{
-			throw new SQLException("Error : no client name given.");
-		}
-		else if (password == null)
-		{
-			throw new SQLException("Error : no client password given.");
-		}
-		long rowId = -1;
 		this.openWrite();
+		long rowId = -1;
 		
 		ContentValues insertValues = new ContentValues(4);
 		insertValues.put(MAIL, mail);
