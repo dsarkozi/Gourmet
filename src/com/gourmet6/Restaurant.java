@@ -19,27 +19,27 @@ public class Restaurant {
 	private String name;
 	private String chain;
 	private String address;
-	private short zip;
+	private int zip;
 	private String town;
-	private float latitude;
-	private float longitude;
+	private double latitude;
+	private double longitude;
 	private String tel;
 	private String mail;
 	private String web;
 	private String description;
 	private ArrayList<String> cuisines;
-	private short seats;
-	private short availableSeats; // real-time based
-	private float rating;
+	private int seats;
+	private int availableSeats; // real-time based
+	private double rating;
 	private int nbrPrsHasVoted;
-	private float priceCat; // average price
+	private double priceCat; // average price
 	private ArrayList<Dish> listDishes = null;
 	private ArrayList<TimeTable> semaine;
 	
 
 	public Restaurant(String name, String chain, String address, String town, String tel, String web, String mail,
-			String description, float rating, int nbrPrsHasVoted, short zip, short seats, 
-			short availableSeats, float latitude, float longitude, float priceCat)
+			String description, double rating, int nbrPrsHasVoted, int zip, int seats, 
+			int availableSeats, double latitude, double longitude, double priceCat)
 	{
 		this.name = name;
 		this.chain = chain;
@@ -278,14 +278,14 @@ public class Restaurant {
 	 * @param vote the new rating
 	 * @param dbh the DBHandler used to interact with the DB
 	 */
-	public void rateRestaurant(float vote, DBHandler dbh)
+	public void rateRestaurant(double vote, DBHandler dbh)
 	{
 		this.rating *= this.nbrPrsHasVoted;
 		this.nbrPrsHasVoted++;
 		this.rating += vote;
 		this.rating /= this.nbrPrsHasVoted;
 		
-		dbh.rateRestaurant(this.name, this.rating, this.nbrPrsHasVoted);
+		//dbh.rateRestaurant(this.name, this.rating, this.nbrPrsHasVoted);
 	}
 	
 	public boolean checkOrder(Order order)
@@ -379,10 +379,10 @@ public class Restaurant {
 	{
 		this.address = adress;
 	}
-	public short getZip() {
+	public int getZip() {
 		return zip;
 	}
-	public void setZip(short zip) 
+	public void setZip(int zip) 
 	{
 		this.zip = zip;
 	}
@@ -394,19 +394,19 @@ public class Restaurant {
 	{
 		this.town = town;
 	}
-	public float getLatitude() 
+	public double getLatitude() 
 	{
 		return latitude;
 	}
-	public void setLatitude(float latitude) 
+	public void setLatitude(double latitude) 
 	{
 		this.latitude = latitude;
 	}
-	public float getLongitude() 
+	public double getLongitude() 
 	{
 		return longitude;
 	}
-	public void setLongitude(float longitude) 
+	public void setLongitude(double longitude) 
 	{
 		this.longitude = longitude;
 	}
@@ -450,27 +450,27 @@ public class Restaurant {
 	{
 		this.cuisines = cuisines;
 	}
-	public short getSeats() 
+	public int getSeats() 
 	{
 		return seats;
 	}
-	public void setSeats(short seats) 
+	public void setSeats(int seats) 
 	{
 		this.seats = seats;
 	}
-	public short getAvailableSeats() 
+	public int getAvailableSeats() 
 	{
 		return availableSeats;
 	}
-	public void setAvailableSeats(short availableSeats) 
+	public void setAvailableSeats(int availableSeats) 
 	{
 		this.availableSeats = availableSeats;
 	}
-	public float getRating() 
+	public double getRating() 
 	{
 		return rating;
 	}
-	public void setRating(float rating) 
+	public void setRating(double rating) 
 	{
 		this.rating = rating;
 	}
@@ -482,10 +482,10 @@ public class Restaurant {
 	{
 		this.nbrPrsHasVoted = nbrPrsHasVoted;
 	}
-	public float getPriceCat() {
+	public double getPriceCat() {
 		return priceCat;
 	}
-	public void setPriceCat(float priceCat)
+	public void setPriceCat(double priceCat)
 	{
 		this.priceCat = priceCat;
 	}

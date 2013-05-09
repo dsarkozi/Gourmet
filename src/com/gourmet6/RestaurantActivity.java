@@ -66,9 +66,11 @@ public class RestaurantActivity extends Activity
 		hasRated = false;
 		
 		//currentRest = g.getRest();
-		/*currentRest = new Restaurant("test", "test", "rue de Scoumont", "Rosseignies", "0478625", 
-				"Ceci est un super restaurant super cool avec plein de plats et un menu hyper varié et je me "
-				+"casse pas le cul, patatititititi patatatatatatataat", 4.0, 5, 6230, 48, 20, 8.544, 9.63, 9.62);*/
+		currentRest = new Restaurant("test", "test", "Rue du test, 28", "TestVille", "064859875", 
+				"http://test.be", "test@gmail.be", "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+				+"dvgffggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg" +
+				"ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" +
+				"fin", 4.5, 2, 6250, 58, 28, 9.65, 7.2569, 20.5);
 		setTitle(this.currentRest.getName());
 		
 		//Image
@@ -77,7 +79,7 @@ public class RestaurantActivity extends Activity
 		
 		//rating bar
 		ratingBar = (RatingBar) findViewById(R.id.ratingRest);
-		ratingBar.setRating(currentRest.getRating());
+		ratingBar.setRating((float) currentRest.getRating());
 		ratingBar.setIsIndicator(true);
 		ratingBar.setOnTouchListener(new View.OnTouchListener() {
 			@Override
@@ -154,7 +156,7 @@ public class RestaurantActivity extends Activity
 		// TODO Auto-generated method stub
 		ImageView img = new ImageView(context);
 		img.setImageResource(R.drawable.ic_launcher);
-		listImg.addView(img);
+		//listImg.addView(img);
 	}
 
 	private void setLocalisation()
@@ -229,7 +231,7 @@ public class RestaurantActivity extends Activity
 			public void onClick(View v) {
 				currentRest.rateRestaurant(toRateBar.getRating(), dbh);
 				hasRated = true;
-				ratingBar.setRating(currentRest.getRating());
+				ratingBar.setRating((float) currentRest.getRating());
 				dialog.cancel();
 			}
 		});
