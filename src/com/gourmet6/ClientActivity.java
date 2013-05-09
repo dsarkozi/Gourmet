@@ -57,6 +57,20 @@ public class ClientActivity extends Activity {
 				startActivity(preferences);
          	}
         });
+        
+        Button btn3;
+        //récupération du bouton des préférences
+        btn3 = (Button)findViewById(R.id.cpd);
+        //écouteur sur le clic du bouton
+        btn3.setOnClickListener(new View.OnClickListener() {
+        	@Override
+        	public void onClick(View v) {
+
+        		Intent newPersData = new Intent(ClientActivity.this, NewPersDataActivity.class);
+        		newPersData.putExtra("from", true);
+				startActivity(newPersData);
+         	}
+        });
 
 		
 	}
