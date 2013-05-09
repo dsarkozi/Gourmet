@@ -2,7 +2,6 @@ package com.gourmet6;
 
 import java.util.ArrayList;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,15 +113,6 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 				});
 			
 			}
-			convertView.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					Intent display = new Intent(context, DishDisplayActivity.class);
-					display.putExtra("the_dish", currentdish.getName());
-					context.startActivity(display);
-				}
-			});
 		
 			return convertView;
 		}

@@ -9,8 +9,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="30dp"
-        android:textSize="14sp"
-        android:text="@string/udish" />
+        android:layout_marginLeft="40dp"
+        android:textSize="18sp"
+        android:text="@string/udish"
+        android:textStyle="bold" />
 
 </RelativeLayout>
