@@ -475,6 +475,9 @@ public class Restaurant {
 	
 	public boolean checkOrder(Order order)
 	{
+		if(order.getOrderDishes() == null)
+			return true;
+		
 		for (Dish dish : order.getOrderDishes())
 		{
 			if (dish.getQuantity()>dish.getInventory()) 

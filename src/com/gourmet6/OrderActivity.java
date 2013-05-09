@@ -47,6 +47,9 @@ public class OrderActivity extends Activity {
 		g = (Gourmet)getApplication();
 		current = g.getRest();
 		cli = g.getClient();
+		if(cli == null){
+			cli = new Client("fuckyou","moron","666"); //TODO To remove
+		}
 		
 		Bundle extra = getIntent().getExtras();
 		this.fromRestaurant = extra.getBoolean("from");
@@ -56,12 +59,11 @@ public class OrderActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO check order
-				
+				// TODO check order				
 				current = dishad.getCurrentRest();
-				//Order odd = cli.createOrder(current.getName());
-				//odd.setOrderDishes(ordered());
-				//g.setOrder(odd);
+				Order odd = cli.createOrder(current.getName());
+				odd.setOrderDishes(ordered());
+				g.setOrder(odd);
 				
 				if(fromRestaurant){
 					AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
