@@ -1,7 +1,6 @@
 package com.gourmet6;
 
 import java.util.ArrayList;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,10 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ExpandableListView.OnChildClickListener;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
@@ -26,7 +23,8 @@ import android.os.Build;
 public class OrderActivity extends Activity {
 	
 	private Gourmet g;
-	private Restaurant current = null;
+	private Restaurant current;
+	private Client cli;
 	private boolean fromRestaurant = false;
 	private ExpandableListView dishes;
 	private DishMenuAdapter dishad;
@@ -48,6 +46,7 @@ public class OrderActivity extends Activity {
 		
 		g = (Gourmet)getApplication();
 		current = g.getRest();
+		cli = g.getClient();
 		
 		Bundle extra = getIntent().getExtras();
 		this.fromRestaurant = extra.getBoolean("from");
@@ -58,6 +57,11 @@ public class OrderActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO check order
+				current = dishad.getCurrentRest();
+				Order odd = cli.createOrder(current.getName());
+				odd.setOrderDishes(ordered());
+				g.setOrder(odd);
+				
 				if(fromRestaurant){
 					AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
 					builder.setTitle(R.string.activity_reservation_title);
@@ -77,6 +81,11 @@ public class OrderActivity extends Activity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO quit
+							if(current.checkOrder(g.getOrder())){
+								Toast.makeText(OrderActivity.this,"Your Order was validated, you can come get it very soon", Toast.LENGTH_LONG) .show();
+							}else{
+								Toast.makeText(OrderActivity.this,"Your Order can't be made, we are out of some dishes you asked.\n We apologize", Toast.LENGTH_LONG) .show();
+							}
 							
 						}
 					});
@@ -92,21 +101,6 @@ public class OrderActivity extends Activity {
 		dishes = (ExpandableListView) findViewById(R.id.dish_menu);
 		dishad = new DishMenuAdapter(this,current,listdish, true);
 		dishes.setAdapter(dishad);
-		dishes.setOnChildClickListener(new OnChildClickListener() {
-			
-			@Override
-			public boolean onChildClick(ExpandableListView parent, View v,int groupPosition, int childPosition, long id) {
-				
-				TextView txt = (TextView)v.findViewById(R.id.dishname);
-				
-				if(dishad.isChildSelectable(groupPosition, childPosition)){
-					Intent display = new Intent(OrderActivity.this, DishDisplayActivity.class);
-					display.putExtra("the_dish", txt.getText().toString());
-					startActivity(display);
-				}
-				return true;
-			}
-		});
 		
 		Spinner sort = (Spinner) findViewById(R.id.spinner1);
 		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, filters);
@@ -175,6 +169,13 @@ public class OrderActivity extends Activity {
 		}
 		
 		return res;
+	}
+	
+	@Override
+	public void onBackPressed() {
+		
+		current.Orderreboot();
+		super.onBackPressed();
 	}
 
 	/**

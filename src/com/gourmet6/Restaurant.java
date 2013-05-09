@@ -529,12 +529,13 @@ public class Restaurant {
 
 	public void Orderreboot()
 	{
+		if(this.listDishes == null)
+			return;
+		
 		for(Dish d : this.listDishes)
 		{
 			d.setQuantity(0);
 		}
-		
-		//TODO listDishes = null ?
 	}
 	
 	/**********************
@@ -702,6 +703,15 @@ public class Restaurant {
 		res = res+"_";
 		System.out.println(res);
 		return res;
+	}
+	
+	public void setDish(Dish d){
+		int index = this.listDishes.indexOf(getDish(d.getName()));
+		if(index == -1)
+			return;
+		
+		this.listDishes.remove(index);
+		this.listDishes.add(index,d);
 	}
 
 

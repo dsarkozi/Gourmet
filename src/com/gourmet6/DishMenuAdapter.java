@@ -35,6 +35,10 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 	{
 		this.forWork = list;
 	}
+	
+	public Restaurant getCurrentRest(){
+		return this.current;
+	}
 
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
@@ -85,7 +89,7 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 			return convertView;
 		}
 		else{
-			currentdish = current.getDish(sgrp.getTitle(), forWork);
+			currentdish = current.getDish(sgrp.getTitle());
 		
 			if(convertView == null){
 				dholder = new DishViewHolder();
@@ -110,13 +114,19 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 			dholder.name.setTextSize(14);
 			dholder.name.setText(currentdish.getName());
 			dholder.price.setText(String.format("%.2f", currentdish.getPrice()) + " \u20ac");
-			dholder.count.setText(String.valueOf(currentdish.getInventory()) + " pcs");
+			if(currentdish.getQuantity() == 0){
+				dholder.count.setText(currentdish.getInventory() + " pcs");
+			}else{
+				dholder.count.setText(currentdish.getQuantity());
+			}
 		
 			if(fromOrder){
 				dholder.plus.setVisibility(View.VISIBLE);
 				dholder.plus.setClickable(true);
+				dholder.plus.setFocusable(false);
 				dholder.minus.setVisibility(View.VISIBLE);
 				dholder.minus.setClickable(true);
+				dholder.minus.setFocusable(false);
 			
 		
 				dholder.plus.setOnClickListener(new OnClickListener() {
@@ -125,8 +135,9 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 					public void onClick(View v) {
 						if(currentdish.getQuantity() < currentdish.getInventory())
 						{
-							currentdish.setQuantity(currentdish.getQuantity() + 1 );
+							currentdish.incrementQuantity();
 							dholder.count.setText(currentdish.getQuantity());
+							current.setDish(currentdish);
 						}
 					}
 				});
@@ -137,8 +148,9 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 					public void onClick(View v) {
 						if(currentdish.getQuantity() > 0)
 						{
-							currentdish.setQuantity(currentdish.getQuantity() - 1 );
+							currentdish.decrementQuantity();
 							dholder.count.setText(currentdish.getQuantity());
+							current.setDish(currentdish);
 						}
 					}
 				});
@@ -202,6 +214,8 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
+		if(fromOrder)
+			return false;
 		
 		SubGroupe sgrp = (SubGroupe) getChild(groupPosition, childPosition);
 		return (sgrp.getWhat() == false);
