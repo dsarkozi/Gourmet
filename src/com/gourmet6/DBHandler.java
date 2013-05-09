@@ -143,7 +143,6 @@ public class DBHandler {
 	private static final String CHAIN = "chainName";
 	private static final String CLIENT = "cliName";
 	private static final String DATETIME = "datetime";
-	//private static final String DAY = "day";
 	private static final String DAY_END = "dayEnd";
 	private static final String DAY_START = "dayStart";
 	private static final String DESCRIPTION = "description";
@@ -170,19 +169,7 @@ public class DBHandler {
     private static final String TYPE = "type";
     private static final String VOTES = "votes";
     private static final String ZIP = "zip";
-    
-    /* helps managing the timetables given a certain day */
-    static public HashMap<String,Integer> weekMap = new HashMap<String,Integer>(7);
-    static {
-    	weekMap.put("dimanche", 0);
-    	weekMap.put("lundi", 1);
-    	weekMap.put("mardi", 2);
-    	weekMap.put("mercredi", 3);
-    	weekMap.put("jeudi", 4);
-    	weekMap.put("vendredi", 5);
-    	weekMap.put("samedi", 6);
-    }
-    
+  
 	protected SQLiteDatabase db;
 	protected DBHelper dbHelper;
 	
@@ -323,7 +310,7 @@ public class DBHandler {
 				TOWN,TEL,RATING,VOTES,SEATS,AVAIL}, RES+"='"+name+"'", null, null, null, null);
 		if (c.getCount() > 1)
 		{
-			System.err.println("Error : two or more retaurants seem to have the same name.");
+			Log.e("DBHandler","Error : two or more retaurants seem to have the same name.");
 		}
 		c.moveToFirst();
 		String chain = c.getString(c.getColumnIndex(CHAIN));
@@ -540,6 +527,32 @@ public class DBHandler {
 		}
 
 		return rowId;
+	}
+	
+	/**
+	 * Gets a client based on his mail in the DB.
+	 * @param mail the client's mail
+	 * @return a Client containing all the information found in the DB
+	 * @throws SQLiteException if the DB cannot be accessed for reading
+	 */
+	public Client getClient(String mail) throws SQLiteException
+	{
+		this.openRead();
+		Cursor c;
+		
+		// table client
+		c = this.db.query(TABLE_CLIENT, new String[]{CLIENT, TEL}, MAIL+"='"+mail+"'", null, null, null, null);
+		if (c.getCount() > 1)
+		{
+			Log.e("DBHandler","Error : two or more clients seem to have the same mail.");
+		}
+		c.moveToFirst();
+		String name = c.getString(c.getColumnIndex(CLIENT));
+		String tel = c.getString(c.getColumnIndex(TEL));
+		Client retour = new Client(mail, name, tel);
+		
+		this.close();
+		return retour;
 	}
 	
 	/**
