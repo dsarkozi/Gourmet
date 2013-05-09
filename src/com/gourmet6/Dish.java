@@ -98,6 +98,7 @@ public class Dish {
 	{
 		ArrayList<String> filters = getAllergensForFilter(dishes);
 		filters.addAll(getTypesAndSubtypesForFilters(dishes));
+		filters.add(0, "All");
 		
 		return filters;
 	}
