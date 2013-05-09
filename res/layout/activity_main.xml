@@ -8,36 +8,4 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="14dp"
-        android:orientation="vertical"
-        tools:ignore="UselessParent" >
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/start"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <Button
-            android:id="@+id/yes_button_connection"
-            style="@style/AppBaseTheme"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/yesButton"
-            android:onClick="login" />
-
-        <Button
-            android:id="@+id/no_button_connection"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/noButton" />
-
-    </LinearLayout>
-
 </RelativeLayout>

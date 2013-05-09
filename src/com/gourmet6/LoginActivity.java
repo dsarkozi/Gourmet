@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -33,6 +34,7 @@ public class LoginActivity extends Activity
 	{ "foo@example.com:hello", "bar@example.com:world" };
 
 	private DBHandler db;
+	private Gourmet g;
 	/**
 	 * The default email to populate the email field with.
 	 */
@@ -62,12 +64,13 @@ public class LoginActivity extends Activity
 	private EditText mLoginRegisterPhone;
 	private Button mLoginSignIn;
 	private Button mLoginRegister;
+	private Button mLoginGuest;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-
+		g = (Gourmet) getApplicationContext();
 		setContentView(R.layout.activity_login);
 		setupActionBar();
 
@@ -103,18 +106,20 @@ public class LoginActivity extends Activity
 		mLoginRegisterPhone = (EditText) findViewById(R.id.login_phone);
 		mLoginSignIn = (Button) findViewById(R.id.sign_in_button);
 		mLoginRegister = (Button) findViewById(R.id.register_button);
+		mLoginGuest = (Button) findViewById(R.id.guest_button);
 		
 
-		findViewById(R.id.sign_in_button).setOnClickListener(
+		mLoginSignIn.setOnClickListener(
 				new View.OnClickListener()
 				{
 					@Override
 					public void onClick(View view)
 					{
 						attemptLogin();
+						setResult(RESULT_OK);
 					}
 				});
-		findViewById(R.id.register_button).setOnClickListener(
+		mLoginRegister.setOnClickListener(
 				new View.OnClickListener()
 				{
 					
@@ -130,9 +135,20 @@ public class LoginActivity extends Activity
 						else
 						{
 							attemptRegister();
+							setResult(RESULT_OK);
 						}
 					}
 				});
+		mLoginGuest.setOnClickListener(new View.OnClickListener()
+		{
+			
+			@Override
+			public void onClick(View v)
+			{
+				setResult(RESULT_OK, new Intent());
+				finish();
+			}
+		});
 	}
 
 	/**

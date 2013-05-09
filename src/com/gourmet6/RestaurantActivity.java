@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -59,6 +60,7 @@ public class RestaurantActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_restaurant);
+		MainGourmet.isDone = false;
 		overridePendingTransition(0, R.anim.commetuveux);
 		// Show the Up button in the action bar.
 		setupActionBar();
@@ -320,5 +322,12 @@ public class RestaurantActivity extends Activity
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
+	
+	@Override
+	public void onBackPressed()
+	{
+		MainGourmet.showResto = true;
+		super.onBackPressed();
+	}
+	
 }
