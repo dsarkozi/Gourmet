@@ -243,8 +243,8 @@ public class MenuAdapter extends BaseExpandableListAdapter{
 				convertView = inflater.inflate(R.layout.dish_list_element, null);
 				
 				dholder.name = (TextView) convertView.findViewById(R.id.dishname);
-				dholder.price = (TextView) convertView.findViewById(R.id.textView1);
-				dholder.count = (TextView) convertView.findViewById(R.id.textView2);
+				dholder.price = (TextView) convertView.findViewById(R.id.price);
+				dholder.count = (TextView) convertView.findViewById(R.id.count);
 				dholder.plus = (Button) convertView.findViewById(R.id.plus);
 				dholder.minus = (Button) convertView.findViewById(R.id.minus);		
 			}
