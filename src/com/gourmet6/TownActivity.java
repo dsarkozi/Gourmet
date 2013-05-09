@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 public class TownActivity extends ListActivity
 {
-
+	private static final String TITLE = "Town list";
 	private DBHandler dbHand;
 	private String[] towns;
 
@@ -29,6 +29,7 @@ public class TownActivity extends ListActivity
 		dbHand = new DBHandler(this);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		setTitle(TITLE);
 	}
 
 	@Override

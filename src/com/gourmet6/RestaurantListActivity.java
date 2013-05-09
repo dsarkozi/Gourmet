@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 public class RestaurantListActivity extends ListActivity
 {
-
+	private static final String TITLE = "Restaurant list";
 	private DBHandler dbHand;
 	private ArrayList<String> restaurants;
 	private ArrayList<String> resNames;
@@ -33,6 +33,7 @@ public class RestaurantListActivity extends ListActivity
 		// Show the Up button in the action bar.
 		setupActionBar();
 		resNames = new ArrayList<String>();
+		setTitle(TITLE);
 	}
 
 	@Override
