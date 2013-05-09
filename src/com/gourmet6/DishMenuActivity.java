@@ -95,7 +95,6 @@ public class DishMenuActivity extends Activity {
 					
 				}
 				else if(str == "Price"){
-					
 					updateLists(current.sortDishesPrice(listdish));
 					dishes.setAdapter(new DishMenuAdapter(DishMenuActivity.this,current,listdish, false));
 				}

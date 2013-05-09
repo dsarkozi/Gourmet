@@ -423,11 +423,13 @@ public class Restaurant {
 		for (Dish d : dishes)
 		{
 			ArrayList<String> allergens  = d.getAllergens();
-			for (String al : allergens)
-			{
-				if (!(filters.contains(al)))
+			if(allergens != null){
+				for (String al : allergens)
 				{
-					filters.add(al);
+					if (!(filters.contains(al)))
+					{
+						filters.add(al);
+					}
 				}
 			}
 		}
