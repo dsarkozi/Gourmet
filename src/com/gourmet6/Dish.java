@@ -49,8 +49,39 @@ public class Dish {
 	 */
 	public boolean hasAllergen(String allergen)
 	{
-		//TODO watch if empty...
-		return this.allergens.contains(allergen);
+		if (this.allergens != null)
+		{
+			return this.allergens.contains(allergen);
+		}
+
+		return false;
+	}
+	
+	public static ArrayList<String> getFilters(ArrayList<Dish> dishes)
+	{
+		ArrayList<String> filters = new ArrayList<String>();
+		String element;
+		
+		for (Dish d : dishes)
+		{
+			if (!filters.contains(element = d.getType()))
+			{
+				filters.add(element);
+			}
+			if (!filters.contains(element = d.getSubtype()))
+			{
+				filters.add(element);
+			}
+			for (String al : d.getAllergens())
+			{
+				if (!filters.contains(element = al))
+				{
+					filters.add(al);
+				}
+			}
+		}
+		
+		return filters;
 	}
 	
 	/**********************
