@@ -95,6 +95,14 @@
             android:numStars="5"
             android:rating="0.0" />
 
+        <TextView
+            android:id="@+id/tvInfoRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center_vertical|center_horizontal"
+            android:layout_weight="1"
+            android:textIsSelectable="true" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

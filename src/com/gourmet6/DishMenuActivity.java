@@ -49,6 +49,14 @@ public class DishMenuActivity extends Activity {
 		
 		//Reaction du bouton de commande
 		Button order = (Button) findViewById(R.id.button1);
+		//TODO to put back
+		/*
+		if(g.getClient() == null){
+			order.setEnabled(false);
+		}else{
+			order.setEnabled(true);
+		}
+		*/
 		order.setOnClickListener(new View.OnClickListener() {
 					
 			@Override

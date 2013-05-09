@@ -5,10 +5,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class DishMenuAdapter extends BaseExpandableListAdapter{
 	
@@ -34,6 +34,10 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 	public void setList(ArrayList<Dish> list)
 	{
 		this.forWork = list;
+	}
+	
+	public Restaurant getCurrentRest(){
+		return this.current;
 	}
 
 	@Override
@@ -85,7 +89,7 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 			return convertView;
 		}
 		else{
-			currentdish = current.getDish(sgrp.getTitle(), forWork);
+			currentdish = current.getDish(sgrp.getTitle());
 		
 			if(convertView == null){
 				dholder = new DishViewHolder();
@@ -110,35 +114,47 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 			dholder.name.setTextSize(14);
 			dholder.name.setText(currentdish.getName());
 			dholder.price.setText(String.format("%.2f", currentdish.getPrice()) + " \u20ac");
-			dholder.count.setText(String.valueOf(currentdish.getInventory()) + " pcs");
+			
+			if(currentdish.getQuantity() == 0){
+				dholder.count.setText(currentdish.getInventory() + " pcs");
+			}else{
+				dholder.count.setText(currentdish.getQuantity());
+			}
 		
 			if(fromOrder){
 				dholder.plus.setVisibility(View.VISIBLE);
 				dholder.plus.setClickable(true);
 				dholder.minus.setVisibility(View.VISIBLE);
-				dholder.minus.setClickable(true);
-			
+				dholder.minus.setClickable(true);		
 		
-				dholder.plus.setOnClickListener(new OnClickListener() {
+				dholder.plus.setOnClickListener(new Button.OnClickListener() {
 			
 					@Override
 					public void onClick(View v) {
 						if(currentdish.getQuantity() < currentdish.getInventory())
 						{
-							currentdish.setQuantity(currentdish.getQuantity() + 1 );
+							Toast.makeText(context,"I'm working. Fuck you. HAHA!", Toast.LENGTH_LONG) .show();
+							
+							currentdish.incrementQuantity();
 							dholder.count.setText(currentdish.getQuantity());
+							current.setDish(currentdish);
+							
 						}
 					}
 				});
 		
-				dholder.plus.setOnClickListener(new OnClickListener() {
+				dholder.plus.setOnClickListener(new Button.OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
 						if(currentdish.getQuantity() > 0)
 						{
-							currentdish.setQuantity(currentdish.getQuantity() - 1 );
+							Toast.makeText(context,"I'm working. Fuck you. HAHA!", Toast.LENGTH_LONG) .show();
+							
+							currentdish.decrementQuantity();
 							dholder.count.setText(currentdish.getQuantity());
+							current.setDish(currentdish);
+							
 						}
 					}
 				});
@@ -199,9 +215,11 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 		
 		return true;
 	}
-
+	
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
+		if(fromOrder)
+			return false;
 		
 		SubGroupe sgrp = (SubGroupe) getChild(groupPosition, childPosition);
 		return (sgrp.getWhat() == false);

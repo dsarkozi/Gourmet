@@ -2,8 +2,6 @@ package com.gourmet6;
 
 import java.util.ArrayList;
 
-import android.R.string;
-
 /**
  * A class representing a dish and its properties. 
  * 
@@ -57,6 +55,13 @@ public class Dish {
 		}
 
 		return false;
+	}
+	
+	public void incrementQuantity(){
+		this.quantity += 1;
+	}
+	public void decrementQuantity(){
+		this.quantity -= 1;
 	}
 	
 	/**********************

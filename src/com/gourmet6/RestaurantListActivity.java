@@ -22,6 +22,7 @@ public class RestaurantListActivity extends ListActivity
 
 	private DBHandler dbHand;
 	private ArrayList<String> restaurants;
+	private ArrayList<String> resNames;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -31,6 +32,7 @@ public class RestaurantListActivity extends ListActivity
 		dbHand = new DBHandler(this);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		resNames = new ArrayList<String>();
 	}
 
 	@Override
@@ -47,9 +49,14 @@ public class RestaurantListActivity extends ListActivity
 		{
 			ExceptionHandler.caughtException(this, e);
 		}
+		for (String resto : restaurants)
+		{
+			String[] restos = resto.split("_");
+			resNames.add(restos[0]);
+		}
 		ListAdapter adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, 
-				restaurants);
+				resNames);
 		setListAdapter(adapter);
 	}
 
@@ -59,7 +66,16 @@ public class RestaurantListActivity extends ListActivity
 		super.onListItemClick(l, v, position, id);
 		TextView selection = (TextView)v;
 		Intent returnIntent = new Intent();
-		returnIntent.putExtra("selection", selection.getText().toString());
+		String resName = selection.getText().toString();
+		for (String name : restaurants)
+		{
+			if (name.contains(resName))
+			{
+				resName = name;
+				break;
+			}
+		}
+		returnIntent.putExtra("selection", resName);
 		setResult(RESULT_OK, returnIntent);
 		finish();
 	}

@@ -463,7 +463,7 @@ public class Restaurant {
 	 */
 	public void rateRestaurant(double vote, DBHandler dbh)
 	{
-		System.out.println(rating);
+		System.out.println(rating+", et nbrPrsHasVoted="+nbrPrsHasVoted);
 		this.rating *= this.nbrPrsHasVoted;
 		this.nbrPrsHasVoted++;
 		this.rating += vote;
@@ -475,6 +475,9 @@ public class Restaurant {
 	
 	public boolean checkOrder(Order order)
 	{
+		if(order.getOrderDishes() == null)
+			return true;
+		
 		for (Dish dish : order.getOrderDishes())
 		{
 			if (dish.getQuantity()>dish.getInventory()) 
@@ -529,12 +532,13 @@ public class Restaurant {
 
 	public void Orderreboot()
 	{
+		if(this.listDishes == null)
+			return;
+		
 		for(Dish d : this.listDishes)
 		{
 			d.setQuantity(0);
 		}
-		
-		//TODO listDishes = null ?
 	}
 	
 	/**********************
@@ -702,6 +706,15 @@ public class Restaurant {
 		res = res+"_";
 		System.out.println(res);
 		return res;
+	}
+	
+	public void setDish(Dish d){
+		int index = this.listDishes.indexOf(getDish(d.getName()));
+		if(index == -1)
+			return;
+		
+		this.listDishes.remove(index);
+		this.listDishes.add(index,d);
 	}
 
 
