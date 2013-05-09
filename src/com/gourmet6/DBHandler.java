@@ -316,21 +316,21 @@ public class DBHandler {
 		c.moveToFirst();
 		String chain = c.getString(c.getColumnIndex(CHAIN));
 		String description = c.getString(c.getColumnIndex(DESCRIPTION));
-		float latitude = c.getFloat(c.getColumnIndex(LAT));
-		float longitude = c.getFloat(c.getColumnIndex(LONG));
+		double latitude = c.getDouble(c.getColumnIndex(LAT));
+		double longitude = c.getDouble(c.getColumnIndex(LONG));
 		String address = c.getString(c.getColumnIndex(STREET));
-		short zip = c.getShort(c.getColumnIndex(ZIP));
+		short zip = (short) c.getInt(c.getColumnIndex(ZIP));
 		String town = c.getString(c.getColumnIndex(TOWN));
 		String tel = c.getString(c.getColumnIndex(TEL));
 		String mail = c.getString(c.getColumnIndex(MAIL));
 		String web = c.getString(c.getColumnIndex(WEB));
-		float rating = c.getFloat(c.getColumnIndex(RATING));
+		double rating = c.getDouble(c.getColumnIndex(RATING));
 		int votes = c.getInt(c.getColumnIndex(VOTES));
 		short seats = (short) c.getInt(c.getColumnIndex(SEATS));
 		short availableSeats = (short) c.getInt(c.getColumnIndex(AVAIL));
 		
 		// information on the price category
-		float priceCat = getResPriceCat(name);
+		double priceCat = getResPriceCat(name);
 		
 		// creates the Restaurant object to be returned
 		Restaurant retour = new Restaurant(name, chain, address, town, tel, web, mail, description, rating, votes,
@@ -967,16 +967,16 @@ public class DBHandler {
 	 * @param resName the restaurant's name
 	 * @return the price category
 	 */
-	private float getResPriceCat(String resName)
+	private double getResPriceCat(String resName)
 	{
 		Cursor c = this.db.rawQuery("SELECT avg(price) as ? FROM ? d, ? r WHERE d.?=r.? AND r.?='?'",
 				new String[]{PRICE_CAT,TABLE_DISH,TABLE_RESTAURANT,RES,RES,RES,resName});
 		if (c.getCount() > 1)
 		{
-			System.err.println("Error : two or more restaurants seem to have the same name.");
+			Log.e("DBHandler","Error : two or more restaurants seem to have the same name.");
 		}
 		c.moveToFirst();
-		float priceCat = c.getFloat(c.getColumnIndex(PRICE_CAT));
+		double priceCat = c.getDouble(c.getColumnIndex(PRICE_CAT));
 		
 		return priceCat;
 	}
