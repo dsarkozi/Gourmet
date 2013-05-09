@@ -143,7 +143,7 @@ public class MainGourmet extends Activity
 				break;
 			case RESTO_LIST:
 				Gourmet gourmet = (Gourmet)getApplication();
-				gourmet.setRest(makeRestaurant(data.getStringExtra("selection")));
+				gourmet.setRest(dbHand.getRestaurant(data.getStringExtra("selection")));
 				startActivity(new Intent(this, RestaurantActivity.class));
 				break;
 			default:
@@ -185,11 +185,5 @@ public class MainGourmet extends Activity
 			}
 		});
 		*/
-	}
-
-	// pas dans Restaurant, mais dans DBHandler
-	public Restaurant makeRestaurant(String restaurant)
-	{
-		return new Restaurant(restaurant);
 	}
 }
