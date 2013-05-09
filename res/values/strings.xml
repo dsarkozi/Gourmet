@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Gourmet</string>
-    <string name="action_settings">Settings</string>
+    <string name="viewProfile">View profile</string>
     <string name="start">Do you want to log in ?</string>
     <string name="createAccount">Sign up</string>
     <string name="yesButton">Yes</string>
