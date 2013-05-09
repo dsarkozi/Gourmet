@@ -17,6 +17,9 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 	private Restaurant current;
 	private ArrayList<Groupe> list;
 	private boolean fromOrder = false;
+	private SubGroupe sgrp;
+	private DishViewHolder dholder;
+	private Dish currentdish;
 	
 	public DishMenuAdapter (Context c, Restaurant current, boolean fromOrder){
 		this.context = c;
@@ -40,7 +43,7 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 	public View getChildView(int groupPosition, int childPosition,boolean isLastChild, View convertView, ViewGroup parent) {
 		
 		
-		final SubGroupe sgrp = (SubGroupe) getChild(groupPosition, childPosition);
+	    sgrp = (SubGroupe) getChild(groupPosition, childPosition);
 		boolean nat = sgrp.getWhat();
 		
 		if(nat){
@@ -49,17 +52,20 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 				gholder = new GroupeViewHolder();
 				convertView = inflater.inflate(R.layout.child_layout, null);
 				gholder.type = (TextView) convertView.findViewById(R.id.child);
+				convertView.setTag(gholder);
 			}
 			else{
 				gholder = (GroupeViewHolder) convertView.getTag();
 			}
 			
-			gholder.type.setText(sgrp.getTitle());	
+			String subtype = sgrp.getTitle();
+			if(subtype != null)
+				gholder.type.setText(subtype);	
+			
 			return convertView;
 		}
 		else{
-			final DishViewHolder dholder;
-			final Dish currentdish = current.getDish(sgrp.getTitle());
+			currentdish = current.getDish(sgrp.getTitle());
 		
 			if(convertView == null){
 				dholder = new DishViewHolder();
@@ -69,7 +75,9 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 				dholder.price = (TextView) convertView.findViewById(R.id.price);
 				dholder.count = (TextView) convertView.findViewById(R.id.count);
 				dholder.plus = (Button) convertView.findViewById(R.id.plus);
-				dholder.minus = (Button) convertView.findViewById(R.id.minus);		
+				dholder.minus = (Button) convertView.findViewById(R.id.minus);
+				
+				convertView.setTag(dholder);
 			}
 			else{
 				dholder = (DishViewHolder) convertView.getTag();
@@ -172,7 +180,8 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		
-		return true;
+		SubGroupe sgrp = (SubGroupe) getChild(groupPosition, childPosition);
+		return (sgrp.getWhat() == false);
 	}
 	
 	private class GroupeViewHolder{
