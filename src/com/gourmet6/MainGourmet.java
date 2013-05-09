@@ -4,6 +4,7 @@ import java.lang.Thread.UncaughtExceptionHandler;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteException;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.AndroidRuntimeException;
@@ -143,7 +144,14 @@ public class MainGourmet extends Activity
 				break;
 			case RESTO_LIST:
 				Gourmet gourmet = (Gourmet)getApplication();
-				gourmet.setRest(dbHand.getRestaurant(data.getStringExtra("selection")));
+				try
+				{
+					gourmet.setRest(dbHand.getRestaurant(data.getStringExtra("selection")));
+				}
+				catch (SQLiteException e)
+				{
+					ExceptionHandler.caughtException(this, e);
+				}
 				startActivity(new Intent(this, RestaurantActivity.class));
 				break;
 			default:
