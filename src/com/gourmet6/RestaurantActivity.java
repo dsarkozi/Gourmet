@@ -175,7 +175,7 @@ public class RestaurantActivity extends Activity
 		String nameImg = Restaurant.getNameImg(currentRest.getName());
 		ImageView img;
 		//System.out.println(getResources().getIdentifier("quick.png", "drawable", getPackageName())==R.drawable.quick);
-		for(int i=1; i<7; i++)
+		for(int i=0; i<currentRest.getNbrImage(); i++)
 		{
 			img = new ImageView(context);
 			img.setImageResource(getResources().getIdentifier(nameImg+i, "drawable", getPackageName()));
