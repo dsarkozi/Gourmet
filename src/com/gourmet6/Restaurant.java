@@ -463,7 +463,7 @@ public class Restaurant {
 	 */
 	public void rateRestaurant(double vote, DBHandler dbh)
 	{
-		System.out.println(rating);
+		System.out.println(rating+", et nbrPrsHasVoted="+nbrPrsHasVoted);
 		this.rating *= this.nbrPrsHasVoted;
 		this.nbrPrsHasVoted++;
 		this.rating += vote;

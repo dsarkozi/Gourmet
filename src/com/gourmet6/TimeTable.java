@@ -125,7 +125,7 @@ public class TimeTable
 	
 	public String parseInString()
 	{
-		return this.getJourDebut()+" "+this.getJourFin()+" : "+parseHorairInString(this.getOpenTime())+" à "
+		return this.getJourDebut()+"-"+this.getJourFin()+" : "+parseHorairInString(this.getOpenTime())+"-"
 				+parseHorairInString(this.getClosingTime());
 	}
 	

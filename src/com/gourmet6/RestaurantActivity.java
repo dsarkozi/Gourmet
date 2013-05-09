@@ -45,6 +45,7 @@ public class RestaurantActivity extends Activity
 	private TextView tvWeb;
 	private TextView tvCatPrice;
 	private TextView tvSeats;
+	private TextView tvInfoRate;
 	
 	private Button order;
 	private Button reserve;
@@ -85,7 +86,6 @@ public class RestaurantActivity extends Activity
 		
 		//rating bar
 		ratingBar = (RatingBar) findViewById(R.id.ratingRest);
-		ratingBar.setRating((float) currentRest.getRating());
 		ratingBar.setIsIndicator(true);
 		ratingBar.setOnTouchListener(new View.OnTouchListener() {
 			@Override
@@ -108,6 +108,9 @@ public class RestaurantActivity extends Activity
 		});
 		
 		//TextView
+		tvInfoRate = (TextView) findViewById(R.id.tvInfoRate);
+		actualizeInfoRate();
+		
 		description = (TextView) findViewById(R.id.descriptionRest);
 		description.setText(currentRest.getDescription());
 		description.setOnClickListener(new View.OnClickListener() {
@@ -184,6 +187,13 @@ public class RestaurantActivity extends Activity
 		}
 	}
 	
+	private void actualizeInfoRate()
+	{
+		ratingBar.setRating((float) currentRest.getRating());
+		tvInfoRate.setText(Math.floor(currentRest.getRating()*100.0)/100+"/5 by "
+				+currentRest.getNbrPrsHasVoted()+" people");
+	}
+
 	public void checkSizeDesc()
 	{
 		LayoutParams params = description.getLayoutParams();
@@ -267,7 +277,7 @@ public class RestaurantActivity extends Activity
 		}
 	}
 	
-	public void createDialogToRate()
+	private void createDialogToRate()
 	{
 		dialog = new Dialog(context);
 		dialog.setContentView(R.layout.rating_dialog);
@@ -293,7 +303,7 @@ public class RestaurantActivity extends Activity
 			public void onClick(View v) {
 				currentRest.rateRestaurant(toRateBar.getRating(), dbh);
 				hasRated = true;
-				ratingBar.setRating((float) currentRest.getRating());
+				actualizeInfoRate();
 				dialog.dismiss();
 			}
 		});
