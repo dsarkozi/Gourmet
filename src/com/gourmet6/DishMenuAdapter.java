@@ -128,31 +128,35 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 			
 					@Override
 					public void onClick(View v) {
-						//if(currentdish.getQuantity() < currentdish.getInventory())
-						//{
-							Toast.makeText(context,"I'm working. Fuck you. HAHA!", Toast.LENGTH_LONG) .show();
+						if((currentdish.getQuantity()) < (currentdish.getInventory()))
+						{
+							Toast.makeText(context,"I'm working", Toast.LENGTH_SHORT) .show();
 							
-							//currentdish.incrementQuantity();
-							//dholder.count.setText(currentdish.getQuantity());
-							//current.setDish(currentdish);
+							currentdish.incrementQuantity();
+							dholder.count.setText(currentdish.getQuantity()+" pcs");
+							current.setDish(currentdish);
 							
-						//}
+						}else{
+							Toast.makeText(context,"Fuck you. HAHA!", Toast.LENGTH_SHORT) .show();
+						}
 					}
 				});
 		
-				dholder.plus.setOnClickListener(new Button.OnClickListener() {
+				dholder.minus.setOnClickListener(new Button.OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
-						//if(currentdish.getQuantity() > 0)
-						//{
-							Toast.makeText(context,"I'm working. Fuck you. HAHA!", Toast.LENGTH_LONG) .show();
+						if((currentdish.getQuantity()) > 0)
+						{
+							Toast.makeText(context,"I'm working.", Toast.LENGTH_SHORT) .show();
 							
-							//currentdish.decrementQuantity();
-							//dholder.count.setText(currentdish.getQuantity());
-							//current.setDish(currentdish);
+							currentdish.decrementQuantity();
+							dholder.count.setText(currentdish.getQuantity()+" pcs");
+							current.setDish(currentdish);
 							
-						//}
+						}else{
+							Toast.makeText(context,"Fuck you. HAHA!", Toast.LENGTH_SHORT) .show();
+						}
 					}
 				});
 			

@@ -58,10 +58,10 @@ public class Dish {
 	}
 	
 	public void incrementQuantity(){
-		this.quantity += 1;
+		this.quantity++;
 	}
 	public void decrementQuantity(){
-		this.quantity -= 1;
+		this.quantity--;
 	}
 	
 	/**********************
