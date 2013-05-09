@@ -275,7 +275,7 @@ public class DBHandler {
 		
 		if (town != null)
 		{
-			c = this.db.query(TABLE_RESTAURANT, new String[] {RES,CHAIN}, TOWN+"=?", new String[] {town}, null, null, RES);
+			c = this.db.query(TABLE_RESTAURANT, new String[] {RES}, TOWN+"=?", new String[] {town}, null, null, RES);
 		}
 		else
 		{
@@ -285,12 +285,9 @@ public class DBHandler {
 		ArrayList<String> restaurants = new ArrayList<String>(length);
 		while (c.moveToNext())
 		{
-			if (c.getString(c.getColumnIndex(CHAIN)) != null)
-				restaurants.add((c.getString(c.getColumnIndex(CHAIN))+"*"+c.getString(c.getColumnIndex(RES))));
-			else
-				restaurants.add(c.getString(c.getColumnIndex(RES)));
+			restaurants.add(c.getString(c.getColumnIndex(RES)));
 		}
-		
+
 		this.close();
 		return restaurants;
 	}
