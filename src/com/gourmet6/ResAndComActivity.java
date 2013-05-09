@@ -16,7 +16,7 @@ import android.widget.TextView;
 public class ResAndComActivity extends Activity {
 
 	private DBHandler dbHand;
-	private Gourmet g = (Gourmet)getApplication();
+	private Gourmet g ;
 	private Client currentCli;
 	private ExpandableListView expandableList = null;
 	private ArrayList<Reservation> myRes = new ArrayList<Reservation>();
@@ -26,6 +26,8 @@ public class ResAndComActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_res_and_com);
 		dbHand = new DBHandler(this);
+		
+		g = (Gourmet)getApplication();
 		
 		currentCli = g.getClient();
 		myRes = dbHand.getClientReservations(currentCli.getEmail());
