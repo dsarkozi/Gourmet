@@ -40,6 +40,11 @@ public class RestaurantActivity extends Activity
 	private TextView horaire;
 	private TextView localisation;
 	private TextView tvRate;
+	private TextView tvTel;
+	private TextView tvMail;
+	private TextView tvWeb;
+	private TextView tvCatPrice;
+	private TextView tvSeats;
 	
 	private Button order;
 	private Button reserve;
@@ -118,6 +123,27 @@ public class RestaurantActivity extends Activity
 		localisation = (TextView) findViewById(R.id.localisationRest);
 		setLocalisation();
 		
+		if(currentRest.getTel()!=null){
+			tvTel = (TextView) findViewById(R.id.tvTelRest);
+			tvTel.setText(currentRest.getTel());
+		}
+		if(currentRest.getMail()!=null){
+			tvMail = (TextView) findViewById(R.id.tvMailRest);
+			tvMail.setText(currentRest.getMail());
+		}
+		if(currentRest.getWeb()!=null){
+			tvWeb = (TextView) findViewById(R.id.tvWebRest);
+			tvWeb.setText(currentRest.getWeb());
+		}
+		if(currentRest.getPriceCat()!=0){
+			tvCatPrice = (TextView) findViewById(R.id.tvPriceCat);
+			tvCatPrice.setText(Math.floor(currentRest.getPriceCat()*100.0)/100+"");
+		}
+		if(currentRest.getSeats()!=0){
+			tvSeats = (TextView) findViewById(R.id.tvPlaceRest);
+			tvSeats.setText(currentRest.getSeats()+"");
+		}
+		
 		//Button
 		//Reaction du bouton de commande
 		order = (Button) findViewById(R.id.commandeInRest);
@@ -171,10 +197,8 @@ public class RestaurantActivity extends Activity
 	
 	private void addImage()
 	{
-		// TODO Auto-generated method stub
 		String nameImg = Restaurant.getNameImg(currentRest.getName());
 		ImageView img;
-		//System.out.println(getResources().getIdentifier("quick.png", "drawable", getPackageName())==R.drawable.quick);
 		for(int i=0; i<currentRest.getNbrImage(); i++)
 		{
 			img = new ImageView(context);
@@ -188,7 +212,7 @@ public class RestaurantActivity extends Activity
 	{
 		String res = "";
 		if(currentRest.getAdress()!=null){
-			res = res+currentRest.getAdress()+", ";
+			res = res+currentRest.getAdress()+"\n";
 		}
 		if(currentRest.getZip()!=0){
 			res = res+currentRest.getZip()+" ";
@@ -203,23 +227,29 @@ public class RestaurantActivity extends Activity
 
 	private void setHorair()
 	{
-		// TODO A la ligne ?
-		System.out.println("Hey");
 		String s=""; String oldStartDay=null; String oldEndDay = null;
-		System.out.println(currentRest.getSemaine());
 		if(currentRest.getSemaine()==null) return;
 		for(TimeTable tt : currentRest.getSemaine())
 		{
-			System.out.println("kikoo");
 			if(tt.getJourDebut().equals(tt.getJourFin()))
 			{
 				if(oldStartDay==null && oldEndDay==null)
 				{
 					s = s+tt.parseInString()+"\n";
+					oldStartDay = tt.getJourDebut();
+					oldEndDay = tt.getJourFin();
+				}
+				else
+				{
+					
 				}
 			}
+			else
+			{
+				s = s+tt.parseInString()+"\n";
+			}
 		}
-		horaire.setText(s);
+		if(s.length()!=0)horaire.setText(s);
 	}
 
 	/**
