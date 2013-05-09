@@ -46,21 +46,21 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 	    sgrp = (SubGroupe) getChild(groupPosition, childPosition);
 		boolean nat = sgrp.getWhat();
 		
-		if(nat){
-			GroupeViewHolder gholder;
+		if(nat){			
 			if(convertView == null){
-				gholder = new GroupeViewHolder();
+				dholder = new DishViewHolder();
 				convertView = inflater.inflate(R.layout.child_layout, null);
-				gholder.type = (TextView) convertView.findViewById(R.id.child);
-				convertView.setTag(gholder);
+				dholder.name = (TextView) convertView.findViewById(R.id.child);
+				
+				convertView.setTag(dholder);
 			}
 			else{
-				gholder = (GroupeViewHolder) convertView.getTag();
+				dholder = (DishViewHolder) convertView.getTag();
 			}
 			
 			String subtype = sgrp.getTitle();
 			if(subtype != null)
-				gholder.type.setText(subtype);	
+				dholder.name.setText(subtype);	
 			
 			return convertView;
 		}
@@ -84,7 +84,7 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 			}
 		
 			dholder.name.setText(currentdish.getName());
-			dholder.price.setText(String.valueOf(currentdish.getPrice()));
+			dholder.price.setText(String.valueOf(currentdish.getPrice()) + "euro");
 			dholder.count.setText("Stock:"+String.valueOf(currentdish.getInventory()));
 		
 			if(fromOrder){
@@ -259,6 +259,7 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 				res.add(new SubGroupe(d.getName(), false));
 			}
 		}
+		
 		
 		return res;
 	}
