@@ -2,10 +2,10 @@
 <resources>
     
     <string name="menuButton">Menu</string>
-    <string name="reservButton">Réserver</string>
-    <string name="commandButton">Commander</string>
-    <string name="descstring">Description unknow</string>
-    <string name="locstring">Localisation unknow</string>
-    <string name="num_peop_rat">Localisation unknow</string>
+    <string name="reservButton">Book</string>
+    <string name="commandButton">Order</string>
+    <string name="descstring">Description unknown</string>
+    <string name="locstring">Localisation unknown</string>
+    <string name="num_peop_rat">Localisation unknown</string>
     
 </resources>
