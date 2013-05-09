@@ -49,14 +49,27 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 		if(nat){			
 			if(convertView == null){
 				dholder = new DishViewHolder();
-				convertView = inflater.inflate(R.layout.child_layout, null);
-				dholder.name = (TextView) convertView.findViewById(R.id.child);
+				convertView = inflater.inflate(R.layout.dish_list_element, null);
+				dholder.name = (TextView) convertView.findViewById(R.id.dishname);
+				dholder.price = (TextView) convertView.findViewById(R.id.price);
+				dholder.count = (TextView) convertView.findViewById(R.id.count);
+				dholder.plus = (Button) convertView.findViewById(R.id.plus);
+				dholder.minus = (Button) convertView.findViewById(R.id.minus);
 				
 				convertView.setTag(dholder);
 			}
 			else{
 				dholder = (DishViewHolder) convertView.getTag();
 			}
+			
+			dholder.price.setVisibility(View.GONE);
+			dholder.count.setVisibility(View.GONE);
+			dholder.name.setTextSize(18);
+			
+			dholder.plus.setVisibility(View.GONE);
+			dholder.plus.setClickable(false);
+			dholder.minus.setVisibility(View.GONE);
+			dholder.minus.setClickable(false);
 			
 			String subtype = sgrp.getTitle();
 			if(subtype != null)
@@ -65,6 +78,7 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 			return convertView;
 		}
 		else{
+			
 			currentdish = current.getDish(sgrp.getTitle());
 		
 			if(convertView == null){
@@ -82,7 +96,12 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 			else{
 				dholder = (DishViewHolder) convertView.getTag();
 			}
-		
+			
+			dholder.price.setVisibility(View.VISIBLE);
+			dholder.count.setVisibility(View.VISIBLE);
+			dholder.plus.setVisibility(View.INVISIBLE);
+			dholder.minus.setVisibility(View.INVISIBLE);
+			dholder.name.setTextSize(14);
 			dholder.name.setText(currentdish.getName());
 			dholder.price.setText(String.valueOf(currentdish.getPrice()) + "euro");
 			dholder.count.setText("Stock:"+String.valueOf(currentdish.getInventory()));

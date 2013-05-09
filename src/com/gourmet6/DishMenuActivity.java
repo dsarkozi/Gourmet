@@ -43,8 +43,6 @@ public class DishMenuActivity extends Activity {
 		});	
 		
 		ExpandableListView dishes = (ExpandableListView) findViewById(R.id.dish_menu);
-		//dishes.setAdapter(new TestExpendable(this, current.getListDishes()));
-		//dishes.setAdapter(new MenuAdapter(this, current, false));
 		dishes.setAdapter(new DishMenuAdapter(this, current, false));
 
 		
