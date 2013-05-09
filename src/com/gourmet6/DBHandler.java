@@ -969,8 +969,8 @@ public class DBHandler {
 	 */
 	private double getResPriceCat(String resName)
 	{
-		Cursor c = this.db.rawQuery("SELECT avg(price) as ? FROM ? d, ? r WHERE d.?=r.? AND r.?='?'",
-				new String[]{PRICE_CAT,TABLE_DISH,TABLE_RESTAURANT,RES,RES,RES,resName});
+		Cursor c = this.db.rawQuery("SELECT avg(price) as PRICE_CAT FROM dish d, restaurant r " +
+				"WHERE d.resName=r.resName AND r.resName='"+resName+"'", null);
 		if (c.getCount() > 1)
 		{
 			Log.e("DBHandler","Error : two or more restaurants seem to have the same name.");
