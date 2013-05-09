@@ -127,12 +127,12 @@ public class TimeTable
 	{
 		if(this.getJourDebut().equals(this.getClosingTime()))
 		{
-			return this.getJourDebut()+" : "+parseHorairInString(this.getOpenTime())+"-"
+			return this.getJourDebut()+" :  "+parseHorairInString(this.getOpenTime())+" - "
 					+parseHorairInString(this.getClosingTime());
 		}
 		else
 		{
-			return this.getJourDebut()+"-"+this.getJourFin()+" : "+parseHorairInString(this.getOpenTime())+"-"
+			return this.getJourDebut()+" - "+this.getJourFin()+" :  "+parseHorairInString(this.getOpenTime())+" - "
 					+parseHorairInString(this.getClosingTime());
 		}
 	}

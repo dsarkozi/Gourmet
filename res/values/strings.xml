@@ -18,7 +18,7 @@
     <string name="title_activity_client">ClientActivity</string>
     <string name="title_activity_res_and_com">ResAndComActivity</string>
     <string name="title_activity_pref">PrefActivity</string>
-    <string name="okButton">Ok</string>
+    <string name="okButton">OK</string>
     <string name="cancelButton">Cancel</string>
     <string name="title_activity_new_pers_data">NewPersDataActivity</string>
     <string name="timetableUnknown">Timetable unknown</string>
@@ -28,5 +28,8 @@
     <string name="catPrice">Average price :</string>
     <string name="restPlace">Available seats :</string>
     <string name="unkown">Unknown</string>
+    <string name="action_settings">settings</string>
+    <string name="timeTable">Opening hours :</string>
+    <string name="contact">Contacts :</string>
     
 </resources>
