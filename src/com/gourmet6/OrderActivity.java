@@ -57,10 +57,11 @@ public class OrderActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO check order
+				
 				current = dishad.getCurrentRest();
-				Order odd = cli.createOrder(current.getName());
-				odd.setOrderDishes(ordered());
-				g.setOrder(odd);
+				//Order odd = cli.createOrder(current.getName());
+				//odd.setOrderDishes(ordered());
+				//g.setOrder(odd);
 				
 				if(fromRestaurant){
 					AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
@@ -72,6 +73,7 @@ public class OrderActivity extends Activity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							Intent resv = new Intent(OrderActivity.this,ReservationActivity.class);
+							resv.putExtra("fromOrder", true);
 							startActivity(resv);
 						}
 					});

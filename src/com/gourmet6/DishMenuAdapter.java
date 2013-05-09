@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class DishMenuAdapter extends BaseExpandableListAdapter{
 	
@@ -132,9 +133,12 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 					public void onClick(View v) {
 						if(currentdish.getQuantity() < currentdish.getInventory())
 						{
+							Toast.makeText(context,"I'm working. Fuck you. HAHA!", Toast.LENGTH_LONG) .show();
+							
 							currentdish.incrementQuantity();
 							dholder.count.setText(currentdish.getQuantity());
 							current.setDish(currentdish);
+							
 						}
 					}
 				});
@@ -145,9 +149,12 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 					public void onClick(View v) {
 						if(currentdish.getQuantity() > 0)
 						{
+							Toast.makeText(context,"I'm working. Fuck you. HAHA!", Toast.LENGTH_LONG) .show();
+							
 							currentdish.decrementQuantity();
 							dholder.count.setText(currentdish.getQuantity());
 							current.setDish(currentdish);
+							
 						}
 					}
 				});
@@ -208,7 +215,7 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 		
 		return true;
 	}
-
+	
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		if(fromOrder)

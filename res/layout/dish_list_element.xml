@@ -20,10 +20,10 @@
         android:layout_alignBaseline="@+id/minus"
         android:layout_alignBottom="@+id/minus"
         android:layout_toLeftOf="@+id/count"
-        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:text="@string/plus_button"
-        android:textSize="12sp"
-        android:visibility="invisible" />
+        android:textSize="12sp" />
 
     <Button
         android:id="@+id/minus"
@@ -32,10 +32,10 @@
         android:layout_height="30dp"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/dishname"
-        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:text="@string/minus_button"
-        android:textSize="12sp"
-        android:visibility="invisible" />
+        android:textSize="12sp"/>
 
     <TextView
         android:id="@+id/dishname"

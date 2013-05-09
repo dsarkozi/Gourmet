@@ -42,6 +42,7 @@ public class ReservationActivity extends Activity {
 	private Context context;
 	
 	private Restaurant current;
+	private boolean from = false;
 	
 	private DBHandler dbh;
 	
@@ -55,6 +56,9 @@ public class ReservationActivity extends Activity {
 		g = (Gourmet)getApplication();
 		context = this;
 		dbh = new DBHandler(context);
+		
+		Bundle extra = getIntent().getExtras();
+		this.from = extra.getBoolean("fromOrder");
 		
 		final Calendar c = Calendar.getInstance();
 		c.setTimeZone(TimeZone.getDefault());
@@ -119,6 +123,11 @@ public class ReservationActivity extends Activity {
 		
 		//Reaction du bouton de commande
 		Button order = (Button) findViewById(R.id.comInReserv);
+		if(from){
+			order.setEnabled(false);
+		}else{
+			order.setEnabled(true);
+		}
 		order.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

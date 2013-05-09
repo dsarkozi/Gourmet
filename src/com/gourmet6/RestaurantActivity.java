@@ -166,6 +166,7 @@ public class RestaurantActivity extends Activity
 			@Override
 			public void onClick(View v) {
 				Intent reserv = new Intent(RestaurantActivity.this, ReservationActivity.class);
+				reserv.putExtra("from", false);
 				startActivity(reserv);
 			}
 		});
