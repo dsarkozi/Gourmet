@@ -111,6 +111,7 @@ public class RestaurantActivity extends Activity implements RatingBar.OnRatingBa
 		menu.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				currentRest.createListDishes(new DBHandler(RestaurantActivity.this));
 				Intent dishes = new Intent(RestaurantActivity.this, DishMenuActivity.class);
 				startActivity(dishes);
 			}
