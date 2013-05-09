@@ -574,13 +574,15 @@ public class DBHandler {
 		int count = c.getCount();
 		if (count == 1)
 		{
+			c.moveToFirst();
+			String dbPassword = c.getString(c.getColumnIndex(PASSWORD));
 			this.close();
-			return (password.equals(c.getString(1)));
+			return (password.equals(dbPassword));
 			
 		}
 		else if (count > 1)
 		{
-			System.err.println("Error : two or more clients seem to have the same mail.");
+			Log.e("DBHandler", "Error : two or more clients seem to have the same mail.");
 		} 
 		else if (count == 0)
 		{
@@ -588,7 +590,7 @@ public class DBHandler {
 		} 
 		else 
 		{
-			System.err.println("Error : the access to the DB must have failed.");
+			Log.e("DBHandler", "Error : the access to the DB must have failed.");
 		}
 		
 		this.close();

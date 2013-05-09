@@ -2,6 +2,8 @@ package com.gourmet6;
 
 import java.util.ArrayList;
 
+import android.R.string;
+
 /**
  * A class representing a dish and its properties. 
  * 
@@ -49,8 +51,12 @@ public class Dish {
 	 */
 	public boolean hasAllergen(String allergen)
 	{
-		//TODO watch if empty...
-		return this.allergens.contains(allergen);
+		if (this.allergens != null)
+		{
+			return this.allergens.contains(allergen);
+		}
+
+		return false;
 	}
 	
 	/**********************

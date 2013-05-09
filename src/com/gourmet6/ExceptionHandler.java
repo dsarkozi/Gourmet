@@ -15,6 +15,7 @@ public class ExceptionHandler
 	{
 		Log.e("MainGourmet", Log.getStackTraceString(exception), exception);
 		showDialog(context, true, exception.getMessage());
+		kill();
 	}
 	
 	public static void showDialog(Context context, boolean isCaught, String message)
@@ -23,7 +24,8 @@ public class ExceptionHandler
 		if (isCaught) builder.setTitle(R.string.caught_exception);
 		else builder.setTitle(R.string.uncaught_exception);
 		builder.setMessage(message + "\n" + "Please see the LogCat for more informations.");
-		builder.setPositiveButton(android.R.string.ok, new OnClickListener()
+		builder.setPositiveButton(android.R.string.ok,
+				new DialogInterface.OnClickListener()
 		{
 			
 			@Override

@@ -41,7 +41,7 @@
             android:orientation="vertical" >
 
             <EditText
-                android:id="@+id/email"
+                android:id="@+id/login_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_email"
@@ -50,7 +50,7 @@
                 android:singleLine="true" />
 
             <EditText
-                android:id="@+id/password"
+                android:id="@+id/login_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_password"
@@ -60,7 +60,47 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true" />
-
+            
+            <EditText
+                android:id="@+id/login_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_confirm"
+                android:imeActionId="@+id/login"
+                android:imeActionLabel="@string/action_sign_in_short"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:visibility="gone" />
+            
+            <LinearLayout
+                style="@style/LoginFormContainer"
+                android:id="@+id/login_register"
+                android:orientation="vertical"
+                android:padding="0dp"
+                android:visibility="gone" >
+                
+            	<EditText
+	               android:id="@+id/login_name"
+	               android:layout_width="match_parent"
+	               android:layout_height="wrap_content"
+	               android:hint="@string/prompt_name"
+	               android:inputType="textPersonName"
+	               android:maxLines="1"
+	               android:singleLine="true" />
+            
+	            <EditText
+	                android:id="@+id/login_phone"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:hint="@string/prompt_phone"
+	                android:inputType="phone"
+	                android:maxLines="1"
+	                android:singleLine="true" />
+                
+            </LinearLayout>
+            
             <LinearLayout
                 style="@style/LoginFormContainer"
                 android:orientation="horizontal"
@@ -72,7 +112,15 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="@dimen/buttonPaddingLeft"
                     android:paddingRight="@dimen/buttonPaddingRight"
-                    android:text="@string/action_sign_in_register"
+                    android:text="@string/action_sign_in"
+                    android:textStyle="bold" />
+                <Button
+                    android:id="@+id/register_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/buttonPaddingLeft"
+                    android:paddingRight="@dimen/buttonPaddingRight"
+                    android:text="@string/action_register"
                     android:textStyle="bold" />
 
 

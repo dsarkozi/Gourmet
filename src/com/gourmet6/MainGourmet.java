@@ -151,6 +151,7 @@ public class MainGourmet extends Activity
 				catch (SQLiteException e)
 				{
 					ExceptionHandler.caughtException(this, e);
+					ExceptionHandler.kill();
 				}
 				startActivity(new Intent(this, RestaurantActivity.class));
 				break;
