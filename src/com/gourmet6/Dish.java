@@ -59,50 +59,6 @@ public class Dish {
 		return false;
 	}
 	
-	public static ArrayList<String> getTypesAndSubtypesForFilters(ArrayList<Dish> dishes)
-	{
-		ArrayList<String> filters = new ArrayList<String>();
-		String element;
-		for (Dish d : dishes)
-		{
-			if (!(filters.contains(element = d.getType())))
-			{
-				filters.add(element);
-			}
-			if (!(filters.contains(element = d.getSubtype())))
-			{
-				filters.add(element);
-			}
-		}
-		return filters;
-	}
-	
-	public static ArrayList<String> getAllergensForFilter(ArrayList<Dish> dishes)
-	{
-		ArrayList<String> filters = new ArrayList<String>();
-		for (Dish d : dishes)
-		{
-			ArrayList<String> allergens  = d.getAllergens();
-			for (String al : allergens)
-			{
-				if (!(filters.contains(al)))
-				{
-					filters.add(al);
-				}
-			}
-		}
-		return filters;
-	}
-	
-	public static ArrayList<String> getFilters(ArrayList<Dish> dishes)
-	{
-		ArrayList<String> filters = getAllergensForFilter(dishes);
-		filters.addAll(getTypesAndSubtypesForFilters(dishes));
-		filters.add(0, "All");
-		
-		return filters;
-	}
-	
 	/**********************
 	 * Getters and setters
 	 **********************/

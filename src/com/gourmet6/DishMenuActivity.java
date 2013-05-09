@@ -11,16 +11,27 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class DishMenuActivity extends Activity {
 	
 	private Gourmet g;
 	private Restaurant current  = null;
+	private ExpandableListView dishes;
+	private DishMenuAdapter dishad;
+	private ArrayList<String> types;
 	private ArrayList<String> subtypes;
+	private ArrayList<String> allergens;
+	private ArrayList<String> filters;
+	private ArrayList<Dish> listdish;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,16 +51,15 @@ public class DishMenuActivity extends Activity {
 					
 			@Override
 			public void onClick(View v) {
-				//TODO 
 				Intent commande = new Intent(DishMenuActivity.this, OrderActivity.class);
 				commande.putExtra("from", true);
 				startActivity(commande);			
 			}
-		});	
+		});
 		
-		ExpandableListView dishes = (ExpandableListView) findViewById(R.id.dish_menu);
-		dishes.setAdapter(new DishMenuAdapter(this,current.getListDishes(), false));
-		subtypes = current.getDishesSubtypes();
+		dishes = (ExpandableListView) findViewById(R.id.dish_menu);
+		dishad = new DishMenuAdapter(this,current,current.getListDishes(), false);
+		dishes.setAdapter(dishad);
 		dishes.setOnChildClickListener(new OnChildClickListener() {
 			
 			@Override
@@ -57,16 +67,71 @@ public class DishMenuActivity extends Activity {
 				
 				TextView txt = (TextView)v.findViewById(R.id.dishname);
 				
-				String child = txt.getText().toString();
-				if(!(subtypes.contains(child))){
+				if(dishad.isChildSelectable(groupPosition, childPosition)){
 					Intent display = new Intent(DishMenuActivity.this, DishDisplayActivity.class);
-					display.putExtra("the_dish", child);
+					display.putExtra("the_dish", txt.getText().toString());
 					startActivity(display);
 				}
 				return true;
 			}
 		});
 		
+		updateLists(current.getListDishes());
+		
+		Spinner sort = (Spinner) findViewById(R.id.spinner1);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, filters);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		sort.setAdapter(adapter);
+		sort.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				// TODO Auto-generated method stub
+				String str =(String)arg0.getSelectedItem();
+				if(str == "All"){
+					updateLists(current.getListDishes());
+					dishes.setAdapter(new DishMenuAdapter(DishMenuActivity.this,current,listdish, false));
+					
+				}
+				else if(str == "Price"){
+					
+					updateLists(current.sortDishesPrice(listdish));
+					dishes.setAdapter(new DishMenuAdapter(DishMenuActivity.this,current,listdish, false));
+				}
+				else if(types.contains(str)){
+					
+					updateLists(current.filterDishesType(str, listdish));
+					dishes.setAdapter(new DishMenuAdapter(DishMenuActivity.this,current,listdish, false));
+				}
+				else if(subtypes.contains(str)){
+					
+					updateLists(current.filterDishesSubtype(str, listdish));
+					dishes.setAdapter(new DishMenuAdapter(DishMenuActivity.this,current,listdish, false));
+				}
+				else if(allergens.contains(str)){
+					
+					updateLists(current.filterDishesAllergen(str, listdish));
+					dishes.setAdapter(new DishMenuAdapter(DishMenuActivity.this,current,listdish, false));
+				}
+				else{
+					updateLists(current.getListDishes());
+					dishes.setAdapter(new DishMenuAdapter(DishMenuActivity.this,current,listdish, false));
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+			}	
+		});
+	}
+	
+	private void updateLists(ArrayList<Dish> filtered){
+		this.listdish = filtered;
+		this.filters = current.getFilters(filtered);
+		this.types = current.getDishesTypes(filtered);
+		this.subtypes = current.getDishesSubtypes(filtered);
+		this.allergens = current.getAllergensForFilter(filtered);
 	}
 
 	/**
