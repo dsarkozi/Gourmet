@@ -118,6 +118,7 @@ public class RestaurantActivity extends Activity
 		order.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				currentRest.createListDishes(new DBHandler(RestaurantActivity.this));
 				Intent commande = new Intent(RestaurantActivity.this, OrderActivity.class);
 				commande.putExtra("from", true);
 				startActivity(commande);

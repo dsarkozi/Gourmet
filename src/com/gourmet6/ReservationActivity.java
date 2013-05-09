@@ -41,6 +41,8 @@ public class ReservationActivity extends Activity {
 	
 	private Context context;
 	
+	private Restaurant current;
+	
 	private DBHandler dbh;
 	
 	@Override
@@ -122,6 +124,8 @@ public class ReservationActivity extends Activity {
 			public void onClick(View v) {
 				//TODO create the reservation object
 				if(checkReservation()){
+					current = g.getRest();
+					current.createListDishes(new DBHandler(ReservationActivity.this));
 					Intent commande = new Intent(ReservationActivity.this, OrderActivity.class);
 					commande.putExtra("from", false);
 					startActivity(commande);
