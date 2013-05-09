@@ -168,6 +168,7 @@ public class DBHandler {
     private static final String TOWN = "town";
     private static final String TYPE = "type";
     private static final String VOTES = "votes";
+    private static final String WEB = "web";
     private static final String ZIP = "zip";
   
 	protected SQLiteDatabase db;
@@ -307,7 +308,7 @@ public class DBHandler {
 		
 		// information held by the restaurant table
 		c = this.db.query(TABLE_RESTAURANT, new String[]{CHAIN,DESCRIPTION,LAT,LONG,STREET,ZIP,
-				TOWN,TEL,RATING,VOTES,SEATS,AVAIL}, RES+"='"+name+"'", null, null, null, null);
+				TOWN,TEL,MAIL,WEB,RATING,VOTES,SEATS,AVAIL}, RES+"='"+name+"'", null, null, null, null);
 		if (c.getCount() > 1)
 		{
 			Log.e("DBHandler","Error : two or more retaurants seem to have the same name.");
@@ -321,16 +322,18 @@ public class DBHandler {
 		short zip = c.getShort(c.getColumnIndex(ZIP));
 		String town = c.getString(c.getColumnIndex(TOWN));
 		String tel = c.getString(c.getColumnIndex(TEL));
+		String mail = c.getString(c.getColumnIndex(MAIL));
+		String web = c.getString(c.getColumnIndex(WEB));
 		float rating = c.getFloat(c.getColumnIndex(RATING));
 		int votes = c.getInt(c.getColumnIndex(VOTES));
-		short seats = c.getShort(c.getColumnIndex(SEATS));
-		short availableSeats = c.getShort(c.getColumnIndex(AVAIL));
+		short seats = (short) c.getInt(c.getColumnIndex(SEATS));
+		short availableSeats = (short) c.getInt(c.getColumnIndex(AVAIL));
 		
 		// information on the price category
 		float priceCat = getResPriceCat(name);
 		
 		// creates the Restaurant object to be returned
-		Restaurant retour = new Restaurant(name, chain, address, town, tel, description, rating, votes,
+		Restaurant retour = new Restaurant(name, chain, address, town, tel, web, mail, description, rating, votes,
 				zip, seats, availableSeats, latitude, longitude, priceCat);
 		
 		// cuisine

@@ -36,24 +36,8 @@ public class Restaurant {
 	private ArrayList<Dish> listDishes = null;
 	private ArrayList<TimeTable> semaine;
 	
-	/**
-	 * Constructor.
-	 * @param name
-	 * @param chain
-	 * @param address
-	 * @param town
-	 * @param tel
-	 * @param description
-	 * @param rating
-	 * @param nbrPrsHasVoted
-	 * @param zip
-	 * @param seats
-	 * @param availableSeats
-	 * @param latitude
-	 * @param longitude
-	 * @param priceCat
-	 */
-	public Restaurant(String name, String chain, String address, String town, String tel, 
+
+	public Restaurant(String name, String chain, String address, String town, String tel, String web, String mail,
 			String description, float rating, int nbrPrsHasVoted, short zip, short seats, 
 			short availableSeats, float latitude, float longitude, float priceCat)
 	{
@@ -62,6 +46,8 @@ public class Restaurant {
 		this.address = address;
 		this.town = town;
 		this.tel = tel;
+		this.web = web;
+		this.mail = mail;
 		this.description = description;
 		this.rating = rating;
 		this.nbrPrsHasVoted = nbrPrsHasVoted;
