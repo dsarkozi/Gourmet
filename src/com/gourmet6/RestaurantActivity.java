@@ -46,6 +46,8 @@ public class RestaurantActivity extends Activity
 	
 	private Dialog dialog;
 	
+	private DBHandler dbh;
+	
 	private Context context;
 
 	@Override
@@ -58,6 +60,7 @@ public class RestaurantActivity extends Activity
 		
 		g = (Gourmet)getApplication();
 		context = this;
+		dbh = new DBHandler(context);
 		
 		hasRated = false;
 		
@@ -66,20 +69,15 @@ public class RestaurantActivity extends Activity
 		
 		//Image
 		listImg = (LinearLayout) findViewById(R.id.listImgRest);
-		//TODO
+		//TODO afficher les images
 		
 		//rating bar
 		ratingBar = (RatingBar) findViewById(R.id.ratingRest);
 		ratingBar.setRating(currentRest.getRating());
-		ratingBar.setRating(4);
 		ratingBar.setIsIndicator(true);
-		//TODO viewListener ?
-		//Coter le restaurant
 		ratingBar.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				System.out.println("koko");
 				if(!hasRated)
 				{
 					createDialogToRate();
@@ -108,7 +106,7 @@ public class RestaurantActivity extends Activity
 		});
 		
 		horaire = (TextView) findViewById(R.id.horaireRest);
-		//TODO affichage des villes
+		setHorair();
 		
 		localisation = (TextView) findViewById(R.id.localisationRest);
 		localisation.setText(currentRest.getAdress()+", "+currentRest.getZip()+", "+currentRest.getTown());
@@ -147,6 +145,27 @@ public class RestaurantActivity extends Activity
 		});
 	}
 	
+	private void setHorair()
+	{
+		// TODO A la ligne ?
+		System.out.println("Hey");
+		String s=""; String oldStartDay=null; String oldEndDay = null;
+		System.out.println(currentRest.getSemaine());
+		if(currentRest.getSemaine()==null) return;
+		for(TimeTable tt : currentRest.getSemaine())
+		{
+			System.out.println("kikoo");
+			if(tt.getJourDebut().equals(tt.getJourFin()))
+			{
+				if(oldStartDay==null && oldEndDay==null)
+				{
+					s = s+tt.parseInString()+"\n";
+				}
+			}
+		}
+		horaire.setText(s);
+	}
+
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
 	 */
@@ -181,7 +200,7 @@ public class RestaurantActivity extends Activity
 		okButtonRate.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//TODO currentRest.rateRestaurant(toRateBar.getRating(), );
+				currentRest.rateRestaurant(toRateBar.getRating(), dbh);
 				hasRated = true;
 				ratingBar.setRating(currentRest.getRating());
 				dialog.cancel();

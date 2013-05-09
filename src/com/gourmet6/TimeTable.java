@@ -121,7 +121,31 @@ public class TimeTable
 		}
 
 		return year+month+day+hour+minute;
-	}//
+	}
+	
+	public String parseInString()
+	{
+		return this.getJourDebut()+" "+this.getJourFin()+" : "+parseHorairInString(this.getOpenTime())+" à "
+				+parseHorairInString(this.getClosingTime());
+	}
+	
+	public String parseHorairInString(GregorianCalendar cal)
+	{
+		String hour;
+		if(cal.get(GregorianCalendar.HOUR_OF_DAY)<10){
+			hour = "0"+cal.get(GregorianCalendar.HOUR_OF_DAY)+":";
+		}
+		else{
+			hour = cal.get(GregorianCalendar.HOUR_OF_DAY)+":";
+		} String minute;
+		if(cal.get(GregorianCalendar.MINUTE)<10){
+			minute = "0"+cal.get(GregorianCalendar.MINUTE);
+		}
+		else{
+			minute = cal.get(GregorianCalendar.MINUTE)+"";
+		}
+		return hour+minute;
+	}
 	
 	public boolean isInTimeTable(GregorianCalendar date)
 	{
