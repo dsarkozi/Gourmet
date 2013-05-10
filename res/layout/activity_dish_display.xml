@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,21 +8,19 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".DishDisplayActivity" >
 
-    <TextView
-        android:id="@+id/dishname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textIsSelectable="true" />
+    
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/dishname"
         android:orientation="vertical" >
+        
+        <TextView
+        android:id="@+id/dishname"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textIsSelectable="true" />
 
         <ImageView
             android:id="@+id/dishimage"
@@ -41,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/info"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/info"
@@ -65,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/price"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/price"
@@ -83,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/inventory"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/inventory"
@@ -101,7 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/type"
@@ -119,7 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/subtype"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/subtype"
@@ -137,7 +135,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/allergens"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/allergens"
@@ -147,4 +145,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</RelativeLayout>
+</ScrollView>

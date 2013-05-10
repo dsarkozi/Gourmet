@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="info">About this dish :</string>
-    <string name="price">Price :</string>
-    <string name="inventory">Inventory :</string>
-    <string name="type">Type :</string>
-    <string name="subtype">Subtype :</string>
-    <string name="allergens">Allergens :</string>
+    <string name="info">About this dish : </string>
+    <string name="price">Price : </string>
+    <string name="inventory">Inventory : </string>
+    <string name="type">Type : </string>
+    <string name="subtype">Subtype : </string>
+    <string name="allergens">Allergens : </string>
     
 </resources>
