@@ -120,7 +120,8 @@ public class DishMenuActivity extends Activity {
 				}
 				else if(allergens.contains(str)){
 					
-					updateLists(current.filterDishesAllergen(str, listdish));
+					String[] st = str.split(" ");
+					updateLists(current.filterDishesAllergen(st[1], listdish));
 					dishes.setAdapter(new DishMenuAdapter(DishMenuActivity.this,current,listdish, false));
 				}
 				else{
