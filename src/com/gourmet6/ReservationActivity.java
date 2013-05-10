@@ -86,54 +86,6 @@ public class ReservationActivity extends Activity {
 		
 		nbrPrs = (EditText) findViewById(R.id.nbrPrsReserv);
 		
-		dateTime = (TextView) findViewById(R.id.dateTime);
-		s = year+"-"+month+"-"+day+" "+hour+":"+minute;
-		dateTime.setText(s);
-		dateTime.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				dialog = new Dialog(context);
-				dialog.setContentView(R.layout.datetimedialog);
-				dialog.setTitle("Custom Dialog");
-				
-				final DatePicker dp = (DatePicker) dialog.findViewById(R.id.datePicker1);
-				dp.init(year, month, day, null);
-				
-				final TimePicker tp = (TimePicker) dialog.findViewById(R.id.timePicker1);
-				tp.setIs24HourView(true);
-				tp.setCurrentHour(hour);
-				tp.setCurrentMinute(0);
-				
-				Button ok = (Button) dialog.findViewById(R.id.buttonOkDialog);
-				ok.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						year = dp.getYear();
-						month = dp.getMonth();
-						day = dp.getDayOfMonth();
-						hour = tp.getCurrentHour();
-						minute = tp.getCurrentMinute();
-						
-						GregorianCalendar calendar = new GregorianCalendar(year, month, day, hour, minute);
-						s = TimeTable.parseDateInString(calendar);
-						dateTime.setText(s);
-						
-						dialog.cancel();
-					}
-				});
-				
-				Button cancel = (Button) dialog.findViewById(R.id.buttonCancelDialog);
-				cancel.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						dialog.cancel();
-					}
-				});
-				
-				dialog.show();
-			}
-		});
-		
 		//Reaction du bouton de commande
 		Button order = (Button) findViewById(R.id.comInReserv);
 		if(from){
