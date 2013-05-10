@@ -514,6 +514,7 @@ public class Restaurant {
 				timeTableOk = true;
 				String start = getInString(res.getReservationTime(), -2, 0);
 				String end = getInString(res.getReservationTime(), 4, 0);
+				System.out.println(dbh.getAvailBetweenDateTime(res.getReservationResName(), start, end)+" et "+res.getReservationPeople());
 				if(dbh.getAvailBetweenDateTime(res.getReservationResName(), start, end)<res.getReservationPeople()){
 					return "Not enough place for this date";
 				}
