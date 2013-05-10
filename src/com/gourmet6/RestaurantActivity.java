@@ -76,6 +76,7 @@ public class RestaurantActivity extends Activity
 		hasRated = false;
 		
 		currentRest = g.getRest();
+		System.out.println(currentRest);
 		setTitle(this.currentRest.getName().split("_")[0]);
 		
 		//Image

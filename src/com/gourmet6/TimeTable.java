@@ -157,18 +157,67 @@ public class TimeTable
 	
 	public boolean isInTimeTable(GregorianCalendar date)
 	{
-		int day = date.get(GregorianCalendar.DAY_OF_WEEK);
-		int hour = date.get(GregorianCalendar.HOUR_OF_DAY);
-		int minute = date.get(GregorianCalendar.MINUTE);
+		GregorianCalendar dateDebut = new GregorianCalendar(date.get(GregorianCalendar.YEAR), 
+				date.get(GregorianCalendar.MONTH), date.get(GregorianCalendar.DAY_OF_MONTH), 
+				date.get(GregorianCalendar.HOUR_OF_DAY), date.get(GregorianCalendar.MINUTE));
+		while(weekMap.get(this.getJourDebut()) != dateDebut.get(GregorianCalendar.DAY_OF_WEEK))
+		{
+			dateDebut.set(GregorianCalendar.DAY_OF_WEEK, dateDebut.get(GregorianCalendar.DAY_OF_WEEK)-1);
+		}
+		dateDebut.set(GregorianCalendar.HOUR_OF_DAY, this.getOpenTime().get(GregorianCalendar.HOUR_OF_DAY));
+		dateDebut.set(GregorianCalendar.MINUTE, this.getOpenTime().get(GregorianCalendar.MINUTE));
 		
-		return (Integer)weekMap.get(this.getJourDebut())<=day
-				&& day<=(Integer)weekMap.get(this.getJourFin())
-				&& this.getOpenTime().get(GregorianCalendar.HOUR_OF_DAY)<=hour
-				&& this.getOpenTime().get(GregorianCalendar.MINUTE)<=minute
-				&& hour<=this.getClosingTime().get(GregorianCalendar.HOUR_OF_DAY)
-				&& minute<=this.getClosingTime().get(GregorianCalendar.MINUTE);
+		GregorianCalendar dateFin = new GregorianCalendar(date.get(GregorianCalendar.YEAR), 
+				date.get(GregorianCalendar.MONTH), date.get(GregorianCalendar.DAY_OF_MONTH), 
+				date.get(GregorianCalendar.HOUR_OF_DAY), date.get(GregorianCalendar.MINUTE));
+		while(weekMap.get(this.jourFin) != dateFin.get(GregorianCalendar.DAY_OF_WEEK))
+		{
+			dateFin.set(GregorianCalendar.DAY_OF_WEEK, dateFin.get(GregorianCalendar.DAY_OF_WEEK)-1);
+		}
+		dateFin.set(GregorianCalendar.HOUR_OF_DAY, this.getClosingTime().get(GregorianCalendar.HOUR_OF_DAY));
+		dateFin.set(GregorianCalendar.MINUTE, this.getClosingTime().get(GregorianCalendar.MINUTE));
+		
+		return date.compareTo(dateDebut)>0 && date.compareTo(dateFin)<0 
+				&& checkTime(date);
 	}
-	
+	private boolean checkTime(GregorianCalendar date) {
+		if(this.getOpenTime().get(GregorianCalendar.HOUR_OF_DAY)<date.get(GregorianCalendar.HOUR_OF_DAY)
+				&& date.get(GregorianCalendar.HOUR_OF_DAY)<this.getClosingTime().get(GregorianCalendar.HOUR_OF_DAY))
+		{
+			return true;
+		}
+		else if(this.getOpenTime().get(GregorianCalendar.HOUR_OF_DAY)==date.get(GregorianCalendar.HOUR_OF_DAY)
+				&& date.get(GregorianCalendar.HOUR_OF_DAY)<this.getClosingTime().get(GregorianCalendar.HOUR_OF_DAY))
+		{
+			if(this.getOpenTime().get(GregorianCalendar.MINUTE)<=date.get(GregorianCalendar.MINUTE)){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else if(this.getOpenTime().get(GregorianCalendar.HOUR_OF_DAY)<date.get(GregorianCalendar.HOUR_OF_DAY)
+				&& date.get(GregorianCalendar.HOUR_OF_DAY)==this.getClosingTime().get(GregorianCalendar.HOUR_OF_DAY))
+		{
+			if(date.get(GregorianCalendar.MINUTE)<=this.getClosingTime().get(GregorianCalendar.MINUTE)){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else
+		{
+			if(this.getOpenTime().get(GregorianCalendar.MINUTE)<=date.get(GregorianCalendar.MINUTE)
+					&& date.get(GregorianCalendar.MINUTE)<=this.getClosingTime().get(GregorianCalendar.MINUTE))
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+	}
 	/**********************
 	 * Getters and setters
 	 **********************/
