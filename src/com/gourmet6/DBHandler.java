@@ -224,7 +224,7 @@ public class DBHandler {
 	/**
 	 * Closes the DB.
 	 */
-	public void close()
+	private void close()
 	{
 		this.dbHelper.close();
 		this.read = false; this.write = false;
@@ -247,18 +247,23 @@ public class DBHandler {
 	{
 		this.openRead();
 		Cursor c;
-		
-		c = this.db.query(true, TABLE_RESTAURANT, new String[] {TOWN}, null, null, null, null, TOWN, null);
-		int count = c.getCount();
-		String[] towns = new String[count];
-		int i = 0;
-		while (c.moveToNext())
+		String[] towns;
+		try
 		{
-			towns[i] = c.getString(0);
-			i++;
+			c = this.db.query(true, TABLE_RESTAURANT, new String[] {TOWN}, null, null, null, null, TOWN, null);
+			int count = c.getCount();
+			towns = new String[count];
+			int i = 0;
+			while (c.moveToNext())
+			{
+				towns[i] = c.getString(0);
+				i++;
+			}
 		}
-		
-		this.close();
+		finally
+		{
+			this.close();
+		}
 		return towns;
 	}
 	
@@ -273,23 +278,28 @@ public class DBHandler {
 	{
 		this.openRead();
 		Cursor c;
-		
-		if (town != null)
+		ArrayList<String> restaurants;
+		try
 		{
-			c = this.db.query(TABLE_RESTAURANT, new String[] {RES}, TOWN+"=?", new String[] {town}, null, null, RES);
+			if (town != null)
+			{
+				c = this.db.query(TABLE_RESTAURANT, new String[] {RES}, TOWN+"=?", new String[] {town}, null, null, RES);
+			}
+			else
+			{
+				c = this.db.query(TABLE_RESTAURANT, new String[] {RES}, null, null, null, null, RES);
+			}
+			int length = c.getCount();
+			restaurants = new ArrayList<String>(length);
+			while (c.moveToNext())
+			{
+				restaurants.add(c.getString(c.getColumnIndex(RES)));
+			}
 		}
-		else
+		finally
 		{
-			c = this.db.query(TABLE_RESTAURANT, new String[] {RES}, null, null, null, null, RES);
+			this.close();
 		}
-		int length = c.getCount();
-		ArrayList<String> restaurants = new ArrayList<String>(length);
-		while (c.moveToNext())
-		{
-			restaurants.add(c.getString(c.getColumnIndex(RES)));
-		}
-
-		this.close();
 		return restaurants;
 	}
 	
@@ -303,64 +313,69 @@ public class DBHandler {
 	{
 		this.openRead();
 		Cursor c;
-		
+		Restaurant retour;
+		try
+		{
 		// information held by the restaurant table
-		c = this.db.query(TABLE_RESTAURANT, new String[]{CHAIN,DESCRIPTION,LAT,LONG,STREET,ZIP,
-				TOWN,TEL,MAIL,WEB,RATING,VOTES,SEATS,AVAIL,PICTURES}, RES+"=?", new String[] {name}, null, null, null);
-		if (c.getCount() > 1)
-		{
-			Log.e("DBHandler","Error : two or more retaurants seem to have the same name.");
+			c = this.db.query(TABLE_RESTAURANT, new String[]{CHAIN,DESCRIPTION,LAT,LONG,STREET,ZIP,
+					TOWN,TEL,MAIL,WEB,RATING,VOTES,SEATS,AVAIL,PICTURES}, RES+"=?", new String[] {name}, null, null, null);
+			if (c.getCount() > 1)
+			{
+				Log.e("DBHandler","Error : two or more retaurants seem to have the same name.");
+			}
+			c.moveToFirst();
+			String chain = c.getString(c.getColumnIndex(CHAIN));
+			String description = c.getString(c.getColumnIndex(DESCRIPTION));
+			double latitude = c.getDouble(c.getColumnIndex(LAT));
+			double longitude = c.getDouble(c.getColumnIndex(LONG));
+			String address = c.getString(c.getColumnIndex(STREET));
+			int zip = c.getInt(c.getColumnIndex(ZIP));
+			String town = c.getString(c.getColumnIndex(TOWN));
+			String tel = c.getString(c.getColumnIndex(TEL));
+			String mail = c.getString(c.getColumnIndex(MAIL));
+			String web = c.getString(c.getColumnIndex(WEB));
+			double rating = c.getDouble(c.getColumnIndex(RATING));
+			int votes = c.getInt(c.getColumnIndex(VOTES));
+			int seats = c.getInt(c.getColumnIndex(SEATS));
+			int availableSeats = c.getInt(c.getColumnIndex(AVAIL));
+			int pictures = c.getInt(c.getColumnIndex(PICTURES));
+			
+			// information on the price category
+			double priceCat = getResPriceCat(name);
+			
+			// creates the Restaurant object to be returned
+			retour = new Restaurant(name, chain, address, town, tel, web, mail, description, rating, votes,
+					zip, seats, availableSeats, latitude, longitude, priceCat, pictures);
+			
+			// cuisine
+			c = this.db.query(TABLE_CUISINE, new String [] {TYPE}, RES+"=?", new String[] {name}, null, null, TYPE);
+			ArrayList<String> cuisine = new ArrayList<String>(c.getCount());
+			while(c.moveToNext())
+			{
+				cuisine.add(c.getString(c.getColumnIndex(TYPE)));
+			}
+			retour.setCuisines(cuisine);
+			
+			// timetable
+			c = this.db.query(TABLE_TIMETABLE, new String[] {DAY_START,DAY_END,TIME_OPEN,TIME_CLOSE}, RES+"=?",
+					new String[] {name}, null, null, "CASE "+DAY_START+" WHEN 'lundi' THEN 1 WHEN 'mardi' THEN 12 WHEN 'mercredi' THEN 3 "+
+					"WHEN 'jeudi' THEN 4 WHEN 'vendredi' THEN 5 WHEN  'samedi' THEN 6 WHEN 'dimanche' THEN 7 END, "+TIME_OPEN);
+			ArrayList<TimeTable> timetable = new ArrayList<TimeTable>(c.getCount());
+			while(c.moveToNext())
+			{
+				String dayStart = c.getString(c.getColumnIndex(DAY_START));
+				String dayEnd = c.getString(c.getColumnIndex(DAY_END));
+				String timeOpen = c.getString(c.getColumnIndex(TIME_OPEN));
+				String timeClose = c.getString(c.getColumnIndex(TIME_CLOSE));
+				TimeTable tt = new TimeTable(dayStart, dayEnd, timeOpen, timeClose);
+				timetable.add(tt);
+			}
+			retour.setSemaine(timetable);
 		}
-		c.moveToFirst();
-		String chain = c.getString(c.getColumnIndex(CHAIN));
-		String description = c.getString(c.getColumnIndex(DESCRIPTION));
-		double latitude = c.getDouble(c.getColumnIndex(LAT));
-		double longitude = c.getDouble(c.getColumnIndex(LONG));
-		String address = c.getString(c.getColumnIndex(STREET));
-		int zip = c.getInt(c.getColumnIndex(ZIP));
-		String town = c.getString(c.getColumnIndex(TOWN));
-		String tel = c.getString(c.getColumnIndex(TEL));
-		String mail = c.getString(c.getColumnIndex(MAIL));
-		String web = c.getString(c.getColumnIndex(WEB));
-		double rating = c.getDouble(c.getColumnIndex(RATING));
-		int votes = c.getInt(c.getColumnIndex(VOTES));
-		int seats = c.getInt(c.getColumnIndex(SEATS));
-		int availableSeats = c.getInt(c.getColumnIndex(AVAIL));
-		int pictures = c.getInt(c.getColumnIndex(PICTURES));
-		
-		// information on the price category
-		double priceCat = getResPriceCat(name);
-		
-		// creates the Restaurant object to be returned
-		Restaurant retour = new Restaurant(name, chain, address, town, tel, web, mail, description, rating, votes,
-				zip, seats, availableSeats, latitude, longitude, priceCat, pictures);
-		
-		// cuisine
-		c = this.db.query(TABLE_CUISINE, new String [] {TYPE}, RES+"=?", new String[] {name}, null, null, TYPE);
-		ArrayList<String> cuisine = new ArrayList<String>(c.getCount());
-		while(c.moveToNext())
+		finally
 		{
-			cuisine.add(c.getString(c.getColumnIndex(TYPE)));
+			this.close();
 		}
-		retour.setCuisines(cuisine);
-		
-		// timetable
-		c = this.db.query(TABLE_TIMETABLE, new String[] {DAY_START,DAY_END,TIME_OPEN,TIME_CLOSE}, RES+"=?",
-				new String[] {name}, null, null, "CASE "+DAY_START+" WHEN 'lundi' THEN 1 WHEN 'mardi' THEN 12 WHEN 'mercredi' THEN 3 "+
-				"WHEN 'jeudi' THEN 4 WHEN 'vendredi' THEN 5 WHEN  'samedi' THEN 6 WHEN 'dimanche' THEN 7 END, "+TIME_OPEN);
-		ArrayList<TimeTable> timetable = new ArrayList<TimeTable>(c.getCount());
-		while(c.moveToNext())
-		{
-			String dayStart = c.getString(c.getColumnIndex(DAY_START));
-			String dayEnd = c.getString(c.getColumnIndex(DAY_END));
-			String timeOpen = c.getString(c.getColumnIndex(TIME_OPEN));
-			String timeClose = c.getString(c.getColumnIndex(TIME_CLOSE));
-			TimeTable tt = new TimeTable(dayStart, dayEnd, timeOpen, timeClose);
-			timetable.add(tt);
-		}
-		retour.setSemaine(timetable);
-
-		this.close();
 		return retour;
 	}
 	
@@ -395,15 +410,20 @@ public class DBHandler {
 		ContentValues insertValues = new ContentValues(2);
 		insertValues.put(RATING, rating);
 		insertValues.put(VOTES, votes);
-		this.db.beginTransaction();
-		nrRows = this.db.update(TABLE_RESTAURANT, insertValues, RES+"=?", new String[] {resName});
-		if (nrRows > 0)
+		try
 		{
-			this.db.setTransactionSuccessful();
+			this.db.beginTransaction();
+			nrRows = this.db.update(TABLE_RESTAURANT, insertValues, RES+"=?", new String[] {resName});
+			if (nrRows > 0)
+			{
+				this.db.setTransactionSuccessful();
+			}
+			this.db.endTransaction();
 		}
-		this.db.endTransaction();
-		
-		this.close();
+		finally
+		{
+			this.close();
+		}
 		return nrRows;
 	}
 	
@@ -432,15 +452,20 @@ public class DBHandler {
 
 		ContentValues insertValues = new ContentValues(1);
 		insertValues.put(AVAIL, newAvail);
-		this.db.beginTransaction();
-		nrRows = this.db.update(TABLE_RESTAURANT, insertValues, RES+"=?", new String[] {resName});
-		if (nrRows > 0)
+		try
 		{
-			this.db.setTransactionSuccessful();
+			this.db.beginTransaction();
+			nrRows = this.db.update(TABLE_RESTAURANT, insertValues, RES+"=?", new String[] {resName});
+			if (nrRows > 0)
+			{
+				this.db.setTransactionSuccessful();
+			}
+			this.db.endTransaction();
 		}
-		this.db.endTransaction();
-		
-		this.close();
+		finally
+		{
+			this.close();
+		}
 		return nrRows;
 	}
 
@@ -462,30 +487,35 @@ public class DBHandler {
 	{
 		this.openRead();
 		Cursor c;
-		
-		c = db.query(TABLE_DISH, new String[] {DISH,RES,TYPE,SUBTYPE,DESCRIPTION,INVENTORY,PRICE},
-				RES+"=?", new String[] {resName}, null, null, " CASE "+TYPE+" WHEN 'EntrŽes' THEN 1 WHEN " +
-				"'Plats' THEN 2 WHEN 'Desserts' THEN 3 WHEN 'Boissons' THEN 4 END, "+SUBTYPE);
-		
-		ArrayList<Dish> dishes = new ArrayList<Dish>(c.getCount());
-		while (c.moveToNext())
+		ArrayList<Dish> dishes;
+		try
 		{
-			String dishName = c.getString(c.getColumnIndex(DISH));
-			String type = c.getString(c.getColumnIndex(TYPE));
-			String subtype = c.getString(c.getColumnIndex(SUBTYPE));
-			String description = c.getString(c.getColumnIndex(DESCRIPTION));
-			int inventory = c.getInt(c.getColumnIndex(INVENTORY));
-			float price = c.getFloat(c.getColumnIndex(PRICE));
+			c = db.query(TABLE_DISH, new String[] {DISH,RES,TYPE,SUBTYPE,DESCRIPTION,INVENTORY,PRICE},
+					RES+"=?", new String[] {resName}, null, null, " CASE "+TYPE+" WHEN 'Entrï¿½es' THEN 1 WHEN " +
+					"'Plats' THEN 2 WHEN 'Desserts' THEN 3 WHEN 'Boissons' THEN 4 END, "+SUBTYPE);
 			
-			// the dish's allergens
-			ArrayList<String> allergens = this.searchForAllergens(resName, dishName);
-			
-			// new dish object
-			Dish dish = new Dish(dishName, type, subtype, price, inventory, description, allergens);
-			dishes.add(dish);
+			dishes = new ArrayList<Dish>(c.getCount());
+			while (c.moveToNext())
+			{
+				String dishName = c.getString(c.getColumnIndex(DISH));
+				String type = c.getString(c.getColumnIndex(TYPE));
+				String subtype = c.getString(c.getColumnIndex(SUBTYPE));
+				String description = c.getString(c.getColumnIndex(DESCRIPTION));
+				int inventory = c.getInt(c.getColumnIndex(INVENTORY));
+				float price = c.getFloat(c.getColumnIndex(PRICE));
+				
+				// the dish's allergens
+				ArrayList<String> allergens = this.searchForAllergens(resName, dishName);
+				
+				// new dish object
+				Dish dish = new Dish(dishName, type, subtype, price, inventory, description, allergens);
+				dishes.add(dish);
+			}
 		}
-		
-		this.close();
+		finally
+		{
+			this.close();
+		}
 		return dishes;
 	}
 	
@@ -518,15 +548,20 @@ public class DBHandler {
 		
 		ContentValues updateValues = new ContentValues(1);
 		updateValues.put(INVENTORY, newInvent);
-		this.db.beginTransaction();
-		nrRows = this.db.update(TABLE_DISH, updateValues, RES+"=? AND "+DISH+"=?", new String[] {resName, dishName});
-		if (nrRows > 0)
+		try
 		{
-			this.db.setTransactionSuccessful();
+			this.db.beginTransaction();
+			nrRows = this.db.update(TABLE_DISH, updateValues, RES+"=? AND "+DISH+"=?", new String[] {resName, dishName});
+			if (nrRows > 0)
+			{
+				this.db.setTransactionSuccessful();
+			}
+			db.endTransaction();
 		}
-		db.endTransaction();
-		
-		this.close();
+		finally
+		{
+			this.close();
+		}
 		return nrRows;
 	}
 	
@@ -557,18 +592,23 @@ public class DBHandler {
 		insertValues.put(CLIENT, name);
 		insertValues.put(PASSWORD, password);
 		insertValues.put(TEL, tel);
-		this.db.beginTransaction();
 		try
 		{
-			this.db.insertOrThrow(TABLE_CLIENT, null, insertValues);
-			this.db.setTransactionSuccessful();
+			this.db.beginTransaction();
+			try
+			{
+				this.db.insertOrThrow(TABLE_CLIENT, null, insertValues);
+				this.db.setTransactionSuccessful();
+			}
+			finally
+			{
+				this.db.endTransaction();
+			}
 		}
 		finally
 		{
-			this.db.endTransaction();
 			this.close();
 		}
-		
 		return new Client(mail, name, tel);
 	}
 	
@@ -582,19 +622,24 @@ public class DBHandler {
 	{
 		this.openRead();
 		Cursor c;
-		
-		// table client
-		c = this.db.query(TABLE_CLIENT, new String[]{CLIENT, TEL}, MAIL+"=?", new String[] {mail}, null, null, null);
-		if (c.getCount() > 1)
+		Client retour;
+		try
 		{
-			Log.e("DBHandler","Error : two or more clients seem to have the same mail.");
+			// table client
+			c = this.db.query(TABLE_CLIENT, new String[]{CLIENT, TEL}, MAIL+"=?", new String[] {mail}, null, null, null);
+			if (c.getCount() > 1)
+			{
+				Log.e("DBHandler","Error : two or more clients seem to have the same mail.");
+			}
+			c.moveToFirst();
+			String name = c.getString(c.getColumnIndex(CLIENT));
+			String tel = c.getString(c.getColumnIndex(TEL));
+			retour = new Client(mail, name, tel);
 		}
-		c.moveToFirst();
-		String name = c.getString(c.getColumnIndex(CLIENT));
-		String tel = c.getString(c.getColumnIndex(TEL));
-		Client retour = new Client(mail, name, tel);
-		
-		this.close();
+		finally
+		{
+			this.close();
+		}
 		return retour;
 	}
 	
@@ -609,31 +654,34 @@ public class DBHandler {
 	{
 		this.openRead();
 		Cursor c;
-		
-		c = this.db.query(TABLE_CLIENT, new String[] {PASSWORD}, MAIL+"=?", new String[] {clientMail}, null, null, null);
-		int count = c.getCount();
-		if (count == 1)
+		try
 		{
-			c.moveToFirst();
-			String dbPassword = c.getString(c.getColumnIndex(PASSWORD));
+			c = this.db.query(TABLE_CLIENT, new String[] {PASSWORD}, MAIL+"=?", new String[] {clientMail}, null, null, null);
+			int count = c.getCount();
+			if (count == 1)
+			{
+				c.moveToFirst();
+				String dbPassword = c.getString(c.getColumnIndex(PASSWORD));
+				return (password.equals(dbPassword));
+				
+			}
+			else if (count > 1)
+			{
+				Log.e("DBHandler", "Error : two or more clients seem to have the same mail.");
+			} 
+			else if (count == 0)
+			{
+				// no such client in the DB
+			} 
+			else 
+			{
+				Log.e("DBHandler", "Error : the access to the DB must have failed.");
+			}
+		}
+		finally
+		{
 			this.close();
-			return (password.equals(dbPassword));
-			
 		}
-		else if (count > 1)
-		{
-			Log.e("DBHandler", "Error : two or more clients seem to have the same mail.");
-		} 
-		else if (count == 0)
-		{
-			// no such client in the DB
-		} 
-		else 
-		{
-			Log.e("DBHandler", "Error : the access to the DB must have failed.");
-		}
-		
-		this.close();
 		return false;
 	}
 	
@@ -663,15 +711,20 @@ public class DBHandler {
 		
 		ContentValues insertValues = new ContentValues(1);
 		insertValues.put(MAIL, newMail);
-		this.db.beginTransaction();
-		nrRows = this.db.update(TABLE_CLIENT, insertValues, MAIL+"=?", new String[] {oldMail});
-		if (nrRows > 0)
+		try
 		{
-			this.db.setTransactionSuccessful();
+			this.db.beginTransaction();
+			nrRows = this.db.update(TABLE_CLIENT, insertValues, MAIL+"=?", new String[] {oldMail});
+			if (nrRows > 0)
+			{
+				this.db.setTransactionSuccessful();
+			}
+			db.endTransaction();
 		}
-		db.endTransaction();
-		
-		this.close();
+		finally
+		{
+			this.close();
+		}
 		return nrRows;
 	}
 	
@@ -700,15 +753,20 @@ public class DBHandler {
 
 		ContentValues insertValues = new ContentValues(1);
 		insertValues.put(CLIENT, newName);
-		this.db.beginTransaction();
-		nrRows = this.db.update(TABLE_CLIENT, insertValues, MAIL+"=?", new String[] {mail});
-		if (nrRows > 0)
+		try
 		{
-			this.db.setTransactionSuccessful();
+			this.db.beginTransaction();
+			nrRows = this.db.update(TABLE_CLIENT, insertValues, MAIL+"=?", new String[] {mail});
+			if (nrRows > 0)
+			{
+				this.db.setTransactionSuccessful();
+			}
+			db.endTransaction();
 		}
-		db.endTransaction();
-		
-		this.close();
+		finally
+		{
+			this.close();
+		}
 		return nrRows;
 	}
 	
@@ -737,15 +795,20 @@ public class DBHandler {
 
 		ContentValues insertValues = new ContentValues(1);
 		insertValues.put(PASSWORD, newPassword);
-		this.db.beginTransaction();
-		nrRows = this.db.update(TABLE_CLIENT, insertValues, MAIL+"=?", new String[] {mail});
-		if (nrRows > 0)
+		try
 		{
-			this.db.setTransactionSuccessful();
+			this.db.beginTransaction();
+			nrRows = this.db.update(TABLE_CLIENT, insertValues, MAIL+"=?", new String[] {mail});
+			if (nrRows > 0)
+			{
+				this.db.setTransactionSuccessful();
+			}
+			this.db.endTransaction();
 		}
-		this.db.endTransaction();
-
-		this.close();
+		finally
+		{
+			this.close();
+		}
 		return nrRows;
 	}
 
@@ -770,15 +833,20 @@ public class DBHandler {
 
 		ContentValues insertValues = new ContentValues(1);
 		insertValues.put(TEL, newTel);
-		this.db.beginTransaction();
-		nrRows = db.update(TABLE_CLIENT, insertValues, MAIL+"=?", new String[] {mail});
-		if (nrRows > 0)
+		try
 		{
-			this.db.setTransactionSuccessful();
+			this.db.beginTransaction();
+			nrRows = db.update(TABLE_CLIENT, insertValues, MAIL+"=?", new String[] {mail});
+			if (nrRows > 0)
+			{
+				this.db.setTransactionSuccessful();
+			}
+			this.db.endTransaction();
 		}
-		this.db.endTransaction();
-		
-		this.close();
+		finally
+		{
+			this.close();
+		}
 		return nrRows;
 	}
 	
@@ -800,24 +868,28 @@ public class DBHandler {
 	{
 		this.openRead();
 		Cursor c;
-		
-		// information held by the table order_overview
-		c = this.db.query(TABLE_ORDER_OVERVIEW, new String[] {"_id"}, MAIL+"=?", new String[] {mail}, null, null, null);
-		int count = c.getCount();
-		if (count == 0) {
-			this.close();
-			return null;
-		}
-
-		ArrayList<Order> orders = new ArrayList<Order>(count);
-		while (c.moveToNext())
+		ArrayList<Order> orders;
+		try
 		{
-			int orderNr = c.getInt(c.getColumnIndex("_id"));
-			Order order = getOrder(orderNr);
-			orders.add(order);
+			// information held by the table order_overview
+			c = this.db.query(TABLE_ORDER_OVERVIEW, new String[] {"_id"}, MAIL+"=?", new String[] {mail}, null, null, null);
+			int count = c.getCount();
+			if (count == 0) {
+				return null;
+			}
+	
+			orders = new ArrayList<Order>(count);
+			while (c.moveToNext())
+			{
+				int orderNr = c.getInt(c.getColumnIndex("_id"));
+				Order order = getOrder(orderNr);
+				orders.add(order);
+			}
 		}
-
-		this.close();
+		finally
+		{
+			this.close();
+		}
 		return orders;
 	}
 	
@@ -843,31 +915,35 @@ public class DBHandler {
 		ContentValues insertOverview = new ContentValues(2);
 		insertOverview.put(RES, order.getOrderRestaurant());
 		insertOverview.put(MAIL, order.getOrderEmail());
-		
-		// starts a new transaction
-		this.db.beginTransaction();
 		try
 		{
-			rowIdOverview = this.db.insertOrThrow(TABLE_ORDER_OVERVIEW, null, insertOverview);
-			
-			// table order_detail
-			ContentValues insertDetail = new ContentValues();
-			for (Dish d : order.getOrderDishes())
+			// starts a new transaction
+			this.db.beginTransaction();
+			try
 			{
-				insertDetail.put(DISH, d.getName());
-				insertDetail.put(QUANTITY, d.getQuantity());
-				insertDetail.put(RES, order.getOrderRestaurant());
-				insertDetail.put(ORDER_NR, rowIdOverview);
-				this.db.insertOrThrow(TABLE_ORDER_DETAIL, null, insertDetail);
+				rowIdOverview = this.db.insertOrThrow(TABLE_ORDER_OVERVIEW, null, insertOverview);
+				
+				// table order_detail
+				ContentValues insertDetail = new ContentValues();
+				for (Dish d : order.getOrderDishes())
+				{
+					insertDetail.put(DISH, d.getName());
+					insertDetail.put(QUANTITY, d.getQuantity());
+					insertDetail.put(RES, order.getOrderRestaurant());
+					insertDetail.put(ORDER_NR, rowIdOverview);
+					this.db.insertOrThrow(TABLE_ORDER_DETAIL, null, insertDetail);
+				}
+				this.db.setTransactionSuccessful();
 			}
-			this.db.setTransactionSuccessful();
+			finally
+			{
+				this.db.endTransaction();
+			}
 		}
 		finally
 		{
-			this.db.endTransaction();
 			this.close();
 		}
-		
 		return rowIdOverview;
 	}
 	
@@ -889,40 +965,44 @@ public class DBHandler {
 	{
 		this.openRead();
 		Cursor c;
-		
-		// information held by the client table
-		String client = this.getClientName(mail);
-		
-		// information held by the reservation table
-		c = this.db.query(TABLE_RESERVATION, new String[] {RES,ORDER_NR,DATETIME,PEOPLE}, MAIL+"=?",
-				new String[] {mail}, null, null, DATETIME);
-		int count = c.getCount();
-		if (count == 0)
+		ArrayList<Reservation> reservations;
+		try
 		{
-			this.close();
-			return null;
-		}
-		
-		ArrayList<Reservation> reservations = new ArrayList<Reservation>(count);
-		while (c.moveToNext())
-		{
-			String resName = c.getString(c.getColumnIndex(RES));
-			String datetime = c.getString(c.getColumnIndex(DATETIME));
-			int seats = c.getInt(c.getColumnIndex(PEOPLE));
+			// information held by the client table
+			String client = this.getClientName(mail);
 			
-			// new Reservation
-			Reservation reserv = new Reservation(resName, datetime, seats, client, mail);
-			
-			// adds the corresponding order if there is one
-			if (!c.isNull(c.getColumnIndex(ORDER_NR)))
+			// information held by the reservation table
+			c = this.db.query(TABLE_RESERVATION, new String[] {RES,ORDER_NR,DATETIME,PEOPLE}, MAIL+"=?",
+					new String[] {mail}, null, null, DATETIME);
+			int count = c.getCount();
+			if (count == 0)
 			{
-				int orderNr = c.getInt(c.getColumnIndex(ORDER_NR));
-				Order order = getOrder(orderNr);
-				reserv.setReservationOrder(order);
+				return null;
+			}
+			
+			reservations = new ArrayList<Reservation>(count);
+			while (c.moveToNext())
+			{
+				String resName = c.getString(c.getColumnIndex(RES));
+				String datetime = c.getString(c.getColumnIndex(DATETIME));
+				int seats = c.getInt(c.getColumnIndex(PEOPLE));
+				
+				// new Reservation
+				Reservation reserv = new Reservation(resName, datetime, seats, client, mail);
+				
+				// adds the corresponding order if there is one
+				if (!c.isNull(c.getColumnIndex(ORDER_NR)))
+				{
+					int orderNr = c.getInt(c.getColumnIndex(ORDER_NR));
+					Order order = getOrder(orderNr);
+					reserv.setReservationOrder(order);
+				}
 			}
 		}
-		
-		this.close();
+		finally
+		{
+			this.close();
+		}
 		return reservations;
 	}
 	
@@ -955,20 +1035,24 @@ public class DBHandler {
 		if (orderNr > 0) {
 			insertValues.put(ORDER_NR, orderNr);
 		}
-		
-		// starts a new transaction
-		this.db.beginTransaction();
 		try
 		{
-			rowId = this.db.insertOrThrow(TABLE_RESERVATION, null, insertValues);
-			this.db.setTransactionSuccessful();
+			// starts a new transaction
+			this.db.beginTransaction();
+			try
+			{
+				rowId = this.db.insertOrThrow(TABLE_RESERVATION, null, insertValues);
+				this.db.setTransactionSuccessful();
+			}
+			finally
+			{
+				this.db.endTransaction();
+			}
 		}
 		finally
 		{
-			this.db.endTransaction();
 			this.close();
 		}
-
 		return rowId;
 	}
 	
@@ -985,22 +1069,27 @@ public class DBHandler {
 	{
 		this.openRead();
 		Cursor c;
-		
-		// tables reservation and restaurant
-		String avail = "stillAvailable";
-		c = this.db.rawQuery("SELECT ("+SEATS+" - sum ("+PEOPLE+")) as ? FROM "+TABLE_RESERVATION+" reserv, "+TABLE_RESTAURANT+
-				" rest WHERE reserv."+RES+"= rest."+RES+" AND rest."+RES+"=? AND strftime('%Y-%m-%d %H:%M', reserv."+DATETIME+") " +
-				"BETWEEN strftime('%Y-%m-%d %H:%M', ?) AND strftime('%Y-%m-%d %H:%M', ?)",
-				new String []{avail,resName,dtStart,dtEnd});
-		int count = c.getCount();
-		if (count != 1)
+		int seats;
+		try
 		{
-			Log.e("DBHandler", "Error : the method failed.");
+			// tables reservation and restaurant
+			String avail = "stillAvailable";
+			c = this.db.rawQuery("SELECT ("+SEATS+" - sum ("+PEOPLE+")) as ? FROM "+TABLE_RESERVATION+" reserv, "+TABLE_RESTAURANT+
+					" rest WHERE reserv."+RES+"= rest."+RES+" AND rest."+RES+"=? AND strftime('%Y-%m-%d %H:%M', reserv."+DATETIME+") " +
+					"BETWEEN strftime('%Y-%m-%d %H:%M', ?) AND strftime('%Y-%m-%d %H:%M', ?)",
+					new String []{avail,resName,dtStart,dtEnd});
+			int count = c.getCount();
+			if (count != 1)
+			{
+				Log.e("DBHandler", "Error : the method failed.");
+			}
+			c.moveToFirst();
+			seats = c.getInt(c.getColumnIndex(avail));
 		}
-		c.moveToFirst();
-		int seats = c.getInt(c.getColumnIndex(avail));
-		
-		this.close();
+		finally
+		{
+			this.close();
+		}
 		return seats;
 	}
 	
@@ -1014,7 +1103,7 @@ public class DBHandler {
 	 * @param resName the restaurant's name
 	 * @return the price category
 	 */
-	private double getResPriceCat(String resName)
+	private double getResPriceCat(String resName) throws SQLiteException
 	{
 		Cursor c = this.db.rawQuery("SELECT avg(price) as "+PRICE_CAT+" FROM "+TABLE_DISH+" d, "+TABLE_RESTAURANT+
 				" r WHERE d."+RES+"=r."+RES+" AND r."+RES+"=?", new String[] {resName});
@@ -1036,7 +1125,7 @@ public class DBHandler {
 	 * @param dishName the dish's name
 	 * @return an ArrayList of the allergens contained in the dish
 	 */
-	private ArrayList<String> searchForAllergens(String resName, String dishName)
+	private ArrayList<String> searchForAllergens(String resName, String dishName) throws SQLiteException
 	{
 		// information held by the allergen table
 		Cursor c = this.db.query(TABLE_ALLERGEN, new String[]{ALLERGEN},
@@ -1060,7 +1149,7 @@ public class DBHandler {
 	 * @param mail the client's mail
 	 * @return the client's name
 	 */
-	private String getClientName(String mail)
+	private String getClientName(String mail) throws SQLiteException
 	{
 		// information held by the client table
 		Cursor c = this.db.query(TABLE_CLIENT, new String[] {CLIENT}, MAIL+"=?", new String[] {mail}, null, null, null);
@@ -1078,7 +1167,7 @@ public class DBHandler {
 	 * @param orderNr the identifier of the order in the DB
 	 * @return an object order with all the information from the DB
 	 */
-	private Order getOrder(int orderNr)
+	private Order getOrder(int orderNr) throws SQLiteException
 	{		
 		Cursor c;
 		Cursor d;
