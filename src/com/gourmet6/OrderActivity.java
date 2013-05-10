@@ -71,8 +71,7 @@ public class OrderActivity extends Activity {
 						a = a +"- " +d.getQuantity()+" "+ d.getName() +"\n";
 					}
 				}
-				
-				Toast.makeText(OrderActivity.this,R.string.ordered+a, Toast.LENGTH_LONG) .show();
+				Toast.makeText(OrderActivity.this,a, Toast.LENGTH_LONG) .show();
 				g.setOrder(odd);
 				
 				if(fromRestaurant){

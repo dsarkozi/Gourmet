@@ -118,6 +118,13 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 			dholder.price.setText(String.format("%.2f", currentdish.getPrice()) + " \u20ac");
 			dholder.count.setText(currentdish.getInventory() + " pcs");
 			
+			if(currentdish.getInventory() == 0){
+				dholder.plus.setEnabled(false);
+				dholder.minus.setEnabled(false);
+			}else{
+				dholder.plus.setEnabled(true);
+				dholder.minus.setEnabled(true);
+			}
 		
 			if(fromOrder){
 				dholder.plus.setVisibility(View.VISIBLE);
