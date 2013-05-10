@@ -46,7 +46,7 @@ public class TimeTable
     
     static public HashMap<String,String> translateWeek = new HashMap<String,String>(7);
     static {
-    	translateWeek.put("dimanche", "Sundays");
+    	translateWeek.put("dimanche", "Sunday");
     	translateWeek.put("lundi", 	  "Monday");
     	translateWeek.put("mardi", 	  "Tuesday");
     	translateWeek.put("mercredi", "Wednesday");
@@ -207,7 +207,7 @@ public class TimeTable
 			minute = temp.get(GregorianCalendar.MINUTE)+"";
 		}
 
-		return jour+" "+year+month+day+hour+minute;
+		return jour+" "+day+month+year+hour+minute;
 	}
 	
 	public boolean isInTimeTable(GregorianCalendar date)
@@ -232,27 +232,29 @@ public class TimeTable
 		dateFin.set(GregorianCalendar.HOUR_OF_DAY, this.getClosingTime().get(GregorianCalendar.HOUR_OF_DAY));
 		dateFin.set(GregorianCalendar.MINUTE, this.getClosingTime().get(GregorianCalendar.MINUTE));
 		
-		return date.compareTo(dateDebut)>0 && date.compareTo(dateFin)<0 
+		return (date.compareTo(dateDebut)>0 || date.compareTo(dateDebut)==0) 
+				&& checkLimit(dateDebut, dateFin, date)
 				&& checkTime(date);
 	}
 	private boolean checkTime(GregorianCalendar date) {
 		int heureFin = this.getClosingTime().get(GregorianCalendar.HOUR_OF_DAY);
+		int heureDebut = this.getOpenTime().get(GregorianCalendar.HOUR_OF_DAY);
 		int heureDate = date.get(GregorianCalendar.HOUR_OF_DAY);
-		if(0<=heureDate && heureDate<=heureFin)
+		if(heureFin<heureDebut)
 		{
-			heureDate+=24;
+			if(0<=heureDate && heureDate<=heureFin){
+				heureDebut=0;
+			}
+			else{
+				heureFin +=24;
+			}
+			
 		}
-		if(heureFin<this.getOpenTime().get(GregorianCalendar.HOUR_OF_DAY))
-		{
-			heureFin +=24;
-		}
-		if(this.getOpenTime().get(GregorianCalendar.HOUR_OF_DAY)<date.get(GregorianCalendar.HOUR_OF_DAY)
-				&& heureDate<heureFin)
+		if(heureDebut<heureDate && heureDate<heureFin)
 		{
 			return true;
 		}
-		else if(this.getOpenTime().get(GregorianCalendar.HOUR_OF_DAY)==heureDate
-				&& heureDate<heureFin)
+		else if(heureDebut==heureDate && heureDate<heureFin)
 		{
 			if(this.getOpenTime().get(GregorianCalendar.MINUTE)<=date.get(GregorianCalendar.MINUTE)){
 				return true;
@@ -261,8 +263,7 @@ public class TimeTable
 				return false;
 			}
 		}
-		else if(this.getOpenTime().get(GregorianCalendar.HOUR_OF_DAY)<heureDate
-				&& heureDate==heureFin)
+		else if(heureDebut<heureDate && heureDate==heureFin)
 		{
 			if(date.get(GregorianCalendar.MINUTE)<=this.getClosingTime().get(GregorianCalendar.MINUTE)){
 				return true;
@@ -271,7 +272,7 @@ public class TimeTable
 				return false;
 			}
 		}
-		else
+		else if(heureDebut==heureDate && heureDate==heureFin)
 		{
 			if(this.getOpenTime().get(GregorianCalendar.MINUTE)<=date.get(GregorianCalendar.MINUTE)
 					&& date.get(GregorianCalendar.MINUTE)<=this.getClosingTime().get(GregorianCalendar.MINUTE))
@@ -282,7 +283,36 @@ public class TimeTable
 				return false;
 			}
 		}
+		else{
+			return false;
+		}
 	}
+	
+	public boolean checkLimit(GregorianCalendar dateDebut, GregorianCalendar dateFin, GregorianCalendar date)
+	{
+		if(date.compareTo(dateFin)<0)
+		{
+			return true;
+		}
+		else
+		{
+			int heureFin = this.getClosingTime().get(GregorianCalendar.HOUR_OF_DAY);
+			int heureDebut = this.getOpenTime().get(GregorianCalendar.HOUR_OF_DAY);
+			int heureDate = date.get(GregorianCalendar.HOUR_OF_DAY);
+			if(date.get(GregorianCalendar.YEAR) == dateFin.get(GregorianCalendar.YEAR)
+					&& date.get(GregorianCalendar.MONTH) == dateFin.get(GregorianCalendar.MONDAY)
+					&& date.get(GregorianCalendar.DAY_OF_MONTH) == dateFin.get(GregorianCalendar.DAY_OF_MONTH)
+					&& heureFin<heureDebut)
+			{
+				if(heureDate-24<=heureFin){
+					return true;
+				}
+				else return false;
+			}
+			else return false;
+		}
+	}
+	
 	/**********************
 	 * Getters and setters
 	 **********************/

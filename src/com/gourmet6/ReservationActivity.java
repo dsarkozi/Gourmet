@@ -186,16 +186,9 @@ public class ReservationActivity extends Activity {
 		order.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(!takeAway.isChecked() && nbrPrs.length()==0){
-					showAlert("Invalid number of people.");
-					return;
-				}
 				
 				Reservation res = checkClient();
-				if(res==null){
-					showAlert("You're not logged !");
-				}
-				else if(checkReservation(res)){
+				if(res!=null && checkReservation(res)){
 					g.setReservation(res);
 					currentRest.createListDishes(new DBHandler(ReservationActivity.this));
 					Intent commande = new Intent(ReservationActivity.this, OrderActivity.class);
@@ -210,21 +203,13 @@ public class ReservationActivity extends Activity {
 		submit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO suppression reservation ?
-				if(!takeAway.isChecked() && nbrPrs.length()==0){
-					showAlert("Invalid number of people.");
-					return;
-				}
+				// TODO suppression reservation
 				Reservation res = checkClient();
-				if(res==null)
-				{
-					showAlert("You're not logged !");
-				}
-				
-				else if(checkReservation(res)){
-					g.setReservation(res); //TODO que faire ?
-					Intent commande = new Intent(ReservationActivity.this, RestaurantActivity.class);
-					startActivity(commande);
+				if(res!=null && checkReservation(res)){
+					//TODO mettre dans db
+					
+					Toast.makeText(getApplicationContext(), "Your Reservation has been confirmed.", Toast.LENGTH_LONG).show();
+					ReservationActivity.this.finish();
 				}
 			}
 		});
@@ -240,13 +225,13 @@ public class ReservationActivity extends Activity {
 
 	public boolean checkReservation(Reservation reservTemp)
 	{
-		if(nbrPrs.length()==0){
-			Toast.makeText(getApplicationContext(), "Are you boonking for 0 people ?", Toast.LENGTH_SHORT).show();
+		if(!takeAway.isChecked() && nbrPrs.length()==0){
+			showAlert("Invalid number of people.");
 			return false;
 		}
 		String res = g.getRest().checkReservation(reservTemp, dbh);
 		if(res!=null)
-		{			
+		{
 			showAlert(res);
 
 			return false;
@@ -261,7 +246,16 @@ public class ReservationActivity extends Activity {
 	{
 		if(g.getClient()!=null)
 		{
-			people = Integer.parseInt(nbrPrs.getText().toString());
+			if(!takeAway.isChecked()){
+				if(nbrPrs.length()==0){
+					showAlert("Invalid number of people.");
+					return null;
+				}
+				else {
+					people = Integer.parseInt(nbrPrs.getText().toString());
+				}
+				
+			}
 			GregorianCalendar date = new GregorianCalendar(year, month, day, hour, minute);
 			return g.getClient().createReservation(currentRest.getName(), date, people);
 		}
