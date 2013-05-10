@@ -284,20 +284,20 @@ public class OrderActivity extends Activity {
 				}
 				
 			}else{
-				
+			
+				try{
+					long a = dbh.addOrder(g.getOrder());
+					dbh.addReservation(resv, a);
+				}
+				catch(SQLiteException e){
+					ExceptionHandler.caughtException(OrderActivity.this, e);
+				}
+				catch(SQLException e){
+					ExceptionHandler.caughtException(OrderActivity.this, e);
+				}
+				Toast.makeText(OrderActivity.this,R.string.hungry, Toast.LENGTH_LONG) .show();
+				finish();
 			}
-			try{
-				long a = dbh.addOrder(g.getOrder());
-				dbh.addReservation(resv, a);
-			}
-			catch(SQLiteException e){
-				ExceptionHandler.caughtException(OrderActivity.this, e);
-			}
-			catch(SQLException e){
-				ExceptionHandler.caughtException(OrderActivity.this, e);
-			}
-			Toast.makeText(OrderActivity.this,R.string.hungry, Toast.LENGTH_LONG) .show();
-			finish();
 		}
 	}
 	
