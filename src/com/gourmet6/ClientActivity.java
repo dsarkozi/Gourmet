@@ -23,7 +23,7 @@ public class ClientActivity extends Activity {
 		g = (Gourmet)getApplication();
 		currentCli = g.getClient();
 		
-		//nom du client + son mail sont affiché au dessus
+		//nom du client + son mail sont affichï¿½ au dessus
 		TextView nameCli = (TextView) findViewById(R.id.name);
 	    nameCli.setText("Name : "+currentCli.getName());
 	    
@@ -33,23 +33,11 @@ public class ClientActivity extends Activity {
 	    TextView phoneCli = (TextView) findViewById(R.id.phone);
 	    phoneCli.setText("Phone : "+currentCli.getPhone());
 		
-		
-		//récupération du bouton des réservations et commandes
-		Button btn = (Button) findViewById(R.id.rescom);
-        //écouteur sur le clic du bouton
-        btn.setOnClickListener(new View.OnClickListener() {
-        	@Override
-        	public void onClick(View v) {
-
-        		Intent resAndCom = new Intent(ClientActivity.this, ResAndComActivity.class);
-				startActivity(resAndCom);
-        	}
-        });
         
    
-        //récupération du bouton des préférences
+        //rï¿½cupï¿½ration du bouton des prï¿½fï¿½rences
         Button btn3 = (Button)findViewById(R.id.cpd);
-        //écouteur sur le clic du bouton
+        //ï¿½couteur sur le clic du bouton
         btn3.setOnClickListener(new View.OnClickListener() {
         	@Override
         	public void onClick(View v) {
