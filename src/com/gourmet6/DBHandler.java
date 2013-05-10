@@ -270,6 +270,11 @@ public class DBHandler {
 		return towns;
 	}
 	
+	/**
+	 * Gets the locations of the towns in the DB.
+	 * @return an ArrayList of Locations containing a latitude, longitude and town name
+	 * @throws SQLiteException
+	 */
 	public ArrayList<Location> getTownsLocation() throws SQLiteException
 	{
 		this.openRead();
@@ -1129,6 +1134,10 @@ public class DBHandler {
 	 * Internal methods
 	 *******************/
 	
+	/**
+	 * @param town the town name
+	 * @return the town's latitude (average value of the restaurants in this town)
+	 */
 	private double getTownLat(String town)
 	{
 		Cursor c = this.db.rawQuery("SELECT avg("+LAT+") AS newLat FROM "+RES+" WHERE "+town+"=?", new String[] {town});
@@ -1140,6 +1149,10 @@ public class DBHandler {
 		return c.getDouble(0);
 	}
 	
+	/**
+	 * @param town the town name
+	 * @return the town's latitude (average value of the restaurants in this town)
+	 */
 	private double getTownLong(String town)
 	{
 		Cursor c = this.db.rawQuery("SELECT avg("+LONG+") AS newLong FROM "+RES+" WHERE "+town+"=?", new String[] {town});
