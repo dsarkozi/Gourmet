@@ -43,6 +43,29 @@ public class TimeTable
     	weekMap.put("vendredi", 6);
     	weekMap.put("samedi", 	7);
     }
+    
+    static public HashMap<String,String> translateWeek = new HashMap<String,String>(7);
+    static {
+    	translateWeek.put("dimanche", "Sundays");
+    	translateWeek.put("lundi", 	  "Monday");
+    	translateWeek.put("mardi", 	  "Tuesday");
+    	translateWeek.put("mercredi", "Wednesday");
+    	translateWeek.put("jeudi", 	  "Thursday");
+    	translateWeek.put("vendredi", "Friday");
+    	translateWeek.put("samedi",	  "Saterday");
+    }
+    
+    static public HashMap<Integer,String> mapWeek = new HashMap<Integer,String>(7);
+    static {
+    	mapWeek.put(1, "Sundays");
+    	mapWeek.put(2, "Monday");
+    	mapWeek.put(3, "Tuesday");
+    	mapWeek.put(4, "Wednesday");
+    	mapWeek.put(5, "Thursday");
+    	mapWeek.put(6, "Friday");
+    	mapWeek.put(7, "Saterday");
+    }
+    
 	
 	/***********************
 	 * Formatting functions
@@ -125,14 +148,15 @@ public class TimeTable
 	
 	public String parseInString()
 	{
-		if(this.getJourDebut().equals(this.getClosingTime()))
+		if(this.getJourDebut().equals(this.getJourFin()))
 		{
-			return this.getJourDebut()+" :  "+parseHorairInString(this.getOpenTime())+" - "
+			return translateWeek.get(this.getJourDebut())+" :  "+parseHorairInString(this.getOpenTime())+" - "
 					+parseHorairInString(this.getClosingTime());
 		}
 		else
 		{
-			return this.getJourDebut()+" - "+this.getJourFin()+" :  "+parseHorairInString(this.getOpenTime())+" - "
+			return translateWeek.get(this.getJourDebut())+" - "+translateWeek.get(this.getJourFin())
+					+" :  "+parseHorairInString(this.getOpenTime())+" - "
 					+parseHorairInString(this.getClosingTime());
 		}
 	}
@@ -153,6 +177,37 @@ public class TimeTable
 			minute = cal.get(GregorianCalendar.MINUTE)+"";
 		}
 		return hour+minute;
+	}
+	
+	public static String parseDateInStringForReservation(GregorianCalendar temp) {
+		String jour = mapWeek.get(temp.get(GregorianCalendar.DAY_OF_WEEK));
+		String year = temp.get(GregorianCalendar.YEAR)+" "; String month;
+		if((temp.get(GregorianCalendar.MONTH)+1)<10){
+			month = "0"+(temp.get(GregorianCalendar.MONTH)+1)+"-";
+		}
+		else {
+			month = (temp.get(GregorianCalendar.MONTH)+1)+"-";
+		} String day;
+		if(temp.get(GregorianCalendar.DAY_OF_MONTH)<10){
+			day = "0"+temp.get(GregorianCalendar.DAY_OF_MONTH)+"-";
+		}
+		else{
+			day = temp.get(GregorianCalendar.DAY_OF_MONTH)+"-";
+		}String hour;
+		if(temp.get(GregorianCalendar.HOUR_OF_DAY)<10){
+			hour = "0"+temp.get(GregorianCalendar.HOUR_OF_DAY)+":";
+		}
+		else{
+			hour = temp.get(GregorianCalendar.HOUR_OF_DAY)+":";
+		} String minute;
+		if(temp.get(GregorianCalendar.MINUTE)<10){
+			minute = "0"+temp.get(GregorianCalendar.MINUTE);
+		}
+		else{
+			minute = temp.get(GregorianCalendar.MINUTE)+"";
+		}
+
+		return jour+" "+year+month+day+hour+minute;
 	}
 	
 	public boolean isInTimeTable(GregorianCalendar date)

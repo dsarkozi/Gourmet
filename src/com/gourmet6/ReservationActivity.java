@@ -116,7 +116,7 @@ public class ReservationActivity extends Activity {
 		
 		
 		dateTime = (Button) findViewById(R.id.dateTime);
-		s = TimeTable.parseDateInString(new GregorianCalendar(year, month, day, hour, minute));
+		s = TimeTable.parseDateInStringForReservation(new GregorianCalendar(year, month, day, hour, minute));
 		dateTime.setText(s);
 		dateTime.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -157,7 +157,7 @@ public class ReservationActivity extends Activity {
 						hour = tp.getCurrentHour();
 						minute = tp.getCurrentMinute();
 						
-						s = TimeTable.parseDateInString(new GregorianCalendar(year, month, day, hour, minute));
+						s = TimeTable.parseDateInStringForReservation(new GregorianCalendar(year, month, day, hour, minute));
 						dateTime.setText(s);
 						
 						dialog.cancel();
