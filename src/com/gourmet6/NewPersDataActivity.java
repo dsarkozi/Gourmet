@@ -13,6 +13,7 @@ public class NewPersDataActivity extends Activity {
 	private DBHandler dbHand;
 	private Gourmet g;
 	private Client currentCli;
+	private static final String TITLE = "Profile";
 	
 	
 	private String newMdpS;
@@ -35,15 +36,15 @@ public class NewPersDataActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_pers_data);
-		
+		setTitle(TITLE);
 		dbHand = new DBHandler(this);
 		g = (Gourmet)getApplication();
 		currentCli = g.getClient();
 		
 		
 		Button changeButton;
-		//récupération du bouton des réservations et commandes
-		//récupération des champs d'entrées
+		//rï¿½cupï¿½ration du bouton des rï¿½servations et commandes
+		//rï¿½cupï¿½ration des champs d'entrï¿½es
 		newMdp  = (EditText)findViewById(R.id.etMdp);
 		newMdpComf  = (EditText)findViewById(R.id.etMdpConf);
 		newName  = (EditText)findViewById(R.id.etNewName);
@@ -54,11 +55,11 @@ public class NewPersDataActivity extends Activity {
 		missingField  = (TextView)findViewById(R.id.missingField);
 
 		changeButton = (Button)findViewById(R.id.changeButton);
-        //écouteur sur le clic du bouton
+        //ï¿½couteur sur le clic du bouton
 		changeButton.setOnClickListener(new View.OnClickListener() {
         	@Override
         	public void onClick(View v) {
-        		//remplir les champs strings private par ceux entrés par l'utilisateur
+        		//remplir les champs strings private par ceux entrï¿½s par l'utilisateur
         		newMdpS= newMdp.getText().toString();
         		newMdpComfS= newMdpComf.getText().toString();
         		newNameS= newName.getText().toString();
@@ -73,7 +74,7 @@ public class NewPersDataActivity extends Activity {
         		newPhone.setText("");
         		newMail.setText("");
         		actualMdp.setText("");        		
-        		//vérifier que le mot de passe actuel est mis et bon
+        		//vï¿½rifier que le mot de passe actuel est mis et bon
         		if(actualMdpS.equals("")){
         			missingField.setText("Actual password required.");
         			return;
