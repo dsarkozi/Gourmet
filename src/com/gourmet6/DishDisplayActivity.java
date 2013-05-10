@@ -57,7 +57,7 @@ public class DishDisplayActivity extends Activity {
 		inventory = (TextView)findViewById(R.id.inventory);
 		allergens = (TextView)findViewById(R.id.allergens);
 		
-		price.setText(Dish.myRound(plat.getPrice())+"");
+		price.setText(Dish.myRound(plat.getPrice())+" \u20ac");
 		type.setText(plat.getType());
 		subtype.setText(plat.getSubtype());
 		inventory.setText(plat.getInventory()+" pcs");

@@ -26,42 +26,42 @@ public class ClientActivity extends Activity {
 		//nom du client + son mail sont affiché au dessus
 		TextView nameCli = (TextView) findViewById(R.id.name);
 	    nameCli.setText("Name : "+currentCli.getName());
+	    
 		TextView mailCli = (TextView) findViewById(R.id.mail);
 	    mailCli.setText("Email : "+currentCli.getEmail());
+	    
 	    TextView phoneCli = (TextView) findViewById(R.id.phone);
-	    phoneCli.setText("Phone number : "+currentCli.getPhone());
+	    phoneCli.setText("Phone : "+currentCli.getPhone());
 		
 		
-		Button btn;
 		//récupération du bouton des réservations et commandes
-        btn = (Button)findViewById(R.id.rescom);
+		Button btn = (Button) findViewById(R.id.rescom);
         //écouteur sur le clic du bouton
         btn.setOnClickListener(new View.OnClickListener() {
         	@Override
         	public void onClick(View v) {
 
         		Intent resAndCom = new Intent(ClientActivity.this, ResAndComActivity.class);
-				resAndCom.putExtra("from", true);
 				startActivity(resAndCom);
         	}
         });
         
-        Button btn3;
+   
         //récupération du bouton des préférences
-        btn3 = (Button)findViewById(R.id.cpd);
+        Button btn3 = (Button)findViewById(R.id.cpd);
         //écouteur sur le clic du bouton
         btn3.setOnClickListener(new View.OnClickListener() {
         	@Override
         	public void onClick(View v) {
 
         		Intent newPersData = new Intent(ClientActivity.this, NewPersDataActivity.class);
-        		newPersData.putExtra("from", true);
 				startActivity(newPersData);
          	}
         });
 
 		
 	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
