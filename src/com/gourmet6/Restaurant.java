@@ -70,8 +70,11 @@ public class Restaurant {
 	 */
 	public void createListDishes(DBHandler dbh)
 	{
-		if (this.listDishes == null)
-			this.listDishes = dbh.getDishes(this.name);
+		if (this.listDishes != null){
+			this.listDishes.clear();
+		}
+		this.listDishes = dbh.getDishes(this.name);
+		
 	}
 	
 	/**

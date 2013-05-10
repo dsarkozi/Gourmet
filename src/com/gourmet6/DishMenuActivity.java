@@ -54,6 +54,7 @@ public class DishMenuActivity extends Activity {
 			order.setEnabled(false);
 		}else{
 			order.setEnabled(true);
+			current.createListDishes(new DBHandler(this));
 		}
 		
 		order.setOnClickListener(new View.OnClickListener() {
