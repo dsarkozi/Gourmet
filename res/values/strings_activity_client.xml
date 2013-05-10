@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Strings related to client activity -->
-    <string name="rescom">Bookings/Orders</string>
+    <string name="rescom">Bookings / Orders</string>
     <string name="pref">Preferences</string>
     <string name="cpd">Change personal data ?</string>
     
@@ -10,8 +10,8 @@
     <string name="nameNew">New name : </string>
     <string name="phoneNew">New phone number : </string>
     <string name="mailNew">New email : </string>
-    <string name="mdpActual">Current password required : </string>
+    <string name="mdpActual">Current password (required) : </string>
     <string name="options">Let the fields you don\'t want to change blank. The current password is required for any change.</string>
-    <string name="changeButton">Effect changes</string>
-    <string name="acceptation">No changes asked yet</string>
+    <string name="changeButton">Perform changes</string>
+    <string name="acceptation">No change has yet been performed</string>
 </resources>

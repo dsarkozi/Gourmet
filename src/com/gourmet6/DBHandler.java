@@ -31,7 +31,7 @@ public class DBHandler {
 	 */
 	private static class DBHelper extends SQLiteOpenHelper {
 
-		private static final String DB_NAME = "gourmet9.sqlite";
+		private static final String DB_NAME = "gourmet10.sqlite";
 		private static final String DB_DIR = "/data/data/com.gourmet6/databases/";
 		private static String DB_PATH = DB_DIR + DB_NAME;
 		public static final int DB_VERSION = 1;
@@ -223,7 +223,7 @@ public class DBHandler {
 	/**
 	 * Closes the DB.
 	 */
-	private void close()
+	public void close()
 	{
 		this.dbHelper.close();
 		this.read = false; this.write = false;
