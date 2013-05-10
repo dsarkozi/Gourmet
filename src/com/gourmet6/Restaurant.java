@@ -513,7 +513,7 @@ public class Restaurant {
 			{
 				timeTableOk = true;
 				String start = getInString(res.getReservationTime(), -2, 0);
-				String end = getInString(res.getReservationTime(), 2, 0);
+				String end = getInString(res.getReservationTime(), 4, 0);
 				if(dbh.getAvailBetweenDateTime(res.getReservationResName(), start, end)<res.getReservationPeople()){
 					return "Not enough place for this date";
 				}
@@ -531,6 +531,7 @@ public class Restaurant {
 		//on soustrait le temps adéquat.
 		temp.set(GregorianCalendar.HOUR_OF_DAY, temp.get(GregorianCalendar.HOUR_OF_DAY)+hour);
 		temp.set(GregorianCalendar.MINUTE, temp.get(GregorianCalendar.MINUTE)+minute);
+		System.out.println(TimeTable.parseDateInString(temp));
 		return TimeTable.parseDateInString(temp);
 	}
 
