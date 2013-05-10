@@ -15,7 +15,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -44,6 +43,9 @@ public class ReservationActivity extends Activity {
 	private boolean from;
 	private Restaurant currentRest;
 	
+	private DatePicker dpReserv;
+	private TimePicker tpReserv;
+	
 	private DBHandler dbh;
 	
 	@Override
@@ -68,6 +70,16 @@ public class ReservationActivity extends Activity {
 		day = c.get(Calendar.DAY_OF_MONTH);
 		hour = c.get(Calendar.HOUR_OF_DAY);
 		minute = c.get(Calendar.MINUTE);
+		
+		//DatePicker
+		dpReserv = (DatePicker) findViewById(R.id.datePickerReserv);
+		dpReserv.init(year, month, day, null);
+		
+		//TimePicker
+		tpReserv = (TimePicker) findViewById(R.id.timePickerReserv);
+		tpReserv.setCurrentHour(hour);
+		tpReserv.setCurrentMinute(0);
+		tpReserv.setIs24HourView(true);
 		
 		// Show the Up button in the action bar.
 		setupActionBar();
