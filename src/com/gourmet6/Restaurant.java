@@ -522,7 +522,6 @@ public class Restaurant {
 			}
 		}
 		if(!timeTableOk) return "Incorrect date or hour, please see the time table";
-		if(res.getReservationPeople()<=availableSeats) return "Too many people";
 		else return null;
 	}
 	
