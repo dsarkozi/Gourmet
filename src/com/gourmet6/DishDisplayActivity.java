@@ -16,7 +16,6 @@ public class DishDisplayActivity extends Activity {
 	private Dish plat;
 	private Restaurant current;
 	
-	private TextView dishName;
 	private ImageView dishImage;
 	private TextView dishDescr;
 	//private TextView dishInfo;
@@ -33,7 +32,6 @@ public class DishDisplayActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dish_display);
-		setTitle("Dish");
 		
 		g = (Gourmet)getApplication();
 		current = g.getRest();
@@ -42,8 +40,7 @@ public class DishDisplayActivity extends Activity {
 		plat = current.getDish(extra.getString("the_dish"));
 		
 		name = plat.getName();
-		dishName  = (TextView)findViewById(R.id.dishname);
-		dishName.setText(name);
+		setTitle(name);
 		
 		dishImage = (ImageView)findViewById(R.id.dishimage);
 		String imgType = Restaurant.getNameImg2(plat.getType());
