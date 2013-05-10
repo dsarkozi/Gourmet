@@ -1051,7 +1051,7 @@ public class DBHandler {
 	 * @throws SQLiteException if DB cannot be accessed
 	 * @throws SQLException if reservation is null or if insert fails
 	 */
-	public long addReservation(Reservation reservation, int orderNr) throws SQLiteException, SQLException
+	public long addReservation(Reservation reservation, long orderNr) throws SQLiteException, SQLException
 	{
 		// throws an exception if the mandatory information is not given
 		if (reservation == null)

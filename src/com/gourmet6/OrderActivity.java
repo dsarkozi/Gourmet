@@ -258,22 +258,46 @@ public class OrderActivity extends Activity {
 		}else{
 			GregorianCalendar gag = new GregorianCalendar();
 			resv = g.getReservation();
+			GregorianCalendar r = resv.getReservationTime();
 			
-			if(current.checkOrder(g.getOrder())){
-				try{
-					dbh.addOrder(g.getOrder());
+			if((gag.get(GregorianCalendar.YEAR) == r.get(GregorianCalendar.YEAR))&&
+					(gag.get(GregorianCalendar.MONTH) == r.get(GregorianCalendar.MONTH))&&
+					(gag.get(GregorianCalendar.DAY_OF_MONTH) == r.get(GregorianCalendar.DAY_OF_MONTH))){
+				
+				if(current.checkOrder(g.getOrder())){
+					
+					try{
+						long a = dbh.addOrder(g.getOrder());
+						dbh.addReservation(resv, a);
+					}
+					catch(SQLiteException e){
+						ExceptionHandler.caughtException(OrderActivity.this, e);
+					}
+					catch(SQLException e){
+						ExceptionHandler.caughtException(OrderActivity.this, e);
+					}
+					updateInv();
+					Toast.makeText(OrderActivity.this,R.string.hungry, Toast.LENGTH_LONG) .show();
+					finish();
+				}else{
+					Toast.makeText(OrderActivity.this,R.string.apology, Toast.LENGTH_LONG) .show();
 				}
-				catch(SQLiteException e){
-					ExceptionHandler.caughtException(OrderActivity.this, e);
-				}
-				catch(SQLException e){
-					ExceptionHandler.caughtException(OrderActivity.this, e);
-				}
-				Toast.makeText(OrderActivity.this,R.string.hungry, Toast.LENGTH_LONG) .show();
-				finish();
+				
 			}else{
-				Toast.makeText(OrderActivity.this,R.string.apology, Toast.LENGTH_LONG) .show();
+				
 			}
+			try{
+				long a = dbh.addOrder(g.getOrder());
+				dbh.addReservation(resv, a);
+			}
+			catch(SQLiteException e){
+				ExceptionHandler.caughtException(OrderActivity.this, e);
+			}
+			catch(SQLException e){
+				ExceptionHandler.caughtException(OrderActivity.this, e);
+			}
+			Toast.makeText(OrderActivity.this,R.string.hungry, Toast.LENGTH_LONG) .show();
+			finish();
 		}
 	}
 	
