@@ -157,6 +157,7 @@ public class ResAndComActivity extends Activity {
 
 		@Override
 		public int getChildrenCount(int groupPosition) {
+			if(head.get(groupPosition).getRes().equals(null)) return 0;
 			if(groupPosition == 0){
 				return head.get(groupPosition).getRes().size();
 			}else{
