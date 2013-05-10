@@ -5,22 +5,21 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -28,12 +27,6 @@ import android.support.v4.app.NavUtils;
  */
 public class LoginActivity extends Activity
 {
-	/**
-	 * A dummy authentication store containing known user names and passwords.
-	 * TODO: remove after connecting to a real authentication system.
-	 */
-	private static final String[] DUMMY_CREDENTIALS = new String[]
-	{ "foo@example.com:hello", "bar@example.com:world" };
 
 	private DBHandler db;
 	private Gourmet g;
