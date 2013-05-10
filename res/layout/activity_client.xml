@@ -26,24 +26,6 @@
         android:textIsSelectable="true"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <Button
-        android:id="@+id/rescom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/mail"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="62dp"
-        android:text="@string/rescom" />
-
-    <Button
-        android:id="@+id/cpd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rescom"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="42dp"
-        android:text="@string/cpd" />
-
     <TextView
         android:id="@+id/phone"
         android:layout_width="wrap_content"
@@ -52,5 +34,22 @@
         android:textIsSelectable="true"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_below="@+id/mail"/>
+
+    <Button
+        android:id="@+id/cpd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="77dp"
+        android:text="@string/cpd" />
+
+    <Button
+        android:id="@+id/rescom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="@string/rescom" />
 
 </RelativeLayout>
