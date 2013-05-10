@@ -30,7 +30,7 @@ public class OrderActivity extends Activity {
 	private Restaurant current;
 	private Client cli;
 	private Reservation resv;
-	private boolean fromRestaurant = false;
+	private boolean fromRestOrMenu = false;
 	private ExpandableListView dishes;
 	private DishMenuAdapter dishad;
 	private DBHandler dbh;
@@ -56,7 +56,7 @@ public class OrderActivity extends Activity {
 		cli = g.getClient();
 		
 		Bundle extra = getIntent().getExtras();
-		this.fromRestaurant = extra.getBoolean("from");
+		this.fromRestOrMenu = extra.getBoolean("from");
 		
 		Button submit = (Button) findViewById(R.id.button1);
 		submit.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +69,7 @@ public class OrderActivity extends Activity {
 		});
 		
 		updateLists(current.getListDishes());
+		this.filters = current.getFilters(listdish);
 		
 		dishes = (ExpandableListView) findViewById(R.id.dish_menu);
 		dishad = new DishMenuAdapter(this,current,listdish, true);
@@ -123,7 +124,6 @@ public class OrderActivity extends Activity {
 	
 	private void updateLists(ArrayList<Dish> filtered){
 		this.listdish = filtered;
-		this.filters = current.getFilters(filtered);
 		this.types = current.getDishesTypes(filtered);
 		this.subtypes = current.getDishesSubtypes(filtered);
 		this.allergens = current.getAllergensForFilter(filtered);
@@ -131,6 +131,9 @@ public class OrderActivity extends Activity {
 
 	private void updateInv(){
 		for(Dish d : current.getListDishes()){
+			if(d.getInventory() == 0){
+				d.setInventory(50);
+			}
 			if(d.getQuantity() != 0){
 				d.setInventory(d.getInventory() - d.getQuantity());
 				try{
@@ -174,7 +177,7 @@ public class OrderActivity extends Activity {
 			for(Dish d: ordered){
 				a = a +"- " +d.getQuantity()+" "+ d.getName() +"\n";
 			}
-			a = a + "Price: "+ computePrice(ordered)+" \u20ac \n";
+			a = a + "Price : "+ computePrice(ordered)+" \u20ac \n";
 			
 			AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
 			builder.setTitle(R.string.activity_order_title);
@@ -215,7 +218,7 @@ public class OrderActivity extends Activity {
 	}
 	
 	private void toBook(){
-		if(fromRestaurant){
+		if(fromRestOrMenu){
 			AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
 			builder.setTitle(R.string.activity_reservation_title);
 			builder.setMessage(R.string.do_you_res);
