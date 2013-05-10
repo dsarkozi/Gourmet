@@ -226,7 +226,7 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 		return (sgrp.getWhat() == false);
 	}
 	
-	private class GroupeViewHolder{
+	public class GroupeViewHolder{
 		public TextView type;
 	}
 	

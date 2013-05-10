@@ -1,10 +1,6 @@
 package com.gourmet6;
 
 import java.util.ArrayList;
-
-import com.gourmet6.DishMenuAdapter.Groupe;
-import com.gourmet6.DishMenuAdapter.GroupeViewHolder;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
@@ -43,7 +39,7 @@ public class ResAndComActivity extends Activity {
 		adapter = new ResAndComAdapter(this, myRes, myOr);
 		expandableList.setAdapter(adapter);
 		
-		expandableList.setOnChildClickListener(onChildClickListener)
+		//expandableList.setOnChildClickListener(onChildClickListener)
 	}
 
 	@Override
@@ -62,6 +58,8 @@ public class ResAndComActivity extends Activity {
 		private ArrayList<Groupe> head;
 		private ArrayList<Reservation> myResHere;
 		private ArrayList<Order> myOrHere;
+		private Reservation resv;
+		private Order ord;
 		
 		public ResAndComAdapter(Context context, ArrayList<Reservation> myResHere, ArrayList<Order> myOrHere) //myResRac = myRes !!!
 		{
@@ -90,19 +88,27 @@ public class ResAndComActivity extends Activity {
 		public View getChildView(int groupPosition, int childPosition,boolean isLastChild, View convertView, ViewGroup parent) {
 			
 			if(groupPosition == 0){
-				Reservation resv = (Reservation) getChild(groupPosition, childPosition);
+				resv = (Reservation) getChild(groupPosition, childPosition);
 			}else{
-				Order ord = (Order) getChild(groupPosition, childPosition);
+				ord = (Order) getChild(groupPosition, childPosition);
 			}
 			
 			if(convertView == null){
 				dholder = new ChildViewHolder();
 				convertView = inflater.inflate(R.layout.res_list, null);
-				dholder.resto = (TextView) convertView.findViewById(R.id.dishname);
-				dholder.date = (TextView) convertView.findViewById(R.id.price);
+				dholder.resto = (TextView) convertView.findViewById(R.id.resRestName);
+				dholder.date = (TextView) convertView.findViewById(R.id.resDate);
 				
 			}else{
-				
+				dholder = (ChildViewHolder) convertView.getTag();
+			}
+			
+			if(groupPosition == 0){
+				dholder.resto.setText(resv.getReservationResName());
+				dholder.date.setText(TimeTable.parseDateInString(resv.getReservationTime()));
+			}else{
+				dholder.resto.setText(ord.getOrderRestaurant());
+				dholder.date = (TextView) convertView.findViewById(R.id.resDate);
 			}
 			
 			return convertView;
