@@ -5,6 +5,7 @@
     <string name="pref">Preferences</string>
     <string name="cpd">Change personal data</string>
    
+    <!-- Strings related to NewPersData activity -->
     <string name="mdpNew">Enter new password</string>
     <string name="mdpNewConfirmation">Confirm new password</string>
     <string name="nameNew">Enter new name</string>
@@ -14,4 +15,10 @@
     <string name="options">Let the fields you don\'t want to change blank. The current password is required for any change.</string>
     <string name="changeButton">Apply changes</string>
     <string name="acceptation">No change has yet been set.</string>
+    
+    <!-- Strings related to res_list-->
+    <string name="restName">Restaurant : </string>
+    <string name="resDate">Date : </string>
+    
+    <!-- Strings related to dish_list-->
 </resources>
