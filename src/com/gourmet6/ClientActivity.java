@@ -34,16 +34,6 @@ public class ClientActivity extends Activity {
 	    TextView phoneCli = (TextView) findViewById(R.id.phone);
 	    phoneCli.setText("Phone : "+currentCli.getPhone());
 		
-	    Button btn = (Button)findViewById(R.id.resandcom);
-        //�couteur sur le clic du bouton
-        btn.setOnClickListener(new View.OnClickListener() {
-        	@Override
-        	public void onClick(View v) {
-
-        		Intent resandcom = new Intent(ClientActivity.this, ResAndComActivity.class);
-				startActivity(resandcom);
-         	}
-        });
    
         //r�cup�ration du bouton des pr�f�rences
         Button btn3 = (Button)findViewById(R.id.cpd);

@@ -46,18 +46,9 @@
 	        android:id="@+id/cpd"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_below="@+id/resandcom"
-	        android:layout_marginTop="57dp"
+	        android:layout_marginTop="155dp"
 	        android:text="@string/cpd" />
 
-	    <Button
-	        android:id="@+id/resandcom"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentLeft="true"
-	        android:layout_below="@+id/phone"
-	        android:layout_marginTop="57dp"
-	        android:text="@string/rescom" />
 
     </RelativeLayout>
 
