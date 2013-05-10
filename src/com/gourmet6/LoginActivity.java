@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,10 +28,6 @@ public class LoginActivity extends Activity
 
 	private DBHandler db;
 	private Gourmet g;
-	/**
-	 * The default email to populate the email field with.
-	 */
-	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
 
 	/**
 	 * Keep track of the login task to ensure we can cancel it if requested.
@@ -62,11 +59,12 @@ public class LoginActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		 this.getWindow().setSoftInputMode(
+				 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		g = (Gourmet) getApplicationContext();
 		setContentView(R.layout.activity_login);
 
 		// Set up the login form.
-		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
 		mEmailView = (EditText) findViewById(R.id.login_email);
 		mEmailView.setText(mEmail);
 
@@ -89,6 +87,7 @@ public class LoginActivity extends Activity
 		mConfirmView = (EditText) findViewById(R.id.login_confirm);
 
 		mLoginFormView = findViewById(R.id.login_form);
+		mLoginFormView.requestFocus();
 		mLoginStatusView = findViewById(R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
 		
