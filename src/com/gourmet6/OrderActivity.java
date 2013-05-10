@@ -46,7 +46,12 @@ public class OrderActivity extends Activity {
 		
 		g = (Gourmet)getApplication();
 		current = g.getRest();
+		current.Orderreboot();
 		cli = g.getClient();
+		
+		if(cli == null){
+			cli = new Client("fuckyou","moron","666"); //TODO To remove
+		}
 		
 		Bundle extra = getIntent().getExtras();
 		this.fromRestaurant = extra.getBoolean("from");
@@ -55,11 +60,19 @@ public class OrderActivity extends Activity {
 		submit.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
-			public void onClick(View v) {
-				// TODO check order				
+			public void onClick(View v) {				
 				current = dishad.getCurrentRest();
 				Order odd = cli.createOrder(current.getName());
-				odd.setOrderDishes(ordered());
+				String a ="";
+				ArrayList<Dish> ordered = ordered();
+				odd.setOrderDishes(ordered);
+				if(ordered != null){
+					for(Dish d: ordered){
+						a = a +"- " +d.getQuantity()+" "+ d.getName() +"\n";
+					}
+				}
+				
+				Toast.makeText(OrderActivity.this,a, Toast.LENGTH_LONG) .show();
 				g.setOrder(odd);
 				
 				if(fromRestaurant){
@@ -80,11 +93,10 @@ public class OrderActivity extends Activity {
 						
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							// TODO quit
 							if(current.checkOrder(g.getOrder())){
-								Toast.makeText(OrderActivity.this,"Your Order was validated, you can come get it very soon", Toast.LENGTH_LONG) .show();
+								Toast.makeText(OrderActivity.this,R.string.hungry, Toast.LENGTH_LONG) .show();
 							}else{
-								Toast.makeText(OrderActivity.this,"Your Order can't be made, we are out of some dishes you asked.\n We apologize", Toast.LENGTH_LONG) .show();
+								Toast.makeText(OrderActivity.this,R.string.apology, Toast.LENGTH_LONG) .show();
 							}
 							
 						}
@@ -113,32 +125,33 @@ public class OrderActivity extends Activity {
 				// TODO Auto-generated method stub
 				String str =(String)arg0.getSelectedItem();
 				if(str == "All"){
-					
+					current = dishad.getCurrentRest();
 					updateLists(current.getListDishes());
 					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,current,listdish, true));
 					
 				}
 				else if(str == "Price"){
+					current = dishad.getCurrentRest();
 					updateLists(current.sortDishesPrice(listdish));
 					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,current,listdish, true));
 				}
 				else if(types.contains(str)){
-					
+					current = dishad.getCurrentRest();
 					updateLists(current.filterDishesType(str, listdish));
 					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,current,listdish, true));
 				}
 				else if(subtypes.contains(str)){
-					
+					current = dishad.getCurrentRest();
 					updateLists(current.filterDishesSubtype(str, listdish));
 					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,current,listdish, true));
 				}
 				else if(allergens.contains(str)){
-					
+					current = dishad.getCurrentRest();
 					updateLists(current.filterDishesAllergen(str, listdish));
 					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,current,listdish, true));
 				}
 				else{
-					Toast.makeText(OrderActivity.this,"Current list does not contain any dish from "+str, Toast.LENGTH_LONG) .show();
+					Toast.makeText(OrderActivity.this,R.string.vanished+str, Toast.LENGTH_LONG) .show();
 				}
 			}
 
@@ -167,6 +180,9 @@ public class OrderActivity extends Activity {
 				res.add(d);
 			}
 		}
+		
+		if(res.isEmpty())
+			return null;
 		
 		return res;
 	}

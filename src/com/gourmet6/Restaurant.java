@@ -477,7 +477,7 @@ public class Restaurant {
 	public boolean checkOrder(Order order)
 	{
 		if(order.getOrderDishes() == null)
-			return true;
+			return false;
 		
 		for (Dish dish : order.getOrderDishes())
 		{
