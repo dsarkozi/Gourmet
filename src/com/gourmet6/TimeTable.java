@@ -181,13 +181,23 @@ public class TimeTable
 				&& checkTime(date);
 	}
 	private boolean checkTime(GregorianCalendar date) {
+		int heureFin = this.getClosingTime().get(GregorianCalendar.HOUR_OF_DAY);
+		int heureDate = date.get(GregorianCalendar.HOUR_OF_DAY);
+		if(0<=heureDate && heureDate<=heureFin)
+		{
+			heureDate+=24;
+		}
+		if(heureFin<this.getOpenTime().get(GregorianCalendar.HOUR_OF_DAY))
+		{
+			heureFin +=24;
+		}
 		if(this.getOpenTime().get(GregorianCalendar.HOUR_OF_DAY)<date.get(GregorianCalendar.HOUR_OF_DAY)
-				&& date.get(GregorianCalendar.HOUR_OF_DAY)<this.getClosingTime().get(GregorianCalendar.HOUR_OF_DAY))
+				&& heureDate<heureFin)
 		{
 			return true;
 		}
-		else if(this.getOpenTime().get(GregorianCalendar.HOUR_OF_DAY)==date.get(GregorianCalendar.HOUR_OF_DAY)
-				&& date.get(GregorianCalendar.HOUR_OF_DAY)<this.getClosingTime().get(GregorianCalendar.HOUR_OF_DAY))
+		else if(this.getOpenTime().get(GregorianCalendar.HOUR_OF_DAY)==heureDate
+				&& heureDate<heureFin)
 		{
 			if(this.getOpenTime().get(GregorianCalendar.MINUTE)<=date.get(GregorianCalendar.MINUTE)){
 				return true;
@@ -196,8 +206,8 @@ public class TimeTable
 				return false;
 			}
 		}
-		else if(this.getOpenTime().get(GregorianCalendar.HOUR_OF_DAY)<date.get(GregorianCalendar.HOUR_OF_DAY)
-				&& date.get(GregorianCalendar.HOUR_OF_DAY)==this.getClosingTime().get(GregorianCalendar.HOUR_OF_DAY))
+		else if(this.getOpenTime().get(GregorianCalendar.HOUR_OF_DAY)<heureDate
+				&& heureDate==heureFin)
 		{
 			if(date.get(GregorianCalendar.MINUTE)<=this.getClosingTime().get(GregorianCalendar.MINUTE)){
 				return true;

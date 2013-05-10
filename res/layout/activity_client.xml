@@ -36,21 +36,20 @@
         android:layout_below="@+id/mail"/>
 
     <Button
+        android:id="@+id/rescom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/phone"
+        android:layout_marginTop="44dp"
+        android:text="@string/rescom" />
+
+    <Button
         android:id="@+id/cpd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rescom"
-        android:layout_marginTop="45dp"
-        android:layout_toRightOf="@+id/phone"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:text="@string/cpd" />
-
-    <Button
-        android:id="@+id/rescom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/phone"
-        android:layout_marginTop="44dp"
-        android:text="@string/rescom" />
 
 </RelativeLayout>

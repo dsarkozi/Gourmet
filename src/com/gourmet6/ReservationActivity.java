@@ -4,8 +4,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import org.w3c.dom.Text;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,15 +12,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
 import android.widget.DatePicker.OnDateChangedListener;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 
@@ -46,12 +46,13 @@ public class ReservationActivity extends Activity {
 	private Gourmet g ;
 	
 	private Dialog dialog;
-	private Dialog message;
 	
 	private Context context;
 	
 	private boolean from;
 	private Restaurant currentRest;
+	
+	private CheckBox takeAway;
 	
 	private DBHandler dbh;
 	
@@ -87,10 +88,31 @@ public class ReservationActivity extends Activity {
 		tvHoraireReserv = (TextView) findViewById(R.id.horaireReserv);
 		setHorair();
 		
+		//EditText
+		nbrPrs = (EditText) findViewById(R.id.nbrPrsReserv);
+		
+		//CheckBox
+		takeAway = (CheckBox) findViewById(R.id.checkBoxReserv);
+		takeAway.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton arg0, boolean checked) {
+				System.out.println(checked);
+				if(checked)
+				{
+					nbrPrs.setText("");
+					nbrPrs.setEnabled(false);
+				}
+				else
+				{
+					nbrPrs.setEnabled(true);
+				}
+			}
+		});
+		
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
-		nbrPrs = (EditText) findViewById(R.id.nbrPrsReserv);
+		
 		
 		dateTime = (Button) findViewById(R.id.dateTime);
 		s = TimeTable.parseDateInString(new GregorianCalendar(year, month, day, hour, minute));
@@ -163,10 +185,12 @@ public class ReservationActivity extends Activity {
 		order.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(takeAway.isChecked() && nbrPrs.length()==0){
+					showAlert("Invalid number of people.");
+				}
 				
 				Reservation res = checkClient();
-				if(res==null)
-				{
+				if(res==null){
 					showAlert("You're not logged !");
 				}
 				else if(checkReservation(res)){
