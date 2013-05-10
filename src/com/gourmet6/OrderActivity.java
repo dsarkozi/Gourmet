@@ -154,7 +154,7 @@ public class OrderActivity extends Activity {
 			for(Dish d: ordered){
 				a = a +"- " +d.getQuantity()+" "+ d.getName() +"\n";
 			}
-			a = a + computePrice(ordered)+"\n";
+			a = a + "Price: "+ computePrice(ordered)+" \u20ac \n";
 			
 			AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
 			builder.setTitle(R.string.activity_order_title);

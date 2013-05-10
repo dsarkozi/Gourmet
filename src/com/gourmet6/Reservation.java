@@ -38,6 +38,24 @@ public class Reservation {
 	
 	/**
 	 * Constructor
+	 * @param restaurant
+	 * @param date
+	 * @param people
+	 * @param nameClient
+	 * @param email
+	 */
+	public Reservation(String restaurant, GregorianCalendar date, int people, String nameClient, String email)
+	{
+		this.restaurant = restaurant;
+		this.date = date;
+		this.people = people;
+		this.name = nameClient;
+		this.email = email;
+		this.order = null;
+	}
+	
+	/**
+	 * Constructor
 	 * @param restaurant the restaurant to make the booking in
 	 * @param date the date on which to book
 	 * @param people the number of people who need to be seated
