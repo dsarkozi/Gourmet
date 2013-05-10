@@ -101,14 +101,6 @@
             android:label="@string/title_activity_client" >
         </activity>
         <activity
-            android:name="com.gourmet6.ResAndComActivity"
-            android:label="@string/title_activity_res_and_com" >
-        </activity>
-        <activity
-            android:name="com.gourmet6.PrefActivity"
-            android:label="@string/title_activity_pref" >
-        </activity>
-        <activity
             android:name="com.gourmet6.NewPersDataActivity"
             android:label="@string/title_activity_new_pers_data" >
         </activity>
