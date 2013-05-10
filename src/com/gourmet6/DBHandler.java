@@ -489,6 +489,47 @@ public class DBHandler {
 		return dishes;
 	}
 	
+	/**
+	 * Updates a dish's inventory in the DB.
+	 * @param resName the restaurant's name
+	 * @param dishName the dish's name
+	 * @param newInvent the dish's new inventory
+	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occurred
+	 * @throws SQLiteException if the DB cannot be accessed for writing
+	 * @throws SQLException if one of the arguments is invalid
+	 */
+	public long setDishInventory(String resName, String dishName, int newInvent) throws SQLiteException, SQLException
+	{
+		if (resName == null)
+		{
+			throw new SQLException("No restaurant name given.");
+		}
+		else if (dishName == null)
+		{
+			throw new SQLException("No dish name given.");
+		}
+		if (newInvent < 0)
+		{
+			throw new SQLException("Attempt to set a negative dish inventory.");
+		}
+		
+		long nrRows = -1;
+		this.openWrite();
+		
+		ContentValues updateValues = new ContentValues(1);
+		updateValues.put(INVENTORY, newInvent);
+		this.db.beginTransaction();
+		nrRows = this.db.update(TABLE_DISH, updateValues, RES+"=? AND "+DISH+"=?", new String[] {resName, dishName});
+		if (nrRows > 0)
+		{
+			this.db.setTransactionSuccessful();
+		}
+		db.endTransaction();
+		
+		this.close();
+		return nrRows;
+	}
+	
 	
 	/*********
 	 * 
@@ -628,6 +669,7 @@ public class DBHandler {
 		{
 			this.db.setTransactionSuccessful();
 		}
+		db.endTransaction();
 		
 		this.close();
 		return nrRows;
@@ -664,7 +706,8 @@ public class DBHandler {
 		{
 			this.db.setTransactionSuccessful();
 		}
-
+		db.endTransaction();
+		
 		this.close();
 		return nrRows;
 	}
@@ -1083,7 +1126,6 @@ public class DBHandler {
 			Dish dish = new Dish(dishName, type, subtype, price, 0, null, allergens);
 			dish.setQuantity(quantity);
 			dishes.add(dish);
-
 		}
 		retour.setOrderDishes(dishes);
 
