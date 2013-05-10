@@ -710,6 +710,17 @@ public class Restaurant {
 		res = res+"_";
 		return res;
 	}
+	public static String getNameImg2(String name)
+	{
+		String res = name;
+		res = res.toLowerCase();
+		res = res.replace(' ', '_');
+		res = res.replace('é', 'e');
+		res = res.replace('ê', 'e');
+		res = res.replace('è', 'e');
+		res = res.replace('à', 'a');
+		return res;
+	}
 	
 	public void setDish(Dish d){
 		int index = this.listDishes.indexOf(getDish(d.getName()));

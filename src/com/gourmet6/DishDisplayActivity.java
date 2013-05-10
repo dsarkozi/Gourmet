@@ -46,7 +46,7 @@ public class DishDisplayActivity extends Activity {
 		dishName.setText(name);
 		
 		dishImage = (ImageView)findViewById(R.id.dishimage);
-		String imgType = Restaurant.getNameImg(plat.getType());
+		String imgType = Restaurant.getNameImg2(plat.getType());
 		dishImage.setImageResource(getResources().getIdentifier(imgType, "drawable", getPackageName()));
 		dishDescr  = (TextView)findViewById(R.id.descr);
 		dishDescr.setText(plat.getDescription());
