@@ -33,6 +33,7 @@ public class DishDisplayActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dish_display);
+		setTitle("Dish");
 		
 		g = (Gourmet)getApplication();
 		current = g.getRest();
