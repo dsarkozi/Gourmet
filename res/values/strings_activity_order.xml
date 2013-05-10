@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <string name="activity_order_title">Order</string>
+    <string name="activity_order_title">Order details</string>
     <string name="orderButton">Submit</string>
     <string name="udish">Unknown</string>
     <string name="do_you_res">Do you wish to make a booking ?</string>
