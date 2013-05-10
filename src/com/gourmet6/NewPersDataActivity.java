@@ -110,7 +110,7 @@ public class NewPersDataActivity extends Activity {
         			dbHand.changeMail(currentCli.getEmail(), newMailS);
         			quatre ="Your email has been changed.";
         		}
-        		missingField.setText("The following changes have been carried out :\n"+un+deux+trois+quatre);
+        		missingField.setText("The following changes have been carried out:\n"+un+deux+trois+quatre);
         	}
         });
 	}

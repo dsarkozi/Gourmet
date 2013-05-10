@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/resRestName"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/restName"
         android:layout_marginLeft="40dp"
@@ -14,7 +14,7 @@
 
     <TextView
         android:id="@+id/resDate"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
         android:text="@string/resDate" />
