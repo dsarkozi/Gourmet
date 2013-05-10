@@ -31,6 +31,7 @@ public class ResAndComActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_res_and_com);
+		setTitle(R.string.rescom);
 		dbHand = new DBHandler(this);
 		
 		g = (Gourmet)getApplication();

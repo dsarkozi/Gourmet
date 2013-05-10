@@ -47,6 +47,10 @@
                 android:value="com.gourmet6.MainGourmet" />
         </activity>
         <activity
+            android:name="com.gourmet6.ResAndComActivity"
+            android:label="@string/title_activity_res_and_com">
+        </activity>
+        <activity
             android:name="com.gourmet6.ReservationActivity"
             android:label="@string/title_activity_reservation"
             android:screenOrientation="portrait"
