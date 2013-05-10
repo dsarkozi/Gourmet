@@ -7,6 +7,7 @@ public class Gourmet extends Application
 	private Client currentcli = null;
 	private Restaurant currentres = null;
 	private Order currentorder = null;
+	private Reservation currentreserv = null;
 	
 	@Override
 	public void onCreate()
@@ -40,6 +41,16 @@ public class Gourmet extends Application
 
 	public void setOrder(Order currentorder) {
 		this.currentorder = currentorder;
+	}
+
+	public Reservation getReservation()
+	{
+		return currentreserv;
+	}
+
+	public void setReservation(Reservation currentreserv)
+	{
+		this.currentreserv = currentreserv;
 	}
 	
 }
