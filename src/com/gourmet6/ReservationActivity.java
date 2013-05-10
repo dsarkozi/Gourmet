@@ -96,7 +96,6 @@ public class ReservationActivity extends Activity {
 		takeAway.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton arg0, boolean checked) {
-				System.out.println(checked);
 				if(checked)
 				{
 					nbrPrs.setText("");
