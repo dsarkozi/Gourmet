@@ -241,7 +241,7 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 		public TextView type;
 	}
 	
-	private class DishViewHolder{
+	public class DishViewHolder{
 		public TextView name;
 		public TextView price;
 		public Button plus;

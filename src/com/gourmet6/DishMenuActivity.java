@@ -2,6 +2,8 @@ package com.gourmet6;
 
 import java.util.ArrayList;
 
+import com.gourmet6.DishMenuAdapter.DishViewHolder;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
@@ -77,11 +79,11 @@ public class DishMenuActivity extends Activity {
 			@Override
 			public boolean onChildClick(ExpandableListView parent, View v,int groupPosition, int childPosition, long id) {
 				
-				TextView txt = (TextView)v.findViewById(R.id.dishname);
+				DishViewHolder txt = (DishViewHolder) v.getTag();
 				
 				if(dishad.isChildSelectable(groupPosition, childPosition)){
 					Intent display = new Intent(DishMenuActivity.this, DishDisplayActivity.class);
-					display.putExtra("the_dish", txt.getText().toString());
+					display.putExtra("the_dish", (txt.name.getText()).toString());
 					startActivity(display);
 				}
 				return true;

@@ -57,7 +57,7 @@ public class DishDisplayActivity extends Activity {
 		price.setText(Dish.myRound(plat.getPrice())+"");
 		type.setText(plat.getType());
 		subtype.setText(plat.getSubtype());
-		inventory.setText(plat.getInventory());
+		inventory.setText(plat.getInventory()+" pcs");
 		allergens.setText(arrayListOfStringToString(plat.getAllergens()));
 	}
 
