@@ -1,6 +1,7 @@
 package com.gourmet6;
 
 import java.sql.Timestamp;
+import java.util.GregorianCalendar;
 
 /**
  * A class representing a client and his information.
@@ -34,6 +35,18 @@ public class Client {
 	 * @return the reservation containing the required information
 	 */
 	public Reservation createReservation(String restName, String date, int people)
+	{
+		return new Reservation(restName, date, people, this.name, this.email);
+		
+	}
+	
+	/**
+	 * Creates a reservation for the client.
+	 * @param time the time and date of the booking
+	 * @param people the number of people who will need a seat
+	 * @return the reservation containing the required information
+	 */
+	public Reservation createReservation(String restName, GregorianCalendar date, int people)
 	{
 		return new Reservation(restName, date, people, this.name, this.email);
 		

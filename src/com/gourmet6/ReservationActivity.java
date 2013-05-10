@@ -163,7 +163,14 @@ public class ReservationActivity extends Activity {
 		order.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(checkReservation()){
+				
+				Reservation res = checkClient();
+				if(res==null)
+				{
+					showAlert("You're not logged !");
+				}
+				else if(checkReservation(res)){
+					g.setReservation(res);
 					currentRest.createListDishes(new DBHandler(ReservationActivity.this));
 					Intent commande = new Intent(ReservationActivity.this, OrderActivity.class);
 					commande.putExtra("from", false);
@@ -178,7 +185,13 @@ public class ReservationActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO suppression reservation ?
-				if(checkReservation()){
+				Reservation res = checkClient();
+				if(res==null)
+				{
+					showAlert("You're not logged !");
+				}
+				else if(checkReservation(res)){
+					g.setReservation(res); //TODO que faire ?
 					Intent commande = new Intent(ReservationActivity.this, RestaurantActivity.class);
 					startActivity(commande);
 				}
@@ -194,36 +207,16 @@ public class ReservationActivity extends Activity {
 		if(s.length()!=0)tvHoraireReserv.setText(s);
 	}
 
-	public boolean checkReservation()
+	public boolean checkReservation(Reservation reservTemp)
 	{
 		if(nbrPrs.length()==0){
 			Toast.makeText(getApplicationContext(), "Vous reservez pour 0 personnes ?", Toast.LENGTH_SHORT).show();
 			return false;
 		}
-		people = Integer.parseInt(nbrPrs.getText().toString());
-		GregorianCalendar date = new GregorianCalendar(year, month, day, hour, minute);
-		Reservation reservTemp = new Reservation(g.getRest().getName(), date, people, g.getClient().getName(), g.getClient().getEmail());
-		System.out.println("\n");
 		String res = g.getRest().checkReservation(reservTemp, dbh);
-		System.out.println("\n");
 		if(res!=null)
 		{			
-			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-
-			// set title
-			alertDialogBuilder.setTitle("Error");
-
-			// set dialog message
-			alertDialogBuilder
-				.setMessage(res)
-				.setCancelable(true)
-				.setPositiveButton("OK",null);
-
-			// create alert dialog
-			AlertDialog alertDialog = alertDialogBuilder.create();
-
-			// show it
-			alertDialog.show();
+			showAlert(res);
 
 			return false;
 		}
@@ -231,6 +224,40 @@ public class ReservationActivity extends Activity {
 		{
 			return true;
 		}
+	}
+	
+	public Reservation checkClient()
+	{
+		if(g.getClient()!=null)
+		{
+			people = Integer.parseInt(nbrPrs.getText().toString());
+			GregorianCalendar date = new GregorianCalendar(year, month, day, hour, minute);
+			return g.getClient().createReservation(currentRest.getName(), date, people);
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	public void showAlert(String s)
+	{
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+
+		// set title
+		alertDialogBuilder.setTitle("Error");
+
+		// set dialog message
+		alertDialogBuilder
+			.setMessage(s)
+			.setCancelable(true)
+			.setPositiveButton("OK",null);
+
+		// create alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+
+		// show it
+		alertDialog.show();
 	}
 
 	/**
