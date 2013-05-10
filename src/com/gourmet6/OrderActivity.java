@@ -47,9 +47,6 @@ public class OrderActivity extends Activity {
 		g = (Gourmet)getApplication();
 		current = g.getRest();
 		cli = g.getClient();
-		if(cli == null){
-			cli = new Client("fuckyou","moron","666"); //TODO To remove
-		}
 		
 		Bundle extra = getIntent().getExtras();
 		this.fromRestaurant = extra.getBoolean("from");
