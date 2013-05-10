@@ -16,6 +16,10 @@ public class ExceptionHandler
 		kill();
 	}
 	
+	/*
+	 * @deprecated Use {@link caughtException()} instead
+	 */
+	@Deprecated
 	public static void showDialog(Context context, boolean isCaught, String message)
 	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);

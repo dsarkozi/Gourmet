@@ -18,6 +18,8 @@ import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteException;
 import android.os.Build;
 
 public class OrderActivity extends Activity {
@@ -25,6 +27,7 @@ public class OrderActivity extends Activity {
 	private Gourmet g;
 	private Restaurant current;
 	private Client cli;
+	private Reservation resv;
 	private boolean fromRestaurant = false;
 	private ExpandableListView dishes;
 	private DishMenuAdapter dishad;
@@ -49,11 +52,7 @@ public class OrderActivity extends Activity {
 		current = g.getRest();
 		current.Orderreboot();
 		cli = g.getClient();
-		/*
-		if(cli == null){
-			cli = new Client("fuckyou","moron","666"); //TODO To remove
-		}
-		*/
+		
 		Bundle extra = getIntent().getExtras();
 		this.fromRestaurant = extra.getBoolean("from");
 		
@@ -61,7 +60,8 @@ public class OrderActivity extends Activity {
 		submit.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
-			public void onClick(View v) {				
+			public void onClick(View v) {
+				dbh = new DBHandler(OrderActivity.this);
 				beforeCheck(ordered());
 			}
 		});
@@ -104,7 +104,7 @@ public class OrderActivity extends Activity {
 				}
 				else if(allergens.contains(str)){
 					current = dishad.getCurrentRest();
-					String[] st = str.split(" ");
+					String[] st = str.split(": ");
 					updateLists(current.filterDishesAllergen(st[1], listdish));
 					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,current,listdish, true));
 				}
@@ -155,27 +155,28 @@ public class OrderActivity extends Activity {
 			for(Dish d: ordered){
 				a = a +"- " +d.getQuantity()+" "+ d.getName() +"\n";
 			}
-		
-		AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
-		builder.setTitle(R.string.activity_order_title);
-		builder.setMessage(getString(R.string.ordered)+ "\n"+ a + getString(R.string.do_you_confirm)); 
-		
-		builder.setPositiveButton(R.string.yes_button, new DialogInterface.OnClickListener() {
+			a = a + computePrice(ordered)+"\n";
 			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				toBook();
-			}
-		});
-		builder.setNegativeButton(R.string.no_button, new DialogInterface.OnClickListener() {
+			AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
+			builder.setTitle(R.string.activity_order_title);
+			builder.setMessage(getString(R.string.ordered)+ a + getString(R.string.do_you_confirm)); 
+		
+			builder.setPositiveButton(R.string.yes_button, new DialogInterface.OnClickListener() {
 			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				
-			}
-		});
-		AlertDialog dialog = builder.create();
-		dialog.show();
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					toBook();
+				}
+			});
+			builder.setNegativeButton(R.string.no_button, new DialogInterface.OnClickListener() {
+			
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					
+				}
+			});
+			AlertDialog dialog = builder.create();
+			dialog.show();
 		}
 		else{
 			AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
@@ -214,8 +215,16 @@ public class OrderActivity extends Activity {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					if(current.checkOrder(g.getOrder())){
-						//dbh = new DBHandler(OrderActivity.this);
-						//dbh.addOrder(g.getOrder());
+						
+						try{
+							dbh.addOrder(g.getOrder());
+						}
+						catch(SQLiteException e){
+							ExceptionHandler.caughtException(OrderActivity.this, e);
+						}
+						catch(SQLException e){
+							ExceptionHandler.caughtException(OrderActivity.this, e);
+						}
 						Toast.makeText(OrderActivity.this,R.string.hungry, Toast.LENGTH_LONG) .show();
 						finish();
 					}else{
@@ -229,8 +238,15 @@ public class OrderActivity extends Activity {
 			dialog.show();
 		}else{
 			if(current.checkOrder(g.getOrder())){
-				//dbh = new DBHandler(OrderActivity.this);
-				//dbh.addOrder(g.getOrder());
+				try{
+					dbh.addOrder(g.getOrder());
+				}
+				catch(SQLiteException e){
+					ExceptionHandler.caughtException(OrderActivity.this, e);
+				}
+				catch(SQLException e){
+					ExceptionHandler.caughtException(OrderActivity.this, e);
+				}
 				Toast.makeText(OrderActivity.this,R.string.hungry, Toast.LENGTH_LONG) .show();
 				finish();
 			}else{
@@ -263,6 +279,14 @@ public class OrderActivity extends Activity {
 			}
 		});
 		exit.show();
+	}
+	
+	private String computePrice(ArrayList<Dish> ordered){
+		double a= 0;
+		for(Dish d: ordered){
+			a = a + d.getPrice();
+		}
+		return String.format("%.2f", a);
 	}
 
 	/**

@@ -18,7 +18,7 @@
             android:id="@+id/TextView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center"
             android:text="@string/resseats"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -27,7 +27,7 @@
             android:layout_marginLeft="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center"
             android:ems="2"
             android:inputType="number"
             android:maxLength="2" >
@@ -36,20 +36,12 @@
         </EditText>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/dateTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayout1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="14dp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/linearLayout1"
-        android:layout_below="@+id/dateTime"
-        android:layout_marginTop="32dp" >
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="56dp" >
 
         <Button
             android:id="@+id/comInReserv"
@@ -65,5 +57,41 @@
             android:layout_weight="1"
             android:text="@string/ressubmitButton" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="@string/timeTable"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/horaireReserv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:textIsSelectable="true" />
+
+    <Button
+        android:id="@+id/dateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/horaireReserv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="46dp" />
+
+    <CheckBox
+        android:id="@+id/checkBoxReserv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dateTime"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp"
+        android:text="@string/takeAway" />
 
 </RelativeLayout>
