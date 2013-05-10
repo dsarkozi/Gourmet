@@ -43,7 +43,6 @@ public class DishDisplayActivity extends Activity {
 		dishName.setText(name);
 		
 		dishImage = (ImageView)findViewById(R.id.dishimage);
-		//dishImage.setImageResource(1234); // a faire mettre la ressource de l'image :/
 		String imgType = Restaurant.getNameImg(plat.getType());
 		dishImage.setImageResource(getResources().getIdentifier(imgType, "drawable", getPackageName()));
 		dishDescr  = (TextView)findViewById(R.id.descr);
@@ -60,9 +59,6 @@ public class DishDisplayActivity extends Activity {
 		subtype.setText(plat.getSubtype());
 		inventory.setText(plat.getInventory());
 		allergens.setText(arrayListOfStringToString(plat.getAllergens()));
-		
-		dishInfo  = (TextView)findViewById(R.id.info);
-		dishInfo.setText("Info about this dish :\n"+price+type+subtype+inventory+allergens);
 	}
 
 	@Override
