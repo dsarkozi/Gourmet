@@ -206,7 +206,7 @@ public class ReservationActivity extends Activity {
 				Reservation res = checkClient();
 				if(res!=null && checkReservation(res)){
 					//TODO mettre dans db
-					
+					dbh.addReservation(res, 0);
 					Toast.makeText(getApplicationContext(), "Your Reservation has been confirmed.", Toast.LENGTH_LONG).show();
 					ReservationActivity.this.finish();
 				}

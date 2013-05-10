@@ -52,18 +52,18 @@ public class TimeTable
     	translateWeek.put("mercredi", "Wednesday");
     	translateWeek.put("jeudi", 	  "Thursday");
     	translateWeek.put("vendredi", "Friday");
-    	translateWeek.put("samedi",	  "Saterday");
+    	translateWeek.put("samedi",	  "Saturday");
     }
     
     static public HashMap<Integer,String> mapWeek = new HashMap<Integer,String>(7);
     static {
-    	mapWeek.put(1, "Sundays");
+    	mapWeek.put(1, "Sunday");
     	mapWeek.put(2, "Monday");
     	mapWeek.put(3, "Tuesday");
     	mapWeek.put(4, "Wednesday");
     	mapWeek.put(5, "Thursday");
     	mapWeek.put(6, "Friday");
-    	mapWeek.put(7, "Saterday");
+    	mapWeek.put(7, "Saturday");
     }
     
 	
