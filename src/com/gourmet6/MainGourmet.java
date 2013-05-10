@@ -19,7 +19,8 @@ public class MainGourmet extends Activity
 	public static final int TOWN_LIST = 1;
 	public static final int RESTO_LIST = 2;
 	
-	private String currentTown;
+	public static String currentTown;
+
 	@SuppressWarnings("unused")
 	private Location location = null;
 	public DBHandler dbHand;

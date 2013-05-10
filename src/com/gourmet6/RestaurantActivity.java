@@ -26,6 +26,7 @@ public class RestaurantActivity extends Activity
 	
 	private Gourmet g;
 	private Restaurant currentRest;
+	private String currentTown;
 	
 	private LinearLayout listImg;
 	
@@ -63,6 +64,7 @@ public class RestaurantActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_restaurant);
 		MainGourmet.isDone = false;
+		currentTown = MainGourmet.currentTown;
 		overridePendingTransition(0, R.anim.commetuveux);
 		// Show the Up button in the action bar.
 		setupActionBar();
@@ -138,7 +140,7 @@ public class RestaurantActivity extends Activity
 		}
 		if(currentRest.getPriceCat()!=0){
 			tvCatPrice = (TextView) findViewById(R.id.tvPriceCat);
-			tvCatPrice.setText(Dish.myRound(currentRest.getPriceCat())+" €");
+			tvCatPrice.setText(Dish.myRound(currentRest.getPriceCat())+" ï¿½");
 		}
 		if(currentRest.getSeats()!=0){
 			tvSeats = (TextView) findViewById(R.id.tvPlaceRest);
@@ -351,7 +353,7 @@ public class RestaurantActivity extends Activity
 	public void onBackPressed()
 	{
 		MainGourmet.showResto = true;
+		MainGourmet.currentTown = currentTown;
 		super.onBackPressed();
-	}
-	
+	}	
 }
