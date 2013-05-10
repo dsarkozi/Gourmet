@@ -70,8 +70,11 @@ public class Restaurant {
 	 */
 	public void createListDishes(DBHandler dbh)
 	{
-		if (this.listDishes == null)
-			this.listDishes = dbh.getDishes(this.name);
+		if (this.listDishes != null){
+			this.listDishes.clear();
+		}
+		this.listDishes = dbh.getDishes(this.name);
+		
 	}
 	
 	/**
@@ -477,7 +480,7 @@ public class Restaurant {
 	public boolean checkOrder(Order order)
 	{
 		if(order.getOrderDishes() == null)
-			return true;
+			return false;
 		
 		for (Dish dish : order.getOrderDishes())
 		{

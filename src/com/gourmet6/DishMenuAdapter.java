@@ -105,8 +105,8 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 			else{
 				dholder = (DishViewHolder) convertView.getTag();
 			}
-			dholder.plus.setTag(dholder.count);
-			dholder.minus.setTag(dholder.count);
+			dholder.plus.setTag(dholder);
+			dholder.minus.setTag(dholder);
 			
 			
 			dholder.price.setVisibility(View.VISIBLE);
@@ -118,6 +118,13 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 			dholder.price.setText(String.format("%.2f", currentdish.getPrice()) + " \u20ac");
 			dholder.count.setText(currentdish.getInventory() + " pcs");
 			
+			if(currentdish.getInventory() == 0){
+				dholder.plus.setEnabled(false);
+				dholder.minus.setEnabled(false);
+			}else{
+				dholder.plus.setEnabled(true);
+				dholder.minus.setEnabled(true);
+			}
 		
 			if(fromOrder){
 				dholder.plus.setVisibility(View.VISIBLE);
@@ -130,12 +137,14 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 			
 					@Override
 					public void onClick(View v) {
-						if((currentdish.getQuantity()) < (currentdish.getInventory()))
+						DishViewHolder dh = (DishViewHolder) v.getTag();
+						Dish d = current.getDish(dh.name.getText().toString());
+						if((d.getQuantity()) < (d.getInventory()))
 						{
 						
-							currentdish.incrementQuantity();
-							((TextView)v.getTag()).setText(currentdish.getQuantity()+" pcs");
-							current.setDish(currentdish);
+							d.incrementQuantity();
+							dh.count.setText(d.getQuantity()+" pcs");
+							current.setDish(d);
 							
 						}else{
 							
@@ -147,12 +156,15 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 					
 					@Override
 					public void onClick(View v) {
-						if((currentdish.getQuantity()) > 0)
+						DishViewHolder dh = (DishViewHolder) v.getTag();
+						Dish d = current.getDish(dh.name.getText().toString());
+						if((d.getQuantity()) > 0)
 						{
-
-							currentdish.decrementQuantity();
-							((TextView)v.getTag()).setText(currentdish.getQuantity()+" pcs");
-							current.setDish(currentdish);
+							
+							d.decrementQuantity();
+							dh.count.setText(d.getQuantity()+" pcs");
+							current.setDish(d);
+							
 						}else{
 							
 						}

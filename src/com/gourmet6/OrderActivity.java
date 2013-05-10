@@ -28,6 +28,7 @@ public class OrderActivity extends Activity {
 	private boolean fromRestaurant = false;
 	private ExpandableListView dishes;
 	private DishMenuAdapter dishad;
+	private DBHandler dbh;
 	private ArrayAdapter<String> adapter;
 	private ArrayList<String> types;
 	private ArrayList<String> subtypes;
@@ -46,8 +47,14 @@ public class OrderActivity extends Activity {
 		
 		g = (Gourmet)getApplication();
 		current = g.getRest();
+		current.Orderreboot();
 		cli = g.getClient();
 		
+		/*
+		if(cli == null){
+			cli = new Client("fuckyou","moron","666"); //TODO To remove
+		}
+		*/
 		Bundle extra = getIntent().getExtras();
 		this.fromRestaurant = extra.getBoolean("from");
 		
@@ -55,44 +62,8 @@ public class OrderActivity extends Activity {
 		submit.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
-			public void onClick(View v) {
-				// TODO check order				
-				current = dishad.getCurrentRest();
-				Order odd = cli.createOrder(current.getName());
-				odd.setOrderDishes(ordered());
-				g.setOrder(odd);
-				
-				if(fromRestaurant){
-					AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
-					builder.setTitle(R.string.activity_reservation_title);
-					builder.setMessage(R.string.do_you_res);
-					
-					builder.setPositiveButton(R.string.yes_button, new DialogInterface.OnClickListener() {
-						
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							Intent resv = new Intent(OrderActivity.this,ReservationActivity.class);
-							resv.putExtra("fromOrder", true);
-							startActivity(resv);
-						}
-					});
-					builder.setNegativeButton(R.string.no_button, new DialogInterface.OnClickListener() {
-						
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// TODO quit
-							if(current.checkOrder(g.getOrder())){
-								Toast.makeText(OrderActivity.this,"Your Order was validated, you can come get it very soon", Toast.LENGTH_LONG) .show();
-							}else{
-								Toast.makeText(OrderActivity.this,"Your Order can't be made, we are out of some dishes you asked.\n We apologize", Toast.LENGTH_LONG) .show();
-							}
-							
-						}
-					});
-					
-					AlertDialog dialog = builder.create();
-					dialog.show();
-				}
+			public void onClick(View v) {				
+				beforeCheck(ordered());
 			}
 		});
 		
@@ -110,41 +81,40 @@ public class OrderActivity extends Activity {
 
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				// TODO Auto-generated method stub
 				String str =(String)arg0.getSelectedItem();
 				if(str == "All"){
-					
+					current = dishad.getCurrentRest();
 					updateLists(current.getListDishes());
 					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,current,listdish, true));
 					
 				}
 				else if(str == "Price"){
+					current = dishad.getCurrentRest();
 					updateLists(current.sortDishesPrice(listdish));
 					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,current,listdish, true));
 				}
 				else if(types.contains(str)){
-					
+					current = dishad.getCurrentRest();
 					updateLists(current.filterDishesType(str, listdish));
 					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,current,listdish, true));
 				}
 				else if(subtypes.contains(str)){
-					
+					current = dishad.getCurrentRest();
 					updateLists(current.filterDishesSubtype(str, listdish));
 					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,current,listdish, true));
 				}
 				else if(allergens.contains(str)){
-					
+					current = dishad.getCurrentRest();
 					updateLists(current.filterDishesAllergen(str, listdish));
 					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,current,listdish, true));
 				}
 				else{
-					Toast.makeText(OrderActivity.this,"Current list does not contain any dish from "+str, Toast.LENGTH_LONG) .show();
+					Toast.makeText(OrderActivity.this,getString(R.string.vanished)+str, Toast.LENGTH_LONG) .show();
 				}
 			}
 
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
 			}	
 		});
 	}
@@ -168,16 +138,100 @@ public class OrderActivity extends Activity {
 			}
 		}
 		
+		if(res.isEmpty())
+			return null;
+		
 		return res;
+	}
+	
+	private void beforeCheck(ArrayList<Dish> ordered){
+		current = dishad.getCurrentRest();
+		Order odd = cli.createOrder(current.getName());
+		String a ="";
+		odd.setOrderDishes(ordered);
+		g.setOrder(odd);
+		
+		if(ordered != null){
+			for(Dish d: ordered){
+				a = a +"- " +d.getQuantity()+" "+ d.getName() +"\n";
+			}
+		}
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
+		builder.setTitle(R.string.activity_order_title);
+		builder.setMessage(getString(R.string.ordered)+ "\n"+ a + getString(R.string.do_you_confirm)); 
+		
+		builder.setPositiveButton(R.string.yes_button, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				toBook();
+			}
+		});
+		builder.setNegativeButton(R.string.no_button, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				
+			}
+		});
+		AlertDialog dialog = builder.create();
+		dialog.show();
+		
+	}
+	
+	private void toBook(){
+		if(fromRestaurant){
+			AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
+			builder.setTitle(R.string.activity_reservation_title);
+			builder.setMessage(R.string.do_you_res);
+			
+			builder.setPositiveButton(R.string.yes_button, new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					Intent resv = new Intent(OrderActivity.this,ReservationActivity.class);
+					resv.putExtra("fromOrder", true);
+					startActivity(resv);
+				}
+			});
+			builder.setNegativeButton(R.string.no_button, new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					if(current.checkOrder(g.getOrder())){
+						dbh = new DBHandler(OrderActivity.this);
+						dbh.addOrder(g.getOrder());
+						Toast.makeText(OrderActivity.this,R.string.hungry, Toast.LENGTH_LONG) .show();
+						finish();
+					}else{
+						Toast.makeText(OrderActivity.this,R.string.apology, Toast.LENGTH_LONG) .show();
+					}
+					
+				}
+			});
+			
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		}else{
+			if(current.checkOrder(g.getOrder())){
+				dbh = new DBHandler(OrderActivity.this);
+				dbh.addOrder(g.getOrder());
+				Toast.makeText(OrderActivity.this,R.string.hungry, Toast.LENGTH_LONG) .show();
+				finish();
+			}else{
+				Toast.makeText(OrderActivity.this,R.string.apology, Toast.LENGTH_LONG) .show();
+			}
+		}
 	}
 	
 	@Override
 	public void onBackPressed() {
 		
 		AlertDialog.Builder exit = new AlertDialog.Builder(this);
-		exit.setTitle("Exit Order");
-		exit.setMessage("You are about to exit order menu.Are you sure ?");
-		exit.setPositiveButton("Yes", new DialogInterface.OnClickListener()
+		exit.setTitle(R.string.exit_o);
+		exit.setMessage(R.string.exit_m);
+		exit.setPositiveButton(R.string.yes_button, new DialogInterface.OnClickListener()
 		{
 			@Override
 			public void onClick(DialogInterface dialog, int which)
@@ -186,7 +240,7 @@ public class OrderActivity extends Activity {
 				finish();
 			}
 		});
-		exit.setNegativeButton("No", new DialogInterface.OnClickListener()
+		exit.setNegativeButton(R.string.no_button, new DialogInterface.OnClickListener()
 		{
 			@Override
 			public void onClick(DialogInterface dialog, int which)
