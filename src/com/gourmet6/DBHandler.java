@@ -1343,9 +1343,9 @@ public class DBHandler {
 			{
 				Log.e("DBHandler","Error : two or more dishes seem to have the same name and restaurant.");
 			}
-			String type = c.getString(c.getColumnIndex(TYPE));
-			String subtype = c.getString(c.getColumnIndex(SUBTYPE));
-			float price = c.getFloat(c.getColumnIndex(PRICE));
+			String type = d.getString(c.getColumnIndex(TYPE));
+			String subtype = d.getString(c.getColumnIndex(SUBTYPE));
+			float price = d.getFloat(c.getColumnIndex(PRICE));
 			
 			// information held by the allergen table
 			ArrayList<String> allergens = this.searchForAllergens(resName, dishName);
