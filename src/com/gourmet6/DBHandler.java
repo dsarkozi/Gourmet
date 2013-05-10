@@ -1153,7 +1153,16 @@ public class DBHandler {
 				Log.e("DBHandler", "Error : the method failed.");
 			}
 			c.moveToFirst();
-			seats = c.getInt(0);
+			if (c.isNull(0))
+			{
+				c = this.db.query(TABLE_RESTAURANT, new String[] {SEATS}, RES+"=?", new String[] {resName}, null, null, null);
+				seats = c.getInt(0);
+			}
+			else
+			{
+				seats = c.getInt(0);
+			}
+			
 		}
 		finally
 		{
