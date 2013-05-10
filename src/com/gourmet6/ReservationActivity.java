@@ -101,6 +101,7 @@ public class ReservationActivity extends Activity {
 				{
 					nbrPrs.setText("");
 					nbrPrs.setEnabled(false);
+					people=0;
 				}
 				else
 				{
@@ -185,8 +186,9 @@ public class ReservationActivity extends Activity {
 		order.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(takeAway.isChecked() && nbrPrs.length()==0){
+				if(!takeAway.isChecked() && nbrPrs.length()==0){
 					showAlert("Invalid number of people.");
+					return;
 				}
 				
 				Reservation res = checkClient();
@@ -209,11 +211,16 @@ public class ReservationActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO suppression reservation ?
+				if(!takeAway.isChecked() && nbrPrs.length()==0){
+					showAlert("Invalid number of people.");
+					return;
+				}
 				Reservation res = checkClient();
 				if(res==null)
 				{
 					showAlert("You're not logged !");
 				}
+				
 				else if(checkReservation(res)){
 					g.setReservation(res); //TODO que faire ?
 					Intent commande = new Intent(ReservationActivity.this, RestaurantActivity.class);
