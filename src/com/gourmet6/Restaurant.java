@@ -467,14 +467,12 @@ public class Restaurant {
 	 */
 	public void rateRestaurant(double vote, DBHandler dbh)
 	{
-		System.out.println(rating+", et nbrPrsHasVoted="+nbrPrsHasVoted);
 		this.rating *= this.nbrPrsHasVoted;
 		this.nbrPrsHasVoted++;
 		this.rating += vote;
 		this.rating /= this.nbrPrsHasVoted;
 		
 		dbh.rateRestaurant(this.name, (float)this.rating, this.nbrPrsHasVoted);
-		System.out.println(rating);
 	}
 	
 	public boolean checkOrder(Order order)
@@ -514,7 +512,6 @@ public class Restaurant {
 				timeTableOk = true;
 				String start = getInString(res.getReservationTime(), -2, 0);
 				String end = getInString(res.getReservationTime(), 4, 0);
-				System.out.println(dbh.getAvailBetweenDateTime(res.getReservationResName(), start, end)+" et "+res.getReservationPeople());
 				if(dbh.getAvailBetweenDateTime(res.getReservationResName(), start, end)<res.getReservationPeople()){
 					return "Not enough available seats for this date";
 				}
@@ -531,7 +528,6 @@ public class Restaurant {
 		//on soustrait le temps adéquat.
 		temp.set(GregorianCalendar.HOUR_OF_DAY, temp.get(GregorianCalendar.HOUR_OF_DAY)+hour);
 		temp.set(GregorianCalendar.MINUTE, temp.get(GregorianCalendar.MINUTE)+minute);
-		System.out.println(TimeTable.parseDateInString(temp));
 		return TimeTable.parseDateInString(temp);
 	}
 

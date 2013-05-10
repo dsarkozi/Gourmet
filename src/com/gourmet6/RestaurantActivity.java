@@ -75,7 +75,6 @@ public class RestaurantActivity extends Activity
 		hasRated = false;
 		
 		currentRest = g.getRest();
-		System.out.println(currentRest);
 		setTitle(this.currentRest.getName().split("_")[0]);
 		
 		//Image
@@ -273,7 +272,6 @@ public class RestaurantActivity extends Activity
 			@Override
 			public void onRatingChanged(RatingBar ratingBar, float rating,
 					boolean fromUser) {
-				System.out.println(rating);
 				lookForType((int)rating);
 			}
 		});
