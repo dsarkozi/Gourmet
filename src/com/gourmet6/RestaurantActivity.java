@@ -217,6 +217,10 @@ public class RestaurantActivity extends Activity
 		{
 			img = new ImageView(context);
 			img.setImageResource(getResources().getIdentifier(nameImg+i, "drawable", getPackageName()));
+			/*LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+		            LinearLayout.LayoutParams.WRAP_CONTENT, 
+		            LinearLayout.LayoutParams.WRAP_CONTENT);*/
+			
 			
 			listImg.addView(img);
 		}

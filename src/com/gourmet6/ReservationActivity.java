@@ -49,8 +49,8 @@ public class ReservationActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		overridePendingTransition(0, R.anim.commetuveux);
 		setContentView(R.layout.activity_reservation);
+		overridePendingTransition(0, R.anim.commetuveux);
 		setTitle(R.string.activity_reservation_title);
 		
 		g = (Gourmet)getApplication();
