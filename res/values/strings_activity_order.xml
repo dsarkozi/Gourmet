@@ -10,5 +10,6 @@
     <string name="vanished">Current list does not contain any dish from :</string>
     <string name="hungry">Your Order was validated, you can come get it very soon</string>
     <string name="apology">Your Order can\'t be made.\n We apologize</string>
+    <string name="ordered">You have ordered :\n</string>
     
 </resources>
