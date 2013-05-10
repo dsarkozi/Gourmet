@@ -144,6 +144,7 @@ public class OrderActivity extends Activity {
 				}
 			}
 		}
+		g.setRest(current);
 	}
 	
 	private ArrayList<Dish> ordered()
