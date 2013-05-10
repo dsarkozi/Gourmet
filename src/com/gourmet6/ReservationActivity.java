@@ -241,7 +241,7 @@ public class ReservationActivity extends Activity {
 	public boolean checkReservation(Reservation reservTemp)
 	{
 		if(nbrPrs.length()==0){
-			Toast.makeText(getApplicationContext(), "Vous reservez pour 0 personnes ?", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), "Are you boonking for 0 people ?", Toast.LENGTH_SHORT).show();
 			return false;
 		}
 		String res = g.getRest().checkReservation(reservTemp, dbh);

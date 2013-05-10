@@ -60,9 +60,9 @@ public class ResAndComActivity extends Activity {
 					dishesS = dishesS + dishes.get(i).getQuantity()+" * "+dishes.get(i).getName()+"\n";
 				}
 			}
-			dishesS="No dishes reserved";
+			dishesS="No dishes reserved.";
 		}
-		else dishesS = "No order in this reservation";
+		else dishesS = "No order in this reservation.";
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(ResAndComActivity.this);
 		builder.setTitle(R.string.title_activity_res_and_com);

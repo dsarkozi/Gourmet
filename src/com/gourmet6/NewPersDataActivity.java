@@ -75,11 +75,11 @@ public class NewPersDataActivity extends Activity {
         		actualMdp.setText("");        		
         		//vérifier que le mot de passe actuel est mis et bon
         		if(actualMdpS.equals("")){
-        			missingField.setText("Actual password required");
+        			missingField.setText("Actual password required.");
         			return;
         		}
         		if(!dbHand.checkPassword(currentCli.getEmail(), actualMdpS)){
-        			missingField.setText("Acual password is wrong");
+        			missingField.setText("Acual password is wrong.");
         			return;
         		}
         		//voir les champs remplis par l'utilisateur(changements a faire)+effectuer ces changements
@@ -110,7 +110,7 @@ public class NewPersDataActivity extends Activity {
         			dbHand.changeMail(currentCli.getEmail(), newMailS);
         			quatre ="Your email has been changed.";
         		}
-        		missingField.setText("Those changes have been effected :\n"+un+deux+trois+quatre);
+        		missingField.setText("The following changes have been carried out :\n"+un+deux+trois+quatre);
         	}
         });
 	}
