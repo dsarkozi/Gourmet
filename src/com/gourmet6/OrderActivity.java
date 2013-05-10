@@ -1,6 +1,8 @@
 package com.gourmet6;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -254,6 +256,9 @@ public class OrderActivity extends Activity {
 			AlertDialog dialog = builder.create();
 			dialog.show();
 		}else{
+			GregorianCalendar gag = new GregorianCalendar();
+			resv = g.getReservation();
+			
 			if(current.checkOrder(g.getOrder())){
 				try{
 					dbh.addOrder(g.getOrder());
