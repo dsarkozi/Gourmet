@@ -1,10 +1,8 @@
 package com.gourmet6;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.os.Process;
 import android.util.Log;
 
@@ -14,7 +12,7 @@ public class ExceptionHandler
 	public static void caughtException(Context context, Throwable exception)
 	{
 		Log.e("MainGourmet", Log.getStackTraceString(exception), exception);
-		showDialog(context, true, exception.getMessage());
+		//showDialog(context, true, exception.getMessage());
 		kill();
 	}
 	
