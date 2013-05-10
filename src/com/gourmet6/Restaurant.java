@@ -436,9 +436,9 @@ public class Restaurant {
 			if(allergens != null){
 				for (String al : allergens)
 				{
-					if (!(filters.contains("Allergen: "+al)))
+					if (!(filters.contains("Sans Allergen: "+al)))
 					{
-						filters.add("Allergen: "+al);
+						filters.add("Sans Allergen: "+al);
 					}
 				}
 			}

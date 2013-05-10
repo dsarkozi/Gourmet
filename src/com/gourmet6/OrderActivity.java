@@ -100,7 +100,7 @@ public class OrderActivity extends Activity {
 				}
 				else if(allergens.contains(str)){
 					current = dishad.getCurrentRest();
-					String[] st = str.split(" ");
+					String[] st = str.split(": ");
 					updateLists(current.filterDishesAllergen(st[1], listdish));
 					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,current,listdish, true));
 				}
