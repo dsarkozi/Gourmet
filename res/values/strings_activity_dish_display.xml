@@ -6,5 +6,6 @@
     <string name="type">Type : </string>
     <string name="subtype">Subtype : </string>
     <string name="allergens">Allergens : </string>
+    <string name="descImg">image</string>
     
 </resources>
