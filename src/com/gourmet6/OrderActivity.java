@@ -104,7 +104,8 @@ public class OrderActivity extends Activity {
 				}
 				else if(allergens.contains(str)){
 					current = dishad.getCurrentRest();
-					updateLists(current.filterDishesAllergen(str, listdish));
+					String[] st = str.split(" ");
+					updateLists(current.filterDishesAllergen(st[1], listdish));
 					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,current,listdish, true));
 				}
 				else{
@@ -154,7 +155,6 @@ public class OrderActivity extends Activity {
 			for(Dish d: ordered){
 				a = a +"- " +d.getQuantity()+" "+ d.getName() +"\n";
 			}
-		}
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
 		builder.setTitle(R.string.activity_order_title);
@@ -176,6 +176,21 @@ public class OrderActivity extends Activity {
 		});
 		AlertDialog dialog = builder.create();
 		dialog.show();
+		}
+		else{
+			AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
+			builder.setTitle(R.string.activity_order_title);
+			builder.setMessage(R.string.nothing_ordered);
+			builder.setNeutralButton(R.string.ok_button, new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					
+				}
+			});
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		}
 		
 	}
 	
