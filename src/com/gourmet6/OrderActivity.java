@@ -28,6 +28,7 @@ public class OrderActivity extends Activity {
 	private boolean fromRestaurant = false;
 	private ExpandableListView dishes;
 	private DishMenuAdapter dishad;
+	private DBHandler dbh;
 	private ArrayAdapter<String> adapter;
 	private ArrayList<String> types;
 	private ArrayList<String> subtypes;
@@ -199,6 +200,8 @@ public class OrderActivity extends Activity {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					if(current.checkOrder(g.getOrder())){
+						dbh = new DBHandler(OrderActivity.this);
+						dbh.addOrder(g.getOrder());
 						Toast.makeText(OrderActivity.this,R.string.hungry, Toast.LENGTH_LONG) .show();
 						finish();
 					}else{
@@ -212,6 +215,8 @@ public class OrderActivity extends Activity {
 			dialog.show();
 		}else{
 			if(current.checkOrder(g.getOrder())){
+				dbh = new DBHandler(OrderActivity.this);
+				dbh.addOrder(g.getOrder());
 				Toast.makeText(OrderActivity.this,R.string.hungry, Toast.LENGTH_LONG) .show();
 				finish();
 			}else{
