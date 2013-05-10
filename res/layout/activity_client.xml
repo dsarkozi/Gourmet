@@ -15,7 +15,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:textIsSelectable="true"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/mail"
@@ -24,7 +24,7 @@
         android:layout_alignLeft="@+id/name"
         android:layout_below="@+id/name"
         android:textIsSelectable="true"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/phone"
@@ -32,24 +32,25 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:textIsSelectable="true"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
         android:layout_below="@+id/mail"/>
 
     <Button
         android:id="@+id/cpd"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="77dp"
+        android:layout_below="@+id/rescom"
+        android:layout_marginTop="45dp"
+        android:layout_toRightOf="@+id/phone"
         android:text="@string/cpd" />
 
     <Button
         android:id="@+id/rescom"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/phone"
+        android:layout_marginTop="44dp"
         android:text="@string/rescom" />
 
 </RelativeLayout>
