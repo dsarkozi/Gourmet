@@ -3,7 +3,9 @@ package com.gourmet6;
 import java.util.ArrayList;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -40,12 +42,50 @@ public class ResAndComActivity extends Activity {
 		expandableList.setAdapter(adapter);
 		
 		//expandableList.setOnChildClickListener(onChildClickListener)
+		
+		
 	}
+	 /*
+	private void viewerDialog(Reservation res){
+		current = dishad.getCurrentRest();
+		Order odd = cli.createOrder(current.getName());
+		String a ="";
+		odd.setOrderDishes(ordered);
+		g.setOrder(odd);
+		
+		if(ordered != null){
+			for(Dish d: ordered){
+				a = a +"- " +d.getQuantity()+" "+ d.getName() +"\n";
+			}
+		}
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
+		builder.setTitle(R.string.activity_order_title);
+		builder.setMessage(getString(R.string.ordered)+ "\n"+ a + getString(R.string.do_you_confirm)); 
+		
+		builder.setPositiveButton(R.string.yes_button, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				toBook();
+			}
+		});
+		builder.setNegativeButton(R.string.no_button, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				
+			}
+		});
+		AlertDialog dialog = builder.create();
+		dialog.show();
+		
+	}*/
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.res_and_com, menu);
+		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 	
