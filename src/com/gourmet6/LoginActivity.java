@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -456,27 +457,26 @@ public class LoginActivity extends Activity
 		protected Boolean doInBackground(Void... params)
 		{
 			// TODO: attempt authentication against a network service.
-
+			Client cli;
 			try
 			{
 				db = new DBHandler(LoginActivity.this);
-				db.addClient(mEmail, mName, mPassword, mPhone);
+				cli = db.addClient(mEmail, mName, mPassword, mPhone);
+			}
+			catch (SQLiteConstraintException e)
+			{
+				return false;
 			}
 			catch (SQLiteException e)
 			{
 				ExceptionHandler.caughtException(LoginActivity.this, e);
 				return false;
 			}
-			catch (SQLException e)
-			{
-				return false;
-			}
 			finally
 			{
 				db.close();
 			}
-
-			// TODO: register the new account here.
+			g.setClient(cli);
 			return true;
 		}
 
