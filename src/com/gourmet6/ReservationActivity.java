@@ -92,7 +92,7 @@ public class ReservationActivity extends Activity {
 		nbrPrs = (EditText) findViewById(R.id.nbrPrsReserv);
 		
 		//CheckBox
-		takeAway = (CheckBox) findViewById(R.id.checkBoxReserv);
+		takeAway = (CheckBox) findViewById(R.id.checkBoxReservation);
 		takeAway.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton arg0, boolean checked) {
