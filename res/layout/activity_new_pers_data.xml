@@ -12,131 +12,59 @@
         android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:orientation="vertical" >
 
-        <LinearLayout
-            android:id="@+id/LinearLayout01"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/tvMdp"
-                android:layout_width="wrap_content"
+        <EditText
+                android:id="@+id/etActualMdp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/mdpNew" />
-
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/mdpActual"
+                android:inputType="textPassword">
+                
+                <requestFocus />
+                </EditText> 
+        
             <EditText
                 android:id="@+id/etMdp"
-                android:layout_width="wrap_content"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:ems="10"
+                android:hint="@string/mdpNew"
                 android:inputType="textPassword" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10" >
-
-            <TextView
-                android:id="@+id/tvMdpConf"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/mdpNewConfirmation" />
-
+            
             <EditText
                 android:id="@+id/etMdpConf"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPassword" >
-
-                <requestFocus />
-            </EditText>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/LinearLayout02"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/tvNewName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/nameNew" />
-
+                android:hint="@string/mdpNewConfirmation"
+                android:inputType="textPassword" />
             <EditText
                 android:id="@+id/etNewName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:hint="@string/nameNew"
                 android:ems="10" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/LinearLayout03"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/tvNewPhone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/phoneNew" />
-
             <EditText
                 android:id="@+id/etNewPhone"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:hint="@string/phoneNew"
                 android:ems="10"
                 android:inputType="phone" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/LinearLayout04"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/tvNewMail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/mailNew" />
-
             <EditText
                 android:id="@+id/etNewMail"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+                android:hint="@string/mailNew"
                 android:inputType="textEmailAddress" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/LinearLayout05"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/tvActualMdp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/mdpActual" />
-
-            <EditText
-                android:id="@+id/etActualMdp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPassword" />
-        </LinearLayout>
-
     </LinearLayout>
 
     <TextView

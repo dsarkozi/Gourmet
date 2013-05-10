@@ -150,8 +150,6 @@ public class ResAndComActivity extends Activity {
 			return true;
 		}
 		
-		
-		
 		private class DishViewHolder{
 			public TextView name;
 			public TextView price;
