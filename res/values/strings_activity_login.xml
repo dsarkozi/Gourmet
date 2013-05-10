@@ -20,5 +20,6 @@
     <string name="error_no_password_match">The password doesn\'t match with the confirmation.</string>
     <string name="error_credentials_no_match">The combination email/password is incorrect.</string>
     <string name="error_field_required">This field is required.</string>
+    <string name="error_email_exists">This email is already in use.</string>
 
 </resources>
