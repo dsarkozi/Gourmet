@@ -13,13 +13,14 @@ public class ClientActivity extends Activity {
 	
 	private Gourmet g;
 	private Client currentCli;
+	private static final String TITLE = "Profile";
 	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_client);
-		
+		setTitle(TITLE);
 		g = (Gourmet)getApplication();
 		currentCli = g.getClient();
 		

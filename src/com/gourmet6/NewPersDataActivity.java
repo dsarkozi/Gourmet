@@ -13,7 +13,7 @@ public class NewPersDataActivity extends Activity {
 	private DBHandler dbHand;
 	private Gourmet g;
 	private Client currentCli;
-	private static final String TITLE = "Profile";
+	private static final String TITLE = "Edit profile";
 	
 	
 	private String newMdpS;
