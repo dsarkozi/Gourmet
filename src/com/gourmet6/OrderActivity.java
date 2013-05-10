@@ -49,11 +49,7 @@ public class OrderActivity extends Activity {
 		current = g.getRest();
 		current.Orderreboot();
 		cli = g.getClient();
-		/*
-		if(cli == null){
-			cli = new Client("fuckyou","moron","666"); //TODO To remove
-		}
-		*/
+		
 		Bundle extra = getIntent().getExtras();
 		this.fromRestaurant = extra.getBoolean("from");
 		
@@ -158,7 +154,7 @@ public class OrderActivity extends Activity {
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
 		builder.setTitle(R.string.activity_order_title);
-		builder.setMessage(getString(R.string.ordered)+ "\n"+ a + getString(R.string.do_you_confirm)); 
+		builder.setMessage(getString(R.string.ordered)+ a + getString(R.string.do_you_confirm)); 
 		
 		builder.setPositiveButton(R.string.yes_button, new DialogInterface.OnClickListener() {
 			
@@ -214,8 +210,8 @@ public class OrderActivity extends Activity {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					if(current.checkOrder(g.getOrder())){
-						//dbh = new DBHandler(OrderActivity.this);
-						//dbh.addOrder(g.getOrder());
+						dbh = new DBHandler(OrderActivity.this);
+						dbh.addOrder(g.getOrder());
 						Toast.makeText(OrderActivity.this,R.string.hungry, Toast.LENGTH_LONG) .show();
 						finish();
 					}else{
@@ -229,8 +225,8 @@ public class OrderActivity extends Activity {
 			dialog.show();
 		}else{
 			if(current.checkOrder(g.getOrder())){
-				//dbh = new DBHandler(OrderActivity.this);
-				//dbh.addOrder(g.getOrder());
+				dbh = new DBHandler(OrderActivity.this);
+				dbh.addOrder(g.getOrder());
 				Toast.makeText(OrderActivity.this,R.string.hungry, Toast.LENGTH_LONG) .show();
 				finish();
 			}else{

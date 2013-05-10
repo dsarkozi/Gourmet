@@ -12,7 +12,7 @@
     <string name="apology">Your Order can\'t be made.\n We apologize</string>  
     <string name="exit_o">Exit Order</string>  
     <string name="exit_m">You are about to exit order menu.Are you sure ?</string>
-    <string name="do_you_confirm">Do you confirm your order?</string>
+    <string name="do_you_confirm">Do you confirm ?</string>
     <string name="ordered">You have ordered:\n</string>
     <string name="nothing_ordered">You haven\'t ordered anything</string>
     <string name="ok_button">OK</string>
