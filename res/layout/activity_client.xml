@@ -8,7 +8,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ClientActivity" >
 
-    <RelativeLayout 
+   <RelativeLayout 
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content">
 	    <TextView
@@ -41,22 +41,12 @@
 	        android:textSize="18sp"
 	        android:textStyle="bold" />
 
-	    <Button
-	        android:id="@+id/rescom"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_alignLeft="@+id/phone"
-	        android:layout_below="@+id/phone"
-	        android:layout_marginTop="76dp"
-	        android:text="@string/rescom" />
 
 	    <Button
 	        android:id="@+id/cpd"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_alignLeft="@+id/rescom"
-	        android:layout_below="@+id/rescom"
-	        android:layout_marginTop="75dp"
+	        android:layout_marginTop="155dp"
 	        android:text="@string/cpd" />
     </RelativeLayout>
 
