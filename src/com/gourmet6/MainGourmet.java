@@ -4,10 +4,13 @@ import java.lang.Thread.UncaughtExceptionHandler;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteException;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.AndroidRuntimeException;
 import android.util.Log;
@@ -18,73 +21,82 @@ public class MainGourmet extends Activity
 	public static final int LOGIN = 0;
 	public static final int TOWN_LIST = 1;
 	public static final int RESTO_LIST = 2;
-	
+
 	public static String currentTown;
 
-	@SuppressWarnings("unused")
-	private Location location = null;
+	private LocationManager locationManager;
+	private LocationListener locationListener;
 	public DBHandler dbHand;
 	private Gourmet g;
 	public static boolean isDone = false;
 	public static boolean showResto = false;
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler()
 		{
-			
+
 			@Override
 			public void uncaughtException(Thread thread, Throwable ex)
 			{
 				Log.e("MainGourmet", Log.getStackTraceString(ex), ex);
 				ExceptionHandler.kill();
-				/*runOnUiThread(new Runnable()
-				{
-					
-					@Override
-					public void run()
-					{
-				        ExceptionHandler.showDialog(MainGourmet.this, false, stackTrace.toString());
-					}
-				});*/
+				/*
+				 * runOnUiThread(new Runnable() {
+				 * 
+				 * @Override public void run() {
+				 * ExceptionHandler.showDialog(MainGourmet.this, false,
+				 * stackTrace.toString()); } });
+				 */
 			}
 		});
+		g = (Gourmet) getApplicationContext();
 
 		/** LOCATION MANAGEMENT **/
-		/*
-		 * LocationManager locationManager = (LocationManager)
-		 * this.getSystemService(Context.LOCATION_SERVICE); LocationListener
-		 * locationListener = new LocationListener() { public void
-		 * onLocationChanged(Location location) { // Called when a new location
-		 * is found by the network location provider. MainGourmet.this.location
-		 * = location; }
-		 * 
-		 * public void onStatusChanged(String provider, int status, Bundle
-		 * extras) {
-		 * 
-		 * }
-		 * 
-		 * public void onProviderEnabled(String provider) {
-		 * 
-		 * }
-		 * 
-		 * public void onProviderDisabled(String provider) {
-		 * 
-		 * } };
-		 * locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER
-		 * , 0, 0, locationListener);
-		 * //locationManager.removeUpdates(locationListener);
-		 */
+		locationManager = (LocationManager) this
+				.getSystemService(Context.LOCATION_SERVICE);
+		locationListener = new LocationListener()
+		{
+			public void onLocationChanged(Location location)
+			{ // Called when a new location is found by the network location
+				// provider.
+				g.setLocation(location);
+				locationManager.removeUpdates(locationListener);
+			}
+
+			public void onStatusChanged(String provider, int status,
+					Bundle extras)
+			{
+
+			}
+
+			public void onProviderEnabled(String provider)
+			{
+
+			}
+
+			public void onProviderDisabled(String provider)
+			{
+
+			}
+		};
+
 		dbHand = new DBHandler(this);
-		g = (Gourmet) getApplicationContext();
 	}
 
 	@Override
 	protected void onStart()
 	{
 		super.onStart();
+		locationManager.requestLocationUpdates(
+				LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 		if (showResto)
 		{
 			showResto = false;
@@ -100,8 +112,7 @@ public class MainGourmet extends Activity
 			}
 			else
 			{
-				if (!isDone)
-					showTowns();
+				if (!isDone) showTowns();
 			}
 		}
 	}
@@ -146,8 +157,7 @@ public class MainGourmet extends Activity
 				case TOWN_LIST:
 					if (g.getClient() != null)
 						exitDialog();
-					else
-						login();
+					else login();
 					break;
 				case RESTO_LIST:
 					showTowns();
@@ -169,7 +179,8 @@ public class MainGourmet extends Activity
 			case RESTO_LIST:
 				try
 				{
-					g.setRest(dbHand.getRestaurant(data.getStringExtra("selection")));
+					g.setRest(dbHand.getRestaurant(data
+							.getStringExtra("selection")));
 				}
 				catch (SQLiteException e)
 				{
@@ -199,25 +210,20 @@ public class MainGourmet extends Activity
 		intent.putExtra("currentTown", currentTown);
 		startActivityForResult(intent, RESTO_LIST);
 		/*
-		setContentView(R.layout.lists);
-		ListView restoList = (ListView) findViewById(R.id.list);
-		ArrayAdapter<String> restoAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, restaurants);
-		restoList.setAdapter(restoAdapter);
-		restoList.setOnItemClickListener(new AdapterView.OnItemClickListener()
-		{
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id)
-			{
-				Button buttonClicked = (Button) parent
-						.getItemAtPosition(position);
-				makeRestaurant(buttonClicked.getText().toString());
-			}
-		});
-		*/
+		 * setContentView(R.layout.lists); ListView restoList = (ListView)
+		 * findViewById(R.id.list); ArrayAdapter<String> restoAdapter = new
+		 * ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
+		 * restaurants); restoList.setAdapter(restoAdapter);
+		 * restoList.setOnItemClickListener(new
+		 * AdapterView.OnItemClickListener() {
+		 * 
+		 * @Override public void onItemClick(AdapterView<?> parent, View view,
+		 * int position, long id) { Button buttonClicked = (Button) parent
+		 * .getItemAtPosition(position);
+		 * makeRestaurant(buttonClicked.getText().toString()); } });
+		 */
 	}
-	
+
 	public void exitDialog()
 	{
 		AlertDialog.Builder exit = new AlertDialog.Builder(this);

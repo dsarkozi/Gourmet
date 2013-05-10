@@ -277,11 +277,11 @@ public class DBHandler {
 	 */
 	public ArrayList<Location> getTownsLocation() throws SQLiteException
 	{
-		this.openRead();
 		String provider = LocationManager.PASSIVE_PROVIDER;
 
 		String[] towns = this.getTowns();
 		ArrayList<Location> locations = new ArrayList<Location>(towns.length);
+		this.openRead();
 		try
 		{
 			for (String town : towns)
@@ -1140,7 +1140,7 @@ public class DBHandler {
 	 */
 	private double getTownLat(String town)
 	{
-		Cursor c = this.db.rawQuery("SELECT avg("+LAT+") AS newLat FROM "+RES+" WHERE "+town+"=?", new String[] {town});
+		Cursor c = this.db.rawQuery("SELECT avg("+LAT+") AS newLat FROM "+TABLE_RESTAURANT+" WHERE "+TOWN+"=?", new String[] {town});
 		if (c.getCount() > 1)
 		{
 			Log.e("DBHandler","Error : unknown cause.");
@@ -1155,7 +1155,7 @@ public class DBHandler {
 	 */
 	private double getTownLong(String town)
 	{
-		Cursor c = this.db.rawQuery("SELECT avg("+LONG+") AS newLong FROM "+RES+" WHERE "+town+"=?", new String[] {town});
+		Cursor c = this.db.rawQuery("SELECT avg("+LONG+") AS newLong FROM "+TABLE_RESTAURANT+" WHERE "+TOWN+"=?", new String[] {town});
 		if (c.getCount() > 1)
 		{
 			Log.e("DBHandler","Error : unknown cause.");

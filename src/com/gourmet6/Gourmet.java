@@ -1,6 +1,7 @@
 package com.gourmet6;
 
 import android.app.Application;
+import android.location.Location;
 
 public class Gourmet extends Application
 {	
@@ -8,6 +9,7 @@ public class Gourmet extends Application
 	private Restaurant currentres = null;
 	private Order currentorder = null;
 	private Reservation currentreserv = null;
+	private Location currentlocation = null;
 	
 	@Override
 	public void onCreate()
@@ -51,6 +53,16 @@ public class Gourmet extends Application
 	public void setReservation(Reservation currentreserv)
 	{
 		this.currentreserv = currentreserv;
+	}
+
+	public Location getLocation()
+	{
+		return currentlocation;
+	}
+
+	public void setLocation(Location currentlocation)
+	{
+		this.currentlocation = currentlocation;
 	}
 	
 }
