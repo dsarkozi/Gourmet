@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class DishMenuAdapter extends BaseExpandableListAdapter{
 	
@@ -106,6 +105,9 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 			else{
 				dholder = (DishViewHolder) convertView.getTag();
 			}
+			dholder.plus.setTag(dholder.count);
+			dholder.minus.setTag(dholder.count);
+			
 			
 			dholder.price.setVisibility(View.VISIBLE);
 			dholder.count.setVisibility(View.VISIBLE);
@@ -122,37 +124,38 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 				dholder.plus.setClickable(true);
 				dholder.minus.setVisibility(View.VISIBLE);
 				dholder.minus.setClickable(true);
-				dholder.count.setText(0 + " pcs");
+				dholder.count.setText(currentdish.getQuantity() + " pcs");
 		
 				dholder.plus.setOnClickListener(new Button.OnClickListener() {
 			
 					@Override
 					public void onClick(View v) {
-						//if(currentdish.getQuantity() < currentdish.getInventory())
-						//{
-							Toast.makeText(context,"I'm working. Fuck you. HAHA!", Toast.LENGTH_LONG) .show();
+						if((currentdish.getQuantity()) < (currentdish.getInventory()))
+						{
+						
+							currentdish.incrementQuantity();
+							((TextView)v.getTag()).setText(currentdish.getQuantity()+" pcs");
+							current.setDish(currentdish);
 							
-							//currentdish.incrementQuantity();
-							//dholder.count.setText(currentdish.getQuantity());
-							//current.setDish(currentdish);
+						}else{
 							
-						//}
+						}
 					}
 				});
 		
-				dholder.plus.setOnClickListener(new Button.OnClickListener() {
+				dholder.minus.setOnClickListener(new Button.OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
-						//if(currentdish.getQuantity() > 0)
-						//{
-							Toast.makeText(context,"I'm working. Fuck you. HAHA!", Toast.LENGTH_LONG) .show();
+						if((currentdish.getQuantity()) > 0)
+						{
+
+							currentdish.decrementQuantity();
+							((TextView)v.getTag()).setText(currentdish.getQuantity()+" pcs");
+							current.setDish(currentdish);
+						}else{
 							
-							//currentdish.decrementQuantity();
-							//dholder.count.setText(currentdish.getQuantity());
-							//current.setDish(currentdish);
-							
-						//}
+						}
 					}
 				});
 			

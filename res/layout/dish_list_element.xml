@@ -10,13 +10,14 @@
         android:layout_alignBaseline="@+id/plus"
         android:layout_alignBottom="@+id/plus"
         android:layout_toLeftOf="@+id/minus"
+        android:clickable="false"
         android:text="@string/initial_state" />
 
     <Button
         android:id="@+id/plus"
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
         android:layout_alignBaseline="@+id/minus"
         android:layout_alignBottom="@+id/minus"
         android:layout_toLeftOf="@+id/count"
@@ -28,8 +29,8 @@
     <Button
         android:id="@+id/minus"
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/dishname"
         android:focusable="false"
@@ -43,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:clickable="false"
         android:layout_marginLeft="45dp"
         android:text="@string/udish" />
 
@@ -52,6 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/plus"
         android:layout_alignBottom="@+id/plus"
+        android:clickable="false"
         android:layout_marginRight="16dp"
         android:layout_toLeftOf="@+id/plus"
         android:text="@string/udish" />
