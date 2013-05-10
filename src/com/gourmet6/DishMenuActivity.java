@@ -20,7 +20,6 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class DishMenuActivity extends Activity {
