@@ -21,8 +21,8 @@
         android:id="@+id/mail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/mail"
-        android:layout_below="@+id/mail"
+        android:layout_alignLeft="@+id/name"
+        android:layout_below="@+id/name"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textIsSelectable="true" />
 
@@ -30,27 +30,26 @@
         android:id="@+id/rescom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/name"
+        android:layout_below="@+id/mail"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="62dp"
         android:text="@string/rescom" />
 
     <Button
         android:id="@+id/cpd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/pref"
+        android:layout_below="@+id/rescom"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="42dp"
         android:text="@string/cpd" />
 
-    <Button
-        android:id="@+id/pref"
+    <TextView
+        android:id="@+id/phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rescom"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="19dp"
-        android:text="@string/pref" />
+        android:layout_alignParentLeft="true"
+        android:textIsSelectable="true"
+        android:layout_below="@+id/mail"/>
 
 </RelativeLayout>

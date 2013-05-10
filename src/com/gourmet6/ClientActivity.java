@@ -28,6 +28,8 @@ public class ClientActivity extends Activity {
 	    nameCli.setText(currentCli.getName());
 		TextView mailCli = (TextView) findViewById(R.id.mail);
 	    mailCli.setText(currentCli.getEmail());
+	    TextView phoneCli = (TextView) findViewById(R.id.phone);
+	    phoneCli.setText(currentCli.getPhone());
 		
 		
 		Button btn;
@@ -42,21 +44,6 @@ public class ClientActivity extends Activity {
 				resAndCom.putExtra("from", true);
 				startActivity(resAndCom);
         	}
-        });
-        
-        Button btn2;
-        
-        //récupération du bouton des préférences
-        btn2 = (Button)findViewById(R.id.pref);
-        //écouteur sur le clic du bouton
-        btn2.setOnClickListener(new View.OnClickListener() {
-        	@Override
-        	public void onClick(View v) {
-
-        		Intent preferences = new Intent(ClientActivity.this, PrefActivity.class);
-        		preferences.putExtra("from", true);
-				startActivity(preferences);
-         	}
         });
         
         Button btn3;
