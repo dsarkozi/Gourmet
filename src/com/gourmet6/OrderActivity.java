@@ -61,49 +61,7 @@ public class OrderActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {				
-				current = dishad.getCurrentRest();
-				Order odd = cli.createOrder(current.getName());
-				String a ="";
-				ArrayList<Dish> ordered = ordered();
-				odd.setOrderDishes(ordered);
-				if(ordered != null){
-					for(Dish d: ordered){
-						a = a +"- " +d.getQuantity()+" "+ d.getName() +"\n";
-					}
-				}
-				Toast.makeText(OrderActivity.this,a, Toast.LENGTH_LONG) .show();
-				g.setOrder(odd);
-				
-				if(fromRestaurant){
-					AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
-					builder.setTitle(R.string.activity_reservation_title);
-					builder.setMessage(R.string.do_you_res);
-					
-					builder.setPositiveButton(R.string.yes_button, new DialogInterface.OnClickListener() {
-						
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							Intent resv = new Intent(OrderActivity.this,ReservationActivity.class);
-							resv.putExtra("fromOrder", true);
-							startActivity(resv);
-						}
-					});
-					builder.setNegativeButton(R.string.no_button, new DialogInterface.OnClickListener() {
-						
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							if(current.checkOrder(g.getOrder())){
-								Toast.makeText(OrderActivity.this,R.string.hungry, Toast.LENGTH_LONG) .show();
-							}else{
-								Toast.makeText(OrderActivity.this,R.string.apology, Toast.LENGTH_LONG) .show();
-							}
-							
-						}
-					});
-					
-					AlertDialog dialog = builder.create();
-					dialog.show();
-				}
+				beforeCheck(ordered());
 			}
 		});
 		
@@ -186,13 +144,90 @@ public class OrderActivity extends Activity {
 		return res;
 	}
 	
+	private void beforeCheck(ArrayList<Dish> ordered){
+		current = dishad.getCurrentRest();
+		Order odd = cli.createOrder(current.getName());
+		String a ="";
+		odd.setOrderDishes(ordered);
+		g.setOrder(odd);
+		
+		if(ordered != null){
+			for(Dish d: ordered){
+				a = a +"- " +d.getQuantity()+" "+ d.getName() +"\n";
+			}
+		}
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
+		builder.setTitle(R.string.activity_order_title);
+		builder.setMessage(R.string.ordered+ "\n"+ a + R.string.do_you_confirm); //TODO Why don't work?
+		
+		builder.setPositiveButton(R.string.yes_button, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				toBook();
+			}
+		});
+		builder.setNegativeButton(R.string.no_button, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				
+			}
+		});
+		AlertDialog dialog = builder.create();
+		dialog.show();
+		
+	}
+	
+	private void toBook(){
+		if(fromRestaurant){
+			AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
+			builder.setTitle(R.string.activity_reservation_title);
+			builder.setMessage(R.string.do_you_res);
+			
+			builder.setPositiveButton(R.string.yes_button, new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					Intent resv = new Intent(OrderActivity.this,ReservationActivity.class);
+					resv.putExtra("fromOrder", true);
+					startActivity(resv);
+				}
+			});
+			builder.setNegativeButton(R.string.no_button, new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					if(current.checkOrder(g.getOrder())){
+						Toast.makeText(OrderActivity.this,R.string.hungry, Toast.LENGTH_LONG) .show();
+						finish();
+					}else{
+						Toast.makeText(OrderActivity.this,R.string.apology, Toast.LENGTH_LONG) .show();
+					}
+					
+				}
+			});
+			
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		}else{
+			if(current.checkOrder(g.getOrder())){
+				Toast.makeText(OrderActivity.this,R.string.hungry, Toast.LENGTH_LONG) .show();
+				finish();
+			}else{
+				Toast.makeText(OrderActivity.this,R.string.apology, Toast.LENGTH_LONG) .show();
+			}
+		}
+	}
+	
 	@Override
 	public void onBackPressed() {
 		
 		AlertDialog.Builder exit = new AlertDialog.Builder(this);
-		exit.setTitle("Exit Order");
-		exit.setMessage("You are about to exit order menu.Are you sure ?");
-		exit.setPositiveButton("Yes", new DialogInterface.OnClickListener()
+		exit.setTitle(R.string.exit_o);
+		exit.setMessage(R.string.exit_m);
+		exit.setPositiveButton(R.string.yes_button, new DialogInterface.OnClickListener()
 		{
 			@Override
 			public void onClick(DialogInterface dialog, int which)
@@ -201,7 +236,7 @@ public class OrderActivity extends Activity {
 				finish();
 			}
 		});
-		exit.setNegativeButton("No", new DialogInterface.OnClickListener()
+		exit.setNegativeButton(R.string.no_button, new DialogInterface.OnClickListener()
 		{
 			@Override
 			public void onClick(DialogInterface dialog, int which)
