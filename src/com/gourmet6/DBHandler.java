@@ -340,6 +340,39 @@ public class DBHandler {
 	}
 	
 	/**
+	 * Gets the locations of the restaurants in the DB.
+	 * @return an ArrayList of Locations containing a latitude, longitude and restaurant name
+	 * @throws SQLiteException
+	 */
+	public ArrayList<Location> getAllResNamesLocation(String town) throws SQLiteException
+	{
+		String provider = LocationManager.PASSIVE_PROVIDER;
+
+		ArrayList<String> restaurants = this.getAllResNames(town);
+		ArrayList<Location> locations = new ArrayList<Location>(restaurants.size());
+		this.openRead();
+		try
+		{
+			for (String res : restaurants)
+			{
+				Location lo = new Location(provider);
+				lo.setLatitude(this.getResLat(res));
+				lo.setLongitude(this.getResLong(res));
+				Bundle bundle = new Bundle(); bundle.putString("restaurant", res);
+				lo.setExtras(bundle);
+
+				locations.add(lo);
+			}
+		}
+		finally
+		{
+			this.close();
+		}
+		return locations;
+		
+	}
+	
+	/**
 	 * Returns a restaurant object based on his name in the DB.
 	 * @param name the name of the restaurant
 	 * @return the Restaurant corresponding to name, without his dishes
@@ -1162,6 +1195,36 @@ public class DBHandler {
 		}
 		c.moveToFirst();
 		return c.getDouble(0);
+	}
+	
+	/**
+	 * @param res the restaurant name
+	 * @return the restaurant's latitude
+	 */
+	private double getResLat(String res)
+	{
+		Cursor c = this.db.query(TABLE_RESTAURANT, new String[] {LAT}, RES+"=? ", new String [] {res}, null, null, null);
+		if (c.getCount() > 1)
+		{
+			Log.e("DBHandler","Error : unknown cause.");
+		}
+		c.moveToFirst();
+		return c.getDouble(c.getColumnIndex(LAT));
+	}
+	
+	/**
+	 * @param res the restaurant name
+	 * @return the restaurant's longitude
+	 */
+	private double getResLong(String res)
+	{
+		Cursor c = this.db.query(TABLE_RESTAURANT, new String[] {LONG}, RES+"=? ", new String [] {res}, null, null, null);
+		if (c.getCount() > 1)
+		{
+			Log.e("DBHandler","Error : unknown cause.");
+		}
+		c.moveToFirst();
+		return c.getDouble(c.getColumnIndex(LONG));
 	}
 	
 	/**
