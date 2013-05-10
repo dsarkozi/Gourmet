@@ -14,6 +14,7 @@ import android.widget.ExpandableListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -126,6 +127,22 @@ public class OrderActivity extends Activity {
 		this.allergens = current.getAllergensForFilter(filtered);
 	}
 
+	private void updateInv(){
+		for(Dish d : current.getListDishes()){
+			if(d.getQuantity() != 0){
+				d.setInventory(d.getInventory() - d.getQuantity());
+				try{
+					dbh.setDishInventory(current.getName(), d.getName(), d.getInventory());
+				}
+				catch(SQLiteException e){
+					ExceptionHandler.caughtException(OrderActivity.this, e);
+				}
+				catch(SQLException e){
+					ExceptionHandler.caughtException(OrderActivity.this, e);
+				}
+			}
+		}
+	}
 	
 	private ArrayList<Dish> ordered()
 	{
@@ -224,6 +241,7 @@ public class OrderActivity extends Activity {
 						catch(SQLException e){
 							ExceptionHandler.caughtException(OrderActivity.this, e);
 						}
+						updateInv();
 						Toast.makeText(OrderActivity.this,R.string.hungry, Toast.LENGTH_LONG) .show();
 						finish();
 					}else{
@@ -280,6 +298,7 @@ public class OrderActivity extends Activity {
 		exit.show();
 	}
 	
+	@SuppressLint("DefaultLocale")
 	private String computePrice(ArrayList<Dish> ordered){
 		double a= 0;
 		for(Dish d: ordered){
