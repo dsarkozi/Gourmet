@@ -20,11 +20,12 @@ public class DishDisplayActivity extends Activity {
 	private TextView dishInfo;
 	
 	private String name;
-	private String price;
-	private String type;
-	private String subtype;
-	private String inventory;
-	private String allergens;
+	
+	private TextView price;
+	private TextView type;
+	private TextView subtype;
+	private TextView inventory;
+	private TextView allergens;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,26 +44,24 @@ public class DishDisplayActivity extends Activity {
 		
 		dishImage = (ImageView)findViewById(R.id.dishimage);
 		//dishImage.setImageResource(1234); // a faire mettre la ressource de l'image :/
-		String imgName = Restaurant.getNameImg(name);
-		/*
-		if(getIdentifier(imgName, "drawable", getPackageName()).exists()){
-			
-		}
-		elseif(){
-			
-		}*/
-		dishImage.setImageResource(getResources().getIdentifier(imgName, "drawable", getPackageName()));
+		String imgType = Restaurant.getNameImg(plat.getType());
+		dishImage.setImageResource(getResources().getIdentifier(imgType, "drawable", getPackageName()));
+		dishDescr  = (TextView)findViewById(R.id.descr);
+		dishDescr.setText(plat.getDescription());
 		
-		dishDescr  = (TextView)findViewById(R.id.dishdescr);
-		dishDescr.setText(plat.getDescription()); //"Description : "+
+		price = (TextView)findViewById(R.id.price);
+		type = (TextView)findViewById(R.id.type);
+		subtype = (TextView)findViewById(R.id.subtype);
+		inventory = (TextView)findViewById(R.id.inventory);
+		allergens = (TextView)findViewById(R.id.allergens);
 		
-		price ="-price : "+Dish.myRound(plat.getPrice())+"\n";
-		type ="-type : "+plat.getType()+"\n";
-		subtype="-subtype : "+plat.getSubtype()+"\n";
-		inventory="-inventory : "+plat.getInventory()+"\n";
-		allergens="-allergens : "+arrayListOfStringToString(plat.getAllergens());
+		price.setText(Dish.myRound(plat.getPrice())+"");
+		type.setText(plat.getType());
+		subtype.setText(plat.getSubtype());
+		inventory.setText(plat.getInventory());
+		allergens.setText(arrayListOfStringToString(plat.getAllergens()));
 		
-		dishInfo  = (TextView)findViewById(R.id.dishinfo);
+		dishInfo  = (TextView)findViewById(R.id.info);
 		dishInfo.setText("Info about this dish :\n"+price+type+subtype+inventory+allergens);
 	}
 
