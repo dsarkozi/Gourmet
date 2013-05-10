@@ -4,19 +4,25 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+import org.w3c.dom.Text;
+
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 
@@ -28,10 +34,14 @@ public class ReservationActivity extends Activity {
 	private int day;
 	private int hour;
 	private int minute;
+	private int minYear;
+	private int minMonth;
+	private int minDay;
 	
 	private String s;
 	private Button dateTime;
 	private EditText nbrPrs;
+	private TextView tvHoraireReserv;
 	
 	private Gourmet g ;
 	
@@ -53,6 +63,7 @@ public class ReservationActivity extends Activity {
 		setTitle(R.string.activity_reservation_title);
 		
 		g = (Gourmet)getApplication();
+		currentRest = g.getRest();
 		context = this;
 		dbh = new DBHandler(context);
 		from = false;
@@ -68,23 +79,45 @@ public class ReservationActivity extends Activity {
 		hour = c.get(Calendar.HOUR_OF_DAY);
 		minute = c.get(Calendar.MINUTE);
 		
+		minYear = c.get(Calendar.YEAR);
+		minMonth = c.get(Calendar.MONTH);
+		minDay = c.get(Calendar.DAY_OF_MONTH);
+		
+		//TextView
+		tvHoraireReserv = (TextView) findViewById(R.id.horaireReserv);
+		setHorair();
+		
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
 		nbrPrs = (EditText) findViewById(R.id.nbrPrsReserv);
 		
 		dateTime = (Button) findViewById(R.id.dateTime);
-		s = year+"-"+month+"-"+day+" "+hour+":"+minute;
+		s = TimeTable.parseDateInString(new GregorianCalendar(year, month, day, hour, minute));
 		dateTime.setText(s);
 		dateTime.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				dialog = new Dialog(context);
 				dialog.setContentView(R.layout.datetimedialog);
-				dialog.setTitle("Custom Dialog");
+				dialog.setTitle("Choose date");
 				
 				final DatePicker dp = (DatePicker) dialog.findViewById(R.id.datePicker1);
-				dp.init(year, month, day, null);
+				dp.init(year, month, day, new OnDateChangedListener() {
+					@Override
+					public void onDateChanged(DatePicker view, int year, int monthOfYear,
+							int dayOfMonth) {
+							if (year < minYear){
+								view.updateDate(minYear, minMonth, minDay);
+							}
+			                if (monthOfYear < minMonth && year == minYear){
+			                	view.updateDate(minYear, minMonth, minDay);
+			                }
+			                if (dayOfMonth < minDay && year == minYear && monthOfYear == minMonth){
+			                	view.updateDate(minYear, minMonth, minDay);
+			                }
+					}
+				});
 				
 				final TimePicker tp = (TimePicker) dialog.findViewById(R.id.timePicker1);
 				tp.setIs24HourView(true);
@@ -101,8 +134,7 @@ public class ReservationActivity extends Activity {
 						hour = tp.getCurrentHour();
 						minute = tp.getCurrentMinute();
 						
-						GregorianCalendar calendar = new GregorianCalendar(year, month, day, hour, minute);
-						s = TimeTable.parseDateInString(calendar);
+						s = TimeTable.parseDateInString(new GregorianCalendar(year, month, day, hour, minute));
 						dateTime.setText(s);
 						
 						dialog.cancel();
@@ -155,31 +187,44 @@ public class ReservationActivity extends Activity {
 		
 	}
 	
+	private void setHorair()
+	{
+		if(currentRest.getSemaine()==null) return;
+		String s = currentRest.getHoraireInString();
+		if(s.length()!=0)tvHoraireReserv.setText(s);
+	}
+
 	public boolean checkReservation()
 	{
+		if(nbrPrs.length()==0){
+			Toast.makeText(getApplicationContext(), "Vous reservez pour 0 personnes ?", Toast.LENGTH_SHORT).show();
+			return false;
+		}
 		people = Integer.parseInt(nbrPrs.getText().toString());
-		s = year+"-"+(month+1)+"-"+day+" "+hour+":"+minute;
-		Reservation reservTemp = new Reservation(g.getRest().getName(), s, people, g.getClient().getName(), g.getClient().getEmail());
+		GregorianCalendar date = new GregorianCalendar(year, month, day, hour, minute);
+		Reservation reservTemp = new Reservation(g.getRest().getName(), date, people, g.getClient().getName(), g.getClient().getEmail());
+		System.out.println("\n");
 		String res = g.getRest().checkReservation(reservTemp, dbh);
+		System.out.println("\n");
 		if(res!=null)
-		{
-			message = new Dialog(context);
-			message.setContentView(R.layout.message_dialog);
-			message.setTitle("Erreur");
-			
-			TextView tv = (TextView) message.findViewById(R.id.textViewMessageDialog);
-			tv.setText(res);
-			
-			Button b = (Button) message.findViewById(R.id.okButtonMessageDialog);
-			b.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View arg0) {
-					message.cancel();
-				}
-			});
-			
-			message.show();
-			
+		{			
+			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+
+			// set title
+			alertDialogBuilder.setTitle("Error");
+
+			// set dialog message
+			alertDialogBuilder
+				.setMessage(res)
+				.setCancelable(true)
+				.setPositiveButton("OK",null);
+
+			// create alert dialog
+			AlertDialog alertDialog = alertDialogBuilder.create();
+
+			// show it
+			alertDialog.show();
+
 			return false;
 		}
 		else
