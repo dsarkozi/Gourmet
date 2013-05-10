@@ -1313,7 +1313,7 @@ public class DBHandler {
 		// information held by the order_overview table
 		c = this.db.query(TABLE_ORDER_OVERVIEW, new String[] {RES, MAIL}, "_id=?",
 				new String[] {Integer.toString(orderNr)}, null, null, null);
-		if (c.getColumnCount() > 1)
+		if (c.getCount() > 1)
 		{
 			Log.e("DBHandler","Error : two or more orders seem to have the same number.");
 		}
