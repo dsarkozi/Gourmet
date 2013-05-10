@@ -516,7 +516,7 @@ public class Restaurant {
 				String end = getInString(res.getReservationTime(), 4, 0);
 				System.out.println(dbh.getAvailBetweenDateTime(res.getReservationResName(), start, end)+" et "+res.getReservationPeople());
 				if(dbh.getAvailBetweenDateTime(res.getReservationResName(), start, end)<res.getReservationPeople()){
-					return "Not enough place for this date";
+					return "Not enough available seats for this date";
 				}
 				
 			}

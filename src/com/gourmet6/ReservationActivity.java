@@ -122,7 +122,7 @@ public class ReservationActivity extends Activity {
 			public void onClick(View v) {
 				dialog = new Dialog(context);
 				dialog.setContentView(R.layout.datetimedialog);
-				dialog.setTitle("Choose date");
+				dialog.setTitle("Pick date & time");
 				
 				final DatePicker dp = (DatePicker) dialog.findViewById(R.id.datePicker1);
 				dp.init(year, month, day, new OnDateChangedListener() {
@@ -202,10 +202,8 @@ public class ReservationActivity extends Activity {
 		submit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO suppression reservation
 				Reservation res = checkClient();
 				if(res!=null && checkReservation(res)){
-					//TODO mettre dans db
 					dbh.addReservation(res, 0);
 					Toast.makeText(getApplicationContext(), "Your reservation has been confirmed.", Toast.LENGTH_LONG).show();
 					ReservationActivity.this.finish();
