@@ -25,11 +25,11 @@ public class ClientActivity extends Activity {
 		
 		//nom du client + son mail sont affiché au dessus
 		TextView nameCli = (TextView) findViewById(R.id.name);
-	    nameCli.setText(currentCli.getName());
+	    nameCli.setText("Name : "+currentCli.getName());
 		TextView mailCli = (TextView) findViewById(R.id.mail);
-	    mailCli.setText(currentCli.getEmail());
+	    mailCli.setText("Email : "+currentCli.getEmail());
 	    TextView phoneCli = (TextView) findViewById(R.id.phone);
-	    phoneCli.setText(currentCli.getPhone());
+	    phoneCli.setText("Phone number : "+currentCli.getPhone());
 		
 		
 		Button btn;
