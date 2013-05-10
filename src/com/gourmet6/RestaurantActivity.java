@@ -138,7 +138,7 @@ public class RestaurantActivity extends Activity
 		}
 		if(currentRest.getPriceCat()!=0){
 			tvCatPrice = (TextView) findViewById(R.id.tvPriceCat);
-			tvCatPrice.setText(Dish.myRound(currentRest.getPriceCat())+"");
+			tvCatPrice.setText(Dish.myRound(currentRest.getPriceCat())+" €");
 		}
 		if(currentRest.getSeats()!=0){
 			tvSeats = (TextView) findViewById(R.id.tvPlaceRest);
@@ -217,11 +217,6 @@ public class RestaurantActivity extends Activity
 		{
 			img = new ImageView(context);
 			img.setImageResource(getResources().getIdentifier(nameImg+i, "drawable", getPackageName()));
-			/*LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-		            LinearLayout.LayoutParams.WRAP_CONTENT, 
-		            LinearLayout.LayoutParams.WRAP_CONTENT);*/
-			
-			
 			listImg.addView(img);
 		}
 		
