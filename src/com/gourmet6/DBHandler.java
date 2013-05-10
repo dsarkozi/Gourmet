@@ -15,7 +15,10 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
 
 /**
@@ -266,6 +269,34 @@ public class DBHandler {
 		}
 		return towns;
 	}
+	
+	public ArrayList<Location> getTownsLocation() throws SQLiteException
+	{
+		this.openRead();
+		String provider = LocationManager.PASSIVE_PROVIDER;
+
+		String[] towns = this.getTowns();
+		ArrayList<Location> locations = new ArrayList<Location>(towns.length);
+		try
+		{
+			for (String town : towns)
+			{
+				Location lo = new Location(provider);
+				lo.setLatitude(this.getTownLat(town));
+				lo.setLongitude(this.getTownLong(town));
+				Bundle bundle = new Bundle(); bundle.putString("town", town);
+				lo.setExtras(bundle);
+
+				locations.add(lo);
+			}
+		}
+		finally
+		{
+			this.close();
+		}
+		return locations;
+	}
+	
 	
 	/**
 	 * Returns an ArrayList containing all the distinct town names appearing in the DB table restaurant,
@@ -1097,6 +1128,28 @@ public class DBHandler {
 	/*******************
 	 * Internal methods
 	 *******************/
+	
+	private double getTownLat(String town)
+	{
+		Cursor c = this.db.rawQuery("SELECT avg("+LAT+") AS newLat FROM "+RES+" WHERE "+town+"=?", new String[] {town});
+		if (c.getCount() > 1)
+		{
+			Log.e("DBHandler","Error : unknown cause.");
+		}
+		c.moveToFirst();
+		return c.getDouble(0);
+	}
+	
+	private double getTownLong(String town)
+	{
+		Cursor c = this.db.rawQuery("SELECT avg("+LONG+") AS newLong FROM "+RES+" WHERE "+town+"=?", new String[] {town});
+		if (c.getCount() > 1)
+		{
+			Log.e("DBHandler","Error : unknown cause.");
+		}
+		c.moveToFirst();
+		return c.getDouble(0);
+	}
 	
 	/**
 	 * Gets a restaurant's price category.
