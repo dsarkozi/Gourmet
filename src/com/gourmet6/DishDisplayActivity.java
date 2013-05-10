@@ -17,7 +17,7 @@ public class DishDisplayActivity extends Activity {
 	private TextView dishName;
 	private ImageView dishImage;
 	private TextView dishDescr;
-	private TextView dishInfo;
+	//private TextView dishInfo;
 	
 	private String name;
 	
