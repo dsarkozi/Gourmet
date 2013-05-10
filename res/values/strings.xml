@@ -30,6 +30,7 @@
     <string name="unkown">Unknown</string>
     <string name="action_settings">Settings</string>
     <string name="timeTable">Opening hours :</string>
-    <string name="contact">Contact info :</string> 
+    <string name="contact">Contact info :</string>
+    <string name="takeAway">Takeaway ?</string> 
     
 </resources>
