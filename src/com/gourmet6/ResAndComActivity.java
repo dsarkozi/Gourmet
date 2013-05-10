@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.TextView;
 
 
@@ -24,6 +25,7 @@ public class ResAndComActivity extends Activity {
 	private ExpandableListView expandableList;
 	private ArrayList<Reservation> myRes;
 	private ResAndComAdapter adapter;
+	private Reservation book;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,31 +46,40 @@ public class ResAndComActivity extends Activity {
 		adapter = new ResAndComAdapter(this, myRes);
 		expandableList.setAdapter(adapter);
 		
-		//expandableList.setOnChildClickListener(onChildClickListener)
-		
-		
+		expandableList.setOnChildClickListener(new OnChildClickListener() {
+			
+			@Override
+			public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+				
+				book  = (Reservation) adapter.getChild(groupPosition, childPosition);
+				viewerDialog(book);
+				return true;
+			}
+		});
+			
 	}
 	
 	private void viewerDialog(Reservation res){
 		
 		int people = res.getReservationPeople();
 		Order order = res.getReservationOrder();
+		
 		 // affiche quantité + nom d'un dish
-		String dishesS;
+		String dishesS ;
 		if(!order.equals(null)){
+			
 			ArrayList<Dish> dishes = order.getOrderDishes();
+			
 			if(!dishes.equals(null)){
-				dishesS = "Dishes reserved :\n"+dishes.get(0).getQuantity()+" * "+dishes.get(0).getName()+"\n";
-				for(int i = 1;i<dishes.size();i++){
-					dishesS = dishesS + dishes.get(i).getQuantity()+" * "+dishes.get(i).getName()+"\n";
-				}
+				
+				dishesS = "Ordered dishes : \n"+orderedList(dishes)+computePrice(dishes);
 			}
 			dishesS="No dishes reserved.";
 		}
 		else dishesS = "No order in this reservation.";
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(ResAndComActivity.this);
-		builder.setTitle(R.string.title_activity_res_and_com);
+		builder.setTitle(TimeTable.parseDateInString(res.getReservationTime()));
 		builder.setMessage("Number of people : "+people+"\n"+dishesS); 
 		
 		builder.setNeutralButton(R.string.ok_button, new DialogInterface.OnClickListener() {
@@ -77,8 +88,7 @@ public class ResAndComActivity extends Activity {
 			public void onClick(DialogInterface dialog, int which) {}
 		});
 		AlertDialog dialog = builder.create();
-		dialog.show();
-		
+		dialog.show();	
 	}
 
 	@Override
@@ -95,9 +105,9 @@ public class ResAndComActivity extends Activity {
 		private LayoutInflater inflater;
 		private ArrayList<Groupe> head;
 		
-		public ResAndComAdapter(Context context, ArrayList<Reservation> myResHere) 
+		public ResAndComAdapter(Context c, ArrayList<Reservation> myResHere) 
 		{
-			this.context = context;
+			this.context = c;
 			inflater = LayoutInflater.from(context);
 			this.head = setSeed(myResHere);
 		}
@@ -252,6 +262,22 @@ public class ResAndComActivity extends Activity {
 		}
 		
 		return res;
+	}
+	
+	private String computePrice(ArrayList<Dish> ordered){
+		double a= 0;
+		for(Dish d: ordered){
+			a = a + (d.getQuantity()*d.getPrice());
+		}
+		return ("Price : "+ String.format("%.2f", a) +" \u20ac \n");
+	}
+	
+	private String orderedList(ArrayList<Dish> ordered){
+		String a = "";
+		for(Dish d: ordered){
+			a = a +"- " +d.getQuantity()+" "+ d.getName() +"\n";
+		}
+		return a;
 	}
 }
 
