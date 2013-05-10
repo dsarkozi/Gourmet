@@ -49,10 +49,11 @@ public class OrderActivity extends Activity {
 		current.Orderreboot();
 		cli = g.getClient();
 		
+		/*
 		if(cli == null){
 			cli = new Client("fuckyou","moron","666"); //TODO To remove
 		}
-		
+		*/
 		Bundle extra = getIntent().getExtras();
 		this.fromRestaurant = extra.getBoolean("from");
 		
@@ -79,7 +80,6 @@ public class OrderActivity extends Activity {
 
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				// TODO Auto-generated method stub
 				String str =(String)arg0.getSelectedItem();
 				if(str == "All"){
 					current = dishad.getCurrentRest();
@@ -114,7 +114,6 @@ public class OrderActivity extends Activity {
 
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
 			}	
 		});
 	}
