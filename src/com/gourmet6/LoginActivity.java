@@ -465,10 +465,6 @@ public class LoginActivity extends Activity
 				ExceptionHandler.caughtException(LoginActivity.this, e);
 				return false;
 			}
-			finally
-			{
-				db.close();
-			}
 			g.setClient(cli);
 			return true;
 		}
