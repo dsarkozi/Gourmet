@@ -98,17 +98,22 @@ public class ResAndComActivity extends Activity {
 				convertView = inflater.inflate(R.layout.res_list, null);
 				dholder.resto = (TextView) convertView.findViewById(R.id.resRestName);
 				dholder.date = (TextView) convertView.findViewById(R.id.resDate);
+				convertView.setTag(dholder);
 				
 			}else{
 				dholder = (ChildViewHolder) convertView.getTag();
 			}
 			
 			if(groupPosition == 0){
-				dholder.resto.setText(resv.getReservationResName());
-				dholder.date.setText(TimeTable.parseDateInString(resv.getReservationTime()));
+				if(resv != null){
+					dholder.resto.setText(resv.getReservationResName());
+					dholder.date.setText(TimeTable.parseDateInString(resv.getReservationTime()));
+				}
 			}else{
-				dholder.resto.setText(ord.getOrderRestaurant());
-				dholder.date = (TextView) convertView.findViewById(R.id.resDate);
+				if(ord != null){
+					dholder.resto.setText(ord.getOrderRestaurant());
+					dholder.date.setText(ord.getOrderRestaurant());
+				}
 			}
 			
 			return convertView;
@@ -173,7 +178,7 @@ public class ResAndComActivity extends Activity {
 		public ArrayList<Groupe> setSeed(ArrayList<Reservation> resv, ArrayList<Order> or){
 			ArrayList<Groupe> res = new ArrayList<Groupe>();
 			res.add(new Groupe("Bookings", resv, null));
-			res.add(new Groupe("Bookings", null, or));
+			res.add(new Groupe("Orders", null, or));
 			return res;
 		}
 		
