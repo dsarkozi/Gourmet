@@ -1073,18 +1073,18 @@ public class DBHandler {
 		try
 		{
 			// tables reservation and restaurant
-			String avail = "stillAvailable";
-			c = this.db.rawQuery("SELECT ("+SEATS+" - sum ("+PEOPLE+")) as ? FROM "+TABLE_RESERVATION+" reserv, "+TABLE_RESTAURANT+
+			//String avail = "stillAvailable";
+			c = this.db.rawQuery("SELECT ("+SEATS+" - sum ("+PEOPLE+")) FROM "+TABLE_RESERVATION+" reserv, "+TABLE_RESTAURANT+
 					" rest WHERE reserv."+RES+"= rest."+RES+" AND rest."+RES+"=? AND strftime('%Y-%m-%d %H:%M', reserv."+DATETIME+") " +
 					"BETWEEN strftime('%Y-%m-%d %H:%M', ?) AND strftime('%Y-%m-%d %H:%M', ?)",
-					new String []{avail,resName,dtStart,dtEnd});
+					new String []{resName,dtStart,dtEnd});
 			int count = c.getCount();
 			if (count != 1)
 			{
 				Log.e("DBHandler", "Error : the method failed.");
 			}
 			c.moveToFirst();
-			seats = c.getInt(c.getColumnIndex(avail));
+			seats = c.getInt(0);
 		}
 		finally
 		{
