@@ -76,7 +76,10 @@ public class TownActivity extends ListActivity
 			{
 				HashMap<String, String> data = new HashMap<String, String>();
 				data.put("town", loc.getExtras().getString("town"));
-				data.put("distance", String.valueOf(current.distanceTo(loc)));
+				data.put("distance",
+						String.format(
+								"%.2f", current.distanceTo(loc)/1000)
+								+ " km");
 				towns.add(data);
 			}
 			adapter = new SimpleAdapter(this, towns,
