@@ -10,34 +10,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
-        android:textIsSelectable="true"/>
+        android:textIsSelectable="true"
+        android:text="@string/udish"/>
 
     <TextView
         android:id="@+id/dishPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
-        android:textIsSelectable="true" />
+        android:textIsSelectable="true"
+        android:text="@string/udish" />
 
     <TextView
         android:id="@+id/dishType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
-        android:textIsSelectable="true" />
+        android:textIsSelectable="true"
+        android:text="@string/udish" />
 
     <TextView
         android:id="@+id/dishCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:textIsSelectable="true" />
+        android:textIsSelectable="true"
+        android:text="@string/udish" />
 
     <TextView
         android:id="@+id/dishSubtype"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:textIsSelectable="true"/>
+        android:textIsSelectable="true"
+        android:text="@string/udish"/>
 
 </LinearLayout>

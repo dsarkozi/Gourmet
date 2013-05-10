@@ -1,6 +1,10 @@
 package com.gourmet6;
 
 import java.util.ArrayList;
+
+import com.gourmet6.DishMenuAdapter.Groupe;
+import com.gourmet6.DishMenuAdapter.GroupeViewHolder;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
@@ -18,8 +22,10 @@ public class ResAndComActivity extends Activity {
 	private DBHandler dbHand;
 	private Gourmet g ;
 	private Client currentCli;
-	private ExpandableListView expandableList = null;
-	private ArrayList<Reservation> myRes = new ArrayList<Reservation>();
+	private ExpandableListView expandableList;
+	private ArrayList<Reservation> myRes;
+	private ArrayList<Order> myOr;
+	private ResAndComAdapter adapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +37,13 @@ public class ResAndComActivity extends Activity {
 		
 		currentCli = g.getClient();
 		myRes = dbHand.getClientReservations(currentCli.getEmail());
-		expandableList = (ExpandableListView) findViewById(R.id.expandableListView1);
+		myOr = dbHand.getClientOrders(currentCli.getEmail());
+		expandableList = (ExpandableListView) findViewById(R.id.rescom);
 		
-		ResAndComAdapter adapter = new ResAndComAdapter(this, myRes);
+		adapter = new ResAndComAdapter(this, myRes, myOr);
 		expandableList.setAdapter(adapter);
+		
+		expandableList.setOnChildClickListener(onChildClickListener)
 	}
 
 	@Override
@@ -49,18 +58,27 @@ public class ResAndComActivity extends Activity {
 		
 		private Context context;
 		private LayoutInflater inflater;
+		private ChildViewHolder dholder;
+		private ArrayList<Groupe> head;
 		private ArrayList<Reservation> myResHere;
+		private ArrayList<Order> myOrHere;
 		
-		public ResAndComAdapter(Context context, ArrayList<Reservation> myResHere) //myResRac = myRes !!!
+		public ResAndComAdapter(Context context, ArrayList<Reservation> myResHere, ArrayList<Order> myOrHere) //myResRac = myRes !!!
 		{
 			this.context = context;
 			this.myResHere = myResHere;
+			this.myOrHere = myOrHere;
 			inflater = LayoutInflater.from(context);
+			this.head = setSeed(myResHere, myOrHere);
 		}
 
-		@Override //on a une liste de r�servations qui contient une liste de plats
-		public Object getChild(int indexR, int indexO) {
-			return myResHere.get(indexR).getReservationOrder().getOrderDishes().get(indexO);
+		@Override //on a une liste de reservations qui contient une liste de plats
+		public Object getChild(int groupPosition, int childPosition) {
+			if(groupPosition == 0){
+				return head.get(groupPosition).getRes().get(childPosition);
+			}else{
+				return head.get(groupPosition).getOr().get(childPosition);
+			}
 		}
 
 		@Override
@@ -69,48 +87,44 @@ public class ResAndComActivity extends Activity {
 		}
 
 		@Override
-		public View getChildView(int indexR, int indexO, boolean isLastChild, View convertView, ViewGroup parent) {
-			DishViewHolder dholder;
+		public View getChildView(int groupPosition, int childPosition,boolean isLastChild, View convertView, ViewGroup parent) {
 			
-			final Dish dish = (Dish) this.getChild(indexR, indexO);
+			if(groupPosition == 0){
+				Reservation resv = (Reservation) getChild(groupPosition, childPosition);
+			}else{
+				Order ord = (Order) getChild(groupPosition, childPosition);
+			}
 			
 			if(convertView == null){
-				dholder = new DishViewHolder();
-				convertView = inflater.inflate(R.layout.dish_list, null);
+				dholder = new ChildViewHolder();
+				convertView = inflater.inflate(R.layout.res_list, null);
+				dholder.resto = (TextView) convertView.findViewById(R.id.dishname);
+				dholder.date = (TextView) convertView.findViewById(R.id.price);
 				
-				dholder.name = (TextView) convertView.findViewById(R.id.dishName);
-				dholder.price = (TextView) convertView.findViewById(R.id.dishPrice);
-				dholder.count = (TextView) convertView.findViewById(R.id.dishCount);
-				dholder.type = (TextView) convertView.findViewById(R.id.dishType);
-				dholder.subtype = (TextView) convertView.findViewById(R.id.dishSubtype);
+			}else{
 				
-				convertView.setTag(dholder);
 			}
-			else{
-				dholder = (DishViewHolder) convertView.getTag();
-			}
-			dholder.name.setText(dish.getName());
-			dholder.price.setText(String.valueOf(dish.getPrice()));
-			dholder.count.setText(dish.getQuantity());
-			dholder.type.setText(dish.getType());
-			dholder.subtype.setText(dish.getSubtype());
 			
 			return convertView;
 		}
 
 		@Override
-		public int getChildrenCount(int indexR) {
-			return myResHere.get(indexR).getReservationOrder().getOrderDishes().size();
+		public int getChildrenCount(int groupPosition) {
+			if(groupPosition == 0){
+				return head.get(groupPosition).getRes().size();
+			}else{
+				return head.get(groupPosition).getOr().size();
+			}
 		}
 
 		@Override
 		public Object getGroup(int indexR) {
-			return myResHere.get(indexR);
+			return head.get(indexR);
 		}
 
 		@Override
 		public int getGroupCount() {
-			return myResHere.size();
+			return head.size();
 		}
 
 		@Override
@@ -119,27 +133,27 @@ public class ResAndComActivity extends Activity {
 		}
 
 		@Override
-		public View getGroupView(int indexR, boolean indexO, View convertView, ViewGroup parent) {
-			ResViewHolder rholder;
+		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+			GroupViewHolder gholder;
 			
-			Reservation res = (Reservation) getGroup(indexR);
+			Groupe group = (Groupe) getGroup(groupPosition);
 			
-			if(convertView == null){
-				rholder = new ResViewHolder();
-				
-				convertView = inflater.inflate(R.layout.res_list, null);
-				
-				rholder.tvRes = (TextView)convertView.findViewById(R.id.resData);
-				
-				convertView.setTag(rholder);
+			if(convertView == null)
+			{
+				gholder = new GroupViewHolder();
+				convertView = inflater.inflate(R.layout.grp_layout, null);
+				gholder.tvRes = (TextView) convertView.findViewById(R.id.groupe);
+				convertView.setTag(gholder);
 			}
 			else{
-				rholder = (ResViewHolder)convertView.getTag();
+				gholder = (GroupViewHolder) convertView.getTag();
 			}
-			rholder.tvRes.setText(res.getReservationTime()+" "+res.getReservationPeople()+" "+res.getReservationResName());
+			
+			gholder.tvRes.setText(group.getName());
+			
 			return convertView;
 		}
-
+		
 		@Override
 		public boolean hasStableIds() {
 			return true;
@@ -150,17 +164,58 @@ public class ResAndComActivity extends Activity {
 			return true;
 		}
 		
-		private class DishViewHolder{
-			public TextView name;
-			public TextView price;
-			public TextView count;
-			public TextView type;
-			public TextView subtype;
+		public ArrayList<Groupe> setSeed(ArrayList<Reservation> resv, ArrayList<Order> or){
+			ArrayList<Groupe> res = new ArrayList<Groupe>();
+			res.add(new Groupe("Bookings", resv, null));
+			res.add(new Groupe("Bookings", null, or));
+			return res;
 		}
 		
-		private class ResViewHolder{
+		private class ChildViewHolder{
+			public TextView resto;
+			public TextView date;
+		}
+		
+		private class GroupViewHolder{
 			public TextView tvRes;
 			
+		}
+		
+		private class Groupe{
+			private String name;
+			private ArrayList<Reservation> res;
+			private ArrayList<Order> or;
+			
+			public Groupe(String name,ArrayList<Reservation> res,ArrayList<Order> or){
+				this.setName(name);
+				this.setRes(res);
+				this.setOr(or);
+			}
+			
+			public String getName() {
+				return name;
+			}
+			
+			public void setName(String name) {
+				this.name = name;
+			}
+
+			public ArrayList<Reservation> getRes() {
+				return res;
+			}
+
+			public void setRes(ArrayList<Reservation> res) {
+				this.res = res;
+			}
+
+			public ArrayList<Order> getOr() {
+				return or;
+			}
+
+			public void setOr(ArrayList<Order> or) {
+				this.or = or;
+			}
+
 		}
 	}
 }
