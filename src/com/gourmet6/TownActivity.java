@@ -19,6 +19,7 @@ public class TownActivity extends ListActivity
 	private static final String TITLE = "Town list";
 	private DBHandler dbHand;
 	private String[] towns;
+	private Gourmet g;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -29,6 +30,7 @@ public class TownActivity extends ListActivity
 		// Show the Up button in the action bar.
 		setupActionBar();
 		setTitle(TITLE);
+		g = (Gourmet) getApplication();
 	}
 
 	@Override
@@ -75,7 +77,9 @@ public class TownActivity extends ListActivity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
+		if(g.getClient() != null)
+			getMenuInflater().inflate(R.menu.main, menu);
+		
 		return true;
 	}
 
