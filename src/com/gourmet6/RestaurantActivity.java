@@ -140,7 +140,7 @@ public class RestaurantActivity extends Activity
 		}
 		if(currentRest.getPriceCat()!=0){
 			tvCatPrice = (TextView) findViewById(R.id.tvPriceCat);
-			tvCatPrice.setText(Dish.myRound(currentRest.getPriceCat())+" �");
+			tvCatPrice.setText(Dish.myRound(currentRest.getPriceCat())+" \u20ac");
 		}
 		if(currentRest.getSeats()!=0){
 			tvSeats = (TextView) findViewById(R.id.tvPlaceRest);
