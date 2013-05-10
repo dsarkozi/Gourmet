@@ -14,7 +14,6 @@ import android.widget.ExpandableListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -308,18 +307,8 @@ public class OrderActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
-			NavUtils.navigateUpFromSameTask(this);
-			return true;
-		}
+		Intent clientGo = new Intent(OrderActivity.this, ClientActivity.class);
+		startActivity(clientGo);
 		return super.onOptionsItemSelected(item);
 	}
 
