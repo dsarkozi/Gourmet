@@ -45,42 +45,38 @@ public class ResAndComActivity extends Activity {
 		
 		
 	}
-	 /*
+	
 	private void viewerDialog(Reservation res){
-		current = dishad.getCurrentRest();
-		Order odd = cli.createOrder(current.getName());
-		String a ="";
-		odd.setOrderDishes(ordered);
-		g.setOrder(odd);
 		
-		if(ordered != null){
-			for(Dish d: ordered){
-				a = a +"- " +d.getQuantity()+" "+ d.getName() +"\n";
+		int people = res.getReservationPeople();
+		Order order = res.getReservationOrder();
+		 // affiche quantité + nom d'un dish
+		String dishesS;
+		if(!order.equals(null)){
+			ArrayList<Dish> dishes = order.getOrderDishes();
+			if(!dishes.equals(null)){
+				dishesS = "Dishes reserved :\n"+dishes.get(0).getQuantity()+" * "+dishes.get(0).getName()+"\n";
+				for(int i = 1;i<dishes.size();i++){
+					dishesS = dishesS + dishes.get(i).getQuantity()+" * "+dishes.get(i).getName()+"\n";
+				}
 			}
+			dishesS="No dishes reserved";
 		}
+		else dishesS = "No order in this reservation";
 		
-		AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
-		builder.setTitle(R.string.activity_order_title);
-		builder.setMessage(getString(R.string.ordered)+ "\n"+ a + getString(R.string.do_you_confirm)); 
+		AlertDialog.Builder builder = new AlertDialog.Builder(ResAndComActivity.this);
+		builder.setTitle(R.string.title_activity_res_and_com);
+		builder.setMessage("Number of people : "+people+"\n"+dishesS); 
 		
-		builder.setPositiveButton(R.string.yes_button, new DialogInterface.OnClickListener() {
+		builder.setNeutralButton(R.string.ok_button, new DialogInterface.OnClickListener() {
 			
 			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				toBook();
-			}
-		});
-		builder.setNegativeButton(R.string.no_button, new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				
-			}
+			public void onClick(DialogInterface dialog, int which) {}
 		});
 		AlertDialog dialog = builder.create();
 		dialog.show();
 		
-	}*/
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
