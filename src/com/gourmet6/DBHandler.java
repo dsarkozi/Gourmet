@@ -505,10 +505,9 @@ public class DBHandler {
 	 * @throws SQLiteException if the DB cannot be accessed for writing
 	 * @throws SQLException if one of the arguments id invalid or if the insert fails
 	 */
-	public long addClient (String mail, String name, String password, String tel) throws SQLiteException, SQLException
+	public Client addClient (String mail, String name, String password, String tel) throws SQLiteException, SQLException
 	{
 		this.openWrite();
-		long rowId = -1;
 		
 		ContentValues insertValues = new ContentValues(4);
 		insertValues.put(MAIL, mail);
@@ -518,7 +517,7 @@ public class DBHandler {
 		this.db.beginTransaction();
 		try
 		{
-			rowId = this.db.insertOrThrow(TABLE_CLIENT, null, insertValues);
+			this.db.insertOrThrow(TABLE_CLIENT, null, insertValues);
 			this.db.setTransactionSuccessful();
 		}
 		finally
@@ -526,8 +525,8 @@ public class DBHandler {
 			this.db.endTransaction();
 			this.close();
 		}
-
-		return rowId;
+		
+		return new Client(mail, name, tel);
 	}
 	
 	/**
