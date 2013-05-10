@@ -95,7 +95,6 @@ public class DishMenuActivity extends Activity {
 
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				// TODO Auto-generated method stub
 				String str =(String)arg0.getSelectedItem();
 				if(str == "All"){
 					
@@ -123,13 +122,12 @@ public class DishMenuActivity extends Activity {
 					dishes.setAdapter(new DishMenuAdapter(DishMenuActivity.this,current,listdish, false));
 				}
 				else{
-					Toast.makeText(DishMenuActivity.this,"Current list does not contain any dish from "+str, Toast.LENGTH_LONG) .show();
+					Toast.makeText(DishMenuActivity.this,getString(R.string.vanished)+str, Toast.LENGTH_LONG) .show();
 				}
 			}
 
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
 			}	
 		});
 	}

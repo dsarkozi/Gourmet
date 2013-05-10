@@ -108,7 +108,7 @@ public class OrderActivity extends Activity {
 					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,current,listdish, true));
 				}
 				else{
-					Toast.makeText(OrderActivity.this,R.string.vanished+str, Toast.LENGTH_LONG) .show();
+					Toast.makeText(OrderActivity.this,getString(R.string.vanished)+str, Toast.LENGTH_LONG) .show();
 				}
 			}
 
@@ -158,7 +158,7 @@ public class OrderActivity extends Activity {
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
 		builder.setTitle(R.string.activity_order_title);
-		builder.setMessage(R.string.ordered+ "\n"+ a + R.string.do_you_confirm); //TODO Why don't work?
+		builder.setMessage(getString(R.string.ordered)+ "\n"+ a + getString(R.string.do_you_confirm)); 
 		
 		builder.setPositiveButton(R.string.yes_button, new DialogInterface.OnClickListener() {
 			
