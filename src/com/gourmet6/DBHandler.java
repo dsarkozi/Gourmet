@@ -1315,8 +1315,9 @@ public class DBHandler {
 		if (c.getCount() > 1)
 		{
 			Log.e("DBHandler","Error : two or more orders seem to have the same number.");
+		}
 		
-		String resName; String mail;
+		String resName = null;  String mail = null;
 		while (c.moveToNext())
 		{
 			resName = c.getString(c.getColumnIndex(RES));
