@@ -11,6 +11,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -504,8 +505,9 @@ public class DBHandler {
 	 * @return  if -1, then error; otherwise the rowId of the newly inserted data
 	 * @throws SQLiteException if the DB cannot be accessed for writing
 	 * @throws SQLException if one of the arguments id invalid or if the insert fails
+	 * @throws SQLiteConstraintException if constraints on the DB are not respected
 	 */
-	public Client addClient (String mail, String name, String password, String tel) throws SQLiteException, SQLException
+	public Client addClient (String mail, String name, String password, String tel) throws SQLiteException, SQLException, SQLiteConstraintException
 	{
 		this.openWrite();
 		
@@ -601,8 +603,9 @@ public class DBHandler {
 	 * @return 1 if update was performed on 1 row as expected, any other value means an error has occurred
 	 * @throws SQLiteException if the DB cannot be accessed for writing
 	 * @throws SQLException if one of the arguments is invalid
+	 * @throws SQLiteConstraintException if constraints on the DB are not respected
 	 */
-	public long changeMail (String oldMail, String newMail) throws SQLiteException, SQLException
+	public long changeMail (String oldMail, String newMail) throws SQLiteException, SQLException, SQLiteConstraintException
 	{
 		// throws an exception if the mandatory information is not given
 		if (oldMail == null)
