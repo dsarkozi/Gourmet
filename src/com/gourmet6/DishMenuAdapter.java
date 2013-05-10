@@ -118,13 +118,6 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 			dholder.price.setText(String.format("%.2f", currentdish.getPrice()) + " \u20ac");
 			dholder.count.setText(currentdish.getInventory() + " pcs");
 			
-			if(currentdish.getInventory() == 0){
-				dholder.plus.setEnabled(false);
-				dholder.minus.setEnabled(false);
-			}else{
-				dholder.plus.setEnabled(true);
-				dholder.minus.setEnabled(true);
-			}
 		
 			if(fromOrder){
 				dholder.plus.setVisibility(View.VISIBLE);
@@ -139,16 +132,12 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 					public void onClick(View v) {
 						DishViewHolder dh = (DishViewHolder) v.getTag();
 						Dish d = current.getDish(dh.name.getText().toString());
-						if((d.getQuantity()) < (d.getInventory()))
-						{
+				
+						d.incrementQuantity();
+						dh.count.setText(d.getQuantity()+" pcs");
+						current.setDish(d);
 						
-							d.incrementQuantity();
-							dh.count.setText(d.getQuantity()+" pcs");
-							current.setDish(d);
-							
-						}else{
-							
-						}
+				
 					}
 				});
 		
