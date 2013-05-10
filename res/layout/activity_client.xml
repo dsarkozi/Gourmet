@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textIsSelectable="true" />
+        android:textIsSelectable="true"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/mail"
@@ -23,8 +23,8 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/name"
         android:layout_below="@+id/name"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textIsSelectable="true" />
+        android:textIsSelectable="true"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Button
         android:id="@+id/rescom"
@@ -50,6 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:textIsSelectable="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_below="@+id/mail"/>
 
 </RelativeLayout>
