@@ -283,7 +283,7 @@ public class OrderActivity extends Activity {
 	private String computePrice(ArrayList<Dish> ordered){
 		double a= 0;
 		for(Dish d: ordered){
-			a = a + d.getPrice();
+			a = a + (d.getQuantity()*d.getPrice());
 		}
 		return String.format("%.2f", a);
 	}
