@@ -83,7 +83,7 @@ public class NewPersDataActivity extends Activity {
         			return;
         		}
         		//voir les champs remplis par l'utilisateur(changements a faire)+effectuer ces changements
-        		String un="", deux="", trois="", quatre="";
+        		String un="(none)", deux="", trois="", quatre="";
         		if(!newMdpS.equals("")){
         			if(newMdpComfS.equals(""))
         			{
@@ -100,14 +100,17 @@ public class NewPersDataActivity extends Activity {
         		}
         		if(!newNameS.equals("")){
         			dbHand.changeName(currentCli.getEmail(), newNameS);
+        			g.getClient().setName(newNameS);
         			deux ="Your name has been changed. \n";
         		}
         		if(!newPhoneS.equals("")){
         			dbHand.changeTel(currentCli.getEmail(), newPhoneS);
+        			g.getClient().setPhone(newPhoneS);
         			trois ="Your phone number has been changed. \n";
         		}
         		if(!newMailS.equals("")){
         			dbHand.changeMail(currentCli.getEmail(), newMailS);
+        			g.getClient().setEmail(newMailS);
         			quatre ="Your email has been changed.";
         		}
         		missingField.setText("The following changes have been carried out:\n"+un+deux+trois+quatre);
