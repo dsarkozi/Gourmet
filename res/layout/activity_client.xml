@@ -8,48 +8,46 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ClientActivity" >
 
-   <RelativeLayout 
-    	android:layout_width="match_parent"
-    	android:layout_height="wrap_content">
-	    <TextView
-	        android:id="@+id/name"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentLeft="true"	
-	        android:layout_alignParentTop="true"
-	        android:textStyle="bold"
-	        android:text="@string/udish"
-	        android:textSize="18sp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
-	    <TextView
-	        android:id="@+id/mail"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_alignLeft="@+id/name"
-	        android:layout_below="@+id/name"
-	        android:text="@string/udish"
-	        android:textSize="18sp"
-	        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/udish"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-    	<TextView
-    	    android:id="@+id/phone"
-    	    android:layout_width="match_parent"
-	    	android:layout_height="wrap_content"
-	        android:layout_alignLeft="@+id/mail"
-	        android:layout_below="@+id/mail"
-	        android:text="@string/udish"
-	        android:textSize="18sp"
-	        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/mail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/name"
+            android:layout_below="@+id/name"
+            android:text="@string/udish"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mail"
+            android:layout_below="@+id/mail"
+            android:text="@string/udish"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-	    <Button
-	        android:id="@+id/cpd"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="155dp"
-	        android:text="@string/cpd" />
-
-
+        <Button
+            android:id="@+id/cpd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="155dp"
+            android:text="@string/cpd" />
     </RelativeLayout>
 
 </ScrollView>

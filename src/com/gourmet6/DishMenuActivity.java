@@ -21,10 +21,11 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class DishMenuActivity extends Activity {
-	
+public class DishMenuActivity extends Activity
+{
+
 	private Gourmet g;
-	private Restaurant current  = null;
+	private Restaurant current = null;
 	private ExpandableListView dishes;
 	private DishMenuAdapter dishad;
 	private ArrayAdapter<String> adapter;
@@ -33,108 +34,139 @@ public class DishMenuActivity extends Activity {
 	private ArrayList<String> allergens;
 	private ArrayList<String> filters;
 	private ArrayList<Dish> listdish;
-	
-	
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dish_menu);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		
+
 		setTitle(R.string.activity_menu_title);
-		
-		g = (Gourmet)getApplicationContext();
+
+		g = (Gourmet) getApplicationContext();
 		current = g.getRest();
-		
-		//Reaction du bouton de commande
+
+		// Reaction du bouton de commande
 		Button order = (Button) findViewById(R.id.button1);
-		
-		if(g.getClient() == null){
+
+		if (g.getClient() == null)
+		{
 			order.setEnabled(false);
-		}else{
+		}
+		else
+		{
 			order.setEnabled(true);
 			current.createListDishes(new DBHandler(this));
 		}
-		
-		order.setOnClickListener(new View.OnClickListener() {
-					
+
+		order.setOnClickListener(new View.OnClickListener()
+		{
+
 			@Override
-			public void onClick(View v) {
-				Intent commande = new Intent(DishMenuActivity.this, OrderActivity.class);
+			public void onClick(View v)
+			{
+				Intent commande = new Intent(DishMenuActivity.this,
+						OrderActivity.class);
 				commande.putExtra("from", true);
-				startActivity(commande);			
+				startActivity(commande);
 			}
 		});
-		
+
 		updateLists(current.getListDishes());
-		
+
 		dishes = (ExpandableListView) findViewById(R.id.dish_menu);
-		dishad = new DishMenuAdapter(this,current,listdish, false);
+		dishad = new DishMenuAdapter(this, current, listdish, false);
 		dishes.setAdapter(dishad);
-		dishes.setOnChildClickListener(new OnChildClickListener() {
-			
+		dishes.setOnChildClickListener(new OnChildClickListener()
+		{
+
 			@Override
-			public boolean onChildClick(ExpandableListView parent, View v,int groupPosition, int childPosition, long id) {
-				
+			public boolean onChildClick(ExpandableListView parent, View v,
+					int groupPosition, int childPosition, long id)
+			{
+
 				DishViewHolder txt = (DishViewHolder) v.getTag();
-				
-				if(dishad.isChildSelectable(groupPosition, childPosition)){
-					Intent display = new Intent(DishMenuActivity.this, DishDisplayActivity.class);
-					display.putExtra("the_dish", (txt.name.getText()).toString());
+
+				if (dishad.isChildSelectable(groupPosition, childPosition))
+				{
+					Intent display = new Intent(DishMenuActivity.this,
+							DishDisplayActivity.class);
+					display.putExtra("the_dish",
+							(txt.name.getText()).toString());
 					startActivity(display);
 				}
 				return true;
 			}
 		});
-		
+
 		Spinner sort = (Spinner) findViewById(R.id.spinner1);
-		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, filters);
+		adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, filters);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		sort.setAdapter(adapter);
-		sort.setOnItemSelectedListener(new OnItemSelectedListener() {
+		sort.setOnItemSelectedListener(new OnItemSelectedListener()
+		{
 
 			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				String str =(String)arg0.getSelectedItem();
-				if(str == "All"){
-					
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3)
+			{
+				String str = (String) arg0.getSelectedItem();
+				if (str == "All")
+				{
+
 					updateLists(current.getListDishes());
-					dishes.setAdapter(new DishMenuAdapter(DishMenuActivity.this,current,listdish, false));
-					
+					dishes.setAdapter(new DishMenuAdapter(
+							DishMenuActivity.this, current, listdish, false));
+
 				}
-				else if(str == "Price"){
+				else if (str == "Price")
+				{
 					updateLists(current.sortDishesPrice(listdish));
-					dishes.setAdapter(new DishMenuAdapter(DishMenuActivity.this,current,listdish, false));
+					dishes.setAdapter(new DishMenuAdapter(
+							DishMenuActivity.this, current, listdish, false));
 				}
-				else if(types.contains(str)){
-					
+				else if (types.contains(str))
+				{
+
 					updateLists(current.filterDishesType(str, listdish));
-					dishes.setAdapter(new DishMenuAdapter(DishMenuActivity.this,current,listdish, false));
+					dishes.setAdapter(new DishMenuAdapter(
+							DishMenuActivity.this, current, listdish, false));
 				}
-				else if(subtypes.contains(str)){
-					
+				else if (subtypes.contains(str))
+				{
+
 					updateLists(current.filterDishesSubtype(str, listdish));
-					dishes.setAdapter(new DishMenuAdapter(DishMenuActivity.this,current,listdish, false));
+					dishes.setAdapter(new DishMenuAdapter(
+							DishMenuActivity.this, current, listdish, false));
 				}
-				else if(allergens.contains(str)){
-					
+				else if (allergens.contains(str))
+				{
+
 					String[] st = str.split(": ");
 					updateLists(current.filterDishesAllergen(st[1], listdish));
-					dishes.setAdapter(new DishMenuAdapter(DishMenuActivity.this,current,listdish, false));
+					dishes.setAdapter(new DishMenuAdapter(
+							DishMenuActivity.this, current, listdish, false));
 				}
-				else{
-					Toast.makeText(DishMenuActivity.this,getString(R.string.vanished)+str, Toast.LENGTH_LONG) .show();
+				else
+				{
+					Toast.makeText(DishMenuActivity.this,
+							getString(R.string.vanished) + str,
+							Toast.LENGTH_LONG).show();
 				}
 			}
 
 			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-			}	
+			public void onNothingSelected(AdapterView<?> arg0)
+			{
+			}
 		});
 	}
-	
-	private void updateLists(ArrayList<Dish> filtered){
+
+	private void updateLists(ArrayList<Dish> filtered)
+	{
 		this.listdish = filtered;
 		this.filters = current.getFilters(filtered);
 		this.types = current.getDishesTypes(filtered);
@@ -143,14 +175,15 @@ public class DishMenuActivity extends Activity {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
 		// Inflate the menu; this adds items to the action bar if it is present.
-		if(g.getClient() != null)
+		if (g.getClient() != null)
 			getMenuInflater().inflate(R.menu.main, menu);
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
@@ -160,7 +193,8 @@ public class DishMenuActivity extends Activity {
 				onBackPressed();
 				return true;
 			default:
-				Intent clientGo = new Intent(DishMenuActivity.this, ClientActivity.class);
+				Intent clientGo = new Intent(DishMenuActivity.this,
+						ClientActivity.class);
 				startActivity(clientGo);
 				return super.onOptionsItemSelected(item);
 		}

@@ -8,29 +8,30 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ClientActivity" >
 
-    <LinearLayout 
-        android:id="@+id/linearLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <EditText
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <EditText
                 android:id="@+id/etActualMdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="@string/mdpActual"
-                android:inputType="textPassword">
-                
+                android:inputType="textPassword" >
+
                 <requestFocus />
-                </EditText> 
-        
+            </EditText>
+
             <EditText
                 android:id="@+id/etMdp"
                 android:layout_width="match_parent"
@@ -38,7 +39,7 @@
                 android:ems="10"
                 android:hint="@string/mdpNew"
                 android:inputType="textPassword" />
-            
+
             <EditText
                 android:id="@+id/etMdpConf"
                 android:layout_width="match_parent"
@@ -46,22 +47,25 @@
                 android:ems="10"
                 android:hint="@string/mdpNewConfirmation"
                 android:inputType="textPassword" />
+
             <EditText
                 android:id="@+id/etNewName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:inputType="textPersonName"
+                android:ems="10"
                 android:hint="@string/nameNew"
-                android:ems="10" />
+                android:inputType="textPersonName" />
+
             <EditText
                 android:id="@+id/etNewPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="@string/phoneNew"
                 android:ems="10"
+                android:hint="@string/phoneNew"
                 android:inputType="phone" />
+
             <EditText
                 android:id="@+id/etNewMail"
                 android:layout_width="match_parent"
@@ -70,25 +74,25 @@
                 android:ems="10"
                 android:hint="@string/mailNew"
                 android:inputType="textEmailAddress" />
-    </LinearLayout>
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/options" />
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/options" />
 
-    <Button
-        android:id="@+id/changeButton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/changeButton" />
+        <Button
+            android:id="@+id/changeButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/changeButton" />
 
-    <TextView
-        android:id="@+id/missingField"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/acceptation" />
+        <TextView
+            android:id="@+id/missingField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/acceptation" />
     </LinearLayout>
 
 </ScrollView>

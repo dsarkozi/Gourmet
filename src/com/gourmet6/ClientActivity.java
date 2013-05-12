@@ -58,7 +58,7 @@ public class ClientActivity extends Activity
 			}
 		});
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{

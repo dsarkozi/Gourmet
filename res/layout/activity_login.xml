@@ -60,7 +60,7 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true" />
-            
+
             <EditText
                 android:id="@+id/login_confirm"
                 android:layout_width="match_parent"
@@ -73,39 +73,38 @@
                 android:maxLines="1"
                 android:singleLine="true"
                 android:visibility="gone" />
-            
+
             <LinearLayout
-                style="@style/LoginFormContainer"
                 android:id="@+id/login_register"
+                style="@style/LoginFormContainer"
                 android:orientation="vertical"
                 android:padding="0dp"
                 android:visibility="gone" >
-                
-            	<EditText
-	               android:id="@+id/login_name"
-	               android:layout_width="match_parent"
-	               android:layout_height="wrap_content"
-	               android:hint="@string/prompt_name"
-	               android:inputType="textPersonName"
-	               android:maxLines="1"
-	               android:singleLine="true" />
-            
-	            <EditText
-	                android:id="@+id/login_phone"
-	                android:layout_width="match_parent"
-	                android:layout_height="wrap_content"
-	                android:hint="@string/prompt_phone"
-	                android:inputType="phone"
-	                android:maxLines="1"
-	                android:singleLine="true" />
-                
+
+                <EditText
+                    android:id="@+id/login_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_name"
+                    android:inputType="textPersonName"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
+                <EditText
+                    android:id="@+id/login_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_phone"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:singleLine="true" />
             </LinearLayout>
-            
+
             <LinearLayout
                 style="@style/LoginFormContainer"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal" >
-                
+                android:gravity="center_horizontal"
+                android:orientation="horizontal" >
+
                 <Button
                     android:id="@+id/sign_in_button"
                     android:layout_width="wrap_content"
@@ -114,6 +113,7 @@
                     android:paddingRight="@dimen/buttonPaddingRight"
                     android:text="@string/action_sign_in"
                     android:textStyle="bold" />
+
                 <Button
                     android:id="@+id/register_button"
                     android:layout_width="wrap_content"
@@ -122,20 +122,17 @@
                     android:paddingRight="@dimen/buttonPaddingRight"
                     android:text="@string/action_register"
                     android:textStyle="bold" />
-				
             </LinearLayout>
 
             <Button
                 android:id="@+id/guest_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:paddingLeft="@dimen/buttonPaddingLeft"
                 android:paddingRight="@dimen/buttonPaddingRight"
-                android:layout_gravity="center"
                 android:text="@string/action_as_guest" />
-
         </LinearLayout>
-
     </ScrollView>
 
 </merge>

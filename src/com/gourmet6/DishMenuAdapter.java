@@ -9,8 +9,9 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class DishMenuAdapter extends BaseExpandableListAdapter{
-	
+public class DishMenuAdapter extends BaseExpandableListAdapter
+{
+
 	private Context context;
 	private LayoutInflater inflater;
 	private Restaurant current;
@@ -20,8 +21,10 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 	private SubGroupe sgrp;
 	private DishViewHolder dholder;
 	private Dish currentdish;
-	
-	public DishMenuAdapter (Context c,Restaurant current, ArrayList<Dish> forWork, boolean fromOrder){
+
+	public DishMenuAdapter(Context c, Restaurant current,
+			ArrayList<Dish> forWork, boolean fromOrder)
+	{
 		this.context = c;
 		this.forWork = forWork;
 		this.current = current;
@@ -29,281 +32,318 @@ public class DishMenuAdapter extends BaseExpandableListAdapter{
 		this.inflater = LayoutInflater.from(context);
 		this.list = populateType(current.getDishesTypes(forWork));
 	}
-	
+
 	public void setList(ArrayList<Dish> list)
 	{
 		this.forWork = list;
 	}
-	
-	public Restaurant getCurrentRest(){
+
+	public Restaurant getCurrentRest()
+	{
 		return this.current;
 	}
 
 	@Override
-	public Object getChild(int groupPosition, int childPosition) {
+	public Object getChild(int groupPosition, int childPosition)
+	{
 		return list.get(groupPosition).getSub().get(childPosition);
 	}
 
 	@Override
-	public long getChildId(int groupPosition, int childPosition) {
+	public long getChildId(int groupPosition, int childPosition)
+	{
 		return childPosition;
 	}
 
 	@Override
-	public View getChildView(int groupPosition, int childPosition,boolean isLastChild, View convertView, ViewGroup parent) {
-		
-		
-	    sgrp = (SubGroupe) getChild(groupPosition, childPosition);
+	public View getChildView(int groupPosition, int childPosition,
+			boolean isLastChild, View convertView, ViewGroup parent)
+	{
+
+		sgrp = (SubGroupe) getChild(groupPosition, childPosition);
 		boolean nat = sgrp.getWhat();
-		
-		if(nat){			
-			if(convertView == null){
+
+		if (nat)
+		{
+			if (convertView == null)
+			{
 				dholder = new DishViewHolder();
-				convertView = inflater.inflate(R.layout.dish_list_element, null);
-				dholder.name = (TextView) convertView.findViewById(R.id.dishname);
+				convertView = inflater
+						.inflate(R.layout.dish_list_element, null);
+				dholder.name = (TextView) convertView
+						.findViewById(R.id.dishname);
 				dholder.price = (TextView) convertView.findViewById(R.id.price);
 				dholder.count = (TextView) convertView.findViewById(R.id.count);
 				dholder.plus = (Button) convertView.findViewById(R.id.plus);
 				dholder.minus = (Button) convertView.findViewById(R.id.minus);
-				
+
 				convertView.setTag(dholder);
 			}
-			else{
+			else
+			{
 				dholder = (DishViewHolder) convertView.getTag();
 			}
-			
+
 			dholder.price.setVisibility(View.GONE);
 			dholder.count.setVisibility(View.GONE);
 			dholder.name.setTextSize(18);
-			
+
 			dholder.plus.setVisibility(View.GONE);
 			dholder.plus.setClickable(false);
 			dholder.minus.setVisibility(View.GONE);
 			dholder.minus.setClickable(false);
-			
+
 			String subtype = sgrp.getTitle();
-			if(subtype != null)
-				dholder.name.setText(subtype);	
-			
+			if (subtype != null) dholder.name.setText(subtype);
+
 			return convertView;
 		}
-		else{
+		else
+		{
 			currentdish = current.getDish(sgrp.getTitle());
-		
-			if(convertView == null){
+
+			if (convertView == null)
+			{
 				dholder = new DishViewHolder();
-				convertView = inflater.inflate(R.layout.dish_list_element, null);
-			
-				dholder.name = (TextView) convertView.findViewById(R.id.dishname);
+				convertView = inflater
+						.inflate(R.layout.dish_list_element, null);
+
+				dholder.name = (TextView) convertView
+						.findViewById(R.id.dishname);
 				dholder.price = (TextView) convertView.findViewById(R.id.price);
 				dholder.count = (TextView) convertView.findViewById(R.id.count);
 				dholder.plus = (Button) convertView.findViewById(R.id.plus);
 				dholder.minus = (Button) convertView.findViewById(R.id.minus);
-				
+
 				convertView.setTag(dholder);
 			}
-			else{
+			else
+			{
 				dholder = (DishViewHolder) convertView.getTag();
 			}
 			dholder.plus.setTag(dholder);
 			dholder.minus.setTag(dholder);
-			
-			
+
 			dholder.price.setVisibility(View.VISIBLE);
 			dholder.count.setVisibility(View.VISIBLE);
 			dholder.plus.setVisibility(View.INVISIBLE);
 			dholder.minus.setVisibility(View.INVISIBLE);
 			dholder.name.setTextSize(14);
 			dholder.name.setText(currentdish.getName());
-			dholder.price.setText(String.format("%.2f", currentdish.getPrice()) + " \u20ac");
+			dholder.price.setText(String.format("%.2f", currentdish.getPrice())
+					+ " \u20ac");
 			dholder.count.setText(currentdish.getInventory() + " pcs");
-			
-		
-			if(fromOrder){
+
+			if (fromOrder)
+			{
 				dholder.plus.setVisibility(View.VISIBLE);
 				dholder.plus.setClickable(true);
 				dholder.minus.setVisibility(View.VISIBLE);
 				dholder.minus.setClickable(true);
 				dholder.count.setText(currentdish.getQuantity() + " pcs");
-		
-				dholder.plus.setOnClickListener(new Button.OnClickListener() {
-			
+
+				dholder.plus.setOnClickListener(new Button.OnClickListener()
+				{
+
 					@Override
-					public void onClick(View v) {
+					public void onClick(View v)
+					{
 						DishViewHolder dh = (DishViewHolder) v.getTag();
 						Dish d = current.getDish(dh.name.getText().toString());
-				
+
 						d.incrementQuantity();
-						dh.count.setText(d.getQuantity()+" pcs");
+						dh.count.setText(d.getQuantity() + " pcs");
 						current.setDish(d);
-						
-				
+
 					}
 				});
-		
-				dholder.minus.setOnClickListener(new Button.OnClickListener() {
-					
+
+				dholder.minus.setOnClickListener(new Button.OnClickListener()
+				{
+
 					@Override
-					public void onClick(View v) {
+					public void onClick(View v)
+					{
 						DishViewHolder dh = (DishViewHolder) v.getTag();
 						Dish d = current.getDish(dh.name.getText().toString());
-						if((d.getQuantity()) > 0)
+						if ((d.getQuantity()) > 0)
 						{
-							
+
 							d.decrementQuantity();
-							dh.count.setText(d.getQuantity()+" pcs");
+							dh.count.setText(d.getQuantity() + " pcs");
 							current.setDish(d);
-							
-						}else{
-							
+
+						}
+						else
+						{
+
 						}
 					}
 				});
-			
+
 			}
-		
+
 			return convertView;
 		}
 	}
 
 	@Override
-	public int getChildrenCount(int groupPosition) {
+	public int getChildrenCount(int groupPosition)
+	{
 		return list.get(groupPosition).getSub().size();
 	}
 
 	@Override
-	public Object getGroup(int groupPosition) {
-		
+	public Object getGroup(int groupPosition)
+	{
+
 		return list.get(groupPosition);
 	}
 
 	@Override
-	public int getGroupCount() {
-		
+	public int getGroupCount()
+	{
+
 		return list.size();
 	}
 
 	@Override
-	public long getGroupId(int groupPosition) {
-		
+	public long getGroupId(int groupPosition)
+	{
+
 		return groupPosition;
 	}
 
 	@Override
-	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+	public View getGroupView(int groupPosition, boolean isExpanded,
+			View convertView, ViewGroup parent)
+	{
 		GroupeViewHolder gholder;
-		
+
 		Groupe group = (Groupe) getGroup(groupPosition);
-		
-		if(convertView == null)
+
+		if (convertView == null)
 		{
 			gholder = new GroupeViewHolder();
 			convertView = inflater.inflate(R.layout.grp_layout, null);
 			gholder.type = (TextView) convertView.findViewById(R.id.groupe);
 			convertView.setTag(gholder);
 		}
-		else{
+		else
+		{
 			gholder = (GroupeViewHolder) convertView.getTag();
 		}
-		
+
 		gholder.type.setText(group.getType());
-		
+
 		return convertView;
 	}
 
 	@Override
-	public boolean hasStableIds() {
-		
+	public boolean hasStableIds()
+	{
+
 		return true;
 	}
-	
+
 	@Override
-	public boolean isChildSelectable(int groupPosition, int childPosition) {
-		if(fromOrder)
-			return false;
-		
+	public boolean isChildSelectable(int groupPosition, int childPosition)
+	{
+		if (fromOrder) return false;
+
 		SubGroupe sgrp = (SubGroupe) getChild(groupPosition, childPosition);
 		return (sgrp.getWhat() == false);
 	}
-	
-	public class GroupeViewHolder{
+
+	public class GroupeViewHolder
+	{
 		public TextView type;
 	}
-	
-	public class DishViewHolder{
+
+	public class DishViewHolder
+	{
 		public TextView name;
 		public TextView price;
 		public Button plus;
 		public TextView count;
 		public Button minus;
 	}
-	
-	private class Groupe{
+
+	private class Groupe
+	{
 		private String type;
 		private ArrayList<SubGroupe> sublist;
-		
+
 		public Groupe(String type, ArrayList<SubGroupe> subt)
 		{
 			this.type = type;
 			this.sublist = subt;
 		}
-		
+
 		public String getType()
 		{
 			return type;
 		}
 
-		public ArrayList<SubGroupe> getSub() 
+		public ArrayList<SubGroupe> getSub()
 		{
 			return sublist;
 		}
-	
+
 	}
-	
-	private class SubGroupe{
+
+	private class SubGroupe
+	{
 		private boolean what;
 		private String title;
-		
+
 		public SubGroupe(String name, boolean itis)
 		{
 			this.title = name;
 			this.what = itis;
 		}
-		
-		public boolean getWhat() {
+
+		public boolean getWhat()
+		{
 			return what;
 		}
 
-		public String getTitle() {
+		public String getTitle()
+		{
 			return title;
 		}
 	}
-	
+
 	private ArrayList<Groupe> populateType(ArrayList<String> types)
 	{
 		ArrayList<Groupe> res = new ArrayList<Groupe>();
-		
-		for(String s : types){
-			res.add(new Groupe(s, populateSubType(s,current.getDishesSubtypes(s, forWork))));
+
+		for (String s : types)
+		{
+			res.add(new Groupe(s, populateSubType(s,
+					current.getDishesSubtypes(s, forWork))));
 		}
-		
+
 		return res;
 	}
-	
-	private ArrayList<SubGroupe> populateSubType(String type ,ArrayList<String> subtypes)
+
+	private ArrayList<SubGroupe> populateSubType(String type,
+			ArrayList<String> subtypes)
 	{
 		ArrayList<SubGroupe> res = new ArrayList<SubGroupe>();
-		
-		for(String s: subtypes){
-			res.add(new SubGroupe(s,true));
-			ArrayList<Dish> dishes = current.filterDishesSubtype(s, type, forWork);
-			for(Dish d : dishes){
+
+		for (String s : subtypes)
+		{
+			res.add(new SubGroupe(s, true));
+			ArrayList<Dish> dishes = current.filterDishesSubtype(s, type,
+					forWork);
+			for (Dish d : dishes)
+			{
 				res.add(new SubGroupe(d.getName(), false));
 			}
 		}
-		
-		
+
 		return res;
 	}
-	
+
 }

@@ -1,4 +1,6 @@
 <resources>
+
     <dimen name="buttonPaddingLeft">32dp</dimen>
     <dimen name="buttonPaddingRight">32dp</dimen>
+
 </resources>

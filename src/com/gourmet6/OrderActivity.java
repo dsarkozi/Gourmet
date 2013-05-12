@@ -24,8 +24,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteException;
 import android.os.Build;
 
-public class OrderActivity extends Activity {
-	
+public class OrderActivity extends Activity
+{
+
 	private Gourmet g;
 	private Restaurant current;
 	private Client cli;
@@ -42,301 +43,394 @@ public class OrderActivity extends Activity {
 	private ArrayList<Dish> listdish;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_order);
 		// Show the Up button in the action bar.
 		setupActionBar();
 
-		setTitle(R.string.activity_order_title);		
-		
-		g = (Gourmet)getApplication();
+		setTitle(R.string.activity_order_title);
+
+		g = (Gourmet) getApplication();
 		current = g.getRest();
 		current.Orderreboot();
 		cli = g.getClient();
-		
+
 		Bundle extra = getIntent().getExtras();
 		this.fromRestOrMenu = extra.getBoolean("from");
-		
+
 		Button submit = (Button) findViewById(R.id.button1);
-		submit.setOnClickListener(new View.OnClickListener() {
-			
+		submit.setOnClickListener(new View.OnClickListener()
+		{
+
 			@Override
-			public void onClick(View v) {
+			public void onClick(View v)
+			{
 				dbh = new DBHandler(OrderActivity.this);
 				beforeCheck(ordered());
 			}
 		});
-		
+
 		updateLists(current.getListDishes());
 		this.filters = current.getFilters(listdish);
-		
+
 		dishes = (ExpandableListView) findViewById(R.id.dish_menu);
-		dishad = new DishMenuAdapter(this,current,listdish, true);
+		dishad = new DishMenuAdapter(this, current, listdish, true);
 		dishes.setAdapter(dishad);
-		
-		
+
 		Spinner sort = (Spinner) findViewById(R.id.spinner1);
-		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, filters);
+		adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, filters);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		sort.setAdapter(adapter);
-		sort.setOnItemSelectedListener(new OnItemSelectedListener() {
+		sort.setOnItemSelectedListener(new OnItemSelectedListener()
+		{
 
 			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				String str =(String)arg0.getSelectedItem();
-				if(str == "All"){
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3)
+			{
+				String str = (String) arg0.getSelectedItem();
+				if (str == "All")
+				{
 					current = dishad.getCurrentRest();
 					updateLists(current.getListDishes());
-					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,current,listdish, true));
-					
+					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,
+							current, listdish, true));
+
 				}
-				else if(str == "Price"){
+				else if (str == "Price")
+				{
 					current = dishad.getCurrentRest();
 					updateLists(current.sortDishesPrice(listdish));
-					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,current,listdish, true));
+					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,
+							current, listdish, true));
 				}
-				else if(types.contains(str)){
+				else if (types.contains(str))
+				{
 					current = dishad.getCurrentRest();
 					updateLists(current.filterDishesType(str, listdish));
-					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,current,listdish, true));
+					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,
+							current, listdish, true));
 				}
-				else if(subtypes.contains(str)){
+				else if (subtypes.contains(str))
+				{
 					current = dishad.getCurrentRest();
 					updateLists(current.filterDishesSubtype(str, listdish));
-					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,current,listdish, true));
+					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,
+							current, listdish, true));
 				}
-				else if(allergens.contains(str)){
+				else if (allergens.contains(str))
+				{
 					current = dishad.getCurrentRest();
 					String[] st = str.split(": ");
 					updateLists(current.filterDishesAllergen(st[1], listdish));
-					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,current,listdish, true));
+					dishes.setAdapter(new DishMenuAdapter(OrderActivity.this,
+							current, listdish, true));
 				}
-				else{
-					Toast.makeText(OrderActivity.this,getString(R.string.vanished)+str, Toast.LENGTH_LONG) .show();
+				else
+				{
+					Toast.makeText(OrderActivity.this,
+							getString(R.string.vanished) + str,
+							Toast.LENGTH_LONG).show();
 				}
 			}
 
 			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-			}	
+			public void onNothingSelected(AdapterView<?> arg0)
+			{
+			}
 		});
 	}
-	
-	private void updateLists(ArrayList<Dish> filtered){
+
+	private void updateLists(ArrayList<Dish> filtered)
+	{
 		this.listdish = filtered;
 		this.types = current.getDishesTypes(filtered);
 		this.subtypes = current.getDishesSubtypes(filtered);
 		this.allergens = current.getAllergensForFilter(filtered);
 	}
 
-	private void updateInv(){
-		for(Dish d : current.getListDishes()){
-			if(d.getInventory() == 0){
+	private void updateInv()
+	{
+		for (Dish d : current.getListDishes())
+		{
+			if (d.getInventory() == 0)
+			{
 				d.setInventory(50);
 			}
-			if(d.getQuantity() != 0){
+			if (d.getQuantity() != 0)
+			{
 				d.setInventory(d.getInventory() - d.getQuantity());
-				try{
-					dbh.setDishInventory(current.getName(), d.getName(), d.getInventory());
+				try
+				{
+					dbh.setDishInventory(current.getName(), d.getName(),
+							d.getInventory());
 				}
-				catch(SQLiteException e){
+				catch (SQLiteException e)
+				{
 					ExceptionHandler.caughtException(OrderActivity.this, e);
 				}
-				catch(SQLException e){
+				catch (SQLException e)
+				{
 					ExceptionHandler.caughtException(OrderActivity.this, e);
 				}
 			}
 		}
 		g.setRest(current);
 	}
-	
+
 	private ArrayList<Dish> ordered()
 	{
 		ArrayList<Dish> res = new ArrayList<Dish>();
-		
-		for(Dish d : current.getListDishes()){
-			if(d.getQuantity() != 0){
+
+		for (Dish d : current.getListDishes())
+		{
+			if (d.getQuantity() != 0)
+			{
 				res.add(d);
 			}
 		}
-		
-		if(res.isEmpty())
-			return null;
-		
+
+		if (res.isEmpty()) return null;
+
 		return res;
 	}
-	
-	private void beforeCheck(ArrayList<Dish> ordered){
+
+	private void beforeCheck(ArrayList<Dish> ordered)
+	{
 		current = dishad.getCurrentRest();
 		Order odd = cli.createOrder(current.getName());
-		String a ="";
+		String a = "";
 		odd.setOrderDishes(ordered);
 		g.setOrder(odd);
-		
-		if(ordered != null){
-			for(Dish d: ordered){
-				a = a +"- " +d.getQuantity()+" "+ d.getName() +"\n";
+
+		if (ordered != null)
+		{
+			for (Dish d : ordered)
+			{
+				a = a + "- " + d.getQuantity() + " " + d.getName() + "\n";
 			}
-			a = a + "Price : "+ computePrice(ordered)+" \u20ac \n";
-			
-			AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
+			a = a + "Price : " + computePrice(ordered) + " \u20ac \n";
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(
+					OrderActivity.this);
 			builder.setTitle(R.string.activity_order_title);
-			builder.setMessage(getString(R.string.ordered)+ a + getString(R.string.do_you_confirm)); 
-		
-			builder.setPositiveButton(R.string.yes_button, new DialogInterface.OnClickListener() {
-			
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					toBook();
-				}
-			});
-			builder.setNegativeButton(R.string.no_button, new DialogInterface.OnClickListener() {
-			
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					
-				}
-			});
+			builder.setMessage(getString(R.string.ordered) + a
+					+ getString(R.string.do_you_confirm));
+
+			builder.setPositiveButton(R.string.yes_button,
+					new DialogInterface.OnClickListener()
+					{
+
+						@Override
+						public void onClick(DialogInterface dialog, int which)
+						{
+							toBook();
+						}
+					});
+			builder.setNegativeButton(R.string.no_button,
+					new DialogInterface.OnClickListener()
+					{
+
+						@Override
+						public void onClick(DialogInterface dialog, int which)
+						{
+
+						}
+					});
 			AlertDialog dialog = builder.create();
 			dialog.show();
 		}
-		else{
-			AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
+		else
+		{
+			AlertDialog.Builder builder = new AlertDialog.Builder(
+					OrderActivity.this);
 			builder.setTitle(R.string.activity_order_title);
 			builder.setMessage(R.string.nothing_ordered);
-			builder.setNeutralButton(R.string.ok_button, new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					
-				}
-			});
+			builder.setNeutralButton(R.string.ok_button,
+					new DialogInterface.OnClickListener()
+					{
+
+						@Override
+						public void onClick(DialogInterface dialog, int which)
+						{
+
+						}
+					});
 			AlertDialog dialog = builder.create();
 			dialog.show();
 		}
-		
+
 	}
-	
-	private void toBook(){
-		if(fromRestOrMenu){
-			AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
+
+	private void toBook()
+	{
+		if (fromRestOrMenu)
+		{
+			AlertDialog.Builder builder = new AlertDialog.Builder(
+					OrderActivity.this);
 			builder.setTitle(R.string.activity_reservation_title);
 			builder.setMessage(R.string.do_you_res);
-			
-			builder.setPositiveButton(R.string.yes_button, new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					Intent resv = new Intent(OrderActivity.this,ReservationActivity.class);
-					resv.putExtra("fromOrder", true);
-					startActivity(resv);
-				}
-			});
-			builder.setNegativeButton(R.string.no_button, new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					if(current.checkOrder(g.getOrder())){
-						
-						try{
-							dbh.addOrder(g.getOrder());
+
+			builder.setPositiveButton(R.string.yes_button,
+					new DialogInterface.OnClickListener()
+					{
+
+						@Override
+						public void onClick(DialogInterface dialog, int which)
+						{
+							Intent resv = new Intent(OrderActivity.this,
+									ReservationActivity.class);
+							resv.putExtra("fromOrder", true);
+							startActivity(resv);
 						}
-						catch(SQLiteException e){
-							ExceptionHandler.caughtException(OrderActivity.this, e);
+					});
+			builder.setNegativeButton(R.string.no_button,
+					new DialogInterface.OnClickListener()
+					{
+
+						@Override
+						public void onClick(DialogInterface dialog, int which)
+						{
+							if (current.checkOrder(g.getOrder()))
+							{
+
+								try
+								{
+									dbh.addOrder(g.getOrder());
+								}
+								catch (SQLiteException e)
+								{
+									ExceptionHandler.caughtException(
+											OrderActivity.this, e);
+								}
+								catch (SQLException e)
+								{
+									ExceptionHandler.caughtException(
+											OrderActivity.this, e);
+								}
+								updateInv();
+								Toast.makeText(OrderActivity.this,
+										R.string.hungry, Toast.LENGTH_LONG)
+										.show();
+								finish();
+							}
+							else
+							{
+								Toast.makeText(OrderActivity.this,
+										R.string.apology, Toast.LENGTH_LONG)
+										.show();
+							}
+
 						}
-						catch(SQLException e){
-							ExceptionHandler.caughtException(OrderActivity.this, e);
-						}
-						updateInv();
-						Toast.makeText(OrderActivity.this,R.string.hungry, Toast.LENGTH_LONG) .show();
-						finish();
-					}else{
-						Toast.makeText(OrderActivity.this,R.string.apology, Toast.LENGTH_LONG) .show();
-					}
-					
-				}
-			});
-			
+					});
+
 			AlertDialog dialog = builder.create();
 			dialog.show();
-		}else{
+		}
+		else
+		{
 			GregorianCalendar gag = new GregorianCalendar();
 			resv = g.getReservation();
 			GregorianCalendar r = resv.getReservationTime();
-			
-			if((gag.get(GregorianCalendar.YEAR) == r.get(GregorianCalendar.YEAR))&&
-					(gag.get(GregorianCalendar.MONTH) == r.get(GregorianCalendar.MONTH))&&
-					(gag.get(GregorianCalendar.DAY_OF_MONTH) == r.get(GregorianCalendar.DAY_OF_MONTH))){
-				
-				if(current.checkOrder(g.getOrder())){
-					
-					try{
+
+			if ((gag.get(GregorianCalendar.YEAR) == r
+					.get(GregorianCalendar.YEAR))
+					&& (gag.get(GregorianCalendar.MONTH) == r
+							.get(GregorianCalendar.MONTH))
+					&& (gag.get(GregorianCalendar.DAY_OF_MONTH) == r
+							.get(GregorianCalendar.DAY_OF_MONTH)))
+			{
+
+				if (current.checkOrder(g.getOrder()))
+				{
+
+					try
+					{
 						long a = dbh.addOrder(g.getOrder());
 						dbh.addReservation(resv, a);
 					}
-					catch(SQLiteException e){
+					catch (SQLiteException e)
+					{
 						ExceptionHandler.caughtException(OrderActivity.this, e);
 					}
-					catch(SQLException e){
+					catch (SQLException e)
+					{
 						ExceptionHandler.caughtException(OrderActivity.this, e);
 					}
 					updateInv();
-					Toast.makeText(OrderActivity.this,R.string.hungry, Toast.LENGTH_LONG) .show();
+					Toast.makeText(OrderActivity.this, R.string.hungry,
+							Toast.LENGTH_LONG).show();
 					finish();
-				}else{
-					Toast.makeText(OrderActivity.this,R.string.apology, Toast.LENGTH_LONG) .show();
 				}
-				
-			}else{
-			
-				try{
+				else
+				{
+					Toast.makeText(OrderActivity.this, R.string.apology,
+							Toast.LENGTH_LONG).show();
+				}
+
+			}
+			else
+			{
+
+				try
+				{
 					long a = dbh.addOrder(g.getOrder());
 					dbh.addReservation(resv, a);
 				}
-				catch(SQLiteException e){
+				catch (SQLiteException e)
+				{
 					ExceptionHandler.caughtException(OrderActivity.this, e);
 				}
-				catch(SQLException e){
+				catch (SQLException e)
+				{
 					ExceptionHandler.caughtException(OrderActivity.this, e);
 				}
-				Toast.makeText(OrderActivity.this,R.string.hungry, Toast.LENGTH_LONG) .show();
+				Toast.makeText(OrderActivity.this, R.string.hungry,
+						Toast.LENGTH_LONG).show();
 				finish();
 			}
 		}
 	}
-	
+
 	@Override
-	public void onBackPressed() {
-		
+	public void onBackPressed()
+	{
+
 		AlertDialog.Builder exit = new AlertDialog.Builder(this);
 		exit.setTitle(R.string.exit_o);
 		exit.setMessage(R.string.exit_m);
-		exit.setPositiveButton(R.string.yes_button, new DialogInterface.OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				current.Orderreboot();
-				finish();
-			}
-		});
-		exit.setNegativeButton(R.string.no_button, new DialogInterface.OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				
-			}
-		});
+		exit.setPositiveButton(R.string.yes_button,
+				new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+						current.Orderreboot();
+						finish();
+					}
+				});
+		exit.setNegativeButton(R.string.no_button,
+				new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+
+					}
+				});
 		exit.show();
 	}
-	
+
 	@SuppressLint("DefaultLocale")
-	private String computePrice(ArrayList<Dish> ordered){
-		double a= 0;
-		for(Dish d: ordered){
-			a = a + (d.getQuantity()*d.getPrice());
+	private String computePrice(ArrayList<Dish> ordered)
+	{
+		double a = 0;
+		for (Dish d : ordered)
+		{
+			a = a + (d.getQuantity() * d.getPrice());
 		}
 		return String.format("%.2f", a);
 	}
@@ -345,18 +439,21 @@ public class OrderActivity extends Activity {
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
 	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	private void setupActionBar() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+	private void setupActionBar()
+	{
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		{
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
 		// Inflate the menu; this adds items to the action bar if it is present.
-		if(g.getClient() != null)
+		if (g.getClient() != null)
 			getMenuInflater().inflate(R.menu.main, menu);
-		
+
 		return true;
 	}
 
@@ -369,7 +466,8 @@ public class OrderActivity extends Activity {
 				onBackPressed();
 				return true;
 			default:
-				Intent clientGo = new Intent(OrderActivity.this, ClientActivity.class);
+				Intent clientGo = new Intent(OrderActivity.this,
+						ClientActivity.class);
 				startActivity(clientGo);
 				return super.onOptionsItemSelected(item);
 		}

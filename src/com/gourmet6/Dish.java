@@ -3,13 +3,14 @@ package com.gourmet6;
 import java.util.ArrayList;
 
 /**
- * A class representing a dish and its properties. 
+ * A class representing a dish and its properties.
  * 
  * @author Group 6
  * @version 06.05.2013
  */
-public class Dish {
-	
+public class Dish
+{
+
 	private String name;
 	private String type;
 	private String subtype;
@@ -18,18 +19,27 @@ public class Dish {
 	private int quantity;
 	private String description;
 	private ArrayList<String> allergens;
-	
+
 	/**
 	 * Constructor.
-	 * @param name the dish's name
-	 * @param type the dish's type, may be 'EntrŽes', 'Plats', 'Desserts' or 'Boissons'
-	 * @param subtype the dish's subtype, e.g. 'Viandes' or 'Salades'
-	 * @param price the dish's price
-	 * @param inventory the quantity still available
-	 * @param description the dish's description
-	 * @param allergens the allergens the dish contains
+	 * 
+	 * @param name
+	 *            the dish's name
+	 * @param type
+	 *            the dish's type, may be 'Entrï¿½es', 'Plats', 'Desserts' or
+	 *            'Boissons'
+	 * @param subtype
+	 *            the dish's subtype, e.g. 'Viandes' or 'Salades'
+	 * @param price
+	 *            the dish's price
+	 * @param inventory
+	 *            the quantity still available
+	 * @param description
+	 *            the dish's description
+	 * @param allergens
+	 *            the allergens the dish contains
 	 */
-	public Dish(String name, String type, String subtype, float price, 
+	public Dish(String name, String type, String subtype, float price,
 			int inventory, String description, ArrayList<String> allergens)
 	{
 		this.name = name;
@@ -41,10 +51,12 @@ public class Dish {
 		this.description = description;
 		this.allergens = allergens;
 	}
-	
+
 	/**
 	 * Tests whether a dish contains a certain allergen.
-	 * @param allergen the allergen to look for in the dish
+	 * 
+	 * @param allergen
+	 *            the allergen to look for in the dish
 	 * @return true if the dish contains the allergen, false otherwise
 	 */
 	public boolean hasAllergen(String allergen)
@@ -56,83 +68,102 @@ public class Dish {
 
 		return false;
 	}
-	
-	public void incrementQuantity(){
+
+	public void incrementQuantity()
+	{
 		this.quantity++;
 	}
-	public void decrementQuantity(){
+
+	public void decrementQuantity()
+	{
 		this.quantity--;
 	}
-	
+
 	/**********************
 	 * Getters and setters
 	 **********************/
-	public String getName() 
+	public String getName()
 	{
 		return name;
 	}
-	public void setName(String name) 
+
+	public void setName(String name)
 	{
 		this.name = name;
 	}
-	public String getType() 
+
+	public String getType()
 	{
 		return type;
 	}
-	public void setType(String type) 
+
+	public void setType(String type)
 	{
 		this.type = type;
 	}
+
 	public String getSubtype()
 	{
 		return subtype;
 	}
+
 	public void setSubtype(String subtype)
 	{
 		this.subtype = subtype;
 	}
-	public double getPrice() 
+
+	public double getPrice()
 	{
 		return price;
 	}
-	public void setPrice(double price) 
+
+	public void setPrice(double price)
 	{
 		this.price = price;
 	}
-	public int getInventory() 
+
+	public int getInventory()
 	{
 		return inventory;
 	}
-	public void setInventory(int inventory) 
+
+	public void setInventory(int inventory)
 	{
 		this.inventory = inventory;
 	}
-	public String getDescription() 
+
+	public String getDescription()
 	{
 		return description;
 	}
-	public void setDescription(String description) 
+
+	public void setDescription(String description)
 	{
 		this.description = description;
 	}
-	public ArrayList<String> getAllergens() 
+
+	public ArrayList<String> getAllergens()
 	{
 		return allergens;
 	}
-	public void setAllergens(ArrayList<String> allergens) 
+
+	public void setAllergens(ArrayList<String> allergens)
 	{
 		this.allergens = allergens;
 	}
-	public int getQuantity() 
+
+	public int getQuantity()
 	{
 		return quantity;
 	}
-	public void setQuantity(int quantity) 
+
+	public void setQuantity(int quantity)
 	{
 		this.quantity = quantity;
 	}
+
 	public static double myRound(double r)
 	{
-		return Math.floor(r*100.0)/100;
+		return Math.floor(r * 100.0) / 100;
 	}
 }

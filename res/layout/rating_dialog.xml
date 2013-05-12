@@ -14,9 +14,9 @@
         android:id="@+id/typeCotation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textIsSelectable="false"
         android:layout_gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textIsSelectable="false" />
 
     <LinearLayout
         android:layout_width="match_parent"

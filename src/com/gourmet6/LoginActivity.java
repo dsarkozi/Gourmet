@@ -465,7 +465,7 @@ public class LoginActivity extends Activity
 			super.onBackPressed();
 		}
 	}
-	
+
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
 	 */

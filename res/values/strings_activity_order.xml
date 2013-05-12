@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <string name="activity_order_title">Order details</string>
     <string name="orderButton">Submit</string>
     <string name="udish">Unknown</string>
@@ -9,12 +9,12 @@
     <string name="no_button">No</string>
     <string name="vanished">Current list does not contain any dish from :</string>
     <string name="hungry">Your order has been validated.</string>
-    <string name="apology">We are truly sorry, but your order can\'t be carried out.</string>  
-    <string name="exit_o">Exit order</string>  
+    <string name="apology">We are truly sorry, but your order can\'t be carried out.</string>
+    <string name="exit_o">Exit order</string>
     <string name="exit_m">You are about to exit the order menu. \nAre you sure ?</string>
     <string name="do_you_confirm">Do you confirm ?</string>
     <string name="ordered">You have ordered :\n</string>
     <string name="nothing_ordered">You haven\'t ordered anything.</string>
     <string name="ok_button">OK</string>
-    
+
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <string name="caught_exception">Exception caught !</string>
     <string name="uncaught_exception">Uncaught exception thrown !</string>
-    
+
 </resources>

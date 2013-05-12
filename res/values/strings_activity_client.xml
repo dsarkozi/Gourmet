@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!-- Strings related to client activity -->
     <string name="cpd">Change personal data</string>
-   
+
     <!-- Strings related to NewPersData activity -->
     <string name="mdpNew">Enter new password</string>
     <string name="mdpNewConfirmation">Confirm new password</string>
@@ -13,5 +14,5 @@
     <string name="options">Let the fields you don\'t want to change blank. The current password is required for any change.</string>
     <string name="changeButton">Apply changes</string>
     <string name="acceptation">No change has been set yet.</string>
-    
+
 </resources>

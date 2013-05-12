@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <string name="activity_menu_title">Menu</string>
     <string name="order_from_menu">Order</string>
     <string name="plus_button">+</string>
     <string name="minus_button">-</string>
     <string name="initial_state">0</string>
     <string name="sort_spinner">Filter by</string>
-    
+
 </resources>

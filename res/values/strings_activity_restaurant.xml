@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <string name="menuButton">Menu</string>
     <string name="reservButton">Book</string>
     <string name="commandButton">Order</string>
     <string name="descstring">Description unknown</string>
     <string name="locstring">Location unknown</string>
-    
+
 </resources>

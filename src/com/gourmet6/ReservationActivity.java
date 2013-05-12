@@ -26,8 +26,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
-public class ReservationActivity extends Activity {
-	
+public class ReservationActivity extends Activity
+{
+
 	private int people;
 	private int year;
 	private int month;
@@ -37,42 +38,43 @@ public class ReservationActivity extends Activity {
 	private int minYear;
 	private int minMonth;
 	private int minDay;
-	
+
 	private String s;
 	private Button dateTime;
 	private EditText nbrPrs;
 	private TextView tvHoraireReserv;
-	
-	private Gourmet g ;
-	
+
+	private Gourmet g;
+
 	private Dialog dialog;
-	
+
 	private Context context;
-	
+
 	private boolean from;
 	private Restaurant currentRest;
-	
+
 	private CheckBox takeAway;
-	
+
 	private DBHandler dbh;
-	
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_reservation);
 		overridePendingTransition(0, R.anim.commetuveux);
 		setTitle(R.string.activity_reservation_title);
 		setupActionBar();
-		
-		g = (Gourmet)getApplication();
+
+		g = (Gourmet) getApplication();
 		currentRest = g.getRest();
 		context = this;
 		dbh = new DBHandler(context);
 		from = false;
-		
+
 		Bundle extra = getIntent().getExtras();
 		this.from = extra.getBoolean("fromOrder");
-		
+
 		final Calendar c = Calendar.getInstance();
 		c.setTimeZone(TimeZone.getDefault());
 		year = c.get(Calendar.YEAR);
@@ -80,28 +82,30 @@ public class ReservationActivity extends Activity {
 		day = c.get(Calendar.DAY_OF_MONTH);
 		hour = c.get(Calendar.HOUR_OF_DAY);
 		minute = c.get(Calendar.MINUTE);
-		
+
 		minYear = c.get(Calendar.YEAR);
 		minMonth = c.get(Calendar.MONTH);
 		minDay = c.get(Calendar.DAY_OF_MONTH);
-		
-		//TextView
+
+		// TextView
 		tvHoraireReserv = (TextView) findViewById(R.id.horaireReserv);
 		setHorair();
-		
-		//EditText
+
+		// EditText
 		nbrPrs = (EditText) findViewById(R.id.nbrPrsReserv);
-		
-		//CheckBox
+
+		// CheckBox
 		takeAway = (CheckBox) findViewById(R.id.checkBoxReservation);
-		takeAway.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		takeAway.setOnCheckedChangeListener(new OnCheckedChangeListener()
+		{
 			@Override
-			public void onCheckedChanged(CompoundButton arg0, boolean checked) {
-				if(checked)
+			public void onCheckedChanged(CompoundButton arg0, boolean checked)
+			{
+				if (checked)
 				{
 					nbrPrs.setText("");
 					nbrPrs.setEnabled(false);
-					people=0;
+					people = 0;
 				}
 				else
 				{
@@ -109,126 +113,156 @@ public class ReservationActivity extends Activity {
 				}
 			}
 		});
-		
+
 		// Show the Up button in the action bar.
 		setupActionBar();
-		
-		
-		
+
 		dateTime = (Button) findViewById(R.id.dateTime);
-		s = TimeTable.parseDateInStringForReservation(new GregorianCalendar(year, month, day, hour, minute));
+		s = TimeTable.parseDateInStringForReservation(new GregorianCalendar(
+				year, month, day, hour, minute));
 		dateTime.setText(s);
-		dateTime.setOnClickListener(new View.OnClickListener() {
+		dateTime.setOnClickListener(new View.OnClickListener()
+		{
 			@Override
-			public void onClick(View v) {
+			public void onClick(View v)
+			{
 				dialog = new Dialog(context);
 				dialog.setContentView(R.layout.datetimedialog);
 				dialog.setTitle("Pick date & time");
-				
-				final DatePicker dp = (DatePicker) dialog.findViewById(R.id.datePicker1);
-				dp.init(year, month, day, new OnDateChangedListener() {
+
+				final DatePicker dp = (DatePicker) dialog
+						.findViewById(R.id.datePicker1);
+				dp.init(year, month, day, new OnDateChangedListener()
+				{
 					@Override
-					public void onDateChanged(DatePicker view, int year, int monthOfYear,
-							int dayOfMonth) {
-							if (year < minYear){
-								view.updateDate(minYear, minMonth, minDay);
-							}
-			                if (monthOfYear < minMonth && year == minYear){
-			                	view.updateDate(minYear, minMonth, minDay);
-			                }
-			                if (dayOfMonth < minDay && year == minYear && monthOfYear == minMonth){
-			                	view.updateDate(minYear, minMonth, minDay);
-			                }
+					public void onDateChanged(DatePicker view, int year,
+							int monthOfYear, int dayOfMonth)
+					{
+						if (year < minYear)
+						{
+							view.updateDate(minYear, minMonth, minDay);
+						}
+						if (monthOfYear < minMonth && year == minYear)
+						{
+							view.updateDate(minYear, minMonth, minDay);
+						}
+						if (dayOfMonth < minDay && year == minYear
+								&& monthOfYear == minMonth)
+						{
+							view.updateDate(minYear, minMonth, minDay);
+						}
 					}
 				});
-				
-				final TimePicker tp = (TimePicker) dialog.findViewById(R.id.timePicker1);
+
+				final TimePicker tp = (TimePicker) dialog
+						.findViewById(R.id.timePicker1);
 				tp.setIs24HourView(true);
 				tp.setCurrentHour(hour);
 				tp.setCurrentMinute(0);
-				
+
 				Button ok = (Button) dialog.findViewById(R.id.buttonOkDialog);
-				ok.setOnClickListener(new View.OnClickListener() {
+				ok.setOnClickListener(new View.OnClickListener()
+				{
 					@Override
-					public void onClick(View v) {
+					public void onClick(View v)
+					{
 						year = dp.getYear();
 						month = dp.getMonth();
 						day = dp.getDayOfMonth();
 						hour = tp.getCurrentHour();
 						minute = tp.getCurrentMinute();
-						
-						s = TimeTable.parseDateInStringForReservation(new GregorianCalendar(year, month, day, hour, minute));
+
+						s = TimeTable
+								.parseDateInStringForReservation(new GregorianCalendar(
+										year, month, day, hour, minute));
 						dateTime.setText(s);
-						
+
 						dialog.cancel();
 					}
 				});
-				
-				Button cancel = (Button) dialog.findViewById(R.id.buttonCancelDialog);
-				cancel.setOnClickListener(new View.OnClickListener() {
+
+				Button cancel = (Button) dialog
+						.findViewById(R.id.buttonCancelDialog);
+				cancel.setOnClickListener(new View.OnClickListener()
+				{
 					@Override
-					public void onClick(View v) {
+					public void onClick(View v)
+					{
 						dialog.cancel();
 					}
 				});
-				
+
 				dialog.show();
 			}
 		});
-		
-		//Reaction du bouton de commande
+
+		// Reaction du bouton de commande
 		Button order = (Button) findViewById(R.id.comInReserv);
-		if(from){
+		if (from)
+		{
 			order.setEnabled(false);
-		}else{
+		}
+		else
+		{
 			order.setEnabled(true);
 		}
-		order.setOnClickListener(new View.OnClickListener() {
+		order.setOnClickListener(new View.OnClickListener()
+		{
 			@Override
-			public void onClick(View v) {
-				
+			public void onClick(View v)
+			{
+
 				Reservation res = checkClient();
-				if(res!=null && checkReservation(res)){
+				if (res != null && checkReservation(res))
+				{
 					g.setReservation(res);
-					currentRest.createListDishes(new DBHandler(ReservationActivity.this));
-					Intent commande = new Intent(ReservationActivity.this, OrderActivity.class);
+					currentRest.createListDishes(new DBHandler(
+							ReservationActivity.this));
+					Intent commande = new Intent(ReservationActivity.this,
+							OrderActivity.class);
 					commande.putExtra("from", false);
 					startActivity(commande);
 				}
 			}
-		});	
-		
-		//Reaction du bouton de soumission
+		});
+
+		// Reaction du bouton de soumission
 		Button submit = (Button) findViewById(R.id.validateReserv);
-		submit.setOnClickListener(new View.OnClickListener() {
+		submit.setOnClickListener(new View.OnClickListener()
+		{
 			@Override
-			public void onClick(View v) {
+			public void onClick(View v)
+			{
 				Reservation res = checkClient();
-				if(res!=null && checkReservation(res)){
+				if (res != null && checkReservation(res))
+				{
 					dbh.addReservation(res, 0);
-					Toast.makeText(getApplicationContext(), "Your reservation has been confirmed.", Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(),
+							"Your reservation has been confirmed.",
+							Toast.LENGTH_LONG).show();
 					ReservationActivity.this.finish();
 				}
 			}
 		});
-		
+
 	}
-	
+
 	private void setHorair()
 	{
-		if(currentRest.getSemaine()==null) return;
+		if (currentRest.getSemaine() == null) return;
 		String s = currentRest.getHoraireInString();
-		if(s.length()!=0)tvHoraireReserv.setText(s);
+		if (s.length() != 0) tvHoraireReserv.setText(s);
 	}
 
 	public boolean checkReservation(Reservation reservTemp)
 	{
-		if(!takeAway.isChecked() && nbrPrs.length()==0){
+		if (!takeAway.isChecked() && nbrPrs.length() == 0)
+		{
 			showAlert("Invalid number of people.");
 			return false;
 		}
 		String res = g.getRest().checkReservation(reservTemp, dbh);
-		if(res!=null)
+		if (res != null)
 		{
 			showAlert(res);
 
@@ -239,42 +273,46 @@ public class ReservationActivity extends Activity {
 			return true;
 		}
 	}
-	
+
 	public Reservation checkClient()
 	{
-		if(g.getClient()!=null)
+		if (g.getClient() != null)
 		{
-			if(!takeAway.isChecked()){
-				if(nbrPrs.length()==0){
+			if (!takeAway.isChecked())
+			{
+				if (nbrPrs.length() == 0)
+				{
 					showAlert("Invalid number of people.");
 					return null;
 				}
-				else {
+				else
+				{
 					people = Integer.parseInt(nbrPrs.getText().toString());
 				}
-				
+
 			}
-			GregorianCalendar date = new GregorianCalendar(year, month, day, hour, minute);
-			return g.getClient().createReservation(currentRest.getName(), date, people);
+			GregorianCalendar date = new GregorianCalendar(year, month, day,
+					hour, minute);
+			return g.getClient().createReservation(currentRest.getName(), date,
+					people);
 		}
 		else
 		{
 			return null;
 		}
 	}
-	
+
 	public void showAlert(String s)
 	{
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				context);
 
 		// set title
 		alertDialogBuilder.setTitle("Error");
 
 		// set dialog message
-		alertDialogBuilder
-			.setMessage(s)
-			.setCancelable(true)
-			.setPositiveButton("OK",null);
+		alertDialogBuilder.setMessage(s).setCancelable(true)
+				.setPositiveButton("OK", null);
 
 		// create alert dialog
 		AlertDialog alertDialog = alertDialogBuilder.create();
@@ -287,18 +325,21 @@ public class ReservationActivity extends Activity {
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
 	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	private void setupActionBar() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+	private void setupActionBar()
+	{
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		{
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
 		// Inflate the menu; this adds items to the action bar if it is present.
-		if(g.getClient() != null)
+		if (g.getClient() != null)
 			getMenuInflater().inflate(R.menu.main, menu);
-		
+
 		return true;
 	}
 
@@ -311,7 +352,8 @@ public class ReservationActivity extends Activity {
 				onBackPressed();
 				return true;
 			default:
-				Intent clientGo = new Intent(ReservationActivity.this, ClientActivity.class);
+				Intent clientGo = new Intent(ReservationActivity.this,
+						ClientActivity.class);
 				startActivity(clientGo);
 				return super.onOptionsItemSelected(item);
 		}

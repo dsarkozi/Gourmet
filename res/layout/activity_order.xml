@@ -37,9 +37,9 @@
         android:id="@+id/dish_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/button1"
         android:layout_alignLeft="@+id/spinner1"
-        android:layout_below="@+id/spinner1"
-        android:layout_above="@+id/button1" >
+        android:layout_below="@+id/spinner1" >
     </ExpandableListView>
-    
+
 </RelativeLayout>

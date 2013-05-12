@@ -16,8 +16,9 @@ import android.util.Log;
  */
 
 @SuppressLint("DefaultLocale")
-public class Restaurant {
-	
+public class Restaurant
+{
+
 	private String name;
 	private String chain;
 	private String address;
@@ -38,11 +39,12 @@ public class Restaurant {
 	private double priceCat; // average price
 	private ArrayList<Dish> listDishes = null;
 	private ArrayList<TimeTable> semaine;
-	
 
-	public Restaurant(String name, String chain, String address, String town, String tel, String web, String mail,
-			String description, double rating, int nbrPrsHasVoted, int zip, int seats, 
-			int availableSeats, double latitude, double longitude, double priceCat, int nbrImg)
+	public Restaurant(String name, String chain, String address, String town,
+			String tel, String web, String mail, String description,
+			double rating, int nbrPrsHasVoted, int zip, int seats,
+			int availableSeats, double latitude, double longitude,
+			double priceCat, int nbrImg)
 	{
 		this.name = name;
 		this.chain = chain;
@@ -62,57 +64,64 @@ public class Restaurant {
 		this.priceCat = priceCat;
 		this.nbrImage = nbrImg;
 	}
-	
 
 	/**
 	 * Adds all the restaurant's dishes known by the DB to the restaurant.
-	 * @param dbh the DBHandler to be used to interact with the DB
+	 * 
+	 * @param dbh
+	 *            the DBHandler to be used to interact with the DB
 	 */
 	public void createListDishes(DBHandler dbh)
 	{
-		if (this.listDishes != null){
+		if (this.listDishes != null)
+		{
 			this.listDishes.clear();
 		}
 		this.listDishes = dbh.getDishes(this.name);
-		
+
 	}
-	
+
 	/**
-	 * @param name hte dish's name
-	 * @return the dish which has the name specified in param. If the listDishes is empty
-	 *  or if no dish corresponded, returns null.
+	 * @param name
+	 *            hte dish's name
+	 * @return the dish which has the name specified in param. If the listDishes
+	 *         is empty or if no dish corresponded, returns null.
 	 */
 	public Dish getDish(String name)
 	{
-		if(listDishes==null)
+		if (listDishes == null)
 		{
-			Log.e("Restaurant", "getDish with an empty listDishes. Call createDishes before.");
+			Log.e("Restaurant",
+					"getDish with an empty listDishes. Call createDishes before.");
 		}
 		else
 		{
-			for(Dish d : listDishes)
+			for (Dish d : listDishes)
 			{
-				if(d.getName().equals(name)) 
-					return d;
+				if (d.getName().equals(name)) return d;
 			}
 		}
 		return null;
 	}
-	
-	public ArrayList<Dish> sortDishesPrice(ArrayList<Dish> toFilter){
+
+	public ArrayList<Dish> sortDishesPrice(ArrayList<Dish> toFilter)
+	{
 		if (toFilter == null)
 		{
-			Log.e("Restaurant", "sortDishesPrice with an empty listDishes. Call createDishes.");
+			Log.e("Restaurant",
+					"sortDishesPrice with an empty listDishes. Call createDishes.");
 		}
 
-		Collections.sort(toFilter, new Comparator<Dish>() {
+		Collections.sort(toFilter, new Comparator<Dish>()
+		{
 			@Override
-			public int compare(Dish o1, Dish o2) {
-				return (int) (o1.getPrice()-o2.getPrice());
+			public int compare(Dish o1, Dish o2)
+			{
+				return (int) (o1.getPrice() - o2.getPrice());
 			}
 
 		});
-		
+
 		return toFilter;
 	}
 
@@ -120,97 +129,103 @@ public class Restaurant {
 	{
 		if (toFilter == null)
 		{
-			Log.e("Restaurant", "getDishesType with an empty listDishes. Call createDishes.");
+			Log.e("Restaurant",
+					"getDishesType with an empty listDishes. Call createDishes.");
 		}
-		
+
 		ArrayList<String> result = new ArrayList<String>();
 		String type;
 		for (Dish d : toFilter)
 		{
 			type = d.getType();
-			if (!(result.contains(type)))
-				result.add(type);
+			if (!(result.contains(type))) result.add(type);
 		}
 		return result;
 	}
-	
-	public ArrayList<Dish> filterDishesType(String type, ArrayList<Dish> toFilter)
+
+	public ArrayList<Dish> filterDishesType(String type,
+			ArrayList<Dish> toFilter)
 	{
 		if (toFilter == null)
 		{
-			Log.e("Restaurant", "filterDishesType with an empty listDishes. Call createDishes.");
+			Log.e("Restaurant",
+					"filterDishesType with an empty listDishes. Call createDishes.");
 		}
-		
+
 		ArrayList<Dish> result = new ArrayList<Dish>();
 		for (Dish d : toFilter)
 		{
-			if (d.getType().equals(type))
-				result.add(d);
+			if (d.getType().equals(type)) result.add(d);
 		}
 		return result;
 	}
-	
+
 	public ArrayList<String> getDishesSubtypes(ArrayList<Dish> toFilter)
 	{
 		if (toFilter == null)
 		{
-			Log.e("Restaurant", "getDishesSubtype with an empty listDishes. Call createDishes.");
+			Log.e("Restaurant",
+					"getDishesSubtype with an empty listDishes. Call createDishes.");
 		}
-		
+
 		ArrayList<String> result = new ArrayList<String>();
 		String subtype;
 		for (Dish d : toFilter)
 		{
 			subtype = d.getSubtype();
-			if (!(result.contains(subtype)))
-				result.add(subtype);
+			if (!(result.contains(subtype))) result.add(subtype);
 		}
 		return result;
 	}
-	
-	public ArrayList<String> getDishesSubtypes(String type, ArrayList<Dish> toFilter)
+
+	public ArrayList<String> getDishesSubtypes(String type,
+			ArrayList<Dish> toFilter)
 	{
 		if (toFilter == null)
 		{
-			Log.e("Restaurant", "getDishesSubtype with an empty listDishes. Call createDishes.");
+			Log.e("Restaurant",
+					"getDishesSubtype with an empty listDishes. Call createDishes.");
 		}
-		
+
 		ArrayList<String> result = new ArrayList<String>();
 		String subtype;
 		for (Dish d : toFilter)
 		{
-			if(d.getType().equals(type)){
+			if (d.getType().equals(type))
+			{
 				subtype = d.getSubtype();
-				if (!(result.contains(subtype)))
-					result.add(subtype);
+				if (!(result.contains(subtype))) result.add(subtype);
 			}
 		}
 		return result;
 	}
-	
-	public ArrayList<Dish> filterDishesSubtype(String subtype, ArrayList<Dish> toFilter)
+
+	public ArrayList<Dish> filterDishesSubtype(String subtype,
+			ArrayList<Dish> toFilter)
 	{
 		if (toFilter == null)
 		{
-			Log.e("Restaurant", "filterDishesSubtype with an empty listDishes. Call createDishes.");
+			Log.e("Restaurant",
+					"filterDishesSubtype with an empty listDishes. Call createDishes.");
 		}
-		
+
 		ArrayList<Dish> result = new ArrayList<Dish>();
 		for (Dish d : toFilter)
 		{
-			if (d.getSubtype().equals(subtype))
-				result.add(d);
+			if (d.getSubtype().equals(subtype)) result.add(d);
 		}
 		return result;
 	}
-	
-	public ArrayList<Dish> filterDishesSubtype(String subtype, String type, ArrayList<Dish> toFilter)
+
+	public ArrayList<Dish> filterDishesSubtype(String subtype, String type,
+			ArrayList<Dish> toFilter)
 	{
 		if (toFilter == null)
 		{
-			Log.e("Restaurant", "filterDishesSubtype with an empty listDishes. Call createDishes.");
+			Log.e("Restaurant",
+					"filterDishesSubtype with an empty listDishes. Call createDishes.");
 		}
-		
+
 		ArrayList<Dish> result = new ArrayList<Dish>();
 		for (Dish d : toFilter)
 		{
@@ -220,37 +235,37 @@ public class Restaurant {
 		return result;
 	}
 
-	
-	public ArrayList<Dish> filterDishesAllergen(String al, ArrayList<Dish> toFilter)
+	public ArrayList<Dish> filterDishesAllergen(String al,
+			ArrayList<Dish> toFilter)
 	{
 		ArrayList<Dish> result = new ArrayList<Dish>();
 		for (Dish d : toFilter)
 		{
-			if (!(d.hasAllergen(al)))
-				result.add(d);
+			if (!(d.hasAllergen(al))) result.add(d);
 		}
 		return result;
 	}
-	
+
 	public ArrayList<String> getAllergensForFilter(ArrayList<Dish> dishes)
 	{
 		ArrayList<String> filters = new ArrayList<String>();
 		for (Dish d : dishes)
 		{
-			ArrayList<String> allergens  = d.getAllergens();
-			if(allergens != null){
+			ArrayList<String> allergens = d.getAllergens();
+			if (allergens != null)
+			{
 				for (String al : allergens)
 				{
-					if (!(filters.contains("Sans allergène: "+al)))
+					if (!(filters.contains("Sans allergène: " + al)))
 					{
-						filters.add("Sans allergène: "+al);
+						filters.add("Sans allergène: " + al);
 					}
 				}
 			}
 		}
 		return filters;
 	}
-	
+
 	public ArrayList<String> getFilters(ArrayList<Dish> dishes)
 	{
 		ArrayList<String> filters = new ArrayList<String>();
@@ -259,16 +274,18 @@ public class Restaurant {
 		filters.addAll(getDishesTypes(dishes));
 		filters.addAll(getDishesSubtypes(dishes));
 		filters.add("Price");
-		
+
 		return filters;
 	}
-	
-	
+
 	/**
-	 * Changes the rating of the restaurant given the current rate, the new rating
-	 * and the number of people who have voted. Updates the DB.
-	 * @param vote the new rating
-	 * @param dbh the DBHandler used to interact with the DB
+	 * Changes the rating of the restaurant given the current rate, the new
+	 * rating and the number of people who have voted. Updates the DB.
+	 * 
+	 * @param vote
+	 *            the new rating
+	 * @param dbh
+	 *            the DBHandler used to interact with the DB
 	 */
 	public void rateRestaurant(double vote, DBHandler dbh)
 	{
@@ -276,77 +293,84 @@ public class Restaurant {
 		this.nbrPrsHasVoted++;
 		this.rating += vote;
 		this.rating /= this.nbrPrsHasVoted;
-		
-		dbh.rateRestaurant(this.name, (float)this.rating, this.nbrPrsHasVoted);
+
+		dbh.rateRestaurant(this.name, (float) this.rating, this.nbrPrsHasVoted);
 	}
-	
+
 	public boolean checkOrder(Order order)
 	{
-		if(order.getOrderDishes() == null)
-			return false;
-		
+		if (order.getOrderDishes() == null) return false;
+
 		for (Dish dish : order.getOrderDishes())
 		{
-			if (dish.getQuantity()>dish.getInventory()) 
-				return false;
+			if (dish.getQuantity() > dish.getInventory()) return false;
 		}
 		return true;
 	}
-	
+
 	/**
 	 * 
 	 * @param res
 	 * @return cette methode renvoit true si la reservation est correcte, c-a-d:
-	 * -Qu'elle specifie des plats qui sont encore disponibles, si une commande est jointe à la reservation
-	 * -Qu'elle reserve lorsque le restaurant est ouvert.
-	 * -Qu'elle spécifie une nombre de personne <= au nombre de place encore disponible dans le restaurant.
-	 * Renvoit false sinon.
+	 *         -Qu'elle specifie des plats qui sont encore disponibles, si une
+	 *         commande est jointe à la reservation -Qu'elle reserve lorsque le
+	 *         restaurant est ouvert. -Qu'elle spécifie une nombre de personne
+	 *         <= au nombre de place encore disponible dans le restaurant.
+	 *         Renvoit false sinon.
 	 */
-	public String checkReservation(Reservation res, DBHandler dbh){
-		if(res.getReservationOrder()!=null){
-			for(Dish dish : res.getReservationOrder().getOrderDishes()){
-				if(dish.getQuantity()>dish.getInventory()) return "Incorrect quantity";
+	public String checkReservation(Reservation res, DBHandler dbh)
+	{
+		if (res.getReservationOrder() != null)
+		{
+			for (Dish dish : res.getReservationOrder().getOrderDishes())
+			{
+				if (dish.getQuantity() > dish.getInventory())
+					return "Incorrect quantity";
 			}
 		}
-		//Check hour.
+		// Check hour.
 		boolean timeTableOk = false;
-		for(TimeTable tt : semaine)
+		for (TimeTable tt : semaine)
 		{
-			if(tt.isInTimeTable(res.getReservationTime()))
+			if (tt.isInTimeTable(res.getReservationTime()))
 			{
 				timeTableOk = true;
 				String start = getInString(res.getReservationTime(), -2, 0);
 				String end = getInString(res.getReservationTime(), 4, 0);
-				if(dbh.getAvailBetweenDateTime(res.getReservationResName(), start, end)<res.getReservationPeople()){
+				if (dbh.getAvailBetweenDateTime(res.getReservationResName(),
+						start, end) < res.getReservationPeople())
+				{
 					return "Not enough available seats for this date";
 				}
-				
+
 			}
 		}
-		if(!timeTableOk) return "Incorrect date or hour, please see the time table";
+		if (!timeTableOk)
+			return "Incorrect date or hour, please see the time table";
 		else return null;
 	}
-	
+
 	private String getInString(GregorianCalendar date, int hour, int minute)
 	{
 		GregorianCalendar temp = date;
-		//on soustrait le temps adéquat.
-		temp.set(GregorianCalendar.HOUR_OF_DAY, temp.get(GregorianCalendar.HOUR_OF_DAY)+hour);
-		temp.set(GregorianCalendar.MINUTE, temp.get(GregorianCalendar.MINUTE)+minute);
+		// on soustrait le temps adéquat.
+		temp.set(GregorianCalendar.HOUR_OF_DAY,
+				temp.get(GregorianCalendar.HOUR_OF_DAY) + hour);
+		temp.set(GregorianCalendar.MINUTE, temp.get(GregorianCalendar.MINUTE)
+				+ minute);
 		return TimeTable.parseDateInString(temp);
 	}
 
 	public void Orderreboot()
 	{
-		if(this.listDishes == null)
-			return;
-		
-		for(Dish d : this.listDishes)
+		if (this.listDishes == null) return;
+
+		for (Dish d : this.listDishes)
 		{
 			d.setQuantity(0);
 		}
 	}
-	
+
 	/**********************
 	 * Getters and setters
 	 **********************/
@@ -354,152 +378,192 @@ public class Restaurant {
 	{
 		return name;
 	}
+
 	public void setName(String name)
 	{
 		this.name = name;
 	}
+
 	public String getChain()
 	{
 		return chain;
 	}
+
 	public void setChain(String chain)
 	{
 		this.chain = chain;
 	}
+
 	public String getAdress()
 	{
 		return address;
 	}
+
 	public void setAdress(String adress)
 	{
 		this.address = adress;
 	}
-	public int getZip() {
+
+	public int getZip()
+	{
 		return zip;
 	}
-	public void setZip(int zip) 
+
+	public void setZip(int zip)
 	{
 		this.zip = zip;
 	}
+
 	public String getTown()
 	{
 		return town;
 	}
-	public void setTown(String town) 
+
+	public void setTown(String town)
 	{
 		this.town = town;
 	}
-	public double getLatitude() 
+
+	public double getLatitude()
 	{
 		return latitude;
 	}
-	public void setLatitude(double latitude) 
+
+	public void setLatitude(double latitude)
 	{
 		this.latitude = latitude;
 	}
-	public double getLongitude() 
+
+	public double getLongitude()
 	{
 		return longitude;
 	}
-	public void setLongitude(double longitude) 
+
+	public void setLongitude(double longitude)
 	{
 		this.longitude = longitude;
 	}
-	public String getTel() 
+
+	public String getTel()
 	{
 		return tel;
 	}
-	public void setTel(String tel) 
+
+	public void setTel(String tel)
 	{
 		this.tel = tel;
 	}
-	public String getMail() 
+
+	public String getMail()
 	{
 		return mail;
 	}
-	public void setMail(String mail) 
+
+	public void setMail(String mail)
 	{
 		this.mail = mail;
 	}
-	public String getWeb() 
+
+	public String getWeb()
 	{
 		return web;
 	}
-	public void setWeb(String web) 
+
+	public void setWeb(String web)
 	{
 		this.web = web;
 	}
-	public String getDescription() 
+
+	public String getDescription()
 	{
 		return description;
 	}
-	public void setDescription(String description) 
+
+	public void setDescription(String description)
 	{
 		this.description = description;
 	}
-	public ArrayList<String> getCuisines() 
+
+	public ArrayList<String> getCuisines()
 	{
 		return cuisines;
 	}
-	public void setCuisines(ArrayList<String> cuisines) 
+
+	public void setCuisines(ArrayList<String> cuisines)
 	{
 		this.cuisines = cuisines;
 	}
-	public int getSeats() 
+
+	public int getSeats()
 	{
 		return seats;
 	}
-	public void setSeats(int seats) 
+
+	public void setSeats(int seats)
 	{
 		this.seats = seats;
 	}
-	public int getAvailableSeats() 
+
+	public int getAvailableSeats()
 	{
 		return availableSeats;
 	}
-	public void setAvailableSeats(int availableSeats) 
+
+	public void setAvailableSeats(int availableSeats)
 	{
 		this.availableSeats = availableSeats;
 	}
-	public double getRating() 
+
+	public double getRating()
 	{
 		return rating;
 	}
-	public void setRating(double rating) 
+
+	public void setRating(double rating)
 	{
 		this.rating = rating;
 	}
+
 	public int getNbrPrsHasVoted()
 	{
 		return this.nbrPrsHasVoted;
 	}
+
 	public void setNbrPrsHasVoted(int nbrPrsHasVoted)
 	{
 		this.nbrPrsHasVoted = nbrPrsHasVoted;
 	}
-	public double getPriceCat() {
+
+	public double getPriceCat()
+	{
 		return priceCat;
 	}
+
 	public void setPriceCat(double priceCat)
 	{
 		this.priceCat = priceCat;
 	}
-	public ArrayList<Dish> getListDishes() 
+
+	public ArrayList<Dish> getListDishes()
 	{
 		return listDishes;
 	}
-	public void setListDishes(ArrayList<Dish> listDishes) 
+
+	public void setListDishes(ArrayList<Dish> listDishes)
 	{
 		this.listDishes = listDishes;
 	}
-	public ArrayList<TimeTable> getSemaine() 
+
+	public ArrayList<TimeTable> getSemaine()
 	{
 		return semaine;
 	}
-	public void setSemaine(ArrayList<TimeTable> semaine) 
+
+	public void setSemaine(ArrayList<TimeTable> semaine)
 	{
 		this.semaine = semaine;
 	}
+
 	public static String getNameImg(String name)
 	{
 		String res = name;
@@ -509,9 +573,10 @@ public class Restaurant {
 		res = res.replace('ê', 'e');
 		res = res.replace('è', 'e');
 		res = res.replace('à', 'a');
-		res = res+"_";
+		res = res + "_";
 		return res;
 	}
+
 	public static String getNameImg2(String name)
 	{
 		String res = name;
@@ -523,51 +588,51 @@ public class Restaurant {
 		res = res.replace('à', 'a');
 		return res;
 	}
-	
-	public void setDish(Dish d){
+
+	public void setDish(Dish d)
+	{
 		int index = this.listDishes.indexOf(getDish(d.getName()));
-		if(index == -1)
-			return;
-		
+		if (index == -1) return;
+
 		this.listDishes.remove(index);
-		this.listDishes.add(index,d);
+		this.listDishes.add(index, d);
 	}
 
-
-	public int getNbrImage() {
+	public int getNbrImage()
+	{
 		return nbrImage;
 	}
 
-
-	public void setNbrImage(int nbrImage) {
+	public void setNbrImage(int nbrImage)
+	{
 		this.nbrImage = nbrImage;
 	}
-
 
 	public String getHoraireInString()
 	{
 		ArrayList<TimeTable> copy = new ArrayList<TimeTable>();
-		for(TimeTable tt : semaine){
+		for (TimeTable tt : semaine)
+		{
 			copy.add(tt);
 		}
-		TimeTable temp; String res = "";
-		while(copy.size()!=0)
+		TimeTable temp;
+		String res = "";
+		while (copy.size() != 0)
 		{
 			temp = getTimeSlot(copy);
-			res = res+temp.parseInString()+"\n";
+			res = res + temp.parseInString() + "\n";
 		}
 		return res;
 	}
 
-
 	private TimeTable getTimeSlot(ArrayList<TimeTable> copy)
 	{
 		int i;
-		for(i=2; i<8; i++)
+		for (i = 2; i < 8; i++)
 		{
-			for(TimeTable tt : copy)
+			for (TimeTable tt : copy)
 			{
-				if(i==(Integer)TimeTable.weekMap.get(tt.getJourDebut()))
+				if (i == (Integer) TimeTable.weekMap.get(tt.getJourDebut()))
 				{
 					TimeTable res = tt;
 					copy.remove(tt);
@@ -575,10 +640,10 @@ public class Restaurant {
 				}
 			}
 		}
-		i=1;
-		for(TimeTable tt : copy)
+		i = 1;
+		for (TimeTable tt : copy)
 		{
-			if(i==(Integer)TimeTable.weekMap.get(tt.getJourDebut()))
+			if (i == (Integer) TimeTable.weekMap.get(tt.getJourDebut()))
 			{
 				TimeTable res = tt;
 				copy.remove(tt);

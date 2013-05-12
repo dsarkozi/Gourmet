@@ -4,44 +4,46 @@ import android.app.Application;
 import android.location.Location;
 
 public class Gourmet extends Application
-{	
+{
 	private Client currentcli = null;
 	private Restaurant currentres = null;
 	private Order currentorder = null;
 	private Reservation currentreserv = null;
 	private Location currentlocation = null;
-	
+
 	@Override
 	public void onCreate()
 	{
 		super.onCreate();
 	}
 
-	public Client getClient() 
+	public Client getClient()
 	{
 		return currentcli;
 	}
-	
-	public void setClient(Client currentcli) 
+
+	public void setClient(Client currentcli)
 	{
 		this.currentcli = currentcli;
 	}
-	
-	public Restaurant getRest() 
+
+	public Restaurant getRest()
 	{
 		return currentres;
 	}
-	
-	public void setRest(Restaurant currentres) 
+
+	public void setRest(Restaurant currentres)
 	{
 		this.currentres = currentres;
 	}
 
-	public Order getOrder() {
+	public Order getOrder()
+	{
 		return currentorder;
 	}
 
-	public void setOrder(Order currentorder) {
+	public void setOrder(Order currentorder)
+	{
 		this.currentorder = currentorder;
 	}
 
@@ -64,5 +66,5 @@ public class Gourmet extends Application
 	{
 		this.currentlocation = currentlocation;
 	}
-	
+
 }
