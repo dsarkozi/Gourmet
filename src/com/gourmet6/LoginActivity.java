@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
@@ -34,6 +33,8 @@ public class LoginActivity extends Activity
 	 */
 	private AsyncTask<Void, Void, Boolean> mAuthTask = null;
 
+	private boolean isRegistering = false;
+
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mPassword;
@@ -59,8 +60,8 @@ public class LoginActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		 this.getWindow().setSoftInputMode(
-				 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+		this.getWindow().setSoftInputMode(
+				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		g = (Gourmet) getApplicationContext();
 		setContentView(R.layout.activity_login);
 
@@ -90,52 +91,50 @@ public class LoginActivity extends Activity
 		mLoginFormView.requestFocus();
 		mLoginStatusView = findViewById(R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
-		
+
 		mLoginRegisterView = findViewById(R.id.login_register);
 		mLoginRegisterName = (EditText) findViewById(R.id.login_name);
 		mLoginRegisterPhone = (EditText) findViewById(R.id.login_phone);
 		mLoginSignIn = (Button) findViewById(R.id.sign_in_button);
 		mLoginRegister = (Button) findViewById(R.id.register_button);
 		mLoginGuest = (Button) findViewById(R.id.guest_button);
-		
 
-		mLoginSignIn.setOnClickListener(
-				new View.OnClickListener()
-				{
-					@Override
-					public void onClick(View view)
-					{
-						attemptLogin();
-						setResult(RESULT_OK);
-					}
-				});
-		mLoginRegister.setOnClickListener(
-				new View.OnClickListener()
-				{
-					
-					@Override
-					public void onClick(View v)
-					{
-						if (mLoginRegisterView.getVisibility() == View.GONE)
-						{
-							mLoginRegisterView.setVisibility(View.VISIBLE);
-							mConfirmView.setVisibility(EditText.VISIBLE);
-							mLoginSignIn.setVisibility(Button.GONE);
-						}
-						else
-						{
-							attemptRegister();
-							setResult(RESULT_OK);
-						}
-					}
-				});
-		mLoginGuest.setOnClickListener(new View.OnClickListener()
+		mLoginSignIn.setOnClickListener(new View.OnClickListener()
 		{
-			
+			@Override
+			public void onClick(View view)
+			{
+				attemptLogin();
+				setResult(RESULT_OK);
+			}
+		});
+		mLoginRegister.setOnClickListener(new View.OnClickListener()
+		{
+
 			@Override
 			public void onClick(View v)
 			{
-				setResult(RESULT_OK, new Intent());
+				isRegistering = true;
+				if (mLoginRegisterView.getVisibility() == View.GONE)
+				{
+					mLoginRegisterView.setVisibility(View.VISIBLE);
+					mConfirmView.setVisibility(EditText.VISIBLE);
+					mLoginSignIn.setVisibility(Button.GONE);
+				}
+				else
+				{
+					attemptRegister();
+					setResult(RESULT_OK);
+				}
+			}
+		});
+		mLoginGuest.setOnClickListener(new View.OnClickListener()
+		{
+
+			@Override
+			public void onClick(View v)
+			{
+				setResult(RESULT_OK);
 				finish();
 			}
 		});
@@ -150,19 +149,19 @@ public class LoginActivity extends Activity
 		mEmailView.setError(null);
 		mPasswordView.setError(null);
 		mConfirmView.setError(null);
-		
+
 		mLoginRegisterName.setError(null);
 		mLoginRegisterPhone.setError(null);
-		
+
 		mEmail = mEmailView.getText().toString();
 		mPassword = mPasswordView.getText().toString();
 		mConfirm = mConfirmView.getText().toString();
 		mName = mLoginRegisterName.getText().toString();
 		mPhone = mLoginRegisterPhone.getText().toString();
-		
+
 		boolean cancel = false;
 		View focusView = null;
-		
+
 		if (TextUtils.isEmpty(mPassword))
 		{
 			mPasswordView.setError(getString(R.string.error_field_required));
@@ -175,7 +174,7 @@ public class LoginActivity extends Activity
 			focusView = mPasswordView;
 			cancel = true;
 		}
-		
+
 		if (TextUtils.isEmpty(mConfirm))
 		{
 			mConfirmView.setError(getString(R.string.error_field_required));
@@ -202,10 +201,11 @@ public class LoginActivity extends Activity
 			focusView = mEmailView;
 			cancel = true;
 		}
-		
+
 		if (TextUtils.isEmpty(mName))
 		{
-			mLoginRegisterName.setError(getString(R.string.error_field_required));
+			mLoginRegisterName
+					.setError(getString(R.string.error_field_required));
 			focusView = mLoginRegisterName;
 			cancel = true;
 		}
@@ -220,13 +220,14 @@ public class LoginActivity extends Activity
 		{
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
-			mLoginStatusMessageView.setText(R.string.login_progress_registering);
+			mLoginStatusMessageView
+					.setText(R.string.login_progress_registering);
 			showProgress(true);
 			mAuthTask = new UserRegisterTask();
 			mAuthTask.execute((Void) null);
 		}
 	}
-	
+
 	/**
 	 * Attempts to sign in or register the account specified by the login form.
 	 * If there are form errors (invalid email, missing fields, etc.), the
@@ -359,7 +360,7 @@ public class LoginActivity extends Activity
 				ExceptionHandler.caughtException(LoginActivity.this, e);
 				return false;
 			}
-			
+
 			if (check)
 			{
 				g.setClient(db.getClient(mEmail));
@@ -396,7 +397,7 @@ public class LoginActivity extends Activity
 			showProgress(false);
 		}
 	}
-	
+
 	public class UserRegisterTask extends AsyncTask<Void, Void, Boolean>
 	{
 		@Override
@@ -434,8 +435,7 @@ public class LoginActivity extends Activity
 			}
 			else
 			{
-				mEmailView
-						.setError(getString(R.string.error_email_exists));
+				mEmailView.setError(getString(R.string.error_email_exists));
 				mEmailView.requestFocus();
 			}
 		}
@@ -445,6 +445,23 @@ public class LoginActivity extends Activity
 		{
 			mAuthTask = null;
 			showProgress(false);
+		}
+	}
+
+	@Override
+	public void onBackPressed()
+	{
+		if (isRegistering)
+		{
+			isRegistering = false;
+			mLoginRegisterView.setVisibility(View.GONE);
+			mConfirmView.setVisibility(EditText.GONE);
+			mLoginSignIn.setVisibility(Button.VISIBLE);
+		}
+		else
+		{
+			setResult(RESULT_CANCELED);
+			super.onBackPressed();
 		}
 	}
 }
