@@ -12,6 +12,8 @@ import android.database.sqlite.SQLiteException;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
@@ -55,7 +57,7 @@ public class RestaurantListActivity extends ListActivity
 			ArrayList<HashMap<String, String>> restaurants = new ArrayList<HashMap<String, String>>();
 			try
 			{
-				this.restaurants = dbHand.getAllResNames(currentTown); 
+				this.restaurants = dbHand.getAllResNames(currentTown);
 				locations = dbHand.getAllResNamesLocation(currentTown);
 			}
 			catch (SQLiteException e)
@@ -78,8 +80,8 @@ public class RestaurantListActivity extends ListActivity
 			for (Location loc : locations)
 			{
 				HashMap<String, String> data = new HashMap<String, String>();
-				data.put("restaurant",
-						loc.getExtras().getString("restaurant").split("_")[0]);
+				data.put("restaurant", loc.getExtras().getString("restaurant")
+						.split("_")[0]);
 				data.put("distance",
 						String.format("%.2f", current.distanceTo(loc) / 1000)
 								+ " km");
@@ -150,17 +152,29 @@ public class RestaurantListActivity extends ListActivity
 		}
 	}
 
-	/*
-	 * @Override public boolean onCreateOptionsMenu(Menu menu) { // Inflate the
-	 * menu; this adds items to the action bar if it is present.
-	 * if(g.getClient() != null) getMenuInflater().inflate(R.menu.main, menu);
-	 * 
-	 * return true; }
-	 * 
-	 * 
-	 * @Override public boolean onOptionsItemSelected(MenuItem item) { Intent
-	 * clientGo = new Intent(RestaurantListActivity.this, ClientActivity.class);
-	 * startActivity(clientGo); return super.onOptionsItemSelected(item); }
-	 */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		// Inflate the menu; this adds items to the action bar if it is present.
+		if (g.getClient() != null)
+			getMenuInflater().inflate(R.menu.main, menu);
 
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case android.R.id.home:
+				onBackPressed();
+				return true;
+			default:
+				Intent clientGo = new Intent(RestaurantListActivity.this,
+						ClientActivity.class);
+				startActivity(clientGo);
+				return super.onOptionsItemSelected(item);
+		}
+	}
 }

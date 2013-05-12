@@ -62,6 +62,7 @@ public class ReservationActivity extends Activity {
 		setContentView(R.layout.activity_reservation);
 		overridePendingTransition(0, R.anim.commetuveux);
 		setTitle(R.string.activity_reservation_title);
+		setupActionBar();
 		
 		g = (Gourmet)getApplication();
 		currentRest = g.getRest();
@@ -302,10 +303,18 @@ public class ReservationActivity extends Activity {
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		Intent clientGo = new Intent(ReservationActivity.this, ClientActivity.class);
-		startActivity(clientGo);
-		return super.onOptionsItemSelected(item);
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case android.R.id.home:
+				onBackPressed();
+				return true;
+			default:
+				Intent clientGo = new Intent(ReservationActivity.this, ClientActivity.class);
+				startActivity(clientGo);
+				return super.onOptionsItemSelected(item);
+		}
 	}
 
 }

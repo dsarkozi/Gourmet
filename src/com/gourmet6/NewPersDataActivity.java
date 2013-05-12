@@ -1,7 +1,10 @@
 package com.gourmet6;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,6 +39,7 @@ public class NewPersDataActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_pers_data);
 		setTitle(TITLE);
+		setupActionBar();
 		dbHand = new DBHandler(this);
 		g = (Gourmet)getApplication();
 		currentCli = g.getClient();
@@ -128,5 +132,30 @@ public class NewPersDataActivity extends Activity {
         		missingField.setText("The following changes have been carried out:\n"+changeS+un+deux+trois+quatre);
         	}
         });
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case android.R.id.home:
+				onBackPressed();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
+	/**
+	 * Set up the {@link android.app.ActionBar}, if the API is available.
+	 */
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private void setupActionBar()
+	{
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		{
+			getActionBar().setDisplayHomeAsUpEnabled(true);
+		}
 	}
 }

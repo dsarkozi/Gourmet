@@ -142,16 +142,6 @@ public class DishMenuActivity extends Activity {
 		this.allergens = current.getAllergensForFilter(filtered);
 	}
 
-	/**
-	 * Set up the {@link android.app.ActionBar}, if the API is available.
-	 */
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	private void setupActionBar() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			getActionBar().setDisplayHomeAsUpEnabled(true);
-		}
-	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -160,12 +150,32 @@ public class DishMenuActivity extends Activity {
 		
 		return true;
 	}
-
+	
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		Intent clientGo = new Intent(DishMenuActivity.this, ClientActivity.class);
-		startActivity(clientGo);
-		return super.onOptionsItemSelected(item);
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case android.R.id.home:
+				onBackPressed();
+				return true;
+			default:
+				Intent clientGo = new Intent(DishMenuActivity.this, ClientActivity.class);
+				startActivity(clientGo);
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
+	/**
+	 * Set up the {@link android.app.ActionBar}, if the API is available.
+	 */
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private void setupActionBar()
+	{
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		{
+			getActionBar().setDisplayHomeAsUpEnabled(true);
+		}
 	}
 
 }

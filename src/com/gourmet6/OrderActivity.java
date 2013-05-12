@@ -75,6 +75,7 @@ public class OrderActivity extends Activity {
 		dishad = new DishMenuAdapter(this,current,listdish, true);
 		dishes.setAdapter(dishad);
 		
+		
 		Spinner sort = (Spinner) findViewById(R.id.spinner1);
 		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, filters);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -360,10 +361,17 @@ public class OrderActivity extends Activity {
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		Intent clientGo = new Intent(OrderActivity.this, ClientActivity.class);
-		startActivity(clientGo);
-		return super.onOptionsItemSelected(item);
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case android.R.id.home:
+				onBackPressed();
+				return true;
+			default:
+				Intent clientGo = new Intent(OrderActivity.this, ClientActivity.class);
+				startActivity(clientGo);
+				return super.onOptionsItemSelected(item);
+		}
 	}
-
 }

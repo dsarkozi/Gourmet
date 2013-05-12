@@ -331,12 +331,20 @@ public class RestaurantActivity extends Activity
 		
 		return true;
 	}
-
+	
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		Intent clientGo = new Intent(RestaurantActivity.this, ClientActivity.class);
-		startActivity(clientGo);
-		return super.onOptionsItemSelected(item);
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case android.R.id.home:
+				onBackPressed();
+				return true;
+			default:
+				Intent clientGo = new Intent(RestaurantActivity.this, ClientActivity.class);
+				startActivity(clientGo);
+				return super.onOptionsItemSelected(item);
+		}
 	}
 	
 	@Override
@@ -345,5 +353,5 @@ public class RestaurantActivity extends Activity
 		MainGourmet.showResto = true;
 		MainGourmet.currentTown = currentTown;
 		super.onBackPressed();
-	}	
+	}
 }

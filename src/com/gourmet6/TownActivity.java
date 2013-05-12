@@ -77,8 +77,7 @@ public class TownActivity extends ListActivity
 				HashMap<String, String> data = new HashMap<String, String>();
 				data.put("town", loc.getExtras().getString("town"));
 				data.put("distance",
-						String.format(
-								"%.2f", current.distanceTo(loc)/1000)
+						String.format("%.2f", current.distanceTo(loc) / 1000)
 								+ " km");
 				towns.add(data);
 			}
@@ -146,9 +145,17 @@ public class TownActivity extends ListActivity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
-		Intent clientGo = new Intent(TownActivity.this, ClientActivity.class);
-		startActivity(clientGo);
-		return super.onOptionsItemSelected(item);
+		switch (item.getItemId())
+		{
+			case android.R.id.home:
+				onBackPressed();
+				return true;
+			default:
+				Intent clientGo = new Intent(TownActivity.this,
+						ClientActivity.class);
+				startActivity(clientGo);
+				return super.onOptionsItemSelected(item);
+		}
 	}
 
 }

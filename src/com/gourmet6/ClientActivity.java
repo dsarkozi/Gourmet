@@ -1,8 +1,11 @@
 package com.gourmet6;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,6 +23,7 @@ public class ClientActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_client);
 		setTitle(TITLE);
+		setupActionBar();
 	}
 
 	@Override
@@ -53,5 +57,30 @@ public class ClientActivity extends Activity
 				startActivity(newPersData);
 			}
 		});
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case android.R.id.home:
+				onBackPressed();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
+	/**
+	 * Set up the {@link android.app.ActionBar}, if the API is available.
+	 */
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private void setupActionBar()
+	{
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		{
+			getActionBar().setDisplayHomeAsUpEnabled(true);
+		}
 	}
 }
