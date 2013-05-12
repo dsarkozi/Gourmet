@@ -73,13 +73,6 @@ public class Reservation {
 		this.order = order;
 	}
 	
-	/**
-	 * 
-	 */
-	public Reservation()
-	{
-	}
-	
 
 	/**********************
 	 * Getters and setters

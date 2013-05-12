@@ -78,27 +78,6 @@ public class Restaurant {
 	}
 	
 	/**
-	 * Gets the names of all the Dishes served in the restaurant.
-	 * @return a table containing the name of all Dishes served in the restaurant.
-	 * If listDishes is null, returns null.
-	 */
-	public String[] getDishesNames()
-	{
-		if (this.listDishes == null)
-		{
-			return null;
-		}
-		
-		int length = this.listDishes.size();
-		String [] names = new String[length];
-		for (int i=0; i<length; i++)
-		{
-			names[i] = this.listDishes.get(i).getName();
-		}
-		return names;
-	}
-	
-	/**
 	 * @param name hte dish's name
 	 * @return the dish which has the name specified in param. If the listDishes is empty
 	 *  or if no dish corresponded, returns null.
@@ -120,41 +99,6 @@ public class Restaurant {
 		return null;
 	}
 	
-	public Dish getDish(String name, ArrayList<Dish> toFilter )
-	{
-		if(toFilter==null)
-		{
-			Log.e("Restaurant", "getDish with an empty listDishes. Call createDishes before.");
-		}
-		else
-		{
-			for(Dish d : toFilter)
-			{
-				if(d.getName().equals(name)) return d;
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Sorts the ArrayList of Dishes in increasing price order.
-	 */
-	public void sortDishesPrice(){
-		if (this.listDishes == null)
-		{
-			Log.e("Restaurant", "sortDishesPrice with an empty listDishes. Call createDishes.");
-			return;
-		}
-
-		Collections.sort(this.listDishes, new Comparator<Dish>() {
-			@Override
-			public int compare(Dish o1, Dish o2) {
-				return (int) (o1.getPrice()-o2.getPrice());
-			}
-
-		});
-	}
-	
 	public ArrayList<Dish> sortDishesPrice(ArrayList<Dish> toFilter){
 		if (toFilter == null)
 		{
@@ -171,35 +115,12 @@ public class Restaurant {
 		
 		return toFilter;
 	}
-	
-	/**
-	 * Gets all distinct types of all Dishes served in the restaurant.
-	 * @return an ArrayList containing all the different types of Dishes.
-	 * If listDishes is empty or if no Dish has a type, returns an empty Arraylist.
-	 */
-	public ArrayList<String> getDishesTypes()
-	{
-		if (this.listDishes == null)
-		{
-			System.err.println("getDishesType with an empty listDishes. Call createDishes.");
-		}
-		
-		ArrayList<String> result = new ArrayList<String>();
-		String type;
-		for (Dish d : this.listDishes)
-		{
-			type = d.getType();
-			if (!(result.contains(type)))
-				result.add(type);
-		}
-		return result;
-	}
-	
+
 	public ArrayList<String> getDishesTypes(ArrayList<Dish> toFilter)
 	{
 		if (toFilter == null)
 		{
-			System.err.println("getDishesType with an empty listDishes. Call createDishes.");
+			Log.e("Restaurant", "getDishesType with an empty listDishes. Call createDishes.");
 		}
 		
 		ArrayList<String> result = new ArrayList<String>();
@@ -209,28 +130,6 @@ public class Restaurant {
 			type = d.getType();
 			if (!(result.contains(type)))
 				result.add(type);
-		}
-		return result;
-	}
-	
-	/**
-	 * Gets all Dishes of a certain type served in the restaurant.
-	 * @param type the type of the wanted Dishes
-	 * @return an ArrayList of Dishes of the given type. If there is no such Dish or
-	 * if the list of Dishes is empty, returns an empty ArrayList.
-	 */
-	public ArrayList<Dish> filterDishesType(String type)
-	{
-		if (this.listDishes == null)
-		{
-			Log.e("Restaurant", "filterDishesType with an empty listDishes. Call createDishes.");
-		}
-		
-		ArrayList<Dish> result = new ArrayList<Dish>();
-		for (Dish d : this.listDishes)
-		{
-			if (d.getType().equals(type))
-				result.add(d);
 		}
 		return result;
 	}
@@ -247,47 +146,6 @@ public class Restaurant {
 		{
 			if (d.getType().equals(type))
 				result.add(d);
-		}
-		return result;
-	}
-	
-	/**
-	 * @return
-	 */
-	public ArrayList<String> getDishesSubtypes()
-	{
-		if (this.listDishes == null)
-		{
-			Log.e("Restaurant", "getDishesSubtype with an empty listDishes. Call createDishes.");
-		}
-		
-		ArrayList<String> result = new ArrayList<String>();
-		String subtype;
-		for (Dish d : this.listDishes)
-		{
-			subtype = d.getSubtype();
-			if (!(result.contains(subtype)))
-				result.add(subtype);
-		}
-		return result;
-	}
-	
-	public ArrayList<String> getDishesSubtypes(String type)
-	{
-		if (this.listDishes == null)
-		{
-			Log.e("Restaurant", "getDishesSubtype with an empty listDishes. Call createDishes.");
-		}
-		
-		ArrayList<String> result = new ArrayList<String>();
-		String subtype;
-		for (Dish d : this.listDishes)
-		{
-			if(d.getType().equals(type)){
-				subtype = d.getSubtype();
-				if (!(result.contains(subtype)))
-					result.add(subtype);
-			}
 		}
 		return result;
 	}
@@ -330,43 +188,6 @@ public class Restaurant {
 		return result;
 	}
 	
-	/**
-	 * @param subtype the subtype of the wanted Dishes
-	 * @return an ArrayList of Dishes of the given subtype. If there is no such Dish or
-	 * if the list of Dishes is empty, returns an empty ArrayList.
-	 */
-	public ArrayList<Dish> filterDishesSubtype(String subtype)
-	{
-		if (this.listDishes == null)
-		{
-			Log.e("Restaurant", "filterDishesSubtype with an empty listDishes. Call createDishes.");
-		}
-		
-		ArrayList<Dish> result = new ArrayList<Dish>();
-		for (Dish d : this.listDishes)
-		{
-			if (d.getSubtype().equals(subtype))
-				result.add(d);
-		}
-		return result;
-	}
-	
-	public ArrayList<Dish> filterDishesSubtype(String subtype, String type)
-	{
-		if (this.listDishes == null)
-		{
-			Log.e("Restaurant", "filterDishesSubtype with an empty listDishes. Call createDishes.");
-		}
-		
-		ArrayList<Dish> result = new ArrayList<Dish>();
-		for (Dish d : this.listDishes)
-		{
-			if ((d.getType().equals(type)) && (d.getSubtype().equals(subtype)))
-				result.add(d);
-		}
-		return result;
-	}
-	
 	public ArrayList<Dish> filterDishesSubtype(String subtype, ArrayList<Dish> toFilter)
 	{
 		if (toFilter == null)
@@ -398,23 +219,7 @@ public class Restaurant {
 		}
 		return result;
 	}
-	
-	/**
-	 * Gets all the Dishes not containing a certain allergen served in the restaurant.
-	 * @param al the allergen to exclude
-	 * @return an ArrayList of Dishes not containing al as allergen. If there is no such Dish or
-	 * if the list of Dishes is empty, returns an empty ArrayList.
-	 */
-	public ArrayList<Dish> filterDishesAllergen(String al)
-	{
-		ArrayList<Dish> result = new ArrayList<Dish>();
-		for (Dish d : this.listDishes)
-		{
-			if (!(d.hasAllergen(al)))
-				result.add(d);
-		}
-		return result;
-	}
+
 	
 	public ArrayList<Dish> filterDishesAllergen(String al, ArrayList<Dish> toFilter)
 	{
