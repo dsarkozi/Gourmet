@@ -9,6 +9,7 @@ import java.util.TimeZone;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+@SuppressLint("UseSparseArrays")
 public class TimeTable 
 {
 	
