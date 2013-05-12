@@ -12,7 +12,6 @@
     <string name="action_register">Register</string>
     <string name="action_as_guest">Log in as guest</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="action_forgot_password">Recover lost password</string>
     <string name="login_progress_signing_in">Signing in&#8230;</string>
     <string name="login_progress_registering">Registering&#8230;</string>
     <string name="error_invalid_email">This email address is invalid.</string>

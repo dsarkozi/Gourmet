@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Strings related to client activity -->
-    <string name="rescom">Bookings history</string>
-    <string name="pref">Preferences</string>
     <string name="cpd">Change personal data</string>
    
     <!-- Strings related to NewPersData activity -->
@@ -16,11 +14,4 @@
     <string name="changeButton">Apply changes</string>
     <string name="acceptation">No change has yet been set.</string>
     
-    <!-- Strings related to resAndCom activity-->
-    
-    <!-- Strings related to res_list-->
-    <string name="restName">Restaurant : </string>
-    <string name="resDate">Date : </string>
-    
-    <!-- Strings related to dish_list-->
 </resources>

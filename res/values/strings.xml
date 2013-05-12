@@ -3,21 +3,13 @@
 
     <string name="app_name">Gourmet</string>
     <string name="viewProfile">View profile</string>
-    <string name="start">Do you want to log in ?</string>
-    <string name="createAccount">Sign up</string>
-    <string name="yesButton">Yes</string>
-    <string name="noButton">No</string>
-    <string name="return_button">Back</string>
     <string name="title_activity_restaurant">RestaurantActivity</string>
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_reservation">ReservationActivity</string>
     <string name="title_activity_order">OrderActivity</string>
     <string name="title_activity_dish_menu">DishMenuActivity</string>
     <string name="title_activity_dish_display">DishDisplayActivity</string>
     <string name="title_activity_town">TownActivity</string>
     <string name="title_activity_client">ClientActivity</string>
-    <string name="title_activity_res_and_com">ResAndComActivity</string>
-    <string name="title_activity_pref">PrefActivity</string>
     <string name="okButton">OK</string>
     <string name="cancelButton">Cancel</string>
     <string name="title_activity_new_pers_data">NewPersDataActivity</string>
