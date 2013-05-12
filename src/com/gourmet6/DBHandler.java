@@ -1060,9 +1060,9 @@ public class DBHandler {
 				Reservation reserv = new Reservation(resName, datetime, seats, client, mail);
 				
 				// adds the corresponding order if there is one
-				if (!c.isNull(c.getColumnIndex(ORDER_NR)))
+				int orderNr = c.getInt(c.getColumnIndex(ORDER_NR));
+				if (orderNr > 0)
 				{
-					int orderNr = c.getInt(c.getColumnIndex(ORDER_NR));
 					Order order = getOrder(orderNr);
 					reserv.setReservationOrder(order);
 				}
@@ -1311,18 +1311,15 @@ public class DBHandler {
 		Cursor d;
 		
 		// information held by the order_overview table
-		c = this.db.query(TABLE_ORDER_OVERVIEW, new String[] {RES, MAIL}, "_id="+orderNr, null, null, null, null);
+		c = this.db.query(TABLE_ORDER_OVERVIEW, new String[] {RES, MAIL}, "_id=?", new String[] {Integer.toString(orderNr)}, null, null, null);
 		if (c.getCount() > 1)
 		{
 			Log.e("DBHandler","Error : two or more orders seem to have the same number.");
 		}
 		
-		String resName = null;  String mail = null;
-		while (c.moveToNext())
-		{
-			resName = c.getString(c.getColumnIndex(RES));
-			mail = c.getString(c.getColumnIndex(MAIL));
-		}
+		c.moveToFirst();
+		String resName = c.getString(c.getColumnIndex(RES));
+		String mail = c.getString(c.getColumnIndex(MAIL));
 
 		// information held by the client table
 		String client = this.getClientName(mail);
@@ -1331,7 +1328,7 @@ public class DBHandler {
 		Order retour = new Order(resName, client, mail);
 		
 		// information held by the order_detail table
-		c = this.db.query(TABLE_ORDER_DETAIL, new String[] {DISH, QUANTITY}, ORDER_NR+"="+orderNr, null, null, null, null);
+		c = this.db.query(TABLE_ORDER_DETAIL, new String[] {DISH, QUANTITY}, ORDER_NR+"=?", new String[] {Integer.toString(orderNr)}, null, null, null);
 		ArrayList<Dish> dishes = new ArrayList<Dish>(c.getCount());
 		while (c.moveToNext())
 		{
