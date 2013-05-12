@@ -72,7 +72,8 @@ public class NewPersDataActivity extends Activity {
         		newName.setText("");
         		newPhone.setText("");
         		newMail.setText("");
-        		actualMdp.setText("");        		
+        		actualMdp.setText("");
+        		
         		//v�rifier que le mot de passe actuel est mis et bon
         		if(actualMdpS.equals("")){
         			missingField.setText("Actual password required.");
@@ -83,11 +84,17 @@ public class NewPersDataActivity extends Activity {
         			return;
         		}
         		//voir les champs remplis par l'utilisateur(changements a faire)+effectuer ces changements
-        		String un="(none)", deux="", trois="", quatre="";
+        		String un="", deux="", trois="", quatre="";
+        		String changeS = "(none)";
         		if(!newMdpS.equals("")){
         			if(newMdpComfS.equals(""))
         			{
         				missingField.setText("You must confirm the new password !");
+        				return;
+        			}
+        			if(newMdpComfS.length() < 4)
+        			{
+        				missingField.setText("The length of the new password is too short !");
         				return;
         			}
         			if(!newMdpComfS.equals(newMdpS))
@@ -100,20 +107,25 @@ public class NewPersDataActivity extends Activity {
         		}
         		if(!newNameS.equals("")){
         			dbHand.changeName(currentCli.getEmail(), newNameS);
-        			g.getClient().setName(newNameS);
+        			currentCli.setName(newNameS);
         			deux ="Your name has been changed. \n";
         		}
         		if(!newPhoneS.equals("")){
         			dbHand.changeTel(currentCli.getEmail(), newPhoneS);
-        			g.getClient().setPhone(newPhoneS);
+        			currentCli.setPhone(newPhoneS);
         			trois ="Your phone number has been changed. \n";
         		}
         		if(!newMailS.equals("")){
         			dbHand.changeMail(currentCli.getEmail(), newMailS);
-        			g.getClient().setEmail(newMailS);
+        			currentCli.setEmail(newMailS);
         			quatre ="Your email has been changed.";
         		}
-        		missingField.setText("The following changes have been carried out:\n"+un+deux+trois+quatre);
+        		if (!un.equals("") || !deux.equals("") || !trois.equals("") || !quatre.equals(""))
+        		{
+        			changeS = "";
+        			g.setClient(currentCli);
+        		}
+        		missingField.setText("The following changes have been carried out:\n"+changeS+un+deux+trois+quatre);
         	}
         });
 	}

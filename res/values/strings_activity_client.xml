@@ -12,6 +12,6 @@
     <string name="mdpActual">Current password</string>
     <string name="options">Let the fields you don\'t want to change blank. The current password is required for any change.</string>
     <string name="changeButton">Apply changes</string>
-    <string name="acceptation">No change has yet been set.</string>
+    <string name="acceptation">No change has been set yet.</string>
     
 </resources>
